@@ -2,7 +2,6 @@ import { error } from '@sveltejs/kit';
 import { compile } from 'mdsvex';
 
 import type { DocsPageMeta } from '$site/index.js';
-export const prerender = true;
 
 export const load = async () => {
 	const pages = Object.entries(import.meta.glob('/src/docs/**/*.md', { query: '?raw', import: 'default' }));
