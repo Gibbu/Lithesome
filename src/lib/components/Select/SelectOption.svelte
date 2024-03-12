@@ -39,7 +39,7 @@
 
 	const hovered = $derived(API.hoveredOption?.id === uid());
 	const selected = $derived(!!API.selectedOptions.find((el) => el.value === value));
-	const classProp = $derived(typeof klass === 'function' ? klass?.({ hovered, selected }) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ hovered, selected }) : klass);
 </script>
 
 <button

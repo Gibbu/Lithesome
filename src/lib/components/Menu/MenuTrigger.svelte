@@ -74,7 +74,7 @@
 		}
 	});
 
-	const classProp = $derived(typeof klass === 'function' ? klass?.({ visible: API.visible }) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 </script>
 
 <div bind:this={btn} data-menutrigger="" use:useActions={use} {...props} class={classProp}>

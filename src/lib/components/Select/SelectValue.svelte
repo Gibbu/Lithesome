@@ -10,7 +10,7 @@
 
 	const API = context();
 	const placeholderVisible = $derived(API.selectedOptions.length === 0);
-	const classProp = $derived(typeof klass === 'function' ? klass?.({ placeholderVisible }) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ placeholderVisible }) : klass);
 </script>
 
 <span

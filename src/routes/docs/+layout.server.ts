@@ -4,14 +4,10 @@ import { compile } from 'mdsvex';
 import type { DocsPageMeta } from '$site/index.js';
 export const prerender = true;
 
-interface Route extends DocsPageMeta {
-	children?: DocsPageMeta[];
-}
-
 export const load = async () => {
 	const pages = Object.entries(import.meta.glob('/src/docs/**/*.md', { query: '?raw', import: 'default' }));
 
-	let routes: Route[] = [];
+	let routes: any[] = [];
 
 	for (const [path, resolver] of pages) {
 		const page = (await resolver()) as string;
@@ -26,27 +22,33 @@ export const load = async () => {
 
 		const title = meta.sidebar || meta.title;
 		const order = meta.order;
-		const _path = path.replace(/\/src\/docs\/|\/index/g, '').replace('index', '/');
-		const object = {
+		const _path = path.replace(/\/src\/docs\/|\/index|.md/g, '').replace('index', '/');
+		const route = {
 			title,
-			path: _path.replace('.md', ''),
+			description: meta.description,
+			path: _path,
 			badge: meta.badge,
 			sidebar: meta.sidebar,
 			order
 		};
 
-		const index = routes.findIndex((el) => _path.startsWith(el.path));
-		if (routes[index]) {
-			if (!routes[index].children) routes[index].children = [];
-			routes[index].children?.push(object);
-		} else if (order) {
-			routes[order] = object;
+		if (_path.includes('/') && !_path.startsWith('/')) {
+			const folder = _path.split('/')[0];
+			if (routes.find((el) => el.folder === folder)) {
+				const index = routes.findIndex((el) => el.folder === folder);
+				if (!routes[index].children) routes[index].children = [];
+				routes[index].children.push(route);
+			} else {
+				routes.push({ folder, children: [route] });
+			}
 		} else {
-			routes = [...routes, object];
+			routes.push(route);
 		}
 	}
 
 	return {
-		routes: [...routes.filter((el) => !el.children), ...routes.filter((el) => el.children)]
+		routes: [...routes.filter((el) => !el.children), ...routes.filter((el) => el.children)].toSorted(
+			(a, b) => a.order - b.order
+		)
 	};
 };

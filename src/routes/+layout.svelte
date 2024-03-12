@@ -27,7 +27,7 @@
 			class="absolute h-[750px] w-[250px] translate-x-24 rotate-[32deg] scale-150 bg-gradient-to-t from-transparent to-blue-500 opacity-30 blur-[120px]"
 		/>
 		<div
-			class="absolute -right-24 h-[750px] w-[250px] rotate-[-32deg] scale-150 bg-gradient-to-t from-transparent to-violet-500 opacity-10 blur-[120px]"
+			class="absolute -right-24 h-[750px] w-[250px] rotate-[-32deg] scale-150 bg-gradient-to-t from-transparent to-violet-500 opacity-15 blur-[120px]"
 		/>
 	</div>
 	<div class="flex flex-1 flex-col">

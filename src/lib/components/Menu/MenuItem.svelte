@@ -31,7 +31,7 @@
 	};
 
 	const hovered = $derived(API.hoveredItem === uid());
-	const classProp = $derived(typeof klass === 'function' ? klass?.({ hovered }) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ hovered }) : klass);
 </script>
 
 <svelte:element

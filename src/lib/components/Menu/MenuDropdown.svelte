@@ -58,7 +58,7 @@
 	});
 
 	const _transition = getTransition(transition);
-	const classProp = $derived(typeof klass === 'function' ? klass?.({ visible: API.visible }) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 	const attrs = $derived({
 		id: API.uid('dropdown'),
 		'aria-labelledby': API.uid('trigger'),

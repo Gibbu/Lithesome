@@ -64,9 +64,10 @@ export interface Component {
 }
 
 export interface DocsPageMeta {
-	order: number;
 	title: string;
+	description: string;
 	path: string;
+	order: number;
 	sidebar?: string;
 	badge?: 'new' | 'updated' | 'soon';
 }

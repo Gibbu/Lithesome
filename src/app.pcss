@@ -14,3 +14,17 @@
 		@apply mx-auto w-full max-w-screen-xl px-6;
 	}
 }
+
+.shiki {
+	@apply relative rounded-md border dark:border-white/10 dark:!bg-black/40;
+}
+.shiki .language-id {
+	@apply pointer-events-none absolute right-4 top-2 select-none text-xs text-white/30;
+}
+.shiki[name] {
+	@apply !pt-12;
+}
+.shiki[name]::before {
+	content: attr(name);
+	@apply absolute left-4 top-4 text-sm;
+}

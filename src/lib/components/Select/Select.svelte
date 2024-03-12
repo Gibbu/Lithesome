@@ -28,7 +28,7 @@
 
 	setContext(contextName, API);
 
-	const classProp = $derived(typeof klass === 'function' ? klass?.({ visible: API.visible }) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 
 	onMount(async () => {
 		await tick();
