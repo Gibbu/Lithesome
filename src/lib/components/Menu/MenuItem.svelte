@@ -17,6 +17,10 @@
 
 	onMount(() => {
 		if (!API.items.includes(uid()) && !disabled) API.register(uid());
+
+		return () => {
+			API.unregister(uid());
+		};
 	});
 
 	const handleClick = () => {
@@ -26,7 +30,7 @@
 		}
 	};
 
-	let hovered = $derived(API.hoveredItem === uid());
+	const hovered = $derived(API.hoveredItem === uid());
 	const classProp = $derived(typeof klass === 'function' ? klass?.({ hovered }) : klass);
 </script>
 
@@ -36,6 +40,7 @@
 	id={uid()}
 	class={classProp}
 	data-hovered={hovered ? '' : undefined}
+	data-menuitem=""
 	href={href || undefined}
 	role="menuitem"
 	tabindex="0"

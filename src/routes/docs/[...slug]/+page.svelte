@@ -4,7 +4,7 @@
 	let { data } = $props();
 
 	type Component = $$Generic<typeof SvelteComponent<any, any, any>>;
-	let component = $derived(data.component) as unknown as Component;
+	const component = $derived(data.component) as unknown as Component;
 </script>
 
 <svelte:component this={component} />

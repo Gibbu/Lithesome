@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+	:root {
+		--accent: theme(colors.violet.500);
+	}
+}
+
 @layer utilities {
 	.wrap {
 		@apply mx-auto w-full max-w-screen-xl px-6;

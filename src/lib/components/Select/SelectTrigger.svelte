@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { context } from './Menu.svelte';
+	import { context } from './Select.svelte';
 	import {
 		log,
 		setNodeProps,
@@ -21,15 +21,15 @@
 		const { key } = e;
 
 		if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'End' || key === 'Home') e.preventDefault();
-		if (key === 'Home') API.navigateItems('first');
-		if (key === 'End') API.navigateItems('last');
-		if (key === 'ArrowUp') API.navigateItems('prev');
-		if (key === 'ArrowDown') API.navigateItems('next');
+		if (key === 'Home') API.navigateOptions('first');
+		if (key === 'End') API.navigateOptions('last');
+		if (key === 'ArrowUp') API.navigateOptions('prev');
+		if (key === 'ArrowDown') API.navigateOptions('next');
 		if (key === 'Escape') API.close();
 		if (key === 'Enter') {
 			e.preventDefault();
-			if (API.hoveredItem && API.visible) {
-				(document.querySelector(`#${API.hoveredItem}`) as HTMLButtonElement).click();
+			if (API.hoveredOption && API.visible) {
+				(document.querySelector(`#${API.hoveredOption.id}`) as HTMLButtonElement).click();
 				API.close();
 			} else {
 				API.open();
@@ -39,7 +39,7 @@
 
 	onMount(() => {
 		if (btn.children.length > 1) {
-			log.error('<MenuTrigger /> comoponent can only take 1 children node.');
+			log.error('<SelectTrigger /> comoponent can only take 1 children node.');
 			return;
 		}
 
@@ -61,7 +61,7 @@
 		if (!API.trigger) return;
 		const target = API.trigger;
 
-		if (API.hoveredItem) setNodeProps(target, { 'aria-activedescendant': API.hoveredItem });
+		if (API.hoveredOption) setNodeProps(target, { 'aria-activedescendant': API.hoveredOption.id });
 		if (API.visible) {
 			setNodeProps(target, {
 				'aria-expanded': 'true',
@@ -77,6 +77,6 @@
 	const classProp = $derived(typeof klass === 'function' ? klass?.({ visible: API.visible }) : klass);
 </script>
 
-<div bind:this={btn} data-menutrigger="" use:useActions={use} {...props} class={classProp}>
+<div bind:this={btn} data-selecttrigger="" use:useActions={use} {...props} class={classProp} style="display: contents;">
 	{@render children({ visible: API.visible })}
 </div>

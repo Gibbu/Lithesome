@@ -1,3 +1,5 @@
+import type { JsonValue } from '../types.js';
+
 export type CalcIndexAction = 'prev' | 'next' | 'first' | 'last';
 
 export const calculateIndex = <T>(
@@ -45,4 +47,12 @@ export const log = {
 	error(message: string) {
 		throw Error(`[Lithesome] ${message}`);
 	}
+};
+
+export const pruneValue = (value: JsonValue) => {
+	if (!value) return;
+	else if (typeof value === 'number' || typeof value === 'boolean') return value;
+	else if (Array.isArray(value)) return value.filter(Boolean);
+	else if (typeof value === 'object') return Object.entries(value).filter(Boolean);
+	else return value.trim();
 };

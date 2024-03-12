@@ -10,7 +10,7 @@
 		disabled?: boolean;
 	}
 
-	let { children, variant, size = 'md', class: className, href, self, disabled, ...props } = $props<Props>();
+	let { children, variant, size = 'md', class: klass, href, self, disabled, ...props } = $props<Props>();
 </script>
 
 <svelte:element
@@ -25,9 +25,10 @@
 		size === 'lg' ? 'gap-3 rounded-lg px-6 py-3.5' : '',
 		variant === 'primary' ? 'bg-white text-black hover:bg-neutral-300' : '',
 		variant === 'secondary' ? 'border-white/20 bg-black/15 text-white hover:bg-white hover:text-black' : '',
-		variant === 'text' ? 'border-transparent text-white hover:bg-white/5' : ''
+		variant === 'text' ? 'border-transparent text-white hover:bg-white/5' : '',
+		klass
 	)}
 	{...props}
 >
-	{@render children()}
+	{@render children({})}
 </svelte:element>

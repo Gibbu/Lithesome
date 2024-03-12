@@ -64,6 +64,7 @@ export interface Component {
 }
 
 export interface DocsPageMeta {
+	order: number;
 	title: string;
 	path: string;
 	sidebar?: string;

@@ -8,7 +8,7 @@
 			<a href="/docs{route.path === '/' ? '' : '/' + route.path}" class="flex">{route.title}</a>
 		{/each}
 	</aside>
-	<article>
+	<article class="prose dark:prose-invert max-w-full">
 		<slot />
 	</article>
 </div>

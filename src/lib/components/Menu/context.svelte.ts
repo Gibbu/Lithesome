@@ -1,4 +1,4 @@
-import { calculateIndex, type CalcIndexAction, type UID } from '$lib/internal/index.js';
+import { calculateIndex, type CalcIndexAction, type UID, disableScroll } from '$lib/internal/index.js';
 
 export const createContext = (uid: UID) => {
 	// Internal state
@@ -10,6 +10,14 @@ export const createContext = (uid: UID) => {
 	// Derived state
 	const hoveredItem = $derived(items[hoveredIndex]);
 
+	// Effects
+	$effect(() => {
+		disableScroll(visible && !document.body.style.overflow);
+	});
+	$effect(() => {
+		if (!visible) hoveredIndex = -1;
+	});
+
 	// Functions
 	const functions = {
 		open() {
@@ -17,18 +25,18 @@ export const createContext = (uid: UID) => {
 		},
 		close() {
 			visible = false;
-			items = [];
-			hoveredIndex = -1;
 		},
 		toggle() {
 			visible = !visible;
-			if (!visible) functions.close();
 		},
 		navigateItems(action: CalcIndexAction) {
 			hoveredIndex = calculateIndex(action, items, hoveredIndex);
 		},
 		register(item: string) {
 			items = [...items, item];
+		},
+		unregister(item: string) {
+			items = items.filter((el) => el === item);
 		},
 		setHoveredItem(itemId: string) {
 			hoveredIndex = items.findIndex((el) => el === itemId);

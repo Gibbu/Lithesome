@@ -9,9 +9,7 @@ interface Route extends DocsPageMeta {
 }
 
 export const load = async () => {
-	const pages = Object.entries(
-		import.meta.glob('/src/docs/**/*.md', { query: '?raw', import: 'default' })
-	);
+	const pages = Object.entries(import.meta.glob('/src/docs/**/*.md', { query: '?raw', import: 'default' }));
 
 	let routes: Route[] = [];
 
@@ -27,24 +25,28 @@ export const load = async () => {
 		if (!meta.title) error(500, `Provide title metadata. ${path}`);
 
 		const title = meta.sidebar || meta.title;
+		const order = meta.order;
 		const _path = path.replace(/\/src\/docs\/|\/index/g, '').replace('index', '/');
 		const object = {
 			title,
 			path: _path.replace('.md', ''),
 			badge: meta.badge,
-			sidebar: meta.sidebar
+			sidebar: meta.sidebar,
+			order
 		};
 
 		const index = routes.findIndex((el) => _path.startsWith(el.path));
 		if (routes[index]) {
 			if (!routes[index].children) routes[index].children = [];
 			routes[index].children?.push(object);
+		} else if (order) {
+			routes[order] = object;
 		} else {
 			routes = [...routes, object];
 		}
 	}
 
 	return {
-		routes
+		routes: [...routes.filter((el) => !el.children), ...routes.filter((el) => el.children)]
 	};
 };

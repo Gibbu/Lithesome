@@ -10,7 +10,7 @@ export type ClassProp<C> = ((props: C) => string) | string | undefined | null;
 
 // @ts-ignore
 export interface BaseProps<T extends HTMLElement, C extends Record<string, any> = any> extends HTMLAttributes<T> {
-	children: Snippet<[C?]>;
+	children: Snippet<[C]>;
 	use?: HTMLActionArray;
 	class?: ClassProp<C>;
 }
