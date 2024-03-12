@@ -4,6 +4,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
+		"build:site": "vite build",
 		"preview": "vite preview",
 		"package": "svelte-kit sync && svelte-package && publint",
 		"prepublishOnly": "npm run package",
@@ -45,6 +46,7 @@
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.2",
 		"prettier-plugin-tailwindcss": "^0.5.12",
+		"prismjs": "^1.29.0",
 		"publint": "^0.2.7",
 		"rehype-slug": "^6.0.0",
 		"shiki-twoslash": "^3.1.2",
