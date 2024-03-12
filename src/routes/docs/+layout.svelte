@@ -3,8 +3,6 @@
 	import { cn } from '$site/index.js';
 	let { data } = $props();
 
-	console.log(data.routes);
-
 	let navLinkClass = 'flex rounded-md px-3.5 py-2.5 text-sm font-medium mb-1';
 	let navLinkActive = 'bg-white/10 text-white';
 
