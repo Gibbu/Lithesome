@@ -34,6 +34,7 @@
 				API.open();
 			}
 		}
+		if (key === 'Tab') API.close();
 	};
 
 	onMount(() => {

@@ -8,11 +8,15 @@ order: 2
 
 Install using your package manager of your choice.
 
-```bash
+```
 npm install -D lithesome
-# or
+```
+
+```
 pnpm add -D lithesome
-# or
+```
+
+```
 yarn add -D lithesome
 ```
 

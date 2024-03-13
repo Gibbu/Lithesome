@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scale, slide } from 'svelte/transition';
+	import { fade, fly, scale, slide } from 'svelte/transition';
 	import { Button, cn } from '$site/index.js';
 	import {
 		Menu,
@@ -15,11 +15,16 @@
 		AccordionHeading,
 		AccordionItem,
 		AccordionTrigger,
-		AccordionContent
+		AccordionContent,
+		Modal,
+		ModalContent,
+		ModalOverlay,
+		ModalDescription,
+		ModalTitle
 	} from '$lib/index.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { User, Cog, LogOut, Home, ChevronDown, Check } from '@steeze-ui/lucide-icons';
+	import { User, Cog, LogOut, Home, ChevronDown, Check, X } from '@steeze-ui/lucide-icons';
 
 	const menuitems = [
 		{ label: 'Home', icon: Home, href: '/' },
@@ -28,8 +33,8 @@
 		{ label: 'Logout', icon: LogOut, danger: true }
 	];
 
-	let selectSingleValue = 'aang';
-	let selectMultiValue: string[] = ['aang'];
+	let selectSingleValue = $state('aang');
+	let selectMultiValue = $state<string[]>(['aang']);
 	const selectoptions = [
 		{ value: 'aang', label: 'Avatar Aang' },
 		{ value: 'zuko', label: 'Firelord Zuko' },
@@ -42,6 +47,8 @@
 		{ title: 'Hamburger Cheeseburger Big Mac', content: 'WHOPPERRRRRRR' },
 		{ title: 'How does one get good?', content: `Just don't. Give up.` }
 	];
+
+	let modalVisible = $state(false);
 </script>
 
 <div class="wrap pt-24">
@@ -153,21 +160,72 @@
 
 	<section>
 		<h2>Accordion</h2>
-		<Accordion single class="rounded-md border border-white/10 bg-white/5 backdrop-blur">
-			{#each accordionitems as { title, content }}
-				<AccordionItem class="border-b border-white/10 last:border-none">
-					<AccordionHeading>
-						<AccordionTrigger class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
-							{#snippet children({ active })}
-								{title}
-								<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
-							{/snippet}
-						</AccordionTrigger>
-					</AccordionHeading>
-					<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
-				</AccordionItem>
-			{/each}
-		</Accordion>
+		<div class="row">
+			<div>
+				<h3>Single open</h3>
+				<Accordion single class="rounded-md border border-white/10 bg-white/5 backdrop-blur">
+					{#each accordionitems as { title, content }}
+						<AccordionItem class="border-b border-white/10 last:border-none">
+							<AccordionHeading>
+								<AccordionTrigger class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
+									{#snippet children({ active })}
+										{title}
+										<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
+									{/snippet}
+								</AccordionTrigger>
+							</AccordionHeading>
+							<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
+						</AccordionItem>
+					{/each}
+				</Accordion>
+			</div>
+			<div>
+				<h3>Multiple open</h3>
+				<Accordion class="rounded-md border border-white/10 bg-white/5 backdrop-blur">
+					{#each accordionitems as { title, content }}
+						<AccordionItem class="border-b border-white/10 last:border-none">
+							<AccordionHeading>
+								<AccordionTrigger class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
+									{#snippet children({ active })}
+										{title}
+										<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
+									{/snippet}
+								</AccordionTrigger>
+							</AccordionHeading>
+							<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
+						</AccordionItem>
+					{/each}
+				</Accordion>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<h2>Modal</h2>
+		<Button variant="primary" onclick={() => (modalVisible = true)}>Edit Profile</Button>
+		<Modal bind:visible={modalVisible}>
+			<ModalOverlay
+				class="fixed inset-0 bg-black/40 backdrop-blur"
+				transition={[fade, { duration: 200 }]}
+				onclick={() => (modalVisible = false)}
+			/>
+			<ModalContent
+				transition={[fly, { y: 15, duration: 150 }]}
+				class="fixed left-1/2 top-1/2 w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-md border border-white/20 bg-black/60 p-6 shadow-xl"
+			>
+				<header class="flex items-center justify-between">
+					<div>
+						<ModalTitle class="mb-2 text-xl font-semibold text-white">Edit your profile</ModalTitle>
+						<ModalDescription class="text-sm text-neutral-500"
+							>Change the visibility of your posts, likes, shares, ect...</ModalDescription
+						>
+					</div>
+					<button type="button" class="rounded-md p-2 hover:bg-white/10" onclick={() => (modalVisible = false)}>
+						<Icon src={X} class="h-6 w-6" />
+					</button>
+				</header>
+			</ModalContent>
+		</Modal>
 	</section>
 </div>
 
@@ -182,6 +240,9 @@
 		@apply mb-6 text-2xl font-semibold text-white;
 	}
 	.row {
-		@apply flex gap-8;
+		@apply flex items-start gap-8;
+	}
+	.row > :global(*) {
+		flex: 1;
 	}
 </style>

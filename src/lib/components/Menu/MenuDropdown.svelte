@@ -16,7 +16,7 @@
 		/**
 		 * The `svelte/transtion` you wish to use.
 		 *
-		 * @see https://lithesome.dev/docs/api#transition
+		 * @see https://lithesome.dev/docs/api#transition-prop
 		 */
 		transition?: Transition;
 		/** Apply the width of the `<MenuTrigger />` element to the dropdown. */
@@ -76,7 +76,8 @@
 	{#if API.visible}
 		<div
 			bind:this={self}
-			transition:_transition.fn={_transition.params}
+			in:_transition.in.fn={_transition.in.params}
+			out:_transition.out.fn={_transition.out.params}
 			use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
 			use:portal={portalTarget}
 			use:useActions={use}

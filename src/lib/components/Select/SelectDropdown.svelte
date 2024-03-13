@@ -16,7 +16,7 @@
 		/**
 		 * The `svelte/transtion` you wish to use.
 		 *
-		 * @see https://lithesome.dev/docs/api#transition
+		 * @see https://lithesome.dev/docs/api#transition-prop
 		 */
 		transition?: Transition;
 		/** Apply the width of the `<SelecTrigger />` element to the dropdown. */
@@ -68,7 +68,8 @@
 		'data-selectdropdown': '',
 		style: pos
 			? `position: absolute; left: ${pos.left}px; top: ${pos.top}px; ${stretch ? `width: ${pos.width}px` : ''}`
-			: undefined
+			: undefined,
+		hidden: !API.mounted || undefined
 	});
 </script>
 
@@ -76,11 +77,11 @@
 	{#if API.visible}
 		<div
 			bind:this={self}
-			transition:_transition.fn={_transition.params}
+			in:_transition.in.fn={_transition.in.params}
+			out:_transition.out.fn={_transition.out.params}
 			use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
 			use:portal={portalTarget}
 			use:useActions={use}
-			hidden={!API.mounted || undefined}
 			{...attrs}
 			{...props}
 		>
@@ -93,7 +94,6 @@
 		use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
 		use:portal={portalTarget}
 		use:useActions={use}
-		hidden={!API.mounted || undefined}
 		{...attrs}
 		{...props}
 	>

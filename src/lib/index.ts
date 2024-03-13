@@ -9,6 +9,12 @@ export { default as MenuTrigger } from './components/Menu/MenuTrigger.svelte';
 export { default as MenuDropdown } from './components/Menu/MenuDropdown.svelte';
 export { default as MenuItem } from './components/Menu/MenuItem.svelte';
 
+export { default as Modal } from './components/Modal/Modal.svelte';
+export { default as ModalContent } from './components/Modal/ModalContent.svelte';
+export { default as ModalOverlay } from './components/Modal/ModalOverlay.svelte';
+export { default as ModalTitle } from './components/Modal/ModalTitle.svelte';
+export { default as ModalDescription } from './components/Modal/ModalDescription.svelte';
+
 export { default as Select } from './components/Select/Select.svelte';
 export { default as SelectTrigger } from './components/Select/SelectTrigger.svelte';
 export { default as SelectDropdown } from './components/Select/SelectDropdown.svelte';
