@@ -2,7 +2,7 @@
 	import { context } from './Select.svelte';
 	import { useActions, type BaseProps, type JsonValue } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	interface Props extends BaseProps<HTMLAnchorElement | HTMLButtonElement, { hovered: boolean; selected: boolean }> {
 		value: JsonValue;
@@ -11,7 +11,7 @@
 		onClick?: () => void;
 	}
 
-	let { children, class: klass, use = [], value, label, disabled, onClick, ...props } = $props<Props>();
+	let { children, class: klass, use = [], value, label, self, disabled, onClick, ...props } = $props<Props>();
 	let optionEl: HTMLButtonElement | HTMLAnchorElement;
 
 	const API = context();
@@ -43,6 +43,7 @@
 </script>
 
 <button
+	bind:this={self}
 	type="button"
 	bind:this={optionEl}
 	use:useActions={use}

@@ -14,8 +14,7 @@ export const load = async ({ params }) => {
 
 	const match = pages.find(([path, resolver]) => {
 		const _path = path.replace(/\/src\/docs\/|.md|\/index/g, '');
-		if (_path === slug || (!slug.includes('/') && _path === 'index' && slug === ''))
-			return { path, resolver };
+		if (_path === slug || (!slug.includes('/') && _path === 'index' && slug === '')) return { path, resolver };
 	});
 
 	const page = await match?.[1]?.();

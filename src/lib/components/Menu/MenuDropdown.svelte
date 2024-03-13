@@ -16,7 +16,7 @@
 		/**
 		 * The `svelte/transtion` you wish to use.
 		 *
-		 * @see https://lithesome.dev/docs/transitions
+		 * @see https://lithesome.dev/docs/api#transition
 		 */
 		transition?: Transition;
 		/** Apply the width of the `<MenuTrigger />` element to the dropdown. */
@@ -32,6 +32,7 @@
 		portalTarget = 'body',
 		stretch = false,
 		class: klass,
+		self,
 		...props
 	} = $props<Props>();
 
@@ -74,6 +75,7 @@
 {#if _transition}
 	{#if API.visible}
 		<div
+			bind:this={self}
 			transition:_transition.fn={_transition.params}
 			use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
 			use:portal={portalTarget}
@@ -86,6 +88,7 @@
 	{/if}
 {:else if API.visible}
 	<div
+		bind:this={self}
 		use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
 		use:portal={portalTarget}
 		use:useActions={use}

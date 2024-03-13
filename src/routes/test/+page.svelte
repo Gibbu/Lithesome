@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scale } from 'svelte/transition';
+	import { scale, slide } from 'svelte/transition';
 	import { Button, cn } from '$site/index.js';
 	import {
 		Menu,
@@ -8,13 +8,18 @@
 		MenuItem,
 		Select,
 		SelectTrigger,
+		SelectValue,
 		SelectDropdown,
-		SelectOption
+		SelectOption,
+		Accordion,
+		AccordionHeading,
+		AccordionItem,
+		AccordionTrigger,
+		AccordionContent
 	} from '$lib/index.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { User, Cog, LogOut, Home, ChevronDown, Check } from '@steeze-ui/lucide-icons';
-	import SelectValue from '$lib/components/Select/SelectValue.svelte';
 
 	const menuitems = [
 		{ label: 'Home', icon: Home, href: '/' },
@@ -25,13 +30,17 @@
 
 	let selectSingleValue = 'aang';
 	let selectMultiValue: string[] = ['aang'];
-
 	const selectoptions = [
 		{ value: 'aang', label: 'Avatar Aang' },
 		{ value: 'zuko', label: 'Firelord Zuko' },
 		{ value: 'sokka', label: 'Councilman Sokka' },
 		{ value: 'katara', label: 'Katara' },
 		{ value: 'toph', label: 'Greatest Earthbender Alive' }
+	];
+
+	const accordionitems = [
+		{ title: 'Hamburger Cheeseburger Big Mac', content: 'WHOPPERRRRRRR' },
+		{ title: 'How does one get good?', content: `Just don't. Give up.` }
 	];
 </script>
 
@@ -140,6 +149,25 @@
 				{selectMultiValue}
 			</div>
 		</div>
+	</section>
+
+	<section>
+		<h2>Accordion</h2>
+		<Accordion single class="rounded-md border border-white/10 bg-white/5 backdrop-blur">
+			{#each accordionitems as { title, content }}
+				<AccordionItem class="border-b border-white/10 last:border-none">
+					<AccordionHeading>
+						<AccordionTrigger class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
+							{#snippet children({ active })}
+								{title}
+								<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
+							{/snippet}
+						</AccordionTrigger>
+					</AccordionHeading>
+					<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
+				</AccordionItem>
+			{/each}
+		</Accordion>
 	</section>
 </div>
 

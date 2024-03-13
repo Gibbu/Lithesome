@@ -16,7 +16,7 @@
 		onChange?: (value: JsonValue) => void;
 	}
 
-	let { children, use = [], class: klass, value, onChange, ...props } = $props<Props>();
+	let { children, use = [], class: klass, value, self, onChange, ...props } = $props<Props>();
 
 	const { uid } = createUID('select');
 	const multiple = Array.isArray(value);
@@ -40,12 +40,13 @@
 </script>
 
 <div
+	bind:this={self}
 	use:useActions={use}
 	data-select=""
 	data-state={API.visible ? 'opened' : 'closed'}
 	id={uid()}
-	{...props}
 	class={classProp}
+	{...props}
 >
 	{@render children({ visible: API.visible })}
 </div>

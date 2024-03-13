@@ -6,7 +6,7 @@
 		placeholder?: string;
 	}
 
-	let { class: klass, use = [], placeholder, ...props } = $props<Props>();
+	let { class: klass, use = [], self, placeholder, ...props } = $props<Props>();
 
 	const API = context();
 	const placeholderVisible = $derived(API.selectedOptions.length === 0);
@@ -14,6 +14,7 @@
 </script>
 
 <span
+	bind:this={self}
 	id={API.uid('value')}
 	use:useActions={use}
 	data-selectvalue=""

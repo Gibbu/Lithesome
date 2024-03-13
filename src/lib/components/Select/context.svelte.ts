@@ -129,6 +129,7 @@ export const createContext = (uid: UID, multiple: boolean = false, hooks?: Hooks
 		},
 		get trigger() {
 			return trigger;
-		}
+		},
+		multiple
 	};
 };

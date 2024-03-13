@@ -4,8 +4,6 @@ description: 'An Unstyled component library for Svelte 5.'
 order: 1
 ---
 
-Lithesome is set a completely unstyled components for Svelte 5.
-
 Why make this and not use [MeltUI](https://melt-ui.com) or [BitsUI](https://bits-ui.com)?  
 I wanted to make this for 3 reasons:
 

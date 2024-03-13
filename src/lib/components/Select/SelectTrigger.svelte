@@ -12,10 +12,9 @@
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
 
-	let { children, class: klass, use = [], ...props } = $props<Props>();
+	let { children, class: klass, use = [], self, ...props } = $props<Props>();
 
 	const API = context();
-	let btn: HTMLElement;
 
 	const handleKeys = (e: KeyboardEvent) => {
 		const { key } = e;
@@ -30,7 +29,7 @@
 			e.preventDefault();
 			if (API.hoveredOption && API.visible) {
 				(document.querySelector(`#${API.hoveredOption.id}`) as HTMLButtonElement).click();
-				API.close();
+				if (!API.multiple) API.close();
 			} else {
 				API.open();
 			}
@@ -38,12 +37,12 @@
 	};
 
 	onMount(() => {
-		if (btn.children.length > 1) {
+		if (self && self.children.length > 1) {
 			log.error('<SelectTrigger /> comoponent can only take 1 children node.');
 			return;
 		}
 
-		const target = btn?.children[0] as HTMLElement;
+		const target = self?.children[0] as HTMLElement;
 
 		setNodeProps(target, {
 			id: API.uid('trigger'),
@@ -77,6 +76,13 @@
 	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 </script>
 
-<div bind:this={btn} data-selecttrigger="" use:useActions={use} {...props} class={classProp} style="display: contents;">
+<div
+	bind:this={self}
+	data-selecttrigger=""
+	use:useActions={use}
+	class={classProp}
+	style="display: contents;"
+	{...props}
+>
 	{@render children({ visible: API.visible })}
 </div>

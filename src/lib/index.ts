@@ -1,3 +1,9 @@
+export { default as Accordion } from './components/Accordion/Accordion.svelte';
+export { default as AccordionHeading } from './components/Accordion/AccordionHeading.svelte';
+export { default as AccordionItem } from './components/Accordion/AccordionItem.svelte';
+export { default as AccordionTrigger } from './components/Accordion/AccordionTrigger.svelte';
+export { default as AccordionContent } from './components/Accordion/AccordionContent.svelte';
+
 export { default as Menu } from './components/Menu/Menu.svelte';
 export { default as MenuTrigger } from './components/Menu/MenuTrigger.svelte';
 export { default as MenuDropdown } from './components/Menu/MenuDropdown.svelte';

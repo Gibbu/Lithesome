@@ -13,4 +13,5 @@ export interface BaseProps<T extends HTMLElement, C extends Record<string, any> 
 	children: Snippet<[C]>;
 	use?: HTMLActionArray;
 	class?: ClassProp<C>;
+	self?: T;
 }

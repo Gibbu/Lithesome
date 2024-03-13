@@ -13,7 +13,7 @@
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
 
-	let { children, use = [], class: klass, ...props } = $props<Props>();
+	let { children, use = [], class: klass, self, ...props } = $props<Props>();
 
 	const { uid } = createUID('menu');
 	const API = createContext(uid);
@@ -24,12 +24,13 @@
 </script>
 
 <div
+	bind:this={self}
 	use:useActions={use}
 	data-menu=""
 	data-state={API.visible ? 'opened' : 'closed'}
 	id={uid()}
-	{...props}
 	class={classProp}
+	{...props}
 >
 	{@render children({ visible: API.visible })}
 </div>

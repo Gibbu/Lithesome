@@ -4,9 +4,7 @@
  */
 export const portal = (node: HTMLElement, target: HTMLElement | string = '#layers') => {
 	const update = async (newTarget: HTMLElement | string) => {
-		let el: HTMLElement = (
-			typeof newTarget === 'string' ? document.querySelector(newTarget) : newTarget
-		)!;
+		let el: HTMLElement = (typeof newTarget === 'string' ? document.querySelector(newTarget) : newTarget)!;
 		el.appendChild(node);
 	};
 	const destroy = () => {

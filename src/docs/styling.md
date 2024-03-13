@@ -113,7 +113,7 @@ Each `class` prop exposed by the Lithesome components can be used as a function,
 
 > This example uses [clsx](https://github.com/lukeed/clsx) which is not required, but makes using the class function much easier to use.
 
-By passing a function instead of a string, you're able to destructure the function parameters and control whatever state is required for you to style.
+> NOTE: You cannot use these destructured props outside the `class` prop. They do not leave their scope.
 
 <br>
 
@@ -132,7 +132,3 @@ This means you can no longer do `let:prop` on the component itself, but rather u
 	{/snippet}
 </SelectOption>
 ```
-
-But why can't we use the destructured `class` props to style any child?
-
-Because those props are scoped to that function/prop, meaning they will not leak outside that prop.

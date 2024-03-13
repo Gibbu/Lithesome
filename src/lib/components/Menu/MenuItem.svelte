@@ -10,7 +10,7 @@
 		onClick?: () => void;
 	}
 
-	let { children, class: klass, use = [], disabled, href, onClick, ...props } = $props<Props>();
+	let { children, class: klass, use = [], disabled, self, href, onClick, ...props } = $props<Props>();
 
 	const API = context();
 	const { uid } = createUID('item');
@@ -36,6 +36,7 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
+	bind:this={self}
 	use:useActions={use}
 	id={uid()}
 	class={classProp}
