@@ -12,6 +12,12 @@
 	<h1 class="text-5xl font-semibold text-white">{data.meta.title}</h1>
 	<p class="mt-4 text-lg font-medium text-neutral-400">{data.meta.description}</p>
 </header>
-<div class={cn('prose max-w-full dark:prose-invert')}>
+<div
+	class={cn(
+		'prose max-w-full dark:prose-invert',
+		'prose-blockquote:border-neutral-600 prose-blockquote:text-neutral-500',
+		'prose-blue'
+	)}
+>
 	<svelte:component this={component} />
 </div>

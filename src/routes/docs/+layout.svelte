@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import Banner from '$site/Banner.svelte';
 	import { cn } from '$site/index.js';
 	let { data } = $props();
 
-	let navLinkClass = 'flex rounded-md px-3.5 py-2.5 text-sm font-medium mb-1';
+	let navLinkClass = 'flex items-center rounded-md px-6 py-2.5 text-sm font-medium mb-1';
 	let navLinkActive = 'bg-white/10 text-white';
 
 	const active = (route: string) => {
@@ -11,7 +13,16 @@
 		else if (route === $page.url.pathname.replace('/docs/', '')) return true;
 		else return false;
 	};
+	let hideEarlyDev = $state(browser ? localStorage.getItem('earlyDev') : true);
+	const hideBanner = () => {
+		localStorage.setItem('earlyDev', 'true');
+		hideEarlyDev = true;
+	};
 </script>
+
+{#snippet pill()}
+	<div class="absolute left-0 h-5 w-1 rounded-full bg-violet-500" />
+{/snippet}
 
 <nav class="fixed left-0 top-0 z-10 h-[64px] w-full border-b border-white/10 bg-black/35 backdrop-blur"></nav>
 
@@ -26,6 +37,9 @@
 							class={cn(navLinkClass, active(route.path) ? navLinkActive : 'hover:bg-white/5')}
 						>
 							{route.title}
+							{#if active(route.path)}
+								{@render pill()}
+							{/if}
 						</a>
 					{/if}
 
@@ -39,6 +53,9 @@
 										class={cn(navLinkClass, active(subRoute.path) ? navLinkActive : 'hover:bg-white/5')}
 									>
 										{subRoute.title}
+										{#if active(subRoute.path)}
+											{@render pill()}
+										{/if}
 									</a>
 								</li>
 							{/each}
@@ -49,6 +66,11 @@
 		</ul>
 	</aside>
 	<article class="py-16">
+		{#if !hideEarlyDev}
+			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>
+				This package and docs are still under very early development. Expect things to be broken.
+			</Banner>
+		{/if}
 		<slot />
 	</article>
 </div>

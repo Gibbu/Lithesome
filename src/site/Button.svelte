@@ -1,23 +1,24 @@
 <script lang="ts">
-	import type { BaseProps } from '$lib/internal/index.js';
+	import { type BaseProps, useActions } from '$lib/internal/index.js';
 	import { cn } from './utils.js';
 
 	interface Props extends BaseProps<HTMLButtonElement | HTMLAnchorElement> {
 		variant: 'primary' | 'secondary' | 'text';
 		href?: string;
 		size?: 'sm' | 'md' | 'lg';
-		self?: HTMLElement;
 		disabled?: boolean;
 	}
 
-	let { children, variant, size = 'md', class: klass, href, self, disabled, ...props } = $props<Props>();
+	let { children, variant, size = 'md', class: klass, use = [], href, self, disabled, ...props } = $props<Props>();
 </script>
 
 <svelte:element
 	this={href ? 'a' : 'button'}
+	bind:this={self}
 	type="button"
 	href={href || undefined}
 	disabled={disabled || undefined}
+	use:useActions={use}
 	class={cn(
 		'inline-flex items-center justify-center border text-center font-medium',
 		size === 'sm' ? 'text-xs' : '',

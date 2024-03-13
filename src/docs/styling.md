@@ -120,7 +120,7 @@ Each `class` prop exposed by the Lithesome components can be used as a function,
 ### Child props
 
 With Svelte 5 [slots](https://svelte.dev/docs/special-elements#slot) have been replaced by [Snippets](https://svelte-5-preview.vercel.app/docs/snippets).  
-This means you can no longer do `let:prop` on the component itself, but rather use a `{#snippet}` block to expose those props.
+This means you can no longer do `let:prop` on the component itself, but rather use a `{#snippet children()}` block to expose those props.
 
 ```svelte
 <SelectOption value="bobross">
@@ -132,3 +132,5 @@ This means you can no longer do `let:prop` on the component itself, but rather u
 	{/snippet}
 </SelectOption>
 ```
+
+> It's not the nicest looking, but it apparently solves a lot of issues internally for svelte itself.

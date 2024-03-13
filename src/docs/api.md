@@ -19,7 +19,7 @@ Each transition "prop" is an array 2 two indexes.
 >
 ```
 
-Giving a single array like the example above will apply both in and out transitions.
+Giving an array like the example above will apply both in and out transitions.
 
 But if you wish to use different transitions for both in and out, provide an object with the `in` and `out` properties.
 
