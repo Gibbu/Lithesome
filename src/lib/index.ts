@@ -20,3 +20,6 @@ export { default as SelectTrigger } from './components/Select/SelectTrigger.svel
 export { default as SelectDropdown } from './components/Select/SelectDropdown.svelte';
 export { default as SelectOption } from './components/Select/SelectOption.svelte';
 export { default as SelectValue } from './components/Select/SelectValue.svelte';
+
+export { default as RadioGroup } from './components/RadioGroup/RadioGroup.svelte';
+export { default as RadioGroupItem } from './components/RadioGroup/RadioGroupItem.svelte';

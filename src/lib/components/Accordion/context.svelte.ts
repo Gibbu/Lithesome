@@ -1,4 +1,4 @@
-import { type UID } from '$lib/internal/index.js';
+import { calculateIndex, type UID, type CalcIndexAction } from '$lib/internal/index.js';
 
 export interface Item {
 	id: string;
@@ -8,9 +8,13 @@ export interface Item {
 export const createContext = (uid: UID, single: boolean = false) => {
 	let items = $state<Item[]>([]);
 	let activeItems = $state<string[]>([]);
+	let hoveredIndex = $state<number>(-1);
+
+	const hoveredItem = $derived(items[hoveredIndex]);
 
 	const functions = {
 		toggle(itemId: string) {
+			hoveredIndex = items.findIndex((el) => el.id === itemId);
 			if (single) {
 				if (activeItems[0] === itemId) activeItems = [];
 				else activeItems[0] = itemId;
@@ -21,6 +25,9 @@ export const createContext = (uid: UID, single: boolean = false) => {
 		},
 		register(item: Item) {
 			items = [...items, item];
+		},
+		navigateItems(action: CalcIndexAction) {
+			hoveredIndex = calculateIndex(action, items, hoveredIndex);
 		}
 	};
 
@@ -32,6 +39,9 @@ export const createContext = (uid: UID, single: boolean = false) => {
 		},
 		get activeItems() {
 			return activeItems;
+		},
+		get hoveredItem() {
+			return hoveredItem;
 		}
 	};
 };

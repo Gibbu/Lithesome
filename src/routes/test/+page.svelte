@@ -20,7 +20,9 @@
 		ModalContent,
 		ModalOverlay,
 		ModalDescription,
-		ModalTitle
+		ModalTitle,
+		RadioGroup,
+		RadioGroupItem
 	} from '$lib/index.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -49,6 +51,8 @@
 	];
 
 	let modalVisible = $state(false);
+
+	let radiogroupValue = $state<string>('aang');
 </script>
 
 <div class="wrap pt-24">
@@ -226,6 +230,15 @@
 				</header>
 			</ModalContent>
 		</Modal>
+	</section>
+
+	<section>
+		<h2>RadioGroup</h2>
+		<RadioGroup bind:value={radiogroupValue}>
+			{#each selectoptions as { value, label }}
+				<RadioGroupItem {value} class="flex w-full">{label}</RadioGroupItem>
+			{/each}
+		</RadioGroup>
 	</section>
 </div>
 
