@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, type BaseProps, portal } from '$lib/internal/index.js';
+	import { createUID, useActions, type BaseProps, portal, KEYS, isBrowser } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement> {
@@ -25,8 +25,20 @@
 
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 
+	const handleKeys = (e: KeyboardEvent) => {
+		const { key } = e;
+		if (key === KEYS.escape) visible = false;
+	};
+
 	$effect(() => {
 		API.updateVisible(visible);
+		if (isBrowser()) {
+			if (visible) {
+				window.addEventListener('keydown', handleKeys);
+			} else {
+				window.removeEventListener('keydown', handleKeys);
+			}
+		}
 	});
 </script>
 

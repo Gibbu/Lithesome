@@ -6,6 +6,7 @@
 		removeNodeProps,
 		addEventListeners,
 		useActions,
+		KEYS,
 		type BaseProps
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
@@ -19,13 +20,13 @@
 	const handleKeys = (e: KeyboardEvent) => {
 		const { key } = e;
 
-		if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'End' || key === 'Home') e.preventDefault();
-		if (key === 'Home') API.navigateItems('first');
-		if (key === 'End') API.navigateItems('last');
-		if (key === 'ArrowUp') API.navigateItems('prev');
-		if (key === 'ArrowDown') API.navigateItems('next');
-		if (key === 'Escape') API.close();
-		if (key === 'Enter') {
+		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
+		if (key === KEYS.home) API.navigateItems('first');
+		if (key === KEYS.end) API.navigateItems('last');
+		if (key === KEYS.arrowUp) API.navigateItems('prev');
+		if (key === KEYS.arrowDown) API.navigateItems('next');
+		if (key === KEYS.escape) API.close();
+		if (key === KEYS.enter) {
 			e.preventDefault();
 			if (API.hoveredItem && API.visible) {
 				(document.querySelector(`#${API.hoveredItem}`) as HTMLButtonElement).click();

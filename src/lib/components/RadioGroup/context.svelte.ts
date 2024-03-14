@@ -14,7 +14,11 @@ export const createContext = (uid: UID, value: JsonValue, hooks?: Hooks) => {
 	let items = $state<Item[]>([]);
 	let selectedIndex = $state<number>(-1);
 
-	const selectedItem = $derived(items[selectedIndex] || value);
+	const selectedItem = $derived(items[selectedIndex] || (items.length > 0 && items.find((el) => el.value === value)));
+
+	$effect(() => {
+		hooks?.onChange?.(selectedItem.value);
+	});
 
 	const functions = {
 		register(item: Item) {
@@ -25,7 +29,6 @@ export const createContext = (uid: UID, value: JsonValue, hooks?: Hooks) => {
 		},
 		setSelected(item: Item) {
 			selectedIndex = items.findIndex((el) => el.value === item.value);
-			hooks?.onChange?.(selectedItem.value);
 		}
 	};
 

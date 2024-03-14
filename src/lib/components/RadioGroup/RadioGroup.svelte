@@ -19,7 +19,11 @@
 	let { children, use = [], class: klass, self, value, required, ...props } = $props<Props>();
 
 	const { uid } = createUID('accordion');
-	const API = createContext(uid, value);
+	const API = createContext(uid, value, {
+		onChange(val) {
+			value = val;
+		}
+	});
 
 	setContext(contextName, API);
 

@@ -234,11 +234,33 @@
 
 	<section>
 		<h2>RadioGroup</h2>
-		<RadioGroup bind:value={radiogroupValue}>
+		<RadioGroup bind:value={radiogroupValue} class="flex flex-col gap-2">
 			{#each selectoptions as { value, label }}
-				<RadioGroupItem {value} class="flex w-full">{label}</RadioGroupItem>
+				<RadioGroupItem
+					{value}
+					class={({ checked }) =>
+						cn(
+							'flex w-full gap-4 rounded-md border border-white/20 bg-white/5 p-4',
+							checked ? 'bg-white text-black' : ''
+						)}
+				>
+					{#snippet children({ checked })}
+						<div
+							class={cn(
+								'flex h-6 w-6 items-center justify-center rounded-full border-2',
+								checked ? 'border-black' : 'border-white'
+							)}
+						>
+							{#if checked}
+								<div class="h-3 w-3 rounded-full bg-black" />
+							{/if}
+						</div>
+						{label}
+					{/snippet}
+				</RadioGroupItem>
 			{/each}
 		</RadioGroup>
+		{radiogroupValue}
 	</section>
 </div>
 
