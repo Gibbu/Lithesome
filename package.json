@@ -13,6 +13,14 @@
 		"lint": "prettier --check .",
 		"format": "prettier --write ."
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Gibbu/lithesome.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Gibbu/svoast/issues"
+	},
+	"homepage": "https://lithesome.vercel.app",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",

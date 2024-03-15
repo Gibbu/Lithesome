@@ -278,7 +278,6 @@
 		</Pin>
 	</section>
 </div>
-pn
 
 <style lang="postcss">
 	section {
