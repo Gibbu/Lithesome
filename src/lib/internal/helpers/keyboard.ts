@@ -14,5 +14,8 @@ export const KEYS = {
 	pageDown: 'PageDown',
 	shift: 'Shift',
 	space: ' ',
-	tab: 'Tab'
+	tab: 'Tab',
+	backspace: 'Backspace'
 };
+
+export const ALL_KEYS = Object.values(KEYS);

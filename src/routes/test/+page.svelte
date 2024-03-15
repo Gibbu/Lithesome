@@ -22,7 +22,9 @@
 		ModalDescription,
 		ModalTitle,
 		RadioGroup,
-		RadioGroupItem
+		RadioGroupItem,
+		Pin,
+		PinInput
 	} from '$lib/index.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -53,6 +55,8 @@
 	let modalVisible = $state(false);
 
 	let radiogroupValue = $state<string>('aang');
+
+	let pinValue = $state<string[]>([]);
 </script>
 
 <div class="wrap pt-24">
@@ -262,7 +266,17 @@
 		</RadioGroup>
 		{radiogroupValue}
 	</section>
+
+	<section>
+		<h2>Pin</h2>
+		<Pin bind:value={pinValue} class="flex gap-2">
+			{#each [1, 2, 3, 4] as arr}
+				<PinInput class="h-12 w-12 rounded-md border border-white/10 bg-white/5 text-center text-xl" />
+			{/each}
+		</Pin>
+	</section>
 </div>
+pn
 
 <style lang="postcss">
 	section {

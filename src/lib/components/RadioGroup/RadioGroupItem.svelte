@@ -12,7 +12,7 @@
 	let { children, class: klass, use = [], self, disabled = false, value, onClick, ...props } = $props<Props>();
 
 	const API = context();
-	const { uid } = createUID('item');
+	const { uid } = createUID('radio');
 
 	onMount(() => {
 		if (!API) log.error('<RadioGroupItem /> must be a direct child of <RadioGroup />');
@@ -54,12 +54,12 @@
 	role="radio"
 	bind:this={self}
 	use:useActions={use}
-	id={uid()}
 	{disabled}
 	class={classProp}
 	aria-checked={checked}
 	tabindex={checked ? 0 : -1}
 	data-radiogroupitem=""
+	data-value={value}
 	data-checked={checked || undefined}
 	onclick={handleClick}
 	onkeydown={handleKeys}

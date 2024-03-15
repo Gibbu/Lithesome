@@ -15,6 +15,9 @@ export { default as ModalOverlay } from './components/Modal/ModalOverlay.svelte'
 export { default as ModalTitle } from './components/Modal/ModalTitle.svelte';
 export { default as ModalDescription } from './components/Modal/ModalDescription.svelte';
 
+export { default as Pin } from './components/Pin/Pin.svelte';
+export { default as PinInput } from './components/Pin/PinInput.svelte';
+
 export { default as Select } from './components/Select/Select.svelte';
 export { default as SelectTrigger } from './components/Select/SelectTrigger.svelte';
 export { default as SelectDropdown } from './components/Select/SelectDropdown.svelte';
