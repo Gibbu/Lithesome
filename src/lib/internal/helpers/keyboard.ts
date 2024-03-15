@@ -19,3 +19,15 @@ export const KEYS = {
 };
 
 export const ALL_KEYS = Object.values(KEYS);
+
+export const PREVENT_KEYS = [
+	KEYS.arrowUp,
+	KEYS.arrowDown,
+	KEYS.arrowLeft,
+	KEYS.arrowRight,
+	KEYS.home,
+	KEYS.end,
+	KEYS.meta,
+	KEYS.pageUp,
+	KEYS.pageDown
+];

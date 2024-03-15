@@ -24,7 +24,8 @@
 		RadioGroup,
 		RadioGroupItem,
 		Pin,
-		PinInput
+		PinInput,
+		PinValue
 	} from '$lib/index.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -213,7 +214,7 @@
 		<Button variant="primary" onclick={() => (modalVisible = true)}>Edit Profile</Button>
 		<Modal bind:visible={modalVisible}>
 			<ModalOverlay
-				class="fixed inset-0 bg-black/40 backdrop-blur"
+				class="fixed inset-0 bg-black/95 backdrop-blur"
 				transition={[fade, { duration: 200 }]}
 				onclick={() => (modalVisible = false)}
 			/>
@@ -244,7 +245,7 @@
 					{value}
 					class={({ checked }) =>
 						cn(
-							'flex w-full gap-4 rounded-md border border-white/20 bg-white/5 p-4',
+							'flex w-full gap-4 rounded-md border border-white/20 bg-white/5 p-4 backdrop-blur',
 							checked ? 'bg-white text-black' : ''
 						)}
 				>
@@ -269,10 +270,11 @@
 
 	<section>
 		<h2>Pin</h2>
-		<Pin bind:value={pinValue} class="flex gap-2">
-			{#each [1, 2, 3, 4] as arr}
+		<Pin bind:value={pinValue} class="flex gap-2" onChange={(v) => console.log(v)} disabled>
+			{#each [1, 2, 3, 4, 5, 6] as arr}
 				<PinInput class="h-12 w-12 rounded-md border border-white/10 bg-white/5 text-center text-xl" />
 			{/each}
+			<PinValue name="value" />
 		</Pin>
 	</section>
 </div>

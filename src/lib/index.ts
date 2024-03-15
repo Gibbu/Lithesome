@@ -17,6 +17,7 @@ export { default as ModalDescription } from './components/Modal/ModalDescription
 
 export { default as Pin } from './components/Pin/Pin.svelte';
 export { default as PinInput } from './components/Pin/PinInput.svelte';
+export { default as PinValue } from './components/Pin/PinValue.svelte';
 
 export { default as Select } from './components/Select/Select.svelte';
 export { default as SelectTrigger } from './components/Select/SelectTrigger.svelte';
