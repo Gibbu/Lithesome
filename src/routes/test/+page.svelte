@@ -270,7 +270,7 @@
 
 	<section>
 		<h2>Pin</h2>
-		<Pin bind:value={pinValue} class="flex gap-2" onChange={(v) => console.log(v)} disabled>
+		<Pin bind:value={pinValue} class="flex gap-2" onChange={(v) => console.log(v)}>
 			{#each [1, 2, 3, 4, 5, 6] as arr}
 				<PinInput class="h-12 w-12 rounded-md border border-white/10 bg-white/5 text-center text-xl" />
 			{/each}
