@@ -10,7 +10,7 @@
 		onClick?: () => void;
 	}
 
-	let { children, class: klass, use = [], self, type, dismissable = false, onClick, ...props } = $props<Props>();
+	let { children, class: klass, use = [], self, type, dismissable = false, onClick, ...props }: Props = $props();
 
 	const icon = { info: Info, warning: AlertOctagon }[type];
 </script>

@@ -1,19 +1,37 @@
 <script lang="ts">
 	import { context } from './Menu.svelte';
-	import { useActions, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, type BaseProps, type Handler, type HandlerParam } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+
+	type HandlerEl = HTMLButtonElement | HTMLAnchorElement;
 
 	interface Props extends BaseProps<HTMLAnchorElement | HTMLButtonElement, { hovered: boolean }> {
 		href?: string;
 		disabled?: boolean;
-		onClick?: () => void;
+		onClick?: Handler<MouseEvent, HandlerEl>;
+		onMouseover?: Handler<MouseEvent, HandlerEl>;
+		onFocus?: Handler<FocusEvent, HandlerEl>;
 	}
 
-	let { children, class: klass, use = [], disabled, self, href, onClick, ...props } = $props<Props>();
+	let {
+		children,
+		class: klass,
+		use = [],
+		disabled,
+		self,
+		href,
+		onClick,
+		onMouseover,
+		onFocus,
+		...props
+	}: Props = $props();
 
 	const API = context();
 	const { uid } = createUID('item');
+
+	const hovered = $derived(API.hoveredItem === uid());
+	const classProp = $derived(typeof klass === 'function' ? klass({ hovered }) : klass);
 
 	onMount(() => {
 		if (!API.items.includes(uid()) && !disabled) API.register(uid());
@@ -23,15 +41,19 @@
 		};
 	});
 
-	const handleClick = () => {
+	const handleClick = (e: HandlerParam<MouseEvent, HandlerEl>) => {
 		if (!disabled) {
 			API.close();
-			onClick?.();
+			onClick?.(e);
 		}
 	};
-
-	const hovered = $derived(API.hoveredItem === uid());
-	const classProp = $derived(typeof klass === 'function' ? klass({ hovered }) : klass);
+	const handleMouseover = (e: HandlerParam<MouseEvent, HandlerEl>) => {
+		API.setHoveredItem(uid());
+		onMouseover?.(e);
+	};
+	const handleFocus = (e: HandlerParam<FocusEvent, HandlerEl>) => {
+		onFocus?.(e);
+	};
 </script>
 
 <svelte:element
@@ -46,8 +68,8 @@
 	role="menuitem"
 	tabindex="0"
 	{disabled}
-	onmouseover={() => API.setHoveredItem(uid())}
-	onfocus={() => {}}
+	onmouseover={handleMouseover}
+	onfocus={handleFocus}
 	onclick={handleClick}
 	{...props}
 >

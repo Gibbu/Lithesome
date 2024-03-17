@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { log, useActions, type BaseProps, createUID } from '$lib/internal/index.js';
+	import { log, useActions, createUID, type BaseProps } from '$lib/internal/index.js';
 	import { onMount, setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
 		disabled?: boolean;
 	}
 
-	let { children, class: klass, use = [], self, disabled = false, ...props } = $props<Props>();
+	let { children, class: klass, use = [], self, disabled = false, ...props }: Props = $props();
 
 	const API = context();
 	const { uid } = createUID('item');

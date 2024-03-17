@@ -13,7 +13,7 @@
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
 
-	let { children, use = [], class: klass, self, ...props } = $props<Props>();
+	let { children, use = [], class: klass, self, ...props }: Props = $props();
 
 	const { uid } = createUID('menu');
 	const API = createContext(uid);

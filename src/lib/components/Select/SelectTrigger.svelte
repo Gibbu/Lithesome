@@ -12,11 +12,11 @@
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
 
-	let { children, class: klass, use = [], self, ...props } = $props<Props>();
+	let { children, class: klass, use = [], self, ...props }: Props = $props();
 
 	const API = context();
 
-	const handleKeys = (e: KeyboardEvent) => {
+	const handleKeydown = (e: KeyboardEvent) => {
 		const { key } = e;
 
 		if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'End' || key === 'Home') e.preventDefault();
@@ -52,7 +52,7 @@
 		});
 		addEventListeners(target, {
 			click: API.toggle,
-			keydown: handleKeys
+			keydown: handleKeydown
 		});
 		API.setTrigger(target);
 	});

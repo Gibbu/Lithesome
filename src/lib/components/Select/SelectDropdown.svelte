@@ -10,7 +10,7 @@
 		type BaseProps
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
 		/**
@@ -34,7 +34,7 @@
 		class: klass,
 		self,
 		...props
-	} = $props<Props>();
+	}: Props = $props();
 
 	const API = context();
 

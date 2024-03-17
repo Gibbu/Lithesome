@@ -1,14 +1,26 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import { log, useActions, type BaseProps, createUID, KEYS } from '$lib/internal/index.js';
+	import {
+		log,
+		useActions,
+		createUID,
+		KEYS,
+		type BaseProps,
+		type Handler,
+		type HandlerParam
+	} from '$lib/internal/index.js';
 	import { onMount, tick } from 'svelte';
 
 	interface Props extends Omit<BaseProps<HTMLInputElement, { filled: boolean; disabled: boolean }>, 'children'> {
 		/** The HTML Input element name attribute. */
 		name?: string;
+		onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
+		onInput?: Handler<Event, HTMLInputElement>;
+		onFocus?: Handler<FocusEvent, HTMLInputElement>;
+		onBlur?: Handler<FocusEvent, HTMLInputElement>;
 	}
 
-	let { class: klass, use = [], self, name, ...props } = $props<Props>();
+	let { class: klass, use = [], self, name, onKeydown, onInput, onFocus, onBlur, ...props }: Props = $props();
 	let value = $state<string>('');
 
 	const API = context();
@@ -28,9 +40,10 @@
 		API.setValue(index, value);
 	});
 
-	const handleInput = async (event: Event) => {
+	const handleInput = async (event: HandlerParam<Event, HTMLInputElement>) => {
+		onInput?.(event);
 		if (API.disabled) return;
-		const e = event as InputEvent;
+		const e = event as unknown as InputEvent;
 
 		if (e.inputType !== 'insertText') return;
 		await tick();
@@ -42,7 +55,8 @@
 			return;
 		}
 	};
-	const handleKeyDown = (e: KeyboardEvent & { currentTarget: HTMLInputElement }) => {
+	const handleKeyDown = (e: HandlerParam<KeyboardEvent, HTMLInputElement>) => {
+		onKeydown?.(e);
 		if (API.disabled) return;
 		const { key } = e;
 
@@ -64,11 +78,13 @@
 		}
 	};
 
-	const handleFocus = () => {
+	const handleFocus = (e: HandlerParam<FocusEvent, HTMLInputElement>) => {
+		onFocus?.(e);
 		if (API.disabled) return;
 		focused = true;
 	};
-	const handleBlur = () => {
+	const handleBlur = (e: HandlerParam<FocusEvent, HTMLInputElement>) => {
+		onBlur?.(e);
 		if (API.disabled) return;
 		focused = false;
 	};

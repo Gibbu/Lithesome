@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { useActions, type BaseProps, trap, type Transition, getTransition } from '$lib/internal/index.js';
-	import { onMount } from 'svelte';
+	import { useActions, getTransition, type BaseProps, trap, type Transition } from '$lib/internal/index.js';
 	import { context } from './Modal.svelte';
 
 	interface Props extends BaseProps<HTMLDivElement> {
@@ -12,7 +11,7 @@
 		transition?: Transition;
 	}
 
-	let { children, class: klass, use = [], self, transition, ...props } = $props<Props>();
+	let { children, class: klass, use = [], self, transition, ...props }: Props = $props();
 
 	const API = context();
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);

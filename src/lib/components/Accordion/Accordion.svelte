@@ -15,11 +15,10 @@
 		single?: boolean;
 	}
 
-	let { children, use = [], class: klass, self, single, ...props } = $props<Props>();
+	let { children, use = [], class: klass, self, single, ...props }: Props = $props();
 
 	const { uid } = createUID('accordion');
 	const API = createContext(uid, single);
-
 	setContext(contextName, API);
 
 	const active = $derived(API.activeItems.length > 0);

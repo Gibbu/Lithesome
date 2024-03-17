@@ -6,7 +6,7 @@
 		placeholder?: string;
 	}
 
-	let { class: klass, use = [], self, placeholder, ...props } = $props<Props>();
+	let { class: klass, use = [], self, placeholder, ...props }: Props = $props();
 
 	const API = context();
 	const placeholderVisible = $derived(API.selectedOptions.length === 0);

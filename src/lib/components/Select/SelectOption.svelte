@@ -1,17 +1,20 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { useActions, type BaseProps, type JsonValue } from '$lib/internal/index.js';
+	import { useActions, type BaseProps, type JsonValue, type Handler, type HandlerParam } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+
+	type HandlerEl = HTMLAnchorElement | HTMLButtonElement;
 
 	interface Props extends BaseProps<HTMLAnchorElement | HTMLButtonElement, { hovered: boolean; selected: boolean }> {
 		value: JsonValue;
 		disabled?: boolean;
 		label?: string;
-		onClick?: () => void;
+		onClick?: Handler<MouseEvent, HandlerEl>;
+		onFocus?: Handler<FocusEvent, HandlerEl>;
 	}
 
-	let { children, class: klass, use = [], value, label, self, disabled, onClick, ...props } = $props<Props>();
+	let { children, class: klass, use = [], value, label, self, disabled, onClick, onFocus, ...props }: Props = $props();
 	let optionEl: HTMLButtonElement | HTMLAnchorElement;
 
 	const API = context();
@@ -31,10 +34,14 @@
 		};
 	});
 
-	const handleClick = () => {
+	const handleClick = (e: HandlerParam<MouseEvent, HandlerEl>) => {
+		onClick?.(e);
 		if (!disabled) {
 			API.setSelectedOptions();
 		}
+	};
+	const handleFocus = (e: HandlerParam<FocusEvent, HandlerEl>) => {
+		onFocus?.(e);
 	};
 
 	const hovered = $derived(API.hoveredOption?.id === uid());
@@ -57,7 +64,7 @@
 	tabindex="0"
 	{disabled}
 	onmouseover={() => API.setHoveredOption(uid())}
-	onfocus={() => {}}
+	onfocus={handleFocus}
 	onclick={handleClick}
 	{...props}
 >

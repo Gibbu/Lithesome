@@ -5,7 +5,7 @@
 		level?: 1 | 2 | 3 | 4 | 5 | 6;
 	}
 
-	let { children, class: klass, use = [], level = 3, self, ...props } = $props<Props>();
+	let { children, class: klass, use = [], level = 3, self, ...props }: Props = $props();
 
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 </script>

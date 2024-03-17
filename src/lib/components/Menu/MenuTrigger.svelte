@@ -3,21 +3,63 @@
 	import {
 		log,
 		setNodeProps,
-		removeNodeProps,
 		addEventListeners,
 		useActions,
 		KEYS,
-		type BaseProps
+		type BaseProps,
+		type Handler,
+		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
+	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
+		onClick?: Handler<MouseEvent, HTMLDivElement>;
+		onKeydown?: Handler<KeyboardEvent, HTMLDivElement>;
+	}
 
-	let { children, class: klass, use = [], self, ...props } = $props<Props>();
+	let { children, class: klass, use = [], self, onClick, onKeydown, ...props }: Props = $props();
 
 	const API = context();
+	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 
-	const handleKeys = (e: KeyboardEvent) => {
+	onMount(() => {
+		if (self && self.children.length > 1) {
+			log.error('<MenuTrigger /> comoponent can only take 1 children node.');
+			return;
+		}
+
+		const target = self?.children[0] as HTMLElement;
+
+		setNodeProps(target, {
+			id: API.uid('trigger'),
+			'aria-haspopup': 'true',
+			'aria-expanded': 'false'
+		});
+		addEventListeners(target, {
+			click: handleClick,
+			keydown: handleKeydown
+		});
+		API.setTrigger(target);
+	});
+
+	$effect(() => {
+		if (!API.trigger) return;
+		const target = API.trigger;
+
+		if (API.visible) {
+			setNodeProps(target, {
+				'aria-expanded': 'true',
+				'aria-controls': API.uid('dropdown')
+			});
+		}
+		if (!API.visible) {
+			setNodeProps(target, { 'aria-expanded': 'false' });
+		}
+	});
+
+	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLDivElement>) => {
+		onKeydown?.(e);
+
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
@@ -37,45 +79,10 @@
 		}
 		if (key === 'Tab') API.close();
 	};
-
-	onMount(() => {
-		if (self && self.children.length > 1) {
-			log.error('<MenuTrigger /> comoponent can only take 1 children node.');
-			return;
-		}
-
-		const target = self?.children[0] as HTMLElement;
-
-		setNodeProps(target, {
-			id: API.uid('trigger'),
-			'aria-haspopup': 'true',
-			'aria-expanded': 'false'
-		});
-		addEventListeners(target, {
-			click: API.toggle,
-			keydown: handleKeys
-		});
-		API.setTrigger(target);
-	});
-
-	$effect(() => {
-		if (!API.trigger) return;
-		const target = API.trigger;
-
-		if (API.hoveredItem) setNodeProps(target, { 'aria-activedescendant': API.hoveredItem });
-		if (API.visible) {
-			setNodeProps(target, {
-				'aria-expanded': 'true',
-				'aria-controls': API.uid('dropdown')
-			});
-		}
-		if (!API.visible) {
-			setNodeProps(target, { 'aria-expanded': 'false' });
-			removeNodeProps(target, 'aria-activedescendant', 'aria-controls');
-		}
-	});
-
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
+	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
+		onClick?.(e);
+		API.toggle();
+	};
 </script>
 
 <div bind:this={self} data-menutrigger="" use:useActions={use} class={classProp} {...props}>

@@ -31,3 +31,14 @@ But if you wish to use different transitions for both in and out, provide an obj
 	}}
 >
 ```
+
+<br>
+
+## Button vs Trigger components
+
+There is a key difference between a Button and Trigger components.
+
+A Button component is exacly that, a button. It renders a HTML `button` element and you style that element directly.
+
+A Trigger component accepts a single HTML node element that the component will use as the "button" per say. All the attributes and events will be passed down to the node element.  
+Allowing you to use your own custom components as the "button".

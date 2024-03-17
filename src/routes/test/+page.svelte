@@ -14,7 +14,7 @@
 		Accordion,
 		AccordionHeading,
 		AccordionItem,
-		AccordionTrigger,
+		AccordionButton,
 		AccordionContent,
 		Modal,
 		ModalContent,
@@ -25,8 +25,10 @@
 		RadioGroupItem,
 		Pin,
 		PinInput,
-		PinValue
+		PinValue,
+		Checkbox
 	} from '$lib/index.js';
+	import type { Checked } from '$lib/components/Checkbox/Checkbox.svelte';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { User, Cog, LogOut, Home, ChevronDown, Check, X } from '@steeze-ui/lucide-icons';
@@ -58,6 +60,8 @@
 	let radiogroupValue = $state<string>('aang');
 
 	let pinValue = $state<string[]>([]);
+
+	let checked = $state<Checked>('mixed');
 </script>
 
 <div class="wrap pt-24">
@@ -176,12 +180,12 @@
 					{#each accordionitems as { title, content }}
 						<AccordionItem class="border-b border-white/10 last:border-none">
 							<AccordionHeading>
-								<AccordionTrigger class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
+								<AccordionButton class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
 									{#snippet children({ active })}
 										{title}
 										<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
 									{/snippet}
-								</AccordionTrigger>
+								</AccordionButton>
 							</AccordionHeading>
 							<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
 						</AccordionItem>
@@ -194,12 +198,12 @@
 					{#each accordionitems as { title, content }}
 						<AccordionItem class="border-b border-white/10 last:border-none">
 							<AccordionHeading>
-								<AccordionTrigger class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
+								<AccordionButton class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
 									{#snippet children({ active })}
 										{title}
 										<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
 									{/snippet}
-								</AccordionTrigger>
+								</AccordionButton>
 							</AccordionHeading>
 							<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
 						</AccordionItem>
@@ -214,13 +218,13 @@
 		<Button variant="primary" onclick={() => (modalVisible = true)}>Edit Profile</Button>
 		<Modal bind:visible={modalVisible}>
 			<ModalOverlay
-				class="fixed inset-0 bg-black/95 backdrop-blur"
+				class="fixed inset-0 bg-black/50 backdrop-blur"
 				transition={[fade, { duration: 200 }]}
 				onclick={() => (modalVisible = false)}
 			/>
 			<ModalContent
 				transition={[fly, { y: 15, duration: 150 }]}
-				class="fixed left-1/2 top-1/2 w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-md border border-white/20 bg-black/60 p-6 shadow-xl"
+				class="fixed left-1/2 top-1/2 w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-md border border-white/20 bg-black/90 p-6 shadow-xl"
 			>
 				<header class="flex items-center justify-between">
 					<div>
@@ -271,11 +275,17 @@
 	<section>
 		<h2>Pin</h2>
 		<Pin bind:value={pinValue} class="flex gap-2" onChange={(v) => console.log(v)}>
-			{#each [1, 2, 3, 4, 5, 6] as arr}
+			{#each [1, 2, 3, 4] as arr}
 				<PinInput class="h-12 w-12 rounded-md border border-white/10 bg-white/5 text-center text-xl" />
 			{/each}
 			<PinValue name="value" />
 		</Pin>
+		{pinValue}
+	</section>
+
+	<section>
+		<h2>Checkbox</h2>
+		<Checkbox bind:checked class={cn('h-8 w-8 rounded-md border border-white/10')} />
 	</section>
 </div>
 

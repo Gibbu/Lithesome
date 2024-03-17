@@ -9,7 +9,7 @@
 		disabled?: boolean;
 	}
 
-	let { children, variant, size = 'md', class: klass, use = [], href, self, disabled, ...props } = $props<Props>();
+	let { children, variant, size = 'md', class: klass, use = [], href, self, disabled, ...props }: Props = $props();
 </script>
 
 <svelte:element

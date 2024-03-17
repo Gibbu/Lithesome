@@ -30,7 +30,7 @@
 		placeholder = '○',
 		onChange,
 		...props
-	} = $props<Props>();
+	}: Props = $props();
 
 	const { uid } = createUID('pin');
 	const API = createContext(

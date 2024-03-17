@@ -34,7 +34,7 @@
 		class: klass,
 		self,
 		...props
-	} = $props<Props>();
+	}: Props = $props();
 
 	const API = context();
 

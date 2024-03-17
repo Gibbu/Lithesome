@@ -1,10 +1,10 @@
 import {
 	calculateIndex,
 	disableScroll,
+	pruneValue,
 	type CalcIndexAction,
 	type UID,
-	type JsonValue,
-	pruneValue
+	type JsonValue
 } from '$lib/internal/index.js';
 import { tick } from 'svelte';
 

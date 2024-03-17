@@ -16,7 +16,7 @@
 		onChange?: (value: JsonValue) => void;
 	}
 
-	let { children, use = [], class: klass, value, self, onChange, ...props } = $props<Props>();
+	let { children, use = [], class: klass, value, self, onChange, ...props }: Props = $props();
 
 	const { uid } = createUID('select');
 	const multiple = Array.isArray(value);

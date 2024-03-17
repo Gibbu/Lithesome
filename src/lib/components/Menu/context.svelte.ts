@@ -1,4 +1,4 @@
-import { calculateIndex, type CalcIndexAction, type UID, disableScroll } from '$lib/internal/index.js';
+import { calculateIndex, disableScroll, type CalcIndexAction, type UID } from '$lib/internal/index.js';
 
 export const createContext = (uid: UID) => {
 	// Internal state

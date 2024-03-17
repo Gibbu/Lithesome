@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, type BaseProps, type Transition, getTransition } from '$lib/internal/index.js';
+	import { useActions, getTransition, type BaseProps, type Transition } from '$lib/internal/index.js';
 	import { context } from './Modal.svelte';
 
 	interface Props extends Omit<BaseProps<HTMLDivElement>, 'children'> {
@@ -11,7 +11,7 @@
 		transition?: Transition;
 	}
 
-	let { class: klass, use = [], self, transition, ...props } = $props<Props>();
+	let { class: klass, use = [], self, transition, ...props }: Props = $props();
 
 	const API = context();
 	const _transition = getTransition(transition);

@@ -1,15 +1,35 @@
 <script lang="ts">
 	import { context } from './RadioGroup.svelte';
-	import { log, useActions, type BaseProps, createUID, type JsonValue, KEYS } from '$lib/internal/index.js';
+	import {
+		log,
+		useActions,
+		createUID,
+		KEYS,
+		type BaseProps,
+		type JsonValue,
+		type Handler,
+		type HandlerParam
+	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
 	interface Props extends BaseProps<HTMLButtonElement, { checked: boolean }> {
 		value: JsonValue;
 		disabled?: boolean;
-		onClick?: () => void;
+		onClick?: Handler<MouseEvent, HTMLButtonElement>;
+		onKeydown?: Handler<KeyboardEvent, HTMLButtonElement>;
 	}
 
-	let { children, class: klass, use = [], self, disabled = false, value, onClick, ...props } = $props<Props>();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self,
+		disabled = false,
+		value,
+		onClick,
+		onKeydown,
+		...props
+	}: Props = $props();
 
 	const API = context();
 	const { uid } = createUID('radio');
@@ -27,18 +47,19 @@
 	const checked = $derived(API.selectedItem.id === uid());
 	const classProp = $derived(typeof klass === 'function' ? klass({ checked }) : klass);
 
-	const handleClick = () => {
+	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
+		onClick?.(e);
 		if (!disabled) {
 			API.setSelected({
 				id: uid(),
 				value,
 				disabled
 			});
-			onClick?.();
 		}
 	};
 
-	const handleKeys = (e: KeyboardEvent) => {
+	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLButtonElement>) => {
+		onKeydown?.(e);
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
@@ -62,7 +83,7 @@
 	data-value={value}
 	data-checked={checked || undefined}
 	onclick={handleClick}
-	onkeydown={handleKeys}
+	onkeydown={handleKeydown}
 	{...props}
 >
 	{@render children({ checked })}

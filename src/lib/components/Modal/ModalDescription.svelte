@@ -4,7 +4,7 @@
 
 	interface Props extends BaseProps<HTMLParagraphElement> {}
 
-	let { children, class: klass, use = [], self, ...props } = $props<Props>();
+	let { children, class: klass, use = [], self, ...props }: Props = $props();
 
 	const API = context();
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
