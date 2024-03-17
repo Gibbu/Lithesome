@@ -18,11 +18,7 @@ const config = {
 		version: {
 			name: pkg.version
 		},
-		adapter: adapter({
-			isr: {
-				expiration: 60 * 60 * 5
-			}
-		}),
+		adapter: adapter(),
 		alias: {
 			$site: './src/site'
 		}
