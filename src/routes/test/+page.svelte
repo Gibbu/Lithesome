@@ -31,7 +31,7 @@
 	import type { Checked } from '$lib/components/Checkbox/Checkbox.svelte';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { User, Cog, LogOut, Home, ChevronDown, Check, X } from '@steeze-ui/lucide-icons';
+	import { User, Cog, LogOut, Home, ChevronDown, Check, X, Minus } from '@steeze-ui/lucide-icons';
 
 	const menuitems = [
 		{ label: 'Home', icon: Home, href: '/' },
@@ -285,7 +285,21 @@
 
 	<section>
 		<h2>Checkbox</h2>
-		<Checkbox bind:checked class={cn('h-8 w-8 rounded-md border border-white/10')} />
+		<div class="flex items-center gap-2">
+			<Checkbox
+				bind:checked
+				id="checkbox"
+				class={cn(
+					'flex h-8 w-8 rounded-md border border-white/10 bg-white/5',
+					checked ? 'border-white bg-white text-black' : ''
+				)}
+			>
+				{#if checked}
+					<Icon src={checked === 'mixed' ? Minus : Check} class="m-auto h-6 w-6" />
+				{/if}
+			</Checkbox>
+			<label for="checkbox" class="cursor-pointer select-none">I agree to sell all my data</label>
+		</div>
 	</section>
 </div>
 

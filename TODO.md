@@ -5,7 +5,7 @@ Components:
 - [ ] Link Preview
 - [ ] Slider
 - [ ] Popover
-- [ ] Switch
+- [x] Switch
 - [ ] Collapisble
 - [ ] Pagination
 - [ ] Tags input

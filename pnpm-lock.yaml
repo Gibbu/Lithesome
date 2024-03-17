@@ -40,8 +40,8 @@ devDependencies:
     specifier: ^2.2.0
     version: 2.2.0
   mdsvex:
-    specifier: ^0.11.0
-    version: 0.11.0(svelte@5.0.0-next.80)
+    specifier: ^0.10.6
+    version: 0.10.6(svelte@5.0.0-next.80)
   nprogress:
     specifier: ^0.2.0
     version: 0.2.0
@@ -1455,10 +1455,10 @@ packages:
       semver: 6.3.1
     dev: true
 
-  /mdsvex@0.11.0(svelte@5.0.0-next.80):
-    resolution: {integrity: sha512-gJF1s0N2nCmdxcKn8HDn0LKrN8poStqAicp6bBcsKFd/zkUBGLP5e7vnxu+g0pjBbDFOscUyI1mtHz+YK2TCDw==}
+  /mdsvex@0.10.6(svelte@5.0.0-next.80):
+    resolution: {integrity: sha512-aGRDY0r5jx9+OOgFdyB9Xm3EBr9OUmcrTDPWLB7a7g8VPRxzPy4MOBmcVYgz7ErhAJ7bZ/coUoj6aHio3x/2mA==}
     peerDependencies:
-      svelte: '>=3 <5'
+      svelte: 3.x
     dependencies:
       '@types/unist': 2.0.10
       prism-svelte: 0.4.7
