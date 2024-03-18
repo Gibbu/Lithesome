@@ -3,7 +3,7 @@
 	import { useActions, type BaseProps, type Handler, type HandlerParam } from '$lib/internal/index.js';
 	import { getContext } from 'svelte';
 
-	interface Props extends BaseProps<HTMLButtonElement, { active: boolean }> {
+	interface Props extends BaseProps<HTMLButtonElement, { active: boolean; disabled: boolean }> {
 		onClick?: Handler<MouseEvent, HTMLButtonElement>;
 	}
 
@@ -13,12 +13,14 @@
 	const itemId = getContext<string>('accordionitem-id');
 
 	const active = $derived(API.activeItems.includes(itemId));
-	const item = API.items.find((el) => el.id === itemId);
-	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
+	const item = $derived(API.items.find((el) => el.id === itemId));
+	const classProp = $derived(
+		typeof klass === 'function' ? klass({ active, disabled: item?.disabled || false }) : klass
+	);
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
-		API.toggle(itemId);
 		onClick?.(e);
+		if (!item?.disabled) API.toggle(itemId);
 	};
 </script>
 
@@ -28,12 +30,13 @@
 	aria-expanded={active}
 	aria-disabled={item?.disabled}
 	aria-controls={active ? API.uid('content') : undefined}
-	data-accordiontrigger=""
+	data-accordionbutton=""
 	data-active={active || undefined}
+	tabindex={item?.disabled ? -1 : 0}
 	use:useActions={use}
 	class={classProp}
 	onclick={handleClick}
 	{...props}
 >
-	{@render children({ active })}
+	{@render children({ active, disabled: item?.disabled || false })}
 </button>

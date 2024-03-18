@@ -14,17 +14,20 @@
 
 	onMount(() => {
 		if (!API) log.error('<AccordionItem /> must be a direct child of <Accordion />');
-		if (!disabled)
-			API.register({
-				id: uid(),
-				disabled
-			});
+		API.register({
+			id: uid(),
+			disabled
+		});
 	});
 
 	const active = $derived(API.activeItems.includes(uid()));
 	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
 
 	setContext('accordionitem-id', uid());
+
+	$effect(() => {
+		API.updateDisabled(uid(), disabled);
+	});
 </script>
 
 <div

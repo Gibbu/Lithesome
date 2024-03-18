@@ -21,6 +21,10 @@ export const createContext = (uid: UID, single: boolean = false) => {
 		},
 		register(item: Item) {
 			items = [...items, item];
+		},
+		updateDisabled(id: string, val: boolean) {
+			const index = items.findIndex((el) => el.id === id);
+			items[index].disabled = val;
 		}
 	};
 
