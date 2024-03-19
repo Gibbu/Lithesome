@@ -46,7 +46,6 @@
 				<span class="font-black text-white">L</span>ithesome
 			</a>
 			<a href="/docs" class="ml-4 text-sm font-semibold hover:text-white">Docs</a>
-			<a href="/changelog" class="text-sm font-semibold hover:text-white">Changelog</a>
 		</div>
 		<div class="flex items-center">
 			<a
