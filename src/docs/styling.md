@@ -13,20 +13,9 @@ There are a few ways to style each component.
 If you're using a CSS framework/library, simply pass their classes via the `class` prop of each component.
 
 ```svelte
-<script>
-	import { Menu, MenuTrigger, MenuDropdown, MenuItem } from 'lithesome';
-</script>
-
-<Menu>
-	<MenuTrigger>
-		<button>Post options</button>
-	</MenuTrigger>
-	<MenuDropdown>
-		<MenuItem class="bg-red-400 text-lime-500">Edit</MenuItem>
-		<MenuItem class="bg-red-400 text-lime-500">Hide</MenuItem>
-		<MenuItem class="bg-red-400 text-lime-500">Delete</MenuItem>
-	</MenuDropdown>
-</Menu>
+<MenuItem class="bg-red-400 text-lime-500">Edit</MenuItem>
+<MenuItem class="bg-red-400 text-lime-500">Hide</MenuItem>
+<MenuItem class="bg-red-400 text-lime-500">Delete</MenuItem>
 ```
 
 <br>
@@ -35,13 +24,13 @@ If you're using a CSS framework/library, simply pass their classes via the `clas
 
 Each component has their own unqiue html `[data]` applied to the underlying element. Simply target that attribute in your global css.
 
-```svelte name="src/routes/+page.svelte"
+```svelte
 <MenuItem>Edit</MenuItem>
 <MenuItem>Hide</MenuItem>
 <MenuItem>Delete</MenuItem>
 ```
 
-```css name="src/app.css"
+```css
 [data-menuitem] {
 	background: red;
 	color: lime;
@@ -60,13 +49,13 @@ ect...
 
 if data attributes aren't your cup of tea, you can always create your own classes and then apply them to the components.
 
-```svelte name="src/routes/+page.svelte"
+```svelte
 <MenuItem class="menu-item">Edit</MenuItem>
 <MenuItem class="menu-item">Hide</MenuItem>
 <MenuItem class="menu-item">Delete</MenuItem>
 ```
 
-```css name="src/app.css"
+```css
 .menu-item {
 	background: red;
 	color: lime;

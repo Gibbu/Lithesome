@@ -1,6 +1,6 @@
 ---
-title: 'Select'
-description: 'Allow users to chooe from a list of options.'
+title: 'Radio Group'
+description: 'Allow users to select a single choice from a list'
 badge: 'soon'
 ---
 

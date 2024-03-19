@@ -24,6 +24,7 @@ export const createContext = (uid: UID, multiple: boolean = false, hooks?: Hooks
 	let hoveredIndex = $state<number>(-1);
 	let options = $state<Option[]>([]);
 	let trigger = $state<HTMLElement | null>(null);
+	let dropdown = $state<HTMLElement | null>(null);
 	let selectedOptions = $state<Option[]>([]);
 	let mounted = $state<boolean>(false);
 
@@ -101,6 +102,9 @@ export const createContext = (uid: UID, multiple: boolean = false, hooks?: Hooks
 		setTrigger(node: HTMLElement) {
 			trigger = node;
 		},
+		setDropdown(node: HTMLElement) {
+			dropdown = node;
+		},
 		setMounted(value: boolean) {
 			mounted = value;
 		}
@@ -120,6 +124,9 @@ export const createContext = (uid: UID, multiple: boolean = false, hooks?: Hooks
 		},
 		get options() {
 			return options;
+		},
+		get dropdown() {
+			return dropdown;
 		},
 		get selectedOptions() {
 			return selectedOptions;

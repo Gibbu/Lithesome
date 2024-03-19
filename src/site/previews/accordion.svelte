@@ -1,0 +1,35 @@
+<script lang="ts">
+	import { Accordion, AccordionButton, AccordionContent, AccordionHeading, AccordionItem } from '$lib/index.js';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ChevronDown } from '@steeze-ui/lucide-icons';
+	import { cn } from '$site/utils.js';
+	import { slide } from 'svelte/transition';
+
+	let disabled = $state(false);
+
+	const accordionitems = [
+		{
+			title: 'What is Lithesome?',
+			content:
+				'Lithesome is a collection of unstyled Svelte 5 components that take care of all the functionality, leaving the visual design to you.'
+		},
+		{ title: 'Is it good?', content: 'Well... Maybe... Idk...' },
+		{ title: 'Is Svelte 5 good?', content: 'YES!' }
+	];
+</script>
+
+<Accordion single class="w-full max-w-[70%] rounded-md border border-white/10 bg-white/5 backdrop-blur">
+	{#each accordionitems as { title, content }}
+		<AccordionItem class="border-b border-white/10 last:border-none" {disabled}>
+			<AccordionHeading>
+				<AccordionButton class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
+					{#snippet children({ active })}
+						{title}
+						<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
+					{/snippet}
+				</AccordionButton>
+			</AccordionHeading>
+			<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
+		</AccordionItem>
+	{/each}
+</Accordion>

@@ -33,5 +33,16 @@
 	<div class="flex flex-1 flex-col">
 		<slot />
 	</div>
-	<footer>Footer content</footer>
+	<footer class="group border-t border-white/10 py-8 text-xs">
+		<div class="wrap flex items-start justify-between">
+			<p class="opacity-50 group-hover:opacity-100">
+				Lithesome made by <a
+					href="https://gibbu.me"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-blue-500 underline">Gibbu</a
+				>
+			</p>
+		</div>
+	</footer>
 </div>

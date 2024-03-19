@@ -1,6 +1,6 @@
 ---
-title: 'Select'
-description: 'Allow users to chooe from a list of options.'
+title: 'Checkbox'
+description: 'Allow users to check and uncheck things.'
 badge: 'soon'
 ---
 

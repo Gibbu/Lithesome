@@ -38,8 +38,6 @@ pnpm i -D lithesome
 
 View more information at: https://lithesome.dev
 
-> MDsveX has a bug with Vercel that crashes the docs page. All the available components can be found and played around with on: https://lithesome.vercel.app/test
-
 ## License
 
 See the [LICENSE](https://github.com/Gibbu/lithesome/blob/main/LICENSE.md) file for license rights and limitations (MIT).

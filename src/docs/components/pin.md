@@ -1,6 +1,6 @@
 ---
-title: 'Select'
-description: 'Allow users to chooe from a list of options.'
+title: 'Pin Input'
+description: 'Allows a sequence of one-character inputs.'
 badge: 'soon'
 ---
 

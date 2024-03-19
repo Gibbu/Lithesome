@@ -56,3 +56,10 @@ export const pruneValue = (value: JsonValue) => {
 	else if (typeof value === 'object') return Object.entries(value).filter(Boolean);
 	else return value.trim();
 };
+
+export const defaultConfig = <const T>(config: Partial<T> | undefined, defaults: Required<T>): Required<T> => {
+	return {
+		...defaults,
+		...config
+	};
+};

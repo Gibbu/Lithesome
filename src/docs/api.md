@@ -4,7 +4,7 @@ description: 'Things you might need to know about Lithesome.'
 order: 4
 ---
 
-## `transition` prop.
+## Transition prop.
 
 The transition prop allows you to use the inbuilt svelte transition API. albeit a little different.
 
@@ -30,6 +30,35 @@ But if you wish to use different transitions for both in and out, provide an obj
 		out: [fly, {y: -15, duration: 200}]
 	}}
 >
+```
+
+<br>
+
+## Use prop
+
+Since we're using components, Svelte doesn't allow the `use` directive. So we gotta "reinvent" it. Thanks to [hperrin/svelte-material-ui](https://github.com/hperrin/svelte-material-ui/blob/master/packages/common/src/internal/useActions.ts) we're able to just that.
+
+Each component has a `use` prop that accepts an array.
+
+```svelte
+<script>
+	import { myCoolAction, notSoCoolAction } from '$lib';
+</script>
+
+<AccordionItem use={[myCoolAction, notSoCoolAction]} />
+```
+
+This will pass the action to the underlying element.
+
+But what if we wanna pass a config to the action?  
+Simply turn the index into another array with the first index being the action and the second being an object of the config.
+
+```svelte
+<script>
+	import { myCoolAction, notSoCoolAction } from '$lib';
+</script>
+
+<AccordionItem use={[[myCoolAction, { beans: 'burger' }], notSoCoolAction]} />
 ```
 
 <br>

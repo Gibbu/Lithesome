@@ -1,6 +1,6 @@
 ---
-title: 'Select'
-description: 'Allow users to chooe from a list of options.'
+title: 'Modal'
+description: 'An overlaying window to take focus away from the current context.'
 badge: 'soon'
 ---
 

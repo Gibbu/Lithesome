@@ -2,7 +2,7 @@
 	import { context } from './Menu.svelte';
 	import {
 		clickOutside,
-		getElementPosition,
+		anchorElement,
 		portal,
 		useActions,
 		getTransition,
@@ -11,6 +11,7 @@
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+	import type { Placement } from '@floating-ui/dom';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
 		/**
@@ -19,10 +20,14 @@
 		 * @see https://lithesome.dev/docs/api#transition-prop
 		 */
 		transition?: Transition;
-		/** Apply the width of the `<MenuTrigger />` element to the dropdown. */
-		stretch?: boolean;
 		/** The element to portal the dropdown menu to. */
 		portalTarget?: string | HTMLElement;
+		/** The anchor point of the dropdown relative to the trigger. */
+		placement?: Placement;
+		/** Keeps the dropdown from ever growing outside of the viewport. */
+		constrainViewport?: boolean;
+		/** Makes the dropdown the same width as the trigger. */
+		sameWidth?: boolean;
 	}
 
 	let {
@@ -30,33 +35,17 @@
 		transition,
 		use = [],
 		portalTarget = 'body',
-		stretch = false,
 		class: klass,
 		self,
+		placement = 'bottom',
+		constrainViewport,
+		sameWidth = false,
 		...props
 	}: Props = $props();
 
 	const API = context();
 
-	const positionDropdown = () => {
-		if (API.trigger) pos = getElementPosition(API.trigger);
-	};
-
-	onMount(() => {
-		if (!API) log.error('<MenuDropdown> Must be a direct child of <Menu />');
-	});
-
-	let pos = $state<ReturnType<typeof getElementPosition>>();
-
-	$effect(() => {
-		if (API.visible && API.trigger) {
-			pos = getElementPosition(API.trigger);
-			window.addEventListener('resize', positionDropdown);
-		}
-		return () => {
-			window.removeEventListener('resize', positionDropdown);
-		};
-	});
+	let dropdownCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const _transition = getTransition(transition);
 	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
@@ -65,10 +54,27 @@
 		'aria-labelledby': API.uid('trigger'),
 		role: 'menu',
 		class: classProp,
-		'data-menudropdown': '',
-		style: pos
-			? `position: absolute; left: ${pos.left}px; top: ${pos.top}px; ${stretch ? `width: ${pos.width}` : ''}`
-			: undefined
+		'data-menudropdown': ''
+	});
+
+	onMount(async () => {
+		if (!API) log.error('<MenuDropdown> Must be a direct child of <Menu />');
+	});
+
+	$effect(() => {
+		if (API.visible && self) API.setDropdown(self);
+	});
+	$effect(() => {
+		if (API.visible && API.trigger && API.dropdown) {
+			dropdownCleanup = anchorElement(API.trigger, API.dropdown, {
+				placement,
+				constrainViewport,
+				sameWidth
+			});
+		}
+		return () => {
+			dropdownCleanup?.();
+		};
 	});
 </script>
 

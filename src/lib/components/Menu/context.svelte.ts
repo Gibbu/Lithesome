@@ -5,6 +5,7 @@ export const createContext = (uid: UID) => {
 	let visible = $state<boolean>(false);
 	let hoveredIndex = $state<number>(-1);
 	let trigger = $state<HTMLElement | null>(null);
+	let dropdown = $state<HTMLElement | null>(null);
 	let items = $state<string[]>([]);
 
 	// Derived state
@@ -43,6 +44,9 @@ export const createContext = (uid: UID) => {
 		},
 		setTrigger(node: HTMLElement) {
 			trigger = node;
+		},
+		setDropdown(node: HTMLElement) {
+			dropdown = node;
 		}
 	};
 
@@ -57,6 +61,9 @@ export const createContext = (uid: UID) => {
 		},
 		get trigger() {
 			return trigger;
+		},
+		get dropdown() {
+			return dropdown;
 		},
 		get items() {
 			return items;

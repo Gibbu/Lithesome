@@ -3,9 +3,12 @@
 	import { page } from '$app/stores';
 	import Banner from '$site/Banner.svelte';
 	import { cn } from '$site/index.js';
+	import { Github } from '@steeze-ui/lucide-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
+
 	let { data } = $props();
 
-	let navLinkClass = 'flex items-center rounded-md px-6 py-2.5 text-sm font-medium mb-1';
+	let navLinkClass = 'flex items-center rounded-md pl-6 pr-2.5 py-2.5 text-sm font-medium mb-1';
 	let navLinkActive = 'bg-white/10 text-white';
 
 	const active = (route: string) => {
@@ -23,8 +26,40 @@
 {#snippet pill()}
 	<div class="absolute left-0 h-5 w-1 rounded-full bg-violet-500" />
 {/snippet}
+{#snippet badge(type: 'soon' | 'updated' | 'new')}
+	<div
+		class={cn(
+			'rounded-xl px-3 py-1 text-xs capitalize',
+			type === 'soon' ? 'bg-amber-500/20 text-amber-300' : '',
+			type === 'updated' ? 'bg-blue-500/20 text-blue-300' : '',
+			type === 'new' ? 'bg-emerald-500/20 text-emerald-300' : ''
+		)}
+	>
+		{type}
+	</div>
+{/snippet}
 
-<nav class="fixed left-0 top-0 z-10 h-[64px] w-full border-b border-white/10 bg-black/35 backdrop-blur"></nav>
+<nav class="fixed left-0 top-0 z-10 h-[64px] w-full border-b border-white/10 bg-black/35 backdrop-blur">
+	<div class="wrap flex h-full items-center justify-between">
+		<div class="flex items-center gap-4">
+			<a href="/" class="text-xl font-semibold tracking-widest text-neutral-300 hover:text-white">
+				<span class="font-black text-white">L</span>ithesome
+			</a>
+			<a href="/docs" class="ml-4 text-sm font-semibold hover:text-white">Docs</a>
+			<a href="/changelog" class="text-sm font-semibold hover:text-white">Changelog</a>
+		</div>
+		<div class="flex items-center">
+			<a
+				href="https://github.com/Gibbu/Lithesome"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="flex-centre h-12 w-12 rounded-xl hover:bg-white/10 hover:text-white"
+			>
+				<Icon src={Github} class="h-6 w-6" />
+			</a>
+		</div>
+	</div>
+</nav>
 
 <div class="wrap mt-[64px] grid h-full grid-cols-[220px,1fr] items-start gap-16">
 	<aside class="sticky top-4 h-[calc(100vh-64px)] py-16">
@@ -36,9 +71,12 @@
 							href="/docs{route.path === '/' ? '' : '/' + route.path}"
 							class={cn(navLinkClass, active(route.path) ? navLinkActive : 'hover:bg-white/5')}
 						>
-							{route.title}
+							<span class="flex-1">{route.title}</span>
 							{#if active(route.path)}
 								{@render pill()}
+							{/if}
+							{#if route.badge}
+								{@render badge(route.badge)}
 							{/if}
 						</a>
 					{/if}
@@ -52,9 +90,12 @@
 										href="/docs{subRoute.path === '/' ? '' : '/' + subRoute.path}"
 										class={cn(navLinkClass, active(subRoute.path) ? navLinkActive : 'hover:bg-white/5')}
 									>
-										{subRoute.title}
+										<span class="flex-1">{subRoute.title}</span>
 										{#if active(subRoute.path)}
 											{@render pill()}
+										{/if}
+										{#if subRoute.badge}
+											{@render badge(subRoute.badge)}
 										{/if}
 									</a>
 								</li>

@@ -18,7 +18,7 @@ Ready to use Lithesome? [Get Started!](/docs/getting-started)
 - [Melt UI](https://melt-ui.com) - The accessability requirements and how they function.
 - [Bits UI](https://bits-ui.com) - Some of the API/prop control flow.
 - [Radix UI](https://radix-ui.com/) - The accessability requirements and how they function.
-- [Svelte Headless UI](https://svelte-headlessui.goss.io/docs/2.0) - The class function prop.
+- [Svelte Headless UI](https://svelte-headlessui.goss.io/docs/2.0) - The class function prop and action forwarding prop.
 
 ## Why the name Lithesome?
 

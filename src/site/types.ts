@@ -1,66 +1,35 @@
 export interface Prop {
 	name: string;
-	kind: string;
-	type?: string;
-	isFunction: boolean;
-	isFunctionDeclaration: boolean;
-	isRequired: boolean;
-	constant: boolean;
-	reactive: boolean;
-	description: string;
-	value?: string;
-}
-
-export interface Slot {
-	name: string;
-	default: boolean;
-	fallback: string;
-	slot_props: string;
+	type: string;
+	default: string;
 	description?: string;
+	required?: boolean;
 }
-
 export interface Event {
-	type: string;
 	name: string;
-	element: string;
+	return: string;
+	params: string[];
+	description?: string;
+}
+export interface DataAttrs {
+	name: string;
+	value?: string;
+	description?: string;
+}
+export interface ChildrenProps {
+	name: string;
+	type: string;
 	description?: string;
 }
 
-export interface RestProps {
-	type: string;
+export interface APIReference {
 	name: string;
-}
-
-export interface Typedefs {
-	type: string;
-	name: string;
-	ts: string;
-}
-
-export interface ModuleExport {
-	name: string;
-	kind: string;
-	type?: string;
-	value: string;
-	isFunction: boolean;
-	isFunctionDeclaration: boolean;
-	isRequired: boolean;
-	constant: boolean;
-	reactive: boolean;
-}
-
-export interface Component {
-	props: Prop[];
-	slots: Slot[];
-	events: Event[];
-	typedefs: Typedefs[];
-	rest_props: RestProps[];
-	moduleExports: ModuleExport[];
-	componentComment?: string;
-	extends?: {
-		interface: string;
-		import: string;
-	};
+	description?: string;
+	childOf?: string;
+	props?: Prop[];
+	events?: Event[];
+	dataAttrs?: DataAttrs[];
+	childrenProps?: ChildrenProps[];
 }
 
 export interface DocsPageMeta {

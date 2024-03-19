@@ -12,7 +12,7 @@ const pkg = JSON.parse(json);
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	extensions: ['.svelte', ...mdsvexConfig.extensions],
-	preprocess: [vitePreprocess({}), mdsvex(mdsvexConfig)],
+	preprocess: [vitePreprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
 		version: {
@@ -20,7 +20,8 @@ const config = {
 		},
 		adapter: adapter(),
 		alias: {
-			$site: './src/site'
+			$site: './src/site',
+			$ref: './src/site/api'
 		}
 	}
 };

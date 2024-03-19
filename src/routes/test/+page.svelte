@@ -51,8 +51,13 @@
 	];
 
 	const accordionitems = [
-		{ title: 'Hamburger Cheeseburger Big Mac', content: 'WHOPPERRRRRRR' },
-		{ title: 'How does one get good?', content: `Just don't. Give up.` }
+		{
+			title: 'What is Lithesome?',
+			content:
+				'Lithesome is a collection of unstyled Svelte 5 components that take care of all the functionality, leaving the visual design to you.'
+		},
+		{ title: 'Is it good?', content: 'Well... Maybe... Idk...' },
+		{ title: 'Is Svelte 5 good?', content: 'YES!' }
 	];
 
 	let modalVisible = $state(false);
@@ -74,6 +79,7 @@
 			<MenuDropdown
 				transition={[scale, { start: 0.8, duration: 150 }]}
 				class="w-full max-w-[195px] origin-top-left rounded-xl border border-white/20 bg-black/75 p-2 shadow-xl backdrop-blur"
+				placement="bottom-start"
 			>
 				{#each menuitems as { label, icon, danger, href }}
 					<MenuItem
@@ -106,7 +112,7 @@
 						</Button>
 					</SelectTrigger>
 					<SelectDropdown
-						stretch
+						sameWidth
 						class="origin-top-left rounded-xl border border-white/20 bg-black/75 p-2 shadow-xl backdrop-blur"
 						transition={[scale, { start: 0.8, duration: 150 }]}
 					>
@@ -142,7 +148,7 @@
 						</Button>
 					</SelectTrigger>
 					<SelectDropdown
-						stretch
+						sameWidth
 						class="origin-top-left rounded-xl border border-white/20 bg-black/75 p-2 shadow-xl backdrop-blur"
 						transition={[scale, { start: 0.8, duration: 150 }]}
 					>

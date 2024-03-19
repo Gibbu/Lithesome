@@ -21,15 +21,6 @@ export const removeEventListeners = <T extends HTMLElement>(node: T, listeners: 
 	});
 };
 
-export const getElementPosition = <T extends HTMLElement>(node: T) => {
-	const { x, y, height, width } = node.getBoundingClientRect();
-	return {
-		top: y + scrollY + height,
-		left: x,
-		width
-	};
-};
-
 export const disableScroll = (state: boolean) => {
 	if (typeof window !== 'undefined') {
 		if (state) {

@@ -17,10 +17,9 @@
 
 	const { uid } = createUID('menu');
 	const API = createContext(uid);
+	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 
 	setContext(contextName, API);
-
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 </script>
 
 <div

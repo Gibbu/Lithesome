@@ -25,10 +25,9 @@
 			value = val;
 		}
 	});
+	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 
 	setContext(contextName, API);
-
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 
 	onMount(async () => {
 		await tick();
