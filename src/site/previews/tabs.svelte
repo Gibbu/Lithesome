@@ -25,7 +25,7 @@
 			]
 		},
 		{
-			btn: 'upcming',
+			btn: 'upcoming',
 			content: [
 				{
 					title: 'Work management meeting',
@@ -72,7 +72,7 @@
 	{#each tabs as tab}
 		<TabsContent value={tab.btn} class="p-4">
 			{#each tab.content as { title, date }}
-				<div class="rounded-md p-4 hover:bg-white/5">
+				<div class="rounded-md px-5 py-2 hover:bg-white/5">
 					<h4 class="font-medium text-white">{title}</h4>
 					<p class="text-neutral-400">
 						{#if date.date}

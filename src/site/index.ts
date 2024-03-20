@@ -6,3 +6,4 @@ export { default as Preview } from './Preview.svelte';
 export { default as Banner } from './Banner.svelte';
 export { default as API } from './API.svelte';
 export { default as Meta } from './Meta.svelte';
+export { default as Input } from './Input.svelte';

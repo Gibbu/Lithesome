@@ -19,10 +19,10 @@
 
 	const { uid } = createUID('accordion');
 	const API = createContext(uid, single);
-	setContext(contextName, API);
-
 	const active = $derived(API.activeItems.length > 0);
 	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
+
+	setContext(contextName, API);
 </script>
 
 <div bind:this={self} use:useActions={use} id={uid()} class={classProp} data-accordion="" {...props}>

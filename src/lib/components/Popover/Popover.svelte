@@ -2,24 +2,27 @@
 	import { getContext } from 'svelte';
 	import { createContext } from './context.svelte.js';
 
-	const contextName = 'modal-context';
+	const contextName = 'popover-context';
 
 	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, portal, KEYS, isBrowser, type BaseProps } from '$lib/internal/index.js';
+	import { createUID, useActions, KEYS, isBrowser, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement> {
-		visible: boolean;
-		portalTarget?: string | HTMLElement;
+		visible?: boolean;
 	}
 
-	let { children, use = [], class: klass, self, visible, portalTarget = 'body', ...props }: Props = $props();
+	let { children, use = [], class: klass, self, visible = false, ...props }: Props = $props();
 
-	const { uid } = createUID('modal');
-	const API = createContext(uid, visible);
+	const { uid } = createUID('popover');
+	const API = createContext(uid, visible, {
+		onChange(val) {
+			visible = val;
+		}
+	});
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 
 	setContext(contextName, API);
@@ -41,16 +44,6 @@
 	});
 </script>
 
-{#if visible}
-	<div
-		bind:this={self}
-		use:portal={portalTarget}
-		use:useActions={use}
-		id={uid()}
-		class={classProp}
-		data-modal=""
-		{...props}
-	>
-		{@render children({})}
-	</div>
-{/if}
+<div bind:this={self} use:useActions={use} id={uid()} class={classProp} data-popover="" {...props}>
+	{@render children({})}
+</div>

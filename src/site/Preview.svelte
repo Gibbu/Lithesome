@@ -13,7 +13,7 @@
 
 <div
 	class={cn(
-		'not-prose flex-centre min-h-[450px] rounded-xl border border-white/20 bg-black/30 p-8 backdrop-blur',
+		'not-prose flex-centre min-h-[450px] rounded-xl border border-white/15 bg-black/30 p-8 backdrop-blur',
 		klass
 	)}
 >

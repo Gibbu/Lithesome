@@ -6,3 +6,4 @@ export * from './components/Pin/index.js';
 export * from './components/RadioGroup/index.js';
 export * from './components/Select/index.js';
 export * from './components/Tabs/index.js';
+export * from './components/Popover/index.js';

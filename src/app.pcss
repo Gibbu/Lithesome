@@ -16,6 +16,9 @@
 	.flex-centre {
 		@apply flex items-center justify-center;
 	}
+	.focusOutline {
+		@apply focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-white;
+	}
 }
 
 pre {
@@ -42,4 +45,7 @@ html.dark .shiki span {
 	font-style: var(--shiki-dark-font-style) !important;
 	font-weight: var(--shiki-dark-font-weight) !important;
 	text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+[data-lastpass-icon-root] {
+	@apply hidden;
 }

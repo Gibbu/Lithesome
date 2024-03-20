@@ -81,7 +81,7 @@
 					{/if}
 
 					{#if route.folder}
-						<h3 class="ml-3.5 mt-8 text-xs font-bold uppercase text-neutral-500">{route.folder}</h3>
+						<h3 class="ml-6 mt-8 text-xs font-bold uppercase text-neutral-500">{route.folder}</h3>
 						<ul class="mt-2">
 							{#each route.children as subRoute}
 								<li>

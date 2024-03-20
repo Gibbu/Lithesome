@@ -15,9 +15,9 @@
 
 <div class="relative flex h-[500px] flex-col items-center justify-center text-center">
 	<div
-		class="rounded-full border border-violet-400/50 bg-violet-400/10 px-12 py-1 text-xs text-violet-400 backdrop-blur"
+		class="rounded-full border border-violet-400/50 bg-violet-400/10 px-8 py-1 text-xs text-violet-400 backdrop-blur"
 	>
-		v{version} Alpha
+		v{version}
 	</div>
 	<h1 class="mb-2 text-8xl font-semibold tracking-wider text-white">Lithesome</h1>
 	<h3 class="text-2xl text-neutral-300">An unstyled component library for Svelte 5.</h3>

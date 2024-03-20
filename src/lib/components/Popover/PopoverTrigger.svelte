@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { context } from './Menu.svelte';
+	import { context } from './Popover.svelte';
 	import {
 		log,
 		setNodeProps,
@@ -8,8 +8,7 @@
 		KEYS,
 		type BaseProps,
 		type Handler,
-		type HandlerParam,
-		PREVENT_KEYS
+		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
@@ -33,7 +32,8 @@
 
 		setNodeProps(target, {
 			id: API.uid('trigger'),
-			'aria-haspopup': 'true',
+			role: 'button',
+			'aria-hasdialog': 'true',
 			'aria-expanded': 'false'
 		});
 		addEventListeners(target, {
@@ -50,7 +50,7 @@
 		if (API.visible) {
 			setNodeProps(target, {
 				'aria-expanded': 'true',
-				'aria-controls': API.uid('dropdown')
+				'aria-controls': API.uid('content')
 			});
 		}
 		if (!API.visible) {
@@ -63,22 +63,7 @@
 
 		const { key } = e;
 
-		if (PREVENT_KEYS.includes(key)) e.preventDefault();
-		if (key === KEYS.home) API.navigateItems('first');
-		if (key === KEYS.end) API.navigateItems('last');
-		if (key === KEYS.arrowUp) API.navigateItems('prev');
-		if (key === KEYS.arrowDown) API.navigateItems('next');
-		if (key === KEYS.escape) API.close();
-		if (key === KEYS.enter) {
-			e.preventDefault();
-			if (API.hoveredItem && API.visible) {
-				(document.querySelector(`#${API.hoveredItem}`) as HTMLButtonElement).click();
-				API.close();
-			} else {
-				API.open();
-			}
-		}
-		if (key === KEYS.tab) API.close();
+		if (key === KEYS.escape || key === KEYS.tab) API.close();
 	};
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
 		onClick?.(e);
@@ -86,6 +71,6 @@
 	};
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp} data-menutrigger="" {...props}>
+<div bind:this={self} use:useActions={use} class={classProp} data-popovertrigger="" {...props}>
 	{@render children({ visible: API.visible })}
 </div>

@@ -30,7 +30,7 @@ description: 'A menu of items that is hidden until triggered.'
 
 ## Disabling an item
 
-By passing the `disabled` prop, it will disable the item. Disallowing the opening and skipped over via keyboard navigation.
+By passing the `disabled` prop, it will disable the item. Disallowing clicking and skipped over via keyboard navigation.
 
 ```svelte
 <MenuItem disabled>
