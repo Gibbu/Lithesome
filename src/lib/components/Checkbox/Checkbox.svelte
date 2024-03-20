@@ -8,6 +8,7 @@
 	interface Props extends Optional<BaseProps<HTMLButtonElement, { checked: Checked }>, 'children'> {
 		checked?: Checked;
 		required?: boolean;
+		disabled?: boolean;
 		onClick?: Handler<MouseEvent, HTMLButtonElement>;
 	}
 
@@ -18,6 +19,7 @@
 		self,
 		checked = false,
 		required = false,
+		disabled = false,
 		onClick,
 		...props
 	}: Props = $props();
@@ -25,8 +27,10 @@
 	const classProp = $derived(typeof klass === 'function' ? klass({ checked }) : klass);
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
-		checked = checked === 'mixed' ? true : !checked;
 		onClick?.(e);
+		if (disabled) return;
+
+		checked = checked === 'mixed' ? true : !checked;
 	};
 </script>
 
@@ -38,7 +42,7 @@
 	role="checkbox"
 	aria-checked={checked}
 	aria-required={required}
-	data-state={checked}
+	data-state={checked ? 'checked' : 'unchecked'}
 	data-checkbox=""
 	onclick={handleClick}
 	{...props}
