@@ -31,10 +31,10 @@
 {#if _transition}
 	{#if active}
 		<div
-			in:_transition.in.fn={_transition.in.params}
-			out:_transition.out.fn={_transition.out.params}
 			bind:this={self}
 			use:useActions={use}
+			in:_transition.in.fn={_transition.in.params}
+			out:_transition.out.fn={_transition.out.params}
 			{...attrs}
 			{...props}
 		>

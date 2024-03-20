@@ -12,11 +12,11 @@
 
 <div
 	bind:this={self}
+	use:useActions={use}
+	class={classProp}
 	role="heading"
 	aria-level={level}
 	data-accordionheading=""
-	use:useActions={use}
-	class={classProp}
 	{...props}
 >
 	{@render children({})}

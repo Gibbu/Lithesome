@@ -1,7 +1,7 @@
 Components:
 
 - [ ] Combobox
-- [ ] Tabs
+- [x] Tabs
 - [ ] Link Preview
 - [ ] Slider
 - [ ] Popover
@@ -13,7 +13,7 @@ Components:
 
 Future plans:
 
-- [ ] Allow for submenus for the Menu component.
+- [ ] Allow submenus for the Menu component.
 
 Website:
 

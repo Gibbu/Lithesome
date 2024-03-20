@@ -8,7 +8,7 @@ export const createContext = (uid: UID, visibleInitial: boolean) => {
 	});
 
 	const functions = {
-		updateVisible(value: boolean) {
+		setVisible(value: boolean) {
 			visible = value;
 		}
 	};

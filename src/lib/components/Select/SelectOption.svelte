@@ -51,18 +51,18 @@
 
 <button
 	bind:this={self}
-	type="button"
 	bind:this={optionEl}
 	use:useActions={use}
 	id={uid()}
 	class={classProp}
+	type="button"
+	{disabled}
+	role="option"
+	tabindex="0"
+	aria-selected={selected || undefined}
 	data-hovered={hovered ? '' : undefined}
 	data-selected={selected ? '' : undefined}
 	data-selectoption=""
-	aria-selected={selected || undefined}
-	role="option"
-	tabindex="0"
-	{disabled}
 	onmouseover={() => API.setHoveredOption(uid())}
 	onfocus={handleFocus}
 	onclick={handleClick}

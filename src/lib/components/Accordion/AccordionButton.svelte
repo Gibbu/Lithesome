@@ -27,14 +27,14 @@
 <button
 	type="button"
 	bind:this={self}
+	use:useActions={use}
+	class={classProp}
 	aria-expanded={active}
 	aria-disabled={item?.disabled}
 	aria-controls={active ? API.uid('content') : undefined}
+	tabindex={item?.disabled ? -1 : 0}
 	data-accordionbutton=""
 	data-active={active || undefined}
-	tabindex={item?.disabled ? -1 : 0}
-	use:useActions={use}
-	class={classProp}
 	onclick={handleClick}
 	{...props}
 >

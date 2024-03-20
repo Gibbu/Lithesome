@@ -31,7 +31,7 @@
 	};
 
 	$effect(() => {
-		API.updateVisible(visible);
+		API.setVisible(visible);
 		if (isBrowser) {
 			if (visible) {
 				window.addEventListener('keydown', handleKeys);

@@ -7,7 +7,7 @@
 
 	let disabled = $state(false);
 
-	const accordionitems = [
+	const items = [
 		{
 			title: 'What is Lithesome?',
 			content:
@@ -18,8 +18,8 @@
 	];
 </script>
 
-<Accordion single class="w-full max-w-[70%] rounded-md border border-white/10 bg-white/5 backdrop-blur">
-	{#each accordionitems as { title, content }}
+<Accordion single class="w-full max-w-[70%] rounded-md border border-white/10 bg-white/5">
+	{#each items as { title, content }}
 		<AccordionItem class="border-b border-white/10 last:border-none" {disabled}>
 			<AccordionHeading>
 				<AccordionButton class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">

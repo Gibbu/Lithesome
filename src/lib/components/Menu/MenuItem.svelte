@@ -62,12 +62,12 @@
 	use:useActions={use}
 	id={uid()}
 	class={classProp}
-	data-hovered={hovered ? '' : undefined}
-	data-menuitem=""
 	href={href || undefined}
+	disabled={disabled || undefined}
 	role="menuitem"
 	tabindex="0"
-	{disabled}
+	data-hovered={hovered ? '' : undefined}
+	data-menuitem=""
 	onmouseover={handleMouseover}
 	onfocus={handleFocus}
 	onclick={handleClick}

@@ -82,11 +82,11 @@
 	{#if API.visible}
 		<div
 			bind:this={self}
-			in:_transition.in.fn={_transition.in.params}
-			out:_transition.out.fn={_transition.out.params}
 			use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
 			use:portal={portalTarget}
 			use:useActions={use}
+			in:_transition.in.fn={_transition.in.params}
+			out:_transition.out.fn={_transition.out.params}
 			{...attrs}
 			{...props}
 		>

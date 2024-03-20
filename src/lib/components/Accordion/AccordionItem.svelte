@@ -26,14 +26,14 @@
 	setContext('accordionitem-id', uid());
 
 	$effect(() => {
-		API.updateDisabled(uid(), disabled);
+		API.setDisabled(uid(), disabled);
 	});
 </script>
 
 <div
 	bind:this={self}
-	id={uid()}
 	use:useActions={use}
+	id={uid()}
 	class={classProp}
 	data-accordionitem=""
 	data-disabled={disabled || undefined}

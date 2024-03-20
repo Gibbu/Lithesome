@@ -34,8 +34,8 @@
 	type="button"
 	bind:this={self}
 	use:useActions={use}
-	role="checkbox"
 	class={classProp}
+	role="checkbox"
 	aria-checked={checked}
 	aria-required={required}
 	data-state={checked}

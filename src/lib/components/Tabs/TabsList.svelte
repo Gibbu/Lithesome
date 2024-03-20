@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { context } from './Tabs.svelte';
 	import { useActions, type BaseProps } from '$lib/internal/index.js';
-	import { context } from './Modal.svelte';
 
-	interface Props extends BaseProps<HTMLParagraphElement> {}
+	interface Props extends BaseProps<HTMLDivElement> {}
 
 	let { children, class: klass, use = [], self, ...props }: Props = $props();
 
@@ -10,13 +10,15 @@
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 </script>
 
-<p
+<div
 	bind:this={self}
 	use:useActions={use}
-	id={API.uid('description')}
 	class={classProp}
-	data-modaldescription=""
+	role="tablist"
+	aria-orientation={API.orientation}
+	data-tabslist=""
+	data-orientation={API.orientation}
 	{...props}
 >
 	{@render children({})}
-</p>
+</div>

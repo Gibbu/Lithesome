@@ -85,6 +85,6 @@
 	};
 </script>
 
-<div bind:this={self} data-menutrigger="" use:useActions={use} class={classProp} {...props}>
+<div bind:this={self} use:useActions={use} class={classProp} data-menutrigger="" {...props}>
 	{@render children({ visible: API.visible })}
 </div>

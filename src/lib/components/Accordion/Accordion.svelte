@@ -25,6 +25,6 @@
 	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
 </script>
 
-<div bind:this={self} id={uid()} use:useActions={use} class={classProp} data-accordion="" {...props}>
+<div bind:this={self} use:useActions={use} id={uid()} class={classProp} data-accordion="" {...props}>
 	{@render children({ active })}
 </div>

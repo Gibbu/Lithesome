@@ -41,10 +41,10 @@
 <div
 	bind:this={self}
 	use:useActions={use}
-	data-select=""
-	data-state={API.visible ? 'opened' : 'closed'}
 	id={uid()}
 	class={classProp}
+	data-select=""
+	data-state={API.visible ? 'opened' : 'closed'}
 	{...props}
 >
 	{@render children({ visible: API.visible })}

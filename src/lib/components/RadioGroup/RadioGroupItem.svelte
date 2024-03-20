@@ -71,12 +71,12 @@
 </script>
 
 <button
-	type="button"
-	role="radio"
 	bind:this={self}
 	use:useActions={use}
-	{disabled}
 	class={classProp}
+	type="button"
+	role="radio"
+	{disabled}
 	aria-checked={checked}
 	tabindex={checked ? 0 : -1}
 	data-radiogroupitem=""

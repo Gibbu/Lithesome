@@ -10,6 +10,6 @@
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 </script>
 
-<h2 id={API.uid('title')} bind:this={self} data-modaltitle="" use:useActions={use} class={classProp} {...props}>
+<h2 bind:this={self} use:useActions={use} id={API.uid('title')} class={classProp} data-modaltitle="" {...props}>
 	{@render children({})}
 </h2>

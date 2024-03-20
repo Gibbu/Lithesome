@@ -17,6 +17,7 @@
 		type?: 'text' | 'password';
 		placeholder?: string;
 		onChange?: (value: string) => void;
+		onFilled?: (value: string) => void;
 	}
 
 	let {
@@ -29,6 +30,7 @@
 		type = 'text',
 		placeholder = '○',
 		onChange,
+		onFilled,
 		...props
 	}: Props = $props();
 
@@ -51,15 +53,19 @@
 		API.setType(type);
 		API.setDisabled(disabled);
 	});
+
+	$effect(() => {
+		if (API.filled) onFilled?.(API.transformedValue);
+	});
 </script>
 
 <div
 	bind:this={self}
-	id={uid()}
 	use:useActions={use}
+	id={uid()}
 	class={classProp}
-	data-disabled={disabled || undefined}
 	aria-disabled={disabled || undefined}
+	data-disabled={disabled || undefined}
 	data-pin=""
 	data-filled={API.filled || undefined}
 	{...props}

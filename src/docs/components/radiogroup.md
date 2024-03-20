@@ -1,8 +1,14 @@
 ---
 title: 'Radio Group'
 description: 'Allow users to select a single choice from a list'
-badge: 'soon'
 ---
 
-This component is "ready to use" but is not yet documented.  
-View the [test](/test) page for all available components.
+<script>
+	import {API, Preview} from '$site/index.ts';
+	// import data from '$ref/accordion.ts';
+	import component from '$site/previews/radiogroup.svelte';
+</script>
+
+<Preview {component} />
+
+API Reference comming soon...

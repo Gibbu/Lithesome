@@ -4,7 +4,11 @@
 	import { onMount } from 'svelte';
 
 	interface Props extends Omit<BaseProps<HTMLInputElement>, 'children'> {
-		/** The HTML Input element name attribute. */
+		/**
+		 * The HTML Input element name attribute.
+		 *
+		 * Used for native form submissions.
+		 */
 		name?: string;
 	}
 
@@ -22,14 +26,14 @@
 <input
 	bind:this={self}
 	bind:value={API.transformedValue}
-	id={uid()}
 	use:useActions={use}
+	id={uid()}
+	class={classProp}
 	aria-hidden="true"
 	tabindex="-1"
 	hidden
-	class={classProp}
-	data-pininput=""
 	{name}
+	data-pininput=""
 	{...props}
 	style="opacity: 0; pointer-events: none; user-select: none; scale: 0;"
 />

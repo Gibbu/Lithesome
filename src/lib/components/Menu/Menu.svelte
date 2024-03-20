@@ -25,10 +25,10 @@
 <div
 	bind:this={self}
 	use:useActions={use}
-	data-menu=""
-	data-state={API.visible ? 'opened' : 'closed'}
 	id={uid()}
 	class={classProp}
+	data-menu=""
+	data-state={API.visible ? 'opened' : 'closed'}
 	{...props}
 >
 	{@render children({ visible: API.visible })}

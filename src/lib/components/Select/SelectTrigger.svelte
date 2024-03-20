@@ -79,11 +79,11 @@
 
 <div
 	bind:this={self}
-	data-selecttrigger=""
 	use:useActions={use}
 	class={classProp}
-	style="display: contents;"
+	data-selecttrigger=""
 	{...props}
+	style="display: contents;"
 >
 	{@render children({ visible: API.visible })}
 </div>

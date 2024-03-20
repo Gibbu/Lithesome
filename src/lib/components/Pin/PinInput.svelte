@@ -60,6 +60,14 @@
 		if (API.disabled) return;
 		const { key } = e;
 
+		if (key === KEYS.home) {
+			e.preventDefault();
+			moveFocus('first');
+		}
+		if (key === KEYS.end) {
+			e.preventDefault();
+			moveFocus('last');
+		}
 		if (key === KEYS.arrowLeft) {
 			e.preventDefault();
 			moveFocus('prev');
@@ -103,15 +111,15 @@
 
 <input
 	bind:this={self}
+	use:useActions={use}
 	bind:value
 	id={uid()}
-	use:useActions={use}
 	class={classProp}
 	{name}
 	disabled={API.disabled}
+	placeholder={focused ? '' : API.placeholder}
 	data-pininput=""
 	data-filled={API.filled || undefined}
-	placeholder={focused ? '' : API.placeholder}
 	oninput={handleInput}
 	onkeydown={handleKeyDown}
 	onfocus={handleFocus}

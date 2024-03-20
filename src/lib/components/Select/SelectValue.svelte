@@ -15,11 +15,11 @@
 
 <span
 	bind:this={self}
-	id={API.uid('value')}
 	use:useActions={use}
+	id={API.uid('value')}
+	class={classProp}
 	data-selectvalue=""
 	data-placeholder={placeholderVisible || undefined}
-	class={classProp}
 	{...props}
 >
 	{placeholderVisible ? placeholder : API.selectedOptions.map((el) => el.label).join(',')}

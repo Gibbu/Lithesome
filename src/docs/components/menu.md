@@ -7,10 +7,9 @@ description: 'A menu of items that is hidden until triggered.'
 	import {API, Preview} from '$site/index.ts';
 	import data from '$ref/menu.ts';
 	import component from '$site/previews/menu.svelte';
-	import code from '$site/previews/menu.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<Preview {component} />
 
 ## Structure
 

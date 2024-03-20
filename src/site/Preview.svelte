@@ -4,11 +4,11 @@
 
 	interface Props {
 		component: typeof SvelteComponent<any, any, any>;
-		code: string;
+		// code: string;
 		class?: string;
 	}
 
-	let { code, component, class: klass }: Props = $props();
+	let { component, class: klass }: Props = $props();
 </script>
 
 <div

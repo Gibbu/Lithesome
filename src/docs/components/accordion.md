@@ -7,10 +7,9 @@ description: 'An interactive set of panels that hide and reveal sections.'
 	import {API, Preview} from '$site/index.ts';
 	import data from '$ref/accordion.ts';
 	import component from '$site/previews/accordion.svelte';
-	import code from '$site/previews/accordion.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<Preview {component} />
 
 ## Structure
 
