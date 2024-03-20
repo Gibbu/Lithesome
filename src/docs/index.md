@@ -9,7 +9,7 @@ I wanted to make this for 3 reasons:
 
 1. I don't enjoy the builder pattern that Melt uses, though it does give you ultimate control. Bits is using Melt under the hood, which in turn uses Svelte 4 and stores.
 2. I wanted to try out all the new features of Svelte 5.
-3. I wanted to make a component library that I will use for all my other projects which will have the API that I find useful, and hopefully others do too.
+3. This originally was something I was buiilding for another project I'm working on, but decided I liked it a lot that others might too. I will also be using this in all my new projects.
 
 Ready to use Lithesome? [Get Started!](/docs/getting-started)
 
