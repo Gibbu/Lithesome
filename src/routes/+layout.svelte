@@ -1,5 +1,6 @@
 <script>
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import Meta from '$site/Meta.svelte';
 	import NProgress from 'nprogress';
 	import '../app.pcss';
 
@@ -10,6 +11,8 @@
 		NProgress.done();
 	});
 </script>
+
+<Meta />
 
 <div class="relative flex min-h-screen flex-col">
 	<div class="pointer-events-none -z-10 flex select-none flex-col items-center">

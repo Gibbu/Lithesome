@@ -2,7 +2,7 @@
 	import { Accordion, AccordionButton, AccordionContent, AccordionHeading, AccordionItem } from '$lib/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronDown } from '@steeze-ui/lucide-icons';
-	import { cn } from '$site/utils.js';
+	import { cn } from '$site/index.js';
 	import { slide } from 'svelte/transition';
 
 	let disabled = $state(false);

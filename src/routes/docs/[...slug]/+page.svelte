@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$site/index.js';
+	import { cn, Meta } from '$site/index.js';
 	import type { SvelteComponent } from 'svelte';
 
 	let { data } = $props();
@@ -7,6 +7,8 @@
 	type Component = $$Generic<typeof SvelteComponent<any, any, any>>;
 	const component = $derived(data.component) as unknown as Component;
 </script>
+
+<Meta />
 
 <header class="mb-12">
 	<h1 class="text-5xl font-semibold text-white">{data.meta.title}</h1>
