@@ -4,7 +4,7 @@ description: 'Things you might need to know about Lithesome.'
 order: 4
 ---
 
-## Transition prop.
+## Transition prop
 
 The transition prop allows you to use the inbuilt svelte transition API. albeit a little different.
 

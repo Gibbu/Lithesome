@@ -11,4 +11,16 @@ description: 'Allows a sequence of one-character inputs.'
 
 <Preview {component} />
 
+## Structure
+
+```svelte
+<script>
+	import { Pin, PinInput } from 'lithesome';
+</script>
+
+<Pin>
+	<PinInput />
+</Pin>
+```
+
 <API {data} />

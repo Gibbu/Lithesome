@@ -11,7 +11,7 @@
 	import { createUID, useActions, KEYS, isBrowser, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
-	interface Props extends BaseProps<HTMLDivElement> {
+	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
 		visible?: boolean;
 	}
 
@@ -23,7 +23,7 @@
 			visible = val;
 		}
 	});
-	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 
 	setContext(contextName, API);
 
@@ -44,6 +44,14 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} id={uid()} class={classProp} data-popover="" {...props}>
-	{@render children({})}
+<div
+	bind:this={self}
+	use:useActions={use}
+	id={uid()}
+	class={classProp}
+	data-popover=""
+	data-state={API.visible ? 'opened' : 'closed'}
+	{...props}
+>
+	{@render children({ visible: API.visible })}
 </div>

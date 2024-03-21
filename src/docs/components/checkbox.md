@@ -11,6 +11,16 @@ description: 'Allow users to check and uncheck things.'
 
 <Preview {component} />
 
+## Structure
+
+```svelte
+<script>
+	import { Checkbox } from 'lithesome';
+</script>
+
+<Checkbox />
+```
+
 ## Native Input element
 
 Since the `<Checkbox />` component is rendering a button, you cannot use it for native form submissions.

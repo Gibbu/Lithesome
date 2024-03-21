@@ -11,4 +11,20 @@ description: 'An overlaying window to take focus away from the current context.'
 
 <Preview {component} />
 
+## Structure
+
+```svelte
+<script>
+	import { Modal, ModalOverlay, ModalContent, ModalTitle, ModalDescription } from 'lithesome';
+</script>
+
+<Modal>
+	<ModalOverlay />
+	<ModalContent>
+		<ModalTitle />
+		<ModalDescription />
+	</ModalContent>
+</Modal>
+```
+
 <API {data} />
