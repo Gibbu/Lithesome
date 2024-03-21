@@ -13,12 +13,14 @@ const pin: APIReference = {
 		{
 			name: 'disabled',
 			type: 'boolean',
-			default: 'false'
+			default: 'false',
+			description: 'Disables the pin, including all the inputs.'
 		},
 		{
 			name: 'type',
 			type: `'text' | 'password'`,
-			default: `'text'`
+			default: `'text'`,
+			description: 'The display type for the inputs. Use password to hide the values.'
 		},
 		{
 			name: 'placeholder',
@@ -76,7 +78,8 @@ const input: APIReference = {
 		},
 		{
 			name: 'disabled',
-			type: 'boolean'
+			type: 'boolean',
+			description: 'If the pin component is disabled or not.'
 		}
 	],
 	dataAttrs: [

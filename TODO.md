@@ -19,3 +19,7 @@ Website:
 
 - [ ] Light mode
 - [ ] Mobile view
+
+Other stuff
+
+- Check if disabled/options are updating via props.
