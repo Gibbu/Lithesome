@@ -17,6 +17,9 @@
 			{#if a.description}
 				<p>{a.description}</p>
 			{/if}
+			{#if a.childOf}
+				<blockquote class="text-xs">This component is a child of <code>{a.childOf}</code></blockquote>
+			{/if}
 			{#if a.props}
 				<table>
 					<thead>

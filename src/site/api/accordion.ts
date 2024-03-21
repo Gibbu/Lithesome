@@ -1,4 +1,4 @@
-import { defaultProps } from './_helpers.js';
+import { use, self, transition } from './_helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const accordion: APIReference = {
@@ -11,7 +11,8 @@ const accordion: APIReference = {
 			type: 'boolean',
 			description: 'Allow only 1 <AccordionItem /> to be opened at a given time.'
 		},
-		...defaultProps('Div')
+		use,
+		self('Div')
 	],
 	childrenProps: [
 		{
@@ -32,7 +33,8 @@ const item: APIReference = {
 			default: 'false',
 			description: 'Disables the item, disallowing it from opening.'
 		},
-		...defaultProps('Div')
+		use,
+		self('Div')
 	],
 	childrenProps: [
 		{
@@ -60,14 +62,15 @@ const heading: APIReference = {
 			type: '1 | 2 | 3 | 4 | 5 | 6',
 			description: 'The heading level to use for the header. This will be set as the aria-level attribute.'
 		},
-		...defaultProps('Div')
+		use,
+		self('Div')
 	]
 };
 
 const button: APIReference = {
 	name: 'AccordionButton',
 	childOf: heading.name,
-	props: [...defaultProps('Button')],
+	props: [use, self('Div')],
 	childrenProps: [
 		{
 			name: 'active',
@@ -99,7 +102,7 @@ const button: APIReference = {
 const content: APIReference = {
 	name: 'AccordionContent',
 	childOf: accordion.name,
-	props: [...defaultProps('Div')],
+	props: [use, self('Div'), transition],
 	childrenProps: [
 		{
 			name: 'active',

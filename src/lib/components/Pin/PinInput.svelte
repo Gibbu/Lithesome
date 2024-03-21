@@ -12,15 +12,13 @@
 	import { onMount, tick } from 'svelte';
 
 	interface Props extends Omit<BaseProps<HTMLInputElement, { filled: boolean; disabled: boolean }>, 'children'> {
-		/** The HTML Input element name attribute. */
-		name?: string;
 		onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
 		onInput?: Handler<Event, HTMLInputElement>;
 		onFocus?: Handler<FocusEvent, HTMLInputElement>;
 		onBlur?: Handler<FocusEvent, HTMLInputElement>;
 	}
 
-	let { class: klass, use = [], self, name, onKeydown, onInput, onFocus, onBlur, ...props }: Props = $props();
+	let { class: klass, use = [], self, onKeydown, onInput, onFocus, onBlur, ...props }: Props = $props();
 	let value = $state<string>('');
 
 	const API = context();
@@ -115,7 +113,6 @@
 	bind:value
 	id={uid()}
 	class={classProp}
-	{name}
 	disabled={API.disabled}
 	placeholder={focused ? '' : API.placeholder}
 	data-pininput=""

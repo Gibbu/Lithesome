@@ -1,13 +1,21 @@
-import { defaultProps } from './_helpers.js';
+import { self, use, transition } from './_helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const menu: APIReference = {
 	name: 'Menu',
 	description: 'The base component that manages and controls state.',
+	props: [use, self('Div')],
 	childrenProps: [
 		{
 			name: 'visible',
 			type: 'boolean',
+			description: 'Whether the dropdown component is visible.'
+		}
+	],
+	dataAttrs: [
+		{
+			name: 'state',
+			value: `'opened' | 'closed'`,
 			description: 'Whether the dropdown component is visible.'
 		}
 	]
@@ -17,6 +25,7 @@ const trigger: APIReference = {
 	name: 'MenuTrigger',
 	childOf: menu.name,
 	description: 'The component wrapper for the menu trigger.',
+	props: [use, self('Div')],
 	childrenProps: [
 		{
 			name: 'visible',
@@ -68,7 +77,9 @@ const dropdown: APIReference = {
 			default: 'body',
 			description: 'The target position for the dropdown to portal to.'
 		},
-		...defaultProps('Div')
+		use,
+		self('Div'),
+		transition
 	],
 	dataAttrs: [
 		{
@@ -130,7 +141,9 @@ const item: APIReference = {
 			type: 'boolean',
 			default: 'false',
 			description: 'Disables the item. Disallowing clicking and navigation via mouse or keyboard.'
-		}
+		},
+		self('Button', 'Anchor'),
+		use
 	]
 };
 

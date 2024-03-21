@@ -13,7 +13,8 @@
 	let error = $state('');
 </script>
 
-<Button variant="primary" onclick={() => (visible = true)}>Edit Profile</Button>
+<Button variant="primary" onclick={() => (visible = true)}>Update Password</Button>
+
 <Modal bind:visible>
 	<ModalOverlay
 		class="fixed inset-0 z-10 bg-black/50 backdrop-blur"
@@ -29,9 +30,6 @@
 				<ModalTitle class="mb-2 text-xl font-semibold text-white">Update Password</ModalTitle>
 				<ModalDescription class="text-sm text-neutral-500">Change the password to your account.</ModalDescription>
 			</div>
-			<button type="button" class="focusOutline rounded-md p-2 hover:bg-white/10" onclick={() => (visible = false)}>
-				<Icon src={X} class="h-6 w-6" />
-			</button>
 		</header>
 		<main class="mt-8 flex flex-col gap-6">
 			{#if error}
@@ -59,5 +57,12 @@
 				<Button variant="primary" class="px-10" onclick={() => (visible = !visible)}>Save</Button>
 			</div>
 		</main>
+		<button
+			type="button"
+			class="focusOutline absolute right-6 top-6 rounded-md p-2 hover:bg-white/10"
+			onclick={() => (visible = false)}
+		>
+			<Icon src={X} class="h-6 w-6" />
+		</button>
 	</ModalContent>
 </Modal>

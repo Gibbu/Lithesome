@@ -1,6 +1,6 @@
 import type { Prop } from '$site/types.js';
 
-type HTMLEl = 'Div' | 'Button' | 'Input';
+type HTMLEl = 'Div' | 'Button' | 'Input' | 'Anchor' | 'Heading' | 'Paragraph';
 
 export const transition: Prop = {
 	name: 'transition',
@@ -16,11 +16,9 @@ export const use: Prop = {
 	description:
 		'Any svelte action to be applied to the underlying element.<br>View <a href="/docs/api#use-prop">use api</a> for more info.'
 };
-export const self = (el: HTMLEl): Prop => ({
+export const self = (...el: HTMLEl[]): Prop => ({
 	name: 'self',
-	type: `HTML${el}Element`,
+	type: el.map((e) => `HTML${e}Element`).join(' | '),
 	default: '——',
 	description: 'The underlying html element that you can use to bind to.'
 });
-
-export const defaultProps = (el: HTMLEl) => [self(el), use, transition];

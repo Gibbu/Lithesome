@@ -1,4 +1,4 @@
-import { defaultProps } from './_helpers.js';
+import { use, self } from './_helpers.js';
 import type { APIReference } from '../types.js';
 
 const checkbox: APIReference = {
@@ -22,7 +22,8 @@ const checkbox: APIReference = {
 			default: 'false',
 			description: 'Disables the checkbox, disallowing the toggling of states.'
 		},
-		...defaultProps('Button')
+		use,
+		self('Input')
 	],
 	childrenProps: [
 		{

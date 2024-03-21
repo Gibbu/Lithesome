@@ -12,7 +12,7 @@
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { filled: boolean }> {
-		value: string[];
+		value?: string[];
 		disabled?: boolean;
 		type?: 'text' | 'password';
 		placeholder?: string;
@@ -25,7 +25,7 @@
 		use = [],
 		class: klass,
 		self,
-		value,
+		value = [],
 		disabled = false,
 		type = 'text',
 		placeholder = '○',
