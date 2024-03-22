@@ -11,4 +11,19 @@ description: 'Display content over the window without taking away focus from the
 
 <Preview {component} />
 
+## Structure
+
+```svelte
+<script>
+	import { Popover, PopoverTrigger, PopoverContent } from 'lithesome';
+</script>
+
+<Popover>
+	<PopoverTrigger>
+		<button></button>
+	</PopoverTrigger>
+	<PopoverContent />
+</Popover>
+```
+
 <API {data} />

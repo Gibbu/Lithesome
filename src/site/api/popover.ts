@@ -77,7 +77,7 @@ const content: APIReference = {
 		{
 			name: 'portalTarget',
 			type: 'strng | HTMLElement',
-			default: 'body',
+			default: `'body'`,
 			description: 'The target position for the content to be mounted.'
 		},
 		transition,

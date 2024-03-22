@@ -1,6 +1,6 @@
 import type { Prop } from '$site/types.js';
 
-type HTMLEl = 'Div' | 'Button' | 'Input' | 'Anchor' | 'Heading' | 'Paragraph';
+type HTMLEl = 'Div' | 'Button' | 'Input' | 'Anchor' | 'Heading' | 'Paragraph' | 'Span';
 
 export const transition: Prop = {
 	name: 'transition',

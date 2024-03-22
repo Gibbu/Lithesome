@@ -9,7 +9,7 @@
 		{ value: 'aang', label: 'Avatar Aang' },
 		{ value: 'zuko', label: 'Firelord Zuko' },
 		{ value: 'sokka', label: 'Councilman Sokka' },
-		{ value: 'katara', label: 'Katara' },
+		{ value: 'katara', label: 'Katara', disabled: true },
 		{ value: 'toph', label: 'Greatest Earthbender Alive' }
 	];
 	let value = $state('aang');
@@ -24,14 +24,16 @@
 	</SelectTrigger>
 	<SelectDropdown
 		sameWidth
-		class="origin-top-left rounded-xl border border-white/20 bg-black/75 p-2 shadow-xl backdrop-blur"
+		class="origin-top rounded-xl border border-white/20 bg-black/75 p-2 shadow-xl backdrop-blur"
 		transition={[scale, { start: 0.8, duration: 150 }]}
 	>
-		{#each options as { value, label }}
+		{#each options as { value, label, disabled }}
 			<SelectOption
 				{value}
+				{disabled}
 				class={({ hovered, selected }) =>
 					cn(
+						disabled ? 'text-white/30' : '',
 						hovered ? 'bg-white/10 text-white' : '',
 						selected ? 'text-violet-500' : '',
 						'flex w-full items-center gap-2 truncate rounded-md px-3.5 py-2.5 text-sm'

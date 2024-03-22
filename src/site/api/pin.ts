@@ -120,7 +120,7 @@ const value: APIReference = {
 		{
 			name: 'name',
 			type: 'string',
-			default: '',
+			default: '——',
 			description: 'The name of the input element, used for native form submissions.'
 		},
 		use,

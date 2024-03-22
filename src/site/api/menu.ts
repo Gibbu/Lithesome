@@ -74,7 +74,7 @@ const dropdown: APIReference = {
 		{
 			name: 'portalTarget',
 			type: 'strng | HTMLElement',
-			default: 'body',
+			default: `'body'`,
 			description: 'The target position for the dropdown to be mounted.'
 		},
 		use,
