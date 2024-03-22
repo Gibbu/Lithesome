@@ -11,7 +11,7 @@
 	import { createUID, useActions, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
-	interface Props extends BaseProps<HTMLDivElement> {
+	interface Props extends BaseProps<HTMLDivElement, { active: string }> {
 		orientation?: 'vertical' | 'horizontal';
 		value?: string;
 	}
@@ -23,7 +23,7 @@
 		orientation,
 		value
 	});
-	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
+	const classProp = $derived(typeof klass === 'function' ? klass({ active: API.activeTab }) : klass);
 	setContext(contextName, API);
 
 	$effect(() => {
@@ -38,7 +38,8 @@
 	class={classProp}
 	data-tabs=""
 	data-orientation={orientation}
+	data-active={API.activeTab}
 	{...props}
 >
-	{@render children({})}
+	{@render children({ active: API.activeTab })}
 </div>

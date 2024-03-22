@@ -26,6 +26,9 @@ export const createContext = (uid: UID, value: JsonValue, hooks?: Hooks) => {
 		},
 		navigateItems(action: CalcIndexAction) {
 			selectedIndex = calculateIndex(action, items, selectedIndex);
+			(
+				document.querySelector(`[data-radiogroupitem][data-value="${selectedItem.value}"]`) as HTMLButtonElement
+			)?.focus();
 		},
 		setSelected(item: Item) {
 			selectedIndex = items.findIndex((el) => el.value === item.value);
