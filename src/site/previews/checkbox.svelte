@@ -12,8 +12,8 @@
 		bind:checked
 		id="checkbox"
 		class={cn(
-			'flex h-8 w-8 rounded-md border border-white/10 bg-white/5',
-			checked ? 'border-white bg-white text-black' : ''
+			'flex h-8 w-8 rounded-md border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5',
+			checked ? 'border-black bg-black text-white dark:border-white dark:bg-white dark:text-black' : ''
 		)}
 	>
 		{#if checked}

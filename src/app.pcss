@@ -8,7 +8,13 @@
 		--accent: theme(colors.teal.500);
 		--nav-height: theme(size.24);
 	}
+
 	::selection {
+		background: theme(colors.teal.500);
+		color: theme(colors.white);
+	}
+
+	.dark ::selection {
 		background: theme(colors.teal.600);
 		color: theme(colors.black);
 	}
@@ -22,9 +28,12 @@
 		@apply flex items-center justify-center;
 	}
 	.focusOutline {
-		@apply focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-white;
+		@apply focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-black dark:focus:outline-white;
 	}
 	.highlight {
+		box-shadow: inset 0px 1px 0 1px hsl(0 0 0% / 0.05);
+	}
+	.dark .highlight {
 		box-shadow: inset 0px 1px 0 1px hsl(0 0 100% / 0.05);
 	}
 }

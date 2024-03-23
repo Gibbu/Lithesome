@@ -13,7 +13,11 @@
 <div class="flex flex-col gap-12">
 	{#each data as a}
 		<div>
-			<h3 class="inline-block rounded-md border border-white/10 bg-white/5 px-4 py-1 font-mono text-white">{a.name}</h3>
+			<h3
+				class="inline-block rounded-md border border-black/15 bg-black/5 px-4 py-1 font-mono text-black dark:border-white/10 dark:bg-white/5 dark:text-white"
+			>
+				{a.name}
+			</h3>
 			{#if a.description}
 				<p>{a.description}</p>
 			{/if}
@@ -33,7 +37,7 @@
 						{#each a.props as p}
 							<tr>
 								<td>
-									<code class="rounded-md bg-white/10 px-2 py-1">{p.name}</code>
+									<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">{p.name}</code>
 									{#if p.required}
 										<span class="text-red-500">*</span>
 									{/if}
@@ -67,7 +71,7 @@
 						{#each a.childrenProps as c}
 							<tr>
 								<td>
-									<code class="rounded-md bg-white/10 px-2 py-1">{c.name}</code>
+									<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">{c.name}</code>
 								</td>
 								<td>
 									<code>{c.type}</code>
@@ -93,7 +97,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<code class="rounded-md bg-white/10 px-2 py-1">data-{a.name.toLowerCase()}</code>
+							<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">data-{a.name.toLowerCase()}</code>
 						</td>
 						<td>
 							<code>''</code>
@@ -103,7 +107,7 @@
 					{#each a.dataAttrs || [] as d}
 						<tr>
 							<td>
-								<code class="rounded-md bg-white/10 px-2 py-1">data-{d.name}</code>
+								<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">data-{d.name}</code>
 							</td>
 							<td>
 								<code>{d.value}</code>
@@ -130,7 +134,7 @@
 						{#each a.events as e}
 							<tr>
 								<td>
-									<code class="rounded-md bg-white/10 px-2 py-1">{e.name}</code>
+									<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">{e.name}</code>
 								</td>
 								<td>
 									{#each e.params as param}

@@ -18,11 +18,16 @@
 	];
 </script>
 
-<Accordion single class="w-full max-w-[70%] rounded-md border border-white/10 bg-white/5">
+<Accordion
+	single
+	class="w-full max-w-[70%] rounded-md border border-neutral-300 bg-white dark:border-white/10 dark:bg-white/5"
+>
 	{#each items as { title, content }}
-		<AccordionItem class="border-b border-white/10 last:border-none" {disabled}>
+		<AccordionItem class="border-b border-neutral-300 last:border-none dark:border-white/10" {disabled}>
 			<AccordionHeading>
-				<AccordionButton class="flex w-full items-center justify-between gap-4 p-4 hover:bg-white/5">
+				<AccordionButton
+					class="flex w-full items-center justify-between gap-4 p-4 hover:bg-black/[0.03] dark:hover:bg-white/5"
+				>
 					{#snippet children({ active })}
 						{title}
 						<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />

@@ -17,19 +17,20 @@
 			{value}
 			class={({ checked }) =>
 				cn(
-					'flex w-full items-center gap-4 rounded-md border border-neutral-700 bg-neutral-800/50 p-4 backdrop-blur',
-					checked ? 'bg-white text-black' : ''
+					'flex w-full items-center gap-4 rounded-md border p-4 backdrop-blur',
+					'border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-800',
+					checked ? 'bg-black text-white dark:bg-white dark:text-black' : ''
 				)}
 		>
 			{#snippet children({ checked })}
 				<div
 					class={cn(
 						'flex h-6 w-6 items-center justify-center rounded-full border-2',
-						checked ? 'border-black' : 'border-white'
+						checked ? 'border-white dark:border-black' : 'border-black dark:border-white'
 					)}
 				>
 					{#if checked}
-						<div class="h-3 w-3 rounded-full bg-black" />
+						<div class="h-3 w-3 rounded-full bg-white dark:bg-black" />
 					{/if}
 				</div>
 				{label}

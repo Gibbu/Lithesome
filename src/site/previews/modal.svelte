@@ -23,12 +23,14 @@
 	/>
 	<ModalContent
 		transition={[fly, { y: 15, duration: 150 }]}
-		class="fixed left-1/2 top-1/2 z-20 w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-white/10 bg-neutral-950/95 p-8 shadow-xl"
+		class="fixed left-1/2 top-1/2 z-20 w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-neutral-500 bg-white/95 p-8 shadow-xl dark:border-white/10 dark:bg-neutral-950/95"
 	>
 		<header class="flex items-center justify-between">
 			<div>
-				<ModalTitle class="mb-2 text-xl font-semibold text-white">Update Password</ModalTitle>
-				<ModalDescription class="text-sm text-neutral-500">Change the password to your account.</ModalDescription>
+				<ModalTitle class="mb-2 text-xl font-semibold text-black dark:text-white">Update Password</ModalTitle>
+				<ModalDescription class="text-sm text-neutral-400 dark:text-neutral-500">
+					Change the password to your account.
+				</ModalDescription>
 			</div>
 		</header>
 		<main class="mt-8 flex flex-col gap-6">
@@ -59,7 +61,7 @@
 		</main>
 		<button
 			type="button"
-			class="focusOutline absolute right-6 top-6 rounded-md p-2 hover:bg-white/10"
+			class="focusOutline absolute right-6 top-6 rounded-md p-2 hover:bg-black/10 dark:hover:bg-white/10"
 			onclick={() => (visible = false)}
 		>
 			<Icon src={X} class="h-6 w-6" />

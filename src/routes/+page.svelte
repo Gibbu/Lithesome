@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, copy } from '$site/index.js';
+	import { Button, cn, copy } from '$site/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Copy, Check } from '@steeze-ui/lucide-icons';
 	import { version } from '$app/environment';
@@ -14,11 +14,17 @@
 </script>
 
 <div class="relative flex h-[500px] flex-col items-center justify-center text-center">
-	<div class="rounded-full border border-teal-400/50 bg-teal-400/10 px-8 py-1 text-xs text-teal-400 backdrop-blur">
+	<div
+		class={cn(
+			'rounded-full border   px-8 py-1 text-xs  backdrop-blur',
+			'border-teal-300 bg-teal-400/20 text-teal-500',
+			'dark:border-teal-400/50 dark:bg-teal-400/10 dark:text-teal-400'
+		)}
+	>
 		v{version}
 	</div>
-	<h1 class="mb-2 text-8xl font-semibold tracking-wider text-white">Lithesome</h1>
-	<h3 class="text-2xl text-neutral-300">An unstyled component library for Svelte 5.</h3>
+	<h1 class="text-800 mb-2 text-8xl font-semibold tracking-wider dark:text-white">Lithesome</h1>
+	<h3 class="text-2xl text-neutral-600 dark:text-neutral-300">An unstyled component library for Svelte 5.</h3>
 	<div class="mt-10 flex items-center gap-4">
 		<Button variant="primary" size="lg" href="/docs">Get Started</Button>
 		<Button variant="secondary" size="lg" use={[[copy, { on: 'click', onSuccess: copySuccess }]]}>

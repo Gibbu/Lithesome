@@ -48,16 +48,16 @@
 	];
 </script>
 
-<Tabs class="w-full max-w-[70%] rounded-md border border-white/10 bg-white/5">
-	<TabsList class="flex border-b border-white/10">
+<Tabs class="w-full max-w-[70%] rounded-md border border-neutral-300 bg-white dark:border-white/10 dark:bg-white/5">
+	<TabsList class="flex border-b border-neutral-300 dark:border-white/10">
 		{#each tabs as tab}
 			<TabsButton
 				value={tab.btn}
 				class={({ active }) =>
 					cn(
-						'relative flex-1 border-r border-white/10 py-4 text-center capitalize last:border-r-0',
-						'hover:bg-white/5',
-						active ? 'text-white' : ''
+						'relative flex-1 border-r py-4 text-center capitalize last:border-r-0',
+						'border-neutral-300 hover:bg-black/[0.035] dark:border-white/10 dark:hover:bg-white/5',
+						active ? 'text-black dark:text-white' : ''
 					)}
 			>
 				{#snippet children({ active })}
@@ -72,9 +72,9 @@
 	{#each tabs as tab}
 		<TabsContent value={tab.btn} class="p-4">
 			{#each tab.content as { title, date }}
-				<div class="rounded-md px-5 py-2 hover:bg-white/5">
-					<h4 class="font-medium text-white">{title}</h4>
-					<p class="text-neutral-400">
+				<div class="rounded-md px-5 py-2 hover:bg-black/[0.035] dark:hover:bg-white/5">
+					<h4 class="font-medium text-black dark:text-white">{title}</h4>
+					<p class="text-neutral-500 dark:text-neutral-400">
 						{#if date.date}
 							<span>{date.date} -</span>
 						{/if}

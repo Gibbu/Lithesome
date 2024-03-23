@@ -16,8 +16,9 @@
 	use:useActions={use}
 	bind:value
 	class={cn(
-		'rounded-md border border-white/10 bg-white/5 px-2.5 py-2 text-sm font-semibold',
-		'hover:border-white/20',
+		'rounded-md border px-2.5 py-2 text-sm font-semibold',
+		'border-neutral-300 bg-black/5 dark:border-white/10 dark:bg-white/5',
+		'hover:border-neutral-400 dark:hover:border-white/20',
 		'focusOutline',
 		classProp
 	)}
