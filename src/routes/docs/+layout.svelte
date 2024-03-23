@@ -6,10 +6,10 @@
 	import { Github } from '@steeze-ui/lucide-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 
-	let { data } = $props();
+	let { data, children } = $props();
 
-	let navLinkClass = 'flex items-center rounded-md pl-6 pr-2.5 py-2.5 text-sm font-medium mb-1';
-	let navLinkActive = 'bg-white/10 text-white';
+	let navLinkClass = 'flex items-center rounded-md px-3.5 py-2 text-sm font-semibold mb-1 border border-transparent';
+	let navLinkActive = 'bg-neutral-900 text-white border-neutral-900';
 
 	const active = (route: string) => {
 		if (!route || (route === '/' && $page.url.pathname === '/docs')) return true;
@@ -23,9 +23,6 @@
 	};
 </script>
 
-{#snippet pill()}
-	<div class="absolute left-0 h-5 w-1 rounded-full bg-violet-500" />
-{/snippet}
 {#snippet badge(type: 'soon' | 'updated' | 'new')}
 	<div
 		class={cn(
@@ -39,13 +36,12 @@
 	</div>
 {/snippet}
 
-<nav class="fixed left-0 top-0 z-10 h-[64px] w-full border-b border-white/10 bg-black/35 backdrop-blur">
+<nav class="h-[var(--nav-height)]">
 	<div class="wrap flex h-full items-center justify-between">
 		<div class="flex items-center gap-4">
-			<a href="/" class="text-xl font-semibold tracking-widest text-neutral-300 hover:text-white">
+			<a href="/" class="pl-3.5 text-xl font-semibold tracking-widest text-neutral-300 hover:text-white">
 				<span class="font-black text-white">L</span>ithesome
 			</a>
-			<a href="/docs" class="ml-4 text-sm font-semibold hover:text-white">Docs</a>
 		</div>
 		<div class="flex items-center">
 			<a
@@ -60,8 +56,8 @@
 	</div>
 </nav>
 
-<div class="wrap mt-[64px] grid h-full grid-cols-[220px,1fr] items-start gap-16">
-	<aside class="sticky top-4 h-[calc(100vh-64px)] py-16">
+<div class="wrap grid grid-cols-[190px,1fr] items-start gap-6">
+	<aside class="sticky top-4 h-[calc(100vh-var(--nav-height))] overflow-auto pb-16">
 		<ul class="h-full">
 			{#each data.routes as route}
 				<li>
@@ -71,9 +67,6 @@
 							class={cn(navLinkClass, active(route.path) ? navLinkActive : 'hover:bg-white/5')}
 						>
 							<span class="flex-1">{route.title}</span>
-							{#if active(route.path)}
-								{@render pill()}
-							{/if}
 							{#if route.badge}
 								{@render badge(route.badge)}
 							{/if}
@@ -81,7 +74,7 @@
 					{/if}
 
 					{#if route.folder}
-						<h3 class="ml-6 mt-8 text-xs font-bold uppercase text-neutral-500">{route.folder}</h3>
+						<h3 class="ml-3.5 mt-8 text-xs font-bold uppercase text-neutral-500">{route.folder}</h3>
 						<ul class="mt-2">
 							{#each route.children as subRoute}
 								<li>
@@ -91,9 +84,6 @@
 									>
 										<span class="flex-1">{subRoute.title}</span>
 										{#if active(subRoute.path)}
-											{@render pill()}
-										{/if}
-										{#if subRoute.badge}
 											{@render badge(subRoute.badge)}
 										{/if}
 									</a>
@@ -105,12 +95,9 @@
 			{/each}
 		</ul>
 	</aside>
-	<article class="py-16">
-		{#if !hideEarlyDev}
-			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>
-				This package and docs are still under very early development. Expect things to be broken.
-			</Banner>
-		{/if}
-		<slot />
-	</article>
+	<main
+		class="bg-neutral-920/70 highlight min-h-[calc(100vh-var(--nav-height))] w-full rounded-tl-xl rounded-tr-xl p-12"
+	>
+		{@render children()}
+	</main>
 </div>

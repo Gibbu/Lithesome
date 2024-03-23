@@ -16,6 +16,11 @@ const config = {
 					'Segoe UI Symbol',
 					'Noto Color Emoji'
 				]
+			},
+			colors: {
+				neutral: {
+					920: '#0f0f0f'
+				}
 			}
 		}
 	},

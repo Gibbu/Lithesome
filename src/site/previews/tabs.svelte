@@ -63,7 +63,7 @@
 				{#snippet children({ active })}
 					{tab.btn}
 					{#if active}
-						<div class="absolute bottom-2 left-1/2 h-1 w-8 -translate-x-1/2 rounded-xl bg-violet-500"></div>
+						<div class="absolute bottom-2 left-1/2 h-1 w-8 -translate-x-1/2 rounded-xl bg-teal-500"></div>
 					{/if}
 				{/snippet}
 			</TabsButton>

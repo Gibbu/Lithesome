@@ -5,7 +5,12 @@
 
 @layer base {
 	:root {
-		--accent: theme(colors.violet.500);
+		--accent: theme(colors.teal.500);
+		--nav-height: theme(size.24);
+	}
+	::selection {
+		background: theme(colors.teal.600);
+		color: theme(colors.black);
 	}
 }
 
@@ -19,10 +24,13 @@
 	.focusOutline {
 		@apply focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-white;
 	}
+	.highlight {
+		box-shadow: inset 0px 1px 0 1px hsl(0 0 100% / 0.05);
+	}
 }
 
 pre {
-	@apply relative rounded-md border dark:border-white/10 dark:!bg-black/40;
+	@apply relative rounded-md border dark:border-neutral-800 dark:!bg-neutral-900/50;
 }
 pre .language-id {
 	@apply pointer-events-none absolute right-4 top-2 select-none text-xs text-white/30;

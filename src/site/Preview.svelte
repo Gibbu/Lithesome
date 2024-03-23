@@ -11,11 +11,6 @@
 	let { component, class: klass }: Props = $props();
 </script>
 
-<div
-	class={cn(
-		'not-prose flex-centre min-h-[450px] rounded-xl border border-white/15 bg-black/30 p-8 backdrop-blur',
-		klass
-	)}
->
+<div class={cn('not-prose flex-centre highlight min-h-[450px] rounded-xl bg-neutral-900 p-8 backdrop-blur', klass)}>
 	<svelte:component this={component} />
 </div>

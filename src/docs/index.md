@@ -7,7 +7,7 @@ order: 1
 Why make this and not use [MeltUI](https://melt-ui.com) or [BitsUI](https://bits-ui.com)?  
 I wanted to make this for 3 reasons:
 
-1. I don't enjoy the builder pattern that Melt uses, though it does give you ultimate control. Bits is using Melt under the hood, which in turn uses Svelte 4 and stores.
+1. I don't enjoy the builder pattern that Melt uses, though it does give you ultimate control. And Bits is using Melt under the hood, which in turn uses Svelte 4 and stores.
 2. I wanted to try out all the new features of Svelte 5.
 3. This originally was something I was buiilding for another project I'm working on, but decided I liked it a lot that others might too. I will also be using this in all my new projects.
 

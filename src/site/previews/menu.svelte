@@ -19,7 +19,7 @@
 	</MenuTrigger>
 	<MenuDropdown
 		transition={[scale, { start: 0.8, duration: 150 }]}
-		class="w-[215px] origin-top rounded-xl border border-white/20 bg-black/50 p-2 shadow-xl backdrop-blur"
+		class="w-[215px] origin-top translate-y-1 rounded-xl border border-neutral-700 bg-neutral-900 p-2 shadow-xl shadow-[#111] backdrop-blur"
 		constrainViewport
 	>
 		{#each menuitems as { label, icon, danger, disabled }}
@@ -37,7 +37,7 @@
 				<Icon src={icon} class="h-4 w-4" />
 				{label}
 				{#if disabled}
-					<span class="rounded-md bg-violet-500/40 px-2 py-0.5 text-xs text-violet-300">Soon</span>
+					<span class="rounded-md bg-teal-500/30 px-2 py-0.5 text-xs text-teal-300">Soon</span>
 				{/if}
 			</MenuItem>
 		{/each}

@@ -14,9 +14,7 @@
 </script>
 
 <div class="relative flex h-[500px] flex-col items-center justify-center text-center">
-	<div
-		class="rounded-full border border-violet-400/50 bg-violet-400/10 px-8 py-1 text-xs text-violet-400 backdrop-blur"
-	>
+	<div class="rounded-full border border-teal-400/50 bg-teal-400/10 px-8 py-1 text-xs text-teal-400 backdrop-blur">
 		v{version}
 	</div>
 	<h1 class="mb-2 text-8xl font-semibold tracking-wider text-white">Lithesome</h1>

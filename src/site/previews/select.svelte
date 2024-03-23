@@ -24,7 +24,7 @@
 	</SelectTrigger>
 	<SelectDropdown
 		sameWidth
-		class="origin-top rounded-xl border border-white/20 bg-black/75 p-2 shadow-xl backdrop-blur"
+		class="origin-top translate-y-1 rounded-xl border border-neutral-700 bg-neutral-900 p-2 shadow-xl shadow-[#111] backdrop-blur"
 		transition={[scale, { start: 0.8, duration: 150 }]}
 	>
 		{#each options as { value, label, disabled }}
@@ -35,7 +35,7 @@
 					cn(
 						disabled ? 'text-white/30' : '',
 						hovered ? 'bg-white/10 text-white' : '',
-						selected ? 'text-violet-500' : '',
+						selected ? 'text-teal-500' : '',
 						'flex w-full items-center gap-2 truncate rounded-md px-3.5 py-2.5 text-sm'
 					)}
 			>

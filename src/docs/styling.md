@@ -92,7 +92,7 @@ Each `class` prop exposed by the Lithesome components can be used as a function,
 	class={({ hovered, selected }) =>
 		clsx(
 			hovered && !selected ? 'bg-lime-400' : '',
-			selected ? 'bg-violet-500' : '',
+			selected ? 'bg-teal-500' : '',
 			'rounded-md px-4 py-2 text-xs font-medium'
 		)}
 >

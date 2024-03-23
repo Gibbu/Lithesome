@@ -27,7 +27,7 @@
 		<Button variant="primary">Resources</Button>
 	</PopoverTrigger>
 	<PopoverContent
-		class="w-[450px] origin-top translate-y-2 rounded-xl border border-white/20 bg-black/50 p-4 shadow-xl backdrop-blur"
+		class="w-[450px] origin-top translate-y-2 rounded-xl border border-neutral-700 bg-neutral-900 p-4 shadow-xl shadow-[#111]"
 		transition={[scale, { start: 0.9, duration: 150 }]}
 	>
 		{#each items as { name, children }}

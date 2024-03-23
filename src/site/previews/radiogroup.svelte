@@ -17,7 +17,7 @@
 			{value}
 			class={({ checked }) =>
 				cn(
-					'flex w-full gap-4 rounded-md border border-white/20 bg-white/5 p-4 backdrop-blur',
+					'flex w-full items-center gap-4 rounded-md border border-neutral-700 bg-neutral-800/50 p-4 backdrop-blur',
 					checked ? 'bg-white text-black' : ''
 				)}
 		>
