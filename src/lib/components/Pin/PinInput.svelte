@@ -16,10 +16,10 @@
 		onInput?: Handler<Event, HTMLInputElement>;
 		onFocus?: Handler<FocusEvent, HTMLInputElement>;
 		onBlur?: Handler<FocusEvent, HTMLInputElement>;
+		onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
 	}
 
-	let { class: klass, use = [], self, onKeydown, onInput, onFocus, onBlur, ...props }: Props = $props();
-	let value = $state<string>('');
+	let { class: klass, use = [], self, onKeydown, onInput, onFocus, onBlur, onPaste, ...props }: Props = $props();
 
 	const API = context();
 	const { uid } = createUID('input');
@@ -28,36 +28,35 @@
 	);
 	const index = $derived(API.inputs.indexOf(uid()));
 	let focused = $state<boolean>(false);
+	let value = $derived<string>(API.value[index] || '');
 
 	onMount(() => {
 		if (!API) log.error('<PinInput /> must be a direct child of <Pin />');
 		API.register(uid());
 	});
 
-	$effect(() => {
-		API.setValue(index, value);
-	});
-
 	const handleInput = async (event: HandlerParam<Event, HTMLInputElement>) => {
 		onInput?.(event);
 		if (API.disabled) return;
-		const e = event as unknown as InputEvent;
+		const e = event as unknown as InputEvent & { target: HTMLInputElement };
 
-		if (e.inputType !== 'insertText') return;
+		if (e.inputType !== 'insertText' && e.inputType !== 'deleteContentBackward') return;
 		await tick();
-		if (value.length > 1) {
-			value = e.data!;
-		}
+
+		API.setValue(index, e.data!);
 		if (value.length === 1) {
 			moveFocus('next');
 			return;
 		}
 	};
-	const handleKeyDown = (e: HandlerParam<KeyboardEvent, HTMLInputElement>) => {
+	const handleKeyDown = async (e: HandlerParam<KeyboardEvent, HTMLInputElement>) => {
 		onKeydown?.(e);
 		if (API.disabled) return;
 		const { key } = e;
 
+		if (key === KEYS.delete) {
+			API.setValue(index, '');
+		}
 		if (key === KEYS.home) {
 			e.preventDefault();
 			moveFocus('first');
@@ -74,16 +73,15 @@
 			e.preventDefault();
 			moveFocus('next');
 		}
-		if (index === API.inputs.length - 1 && value.length === 0 && key === KEYS.backspace) {
-			moveFocus('prev');
-			return;
-		}
-		if (key === KEYS.backspace && value.length === 0) {
+		if (
+			(index === API.inputs.length - 1 && value.length === 0 && key === KEYS.backspace) ||
+			(key === KEYS.backspace && value.length === 0)
+		) {
+			await tick();
 			moveFocus('prev');
 			return;
 		}
 	};
-
 	const handleFocus = (e: HandlerParam<FocusEvent, HTMLInputElement>) => {
 		onFocus?.(e);
 		if (API.disabled) return;
@@ -93,6 +91,23 @@
 		onBlur?.(e);
 		if (API.disabled) return;
 		focused = false;
+	};
+	const handlePaste = (e: HandlerParam<ClipboardEvent, HTMLInputElement>) => {
+		onPaste?.(e);
+
+		if (!e.clipboardData) return;
+		e.preventDefault();
+
+		const data = e.clipboardData.getData('text');
+		if (data.length < 1) return;
+
+		const values = data.split('');
+		if (values.length === 0) return;
+
+		API.inputs.forEach((_, i) => {
+			API.setValue(i, values[i]);
+		});
+		moveFocus('last');
 	};
 
 	const moveFocus = (direction: 'next' | 'prev' | 'first' | 'last') => {
@@ -110,7 +125,7 @@
 <input
 	bind:this={self}
 	use:useActions={use}
-	bind:value
+	{value}
 	id={uid()}
 	class={classProp}
 	disabled={API.disabled}
@@ -121,5 +136,6 @@
 	onkeydown={handleKeyDown}
 	onfocus={handleFocus}
 	onblur={handleBlur}
+	onpaste={handlePaste}
 	{...props}
 />

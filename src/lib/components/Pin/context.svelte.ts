@@ -19,7 +19,7 @@ export const createContext = (uid: UID, defaults: Defaults, hooks: Hooks) => {
 	let placeholder = $state<string>(defaults.placeholder);
 
 	const transformedValue = $derived(value.join(''));
-	const filled = $derived(value.every((el) => el.length));
+	const filled = $derived(value.every((el) => el?.length));
 
 	$effect(() => {
 		hooks.onChange(transformedValue);

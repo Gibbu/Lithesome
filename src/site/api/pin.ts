@@ -109,6 +109,11 @@ const input: APIReference = {
 			name: 'onBlur',
 			params: ['e: FocusEvent'],
 			return: 'void'
+		},
+		{
+			name: 'onPaste',
+			params: ['e: ClipboardEvent'],
+			return: 'void'
 		}
 	]
 };

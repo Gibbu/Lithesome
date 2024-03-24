@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { Pin, PinInput, PinValue } from '$lib/index.js';
-
-	// let value = $state<string[]>([]);
 </script>
 
 <Pin class="flex gap-2">

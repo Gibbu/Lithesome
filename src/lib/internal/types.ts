@@ -10,7 +10,7 @@ export type ClassProp<C extends Record<string, any>> = ((props: C) => string) | 
 
 export type Optional<T, K extends keyof T> = Omit<T, K> & { [P in keyof T]?: T[P] | undefined };
 
-export type HandlerParam<E, T extends HTMLElement> = E & { currentTarget: T };
+export type HandlerParam<E, T extends HTMLElement> = E & { currentTarget: EventTarget & T };
 export type Handler<E, T extends HTMLElement> = (e: HandlerParam<E, T>) => void;
 
 // @ts-ignore
