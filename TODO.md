@@ -4,7 +4,7 @@ Components:
 - [x] Tabs
 - [ ] Link Preview
 - [ ] Slider
-- [ ] Popover
+- [x] Popover
 - [x] Switch (Checkbox)
 - [ ] Collapisble
 - [ ] Pagination
@@ -17,7 +17,7 @@ Future plans:
 
 Website:
 
-- [ ] Light mode
+- [x] Light mode
 - [ ] Mobile view
 
 Other stuff

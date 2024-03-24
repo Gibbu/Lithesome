@@ -10,7 +10,8 @@
 	let { data, children } = $props();
 
 	let navLinkClass = 'flex items-center rounded-md px-3.5 py-2 text-sm font-semibold mb-1 border border-transparent';
-	let navLinkActive = 'bg-neutral-900 text-white border-neutral-800';
+	let navLinkActive =
+		'bg-white text-black border-white shadow-md dark:bg-neutral-900 dark:text-white dark:border-neutral-800 dark:shadow-none';
 	let theme = $state<'dark' | 'light'>(isBrowser ? localStorage.theme : 'light');
 	let hideEarlyDev = $state(browser ? localStorage.getItem('earlyDev') : true);
 
@@ -37,8 +38,8 @@
 {#snippet badge(type: 'soon' | 'updated' | 'new')}
 	<div
 		class={cn(
-			'rounded-xl px-3 py-1 text-xs capitalize',
-			type === 'soon' ? 'bg-amber-500/20 text-amber-300' : '',
+			'rounded-xl px-2.5 py-0.5 text-xs capitalize',
+			type === 'soon' ? 'bg-gray-500/20 text-gray-400' : '',
 			type === 'updated' ? 'bg-blue-500/20 text-blue-300' : '',
 			type === 'new' ? 'bg-emerald-500/20 text-emerald-300' : ''
 		)}
@@ -85,7 +86,10 @@
 					{#if route.title}
 						<a
 							href="/docs{route.path === '/' ? '' : '/' + route.path}"
-							class={cn(navLinkClass, active(route.path) ? navLinkActive : 'hover:bg-black/10 dark:hover:bg-white/5')}
+							class={cn(
+								navLinkClass,
+								active(route.path) ? navLinkActive : 'hover:bg-neutral-400/10 dark:hover:bg-white/5'
+							)}
 						>
 							<span class="flex-1">{route.title}</span>
 							{#if route.badge}
@@ -105,13 +109,11 @@
 										href="/docs{subRoute.path === '/' ? '' : '/' + subRoute.path}"
 										class={cn(
 											navLinkClass,
-											active(subRoute.path) ? navLinkActive : 'hover:bg-black/10 dark:hover:bg-white/5'
+											active(subRoute.path) ? navLinkActive : 'hover:bg-neutral-400/10 dark:hover:bg-white/5'
 										)}
 									>
 										<span class="flex-1">{subRoute.title}</span>
-										{#if active(subRoute.path)}
-											{@render badge(subRoute.badge)}
-										{/if}
+										{@render badge(subRoute.badge)}
 									</a>
 								</li>
 							{/each}
