@@ -20,8 +20,12 @@
 	use:useActions={use}
 	class={cn(
 		'flex items-start gap-4 rounded-md border p-4',
-		type === 'info' ? 'border-blue-400/15 bg-blue-500/15 text-blue-300' : '',
-		type === 'warning' ? 'border-amber-400/10 bg-amber-500/10 text-amber-200' : '',
+		type === 'info'
+			? 'border-blue-500/20 bg-blue-600/10 text-blue-500 dark:border-blue-400/15 dark:bg-blue-500/15 dark:text-blue-300'
+			: '',
+		type === 'warning'
+			? 'border-amber-600/20 bg-amber-600/15 text-amber-500 dark:border-amber-400/10 dark:bg-amber-500/10 dark:text-amber-200'
+			: '',
 		klass
 	)}
 	{...props}
