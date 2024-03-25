@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, type BaseProps } from '$lib/internal/index.js';
+	import { createUID, useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { filled: boolean }> {
@@ -47,8 +47,6 @@
 
 	setContext(contextName, API);
 
-	const classProp = $derived(typeof klass === 'function' ? klass({ filled: API.filled }) : klass);
-
 	$effect(() => {
 		API.setType(type);
 		API.setDisabled(disabled);
@@ -63,7 +61,7 @@
 	bind:this={self}
 	use:useActions={use}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass, { filled: API.filled })}
 	aria-disabled={disabled || undefined}
 	data-disabled={disabled || undefined}
 	data-pin=""

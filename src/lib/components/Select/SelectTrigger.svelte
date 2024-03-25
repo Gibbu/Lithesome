@@ -6,6 +6,7 @@
 		removeNodeProps,
 		addEventListeners,
 		useActions,
+		classProp,
 		type BaseProps
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
@@ -73,14 +74,12 @@
 			removeNodeProps(target, 'aria-activedescendant', 'aria-controls');
 		}
 	});
-
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	class={classProp}
+	class={classProp(klass, { visible: API.visible })}
 	data-selecttrigger=""
 	{...props}
 	style="display: contents;"

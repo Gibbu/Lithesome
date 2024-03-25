@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { log, useActions, createUID, type BaseProps } from '$lib/internal/index.js';
+	import { log, useActions, createUID, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { onMount, setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
@@ -21,7 +21,6 @@
 	});
 
 	const active = $derived(API.activeItems.includes(uid()));
-	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
 
 	setContext('accordionitem-id', uid());
 
@@ -34,7 +33,7 @@
 	bind:this={self}
 	use:useActions={use}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass, { active })}
 	data-accordionitem=""
 	data-disabled={disabled || undefined}
 	data-state={active ? 'opened' : 'closed'}

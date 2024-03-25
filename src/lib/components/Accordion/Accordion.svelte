@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, type BaseProps } from '$lib/internal/index.js';
+	import { createUID, useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
@@ -20,11 +20,10 @@
 	const { uid } = createUID('accordion');
 	const API = createContext(uid, single);
 	const active = $derived(API.activeItems.length > 0);
-	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
 
 	setContext(contextName, API);
 </script>
 
-<div bind:this={self} use:useActions={use} id={uid()} class={classProp} data-accordion="" {...props}>
+<div bind:this={self} use:useActions={use} id={uid()} class={classProp(klass, { active })} data-accordion="" {...props}>
 	{@render children({ active })}
 </div>

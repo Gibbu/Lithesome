@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { useActions, type BaseProps, type JsonValue, type Handler, type HandlerParam } from '$lib/internal/index.js';
+	import {
+		useActions,
+		classProp,
+		type BaseProps,
+		type JsonValue,
+		type Handler,
+		type HandlerParam
+	} from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
@@ -46,7 +53,6 @@
 
 	const hovered = $derived(API.hoveredOption?.id === uid());
 	const selected = $derived(!!API.selectedOptions.find((el) => el.value === value));
-	const classProp = $derived(typeof klass === 'function' ? klass({ hovered, selected }) : klass);
 </script>
 
 <button
@@ -54,7 +60,7 @@
 	bind:this={optionEl}
 	use:useActions={use}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass, { hovered, selected })}
 	type="button"
 	{disabled}
 	role="option"

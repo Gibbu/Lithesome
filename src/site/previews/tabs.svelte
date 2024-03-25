@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Tabs, TabsButton, TabsContent, TabsList } from '$lib/index.js';
-	import { cn } from '$site/utils.js';
+	import { cn } from '$site/index.js';
 
 	const tabs = [
 		{

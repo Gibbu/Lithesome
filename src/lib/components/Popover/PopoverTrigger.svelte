@@ -6,6 +6,7 @@
 		addEventListeners,
 		useActions,
 		KEYS,
+		classProp,
 		type BaseProps,
 		type Handler,
 		type HandlerParam
@@ -20,7 +21,6 @@
 	let { children, class: klass, use = [], self, onClick, onKeydown, ...props }: Props = $props();
 
 	const API = context();
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 
 	onMount(() => {
 		if (self && self.children.length > 1) {
@@ -71,6 +71,12 @@
 	};
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp} data-popovertrigger="" {...props}>
+<div
+	bind:this={self}
+	use:useActions={use}
+	class={classProp(klass, { visible: API.visible })}
+	data-popovertrigger=""
+	{...props}
+>
 	{@render children({ visible: API.visible })}
 </div>

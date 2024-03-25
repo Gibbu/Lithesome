@@ -3,7 +3,14 @@
 </script>
 
 <script lang="ts">
-	import { useActions, type BaseProps, type Optional, type Handler, type HandlerParam } from '$lib/internal/index.js';
+	import {
+		useActions,
+		classProp,
+		type BaseProps,
+		type Optional,
+		type Handler,
+		type HandlerParam
+	} from '$lib/internal/index.js';
 
 	interface Props extends Optional<BaseProps<HTMLButtonElement, { checked: Checked }>, 'children'> {
 		checked?: Checked;
@@ -24,8 +31,6 @@
 		...props
 	}: Props = $props();
 
-	const classProp = $derived(typeof klass === 'function' ? klass({ checked }) : klass);
-
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);
 		if (disabled) return;
@@ -38,7 +43,7 @@
 	type="button"
 	bind:this={self}
 	use:useActions={use}
-	class={classProp}
+	class={classProp(klass, { checked })}
 	role="checkbox"
 	aria-checked={checked}
 	aria-required={required}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { useActions, getTransition, type BaseProps, type Transition } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp, type BaseProps, type Transition } from '$lib/internal/index.js';
 	import { getContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
@@ -18,13 +18,12 @@
 	const itemId = getContext<string>('accordionitem-id');
 
 	const active = $derived(API.activeItems.includes(itemId));
-	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
 	const _transition = getTransition(transition);
 	const attrs = $derived({
 		id: API.uid('content'),
 		'data-accordioncontent': '',
 		'data-active': active || undefined,
-		class: classProp
+		class: classProp(klass, { active })
 	} as const);
 </script>
 

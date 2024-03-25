@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, KEYS, isBrowser, type BaseProps } from '$lib/internal/index.js';
+	import { createUID, useActions, KEYS, isBrowser, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
@@ -23,8 +23,6 @@
 			visible = val;
 		}
 	});
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
-
 	setContext(contextName, API);
 
 	const handleKeys = (e: KeyboardEvent) => {
@@ -48,7 +46,7 @@
 	bind:this={self}
 	use:useActions={use}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass, { visible: API.visible })}
 	data-popover=""
 	data-state={API.visible ? 'opened' : 'closed'}
 	{...props}

@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, type BaseProps } from '$lib/internal/index.js';
+	import { createUID, useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: string }> {
@@ -23,7 +23,6 @@
 		orientation,
 		value
 	});
-	const classProp = $derived(typeof klass === 'function' ? klass({ active: API.activeTab }) : klass);
 	setContext(contextName, API);
 
 	$effect(() => {
@@ -35,7 +34,7 @@
 	bind:this={self}
 	id={uid()}
 	use:useActions={use}
-	class={classProp}
+	class={classProp(klass, { active: API.activeTab })}
 	data-tabs=""
 	data-orientation={orientation}
 	data-active={API.activeTab}

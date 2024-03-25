@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, getTransition, type BaseProps, trap, type Transition } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp, type BaseProps, trap, type Transition } from '$lib/internal/index.js';
 	import { context } from './Modal.svelte';
 
 	interface Props extends BaseProps<HTMLDivElement> {
@@ -14,11 +14,10 @@
 	let { children, class: klass, use = [], self, transition, ...props }: Props = $props();
 
 	const API = context();
-	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 	const _transition = getTransition(transition);
 	const attrs = $derived({
 		id: API.uid('content'),
-		class: classProp,
+		class: classProp(klass),
 		role: 'dialog',
 		'aria-modal': 'true',
 		tabindex: -1,

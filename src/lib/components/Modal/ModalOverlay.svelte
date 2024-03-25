@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, getTransition, type BaseProps, type Transition } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp, type BaseProps, type Transition } from '$lib/internal/index.js';
 	import { context } from './Modal.svelte';
 
 	interface Props extends Omit<BaseProps<HTMLDivElement>, 'children'> {
@@ -15,12 +15,11 @@
 
 	const API = context();
 	const _transition = getTransition(transition);
-	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 	const attrs = $derived({
 		id: API.uid('overlay'),
 		'aria-hidden': 'true',
 		'data-modaloverlay': '',
-		class: classProp
+		class: classProp(klass)
 	} as const);
 </script>
 

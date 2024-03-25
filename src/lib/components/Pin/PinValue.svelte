@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import { log, useActions, createUID, type BaseProps } from '$lib/internal/index.js';
+	import { log, useActions, createUID, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
 	interface Props extends Omit<BaseProps<HTMLInputElement>, 'children'> {
@@ -16,7 +16,6 @@
 
 	const API = context();
 	const { uid } = createUID('input');
-	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 
 	onMount(() => {
 		if (!API) log.error('<AccordionItem /> must be a direct child of <Accordion />');
@@ -28,7 +27,7 @@
 	bind:value={API.transformedValue}
 	use:useActions={use}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass)}
 	aria-hidden="true"
 	tabindex="-1"
 	hidden

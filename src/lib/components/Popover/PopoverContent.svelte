@@ -5,10 +5,11 @@
 		anchorElement,
 		portal,
 		useActions,
+		trap,
 		getTransition,
+		classProp,
 		type Transition,
-		type BaseProps,
-		trap
+		type BaseProps
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
@@ -49,12 +50,11 @@
 	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const _transition = getTransition(transition);
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 	const attrs = $derived({
 		id: API.uid('content'),
 		'aria-labelledby': API.uid('trigger'),
 		role: 'menu',
-		class: classProp,
+		class: classProp(klass, { visible: API.visible }),
 		'data-menucontent': ''
 	});
 

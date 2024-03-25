@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Menu.svelte';
-	import { useActions, type BaseProps, type Handler, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps, type Handler, type HandlerParam } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
@@ -31,7 +31,6 @@
 	const { uid } = createUID('item');
 
 	const hovered = $derived(API.hoveredItem === uid());
-	const classProp = $derived(typeof klass === 'function' ? klass({ hovered }) : klass);
 
 	onMount(() => {
 		if (!API.items.includes(uid()) && !disabled) API.register(uid());
@@ -61,7 +60,7 @@
 	bind:this={self}
 	use:useActions={use}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass, { hovered })}
 	href={href || undefined}
 	disabled={disabled || undefined}
 	role="menuitem"

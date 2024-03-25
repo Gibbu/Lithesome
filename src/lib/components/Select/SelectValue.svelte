@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { useActions, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 
 	interface Props extends Omit<BaseProps<HTMLSpanElement, { placeholderVisible: boolean }>, 'children'> {
 		placeholder?: string;
@@ -10,14 +10,13 @@
 
 	const API = context();
 	const placeholderVisible = $derived(API.selectedOptions.length === 0);
-	const classProp = $derived(typeof klass === 'function' ? klass({ placeholderVisible }) : klass);
 </script>
 
 <span
 	bind:this={self}
 	use:useActions={use}
 	id={API.uid('value')}
-	class={classProp}
+	class={classProp(klass, { placeholderVisible })}
 	data-selectvalue=""
 	data-placeholder={placeholderVisible || undefined}
 	{...props}

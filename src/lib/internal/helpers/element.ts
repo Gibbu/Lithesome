@@ -1,28 +1,54 @@
+import { isBrowser } from './is.js';
+
+/**
+ * Sets attributes to a html element.
+ * @param node The element to apply attributes to.
+ * @param attrs The attributes to be applied.
+ */
 export const setNodeProps = <T extends HTMLElement>(node: T, attrs: Record<string, string>) => {
 	Object.entries(attrs).forEach(([k, v]) => {
 		node.setAttribute(k, v);
 	});
 };
 
+/**
+ * Removes attributes from a html element.
+ * @param node The element to remove the attributes from.
+ * @param attrs The attributes to be removed.
+ */
 export const removeNodeProps = <T extends HTMLElement>(node: T, ...attrs: string[]) => {
 	attrs.forEach((el) => {
 		node.removeAttribute(el);
 	});
 };
 
+/**
+ * Adds event listeners to a html element.
+ * @param node The element to apply the listeners to.
+ * @param listeners The listeners to be applied.
+ */
 export const addEventListeners = <T extends HTMLElement>(node: T, listeners: Record<string, any>) => {
 	Object.entries(listeners).forEach(([k, v]) => {
 		node.addEventListener(k.toString(), v);
 	});
 };
+
+/**
+ * Removes event listeners from a html element.
+ * @param node The element to remove the listeners from.
+ * @param listeners The listeners to be removed.
+ */
 export const removeEventListeners = <T extends HTMLElement>(node: T, listeners: Record<string, any>) => {
 	Object.entries(listeners).forEach(([k, v]) => {
 		node.removeEventListener(k.toString(), v);
 	});
 };
 
+/**
+ * Disables the browser scroll bar/functionality if any overlaying element requires focus.
+ */
 export const disableScroll = (state: boolean) => {
-	if (typeof window !== 'undefined') {
+	if (isBrowser) {
 		if (state) {
 			document.documentElement.style.setProperty('--scrollbar-width', '0px');
 			document.body.style.setProperty('overflow', 'hidden');

@@ -5,6 +5,7 @@
 		useActions,
 		createUID,
 		KEYS,
+		classProp,
 		type BaseProps,
 		type JsonValue,
 		type Handler,
@@ -45,7 +46,6 @@
 	});
 
 	const checked = $derived(API.selectedItem.id === uid());
-	const classProp = $derived(typeof klass === 'function' ? klass({ checked }) : klass);
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);
@@ -73,7 +73,7 @@
 <button
 	bind:this={self}
 	use:useActions={use}
-	class={classProp}
+	class={classProp(klass, { checked })}
 	type="button"
 	role="radio"
 	{disabled}

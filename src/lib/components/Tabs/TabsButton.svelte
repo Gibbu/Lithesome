@@ -2,11 +2,12 @@
 	import { context } from './Tabs.svelte';
 	import {
 		useActions,
+		KEYS,
+		PREVENT_KEYS,
+		classProp,
 		type BaseProps,
 		type Handler,
-		type HandlerParam,
-		KEYS,
-		PREVENT_KEYS
+		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
@@ -31,7 +32,6 @@
 
 	const API = context();
 	const active = $derived(API.activeTab === value);
-	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);
@@ -67,7 +67,7 @@
 <button
 	bind:this={self}
 	use:useActions={use}
-	class={classProp}
+	class={classProp(klass, { active })}
 	type="button"
 	role="tab"
 	tabindex={active ? 0 : -1}

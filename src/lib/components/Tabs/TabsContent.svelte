@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Tabs.svelte';
-	import { useActions, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
 		value: string;
@@ -10,13 +10,12 @@
 
 	const API = context();
 	const active = $derived(API.activeTab === value);
-	const classProp = $derived(typeof klass === 'function' ? klass({ active }) : klass);
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	class={classProp}
+	class={classProp(klass, { active })}
 	role="tabpanel"
 	hidden={!active ? true : undefined}
 	data-tabscontent=""

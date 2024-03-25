@@ -1,7 +1,14 @@
-import type { JsonValue } from '../types.js';
+import type { JsonValue, ClassProp } from '../types.js';
 
 export type CalcIndexAction = 'prev' | 'next' | 'first' | 'last';
 
+/**
+ * Calculates the index position of the action given.
+ * @param action Which direction to navigate the index.
+ * @param items The items to be navigated through.
+ * @param index The current index of the component state.
+ * @param loop Loops around the items array if true.
+ */
 export const calculateIndex = <T>(
 	action: CalcIndexAction,
 	items: T[] | readonly T[],
@@ -43,12 +50,10 @@ export const createUID = (namespace: string) => {
 	};
 };
 
-export const log = {
-	error(message: string) {
-		throw Error(`[Lithesome] ${message}`);
-	}
-};
-
+/**
+ * Removes any "invalid" values from the given value.
+ * @param value The value to be pruned.
+ */
 export const pruneValue = (value: JsonValue) => {
 	if (!value) return;
 	else if (typeof value === 'number' || typeof value === 'boolean') return value;
@@ -57,9 +62,25 @@ export const pruneValue = (value: JsonValue) => {
 	else return value.trim();
 };
 
+/**
+ * Merges two objects, the first being the base config, the 2nd being the defaults
+ * it will fall back to if that property isn't found.
+ * @param config The base object to be parsed.
+ * @param defaults The object to be initalize the object.
+ */
 export const defaultConfig = <const T>(config: Partial<T> | undefined, defaults: Required<T>): Required<T> => {
 	return {
 		...defaults,
 		...config
 	};
+};
+
+/**
+ * @param klass The `class` component prop.
+ * @param props Any state to be passed down to the function.
+ */
+export const classProp = <T extends Record<string, any>>(klass: ClassProp<T>, props?: T) => {
+	const _props = props || ({} as T);
+	const cls = $derived(typeof klass === 'function' ? klass(_props) : klass);
+	return cls;
 };

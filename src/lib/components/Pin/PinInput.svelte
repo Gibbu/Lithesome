@@ -5,6 +5,7 @@
 		useActions,
 		createUID,
 		KEYS,
+		classProp,
 		type BaseProps,
 		type Handler,
 		type HandlerParam
@@ -23,9 +24,6 @@
 
 	const API = context();
 	const { uid } = createUID('input');
-	const classProp = $derived(
-		typeof klass === 'function' ? klass({ filled: API.filled, disabled: API.disabled }) : klass
-	);
 	const index = $derived(API.inputs.indexOf(uid()));
 	let focused = $state<boolean>(false);
 	let value = $derived<string>(API.value[index] || '');
@@ -127,7 +125,7 @@
 	use:useActions={use}
 	{value}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass, { filled: API.filled, disabled: API.disabled })}
 	disabled={API.disabled}
 	placeholder={focused ? '' : API.placeholder}
 	data-pininput=""

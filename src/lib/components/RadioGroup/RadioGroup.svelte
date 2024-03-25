@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, type BaseProps, type JsonValue } from '$lib/internal/index.js';
+	import { createUID, useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement> {
@@ -26,14 +26,12 @@
 	});
 
 	setContext(contextName, API);
-
-	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	class={classProp}
+	class={classProp(klass)}
 	role="radiogroup"
 	aria-required={required}
 	data-radiogroup=""

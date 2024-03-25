@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Checkbox } from '$lib/index.js';
-	import { cn } from '$site/utils.js';
+	import { cn } from '$site/index.js';
 	import { Check, Minus } from '@steeze-ui/lucide-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 

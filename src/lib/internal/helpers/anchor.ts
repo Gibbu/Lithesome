@@ -1,5 +1,5 @@
-import { computePosition, flip, shift, autoUpdate, size, type Middleware, type Placement } from '@floating-ui/dom';
-import { defaultConfig } from './utils.js';
+import { computePosition, flip, shift, autoUpdate, size, type Placement } from '@floating-ui/dom';
+import { defaultConfig } from './utils.svelte.js';
 
 type AnchorElement = HTMLElement | undefined | null;
 interface AnchorConfig {

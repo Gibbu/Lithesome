@@ -6,6 +6,7 @@
 		portal,
 		useActions,
 		getTransition,
+		classProp,
 		type Transition,
 		type BaseProps
 	} from '$lib/internal/index.js';
@@ -48,12 +49,11 @@
 	let dropdownCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const _transition = getTransition(transition);
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
 	const attrs = $derived({
 		id: API.uid('dropdown'),
 		'aria-labelledby': API.uid('trigger'),
 		role: 'menu',
-		class: classProp,
+		class: classProp(klass, { visible: API.visible }),
 		'data-menudropdown': ''
 	});
 

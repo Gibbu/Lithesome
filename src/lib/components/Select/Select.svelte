@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, type BaseProps, type JsonValue } from '$lib/internal/index.js';
+	import { createUID, useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
@@ -25,8 +25,6 @@
 			value = val;
 		}
 	});
-	const classProp = $derived(typeof klass === 'function' ? klass({ visible: API.visible }) : klass);
-
 	setContext(contextName, API);
 
 	onMount(async () => {
@@ -42,7 +40,7 @@
 	bind:this={self}
 	use:useActions={use}
 	id={uid()}
-	class={classProp}
+	class={classProp(klass, { visible: API.visible })}
 	data-select=""
 	data-state={API.visible ? 'opened' : 'closed'}
 	{...props}

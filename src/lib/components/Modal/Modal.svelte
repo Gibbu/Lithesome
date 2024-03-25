@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, portal, KEYS, isBrowser, type BaseProps } from '$lib/internal/index.js';
+	import { createUID, useActions, portal, KEYS, isBrowser, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement> {
@@ -20,7 +20,6 @@
 
 	const { uid } = createUID('modal');
 	const API = createContext(uid, visible);
-	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 
 	setContext(contextName, API);
 
@@ -47,7 +46,7 @@
 		use:portal={portalTarget}
 		use:useActions={use}
 		id={uid()}
-		class={classProp}
+		class={classProp(klass)}
 		data-modal=""
 		{...props}
 	>
