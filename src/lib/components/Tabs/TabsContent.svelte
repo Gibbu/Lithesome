@@ -6,7 +6,7 @@
 		value: string;
 	}
 
-	let { children, class: klass, use = [], self, value, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), value, ...props }: Props = $props();
 
 	const API = context();
 	const active = $derived(API.activeTab === value);
@@ -22,6 +22,7 @@
 	data-state={active ? 'active' : 'inactive'}
 	data-value={value}
 	data-orientation={API.orientation}
+	style:display={!active ? 'none' : undefined}
 	{...props}
 >
 	{@render children({ active })}

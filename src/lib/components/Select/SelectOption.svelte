@@ -62,6 +62,7 @@
 		API.queryElements();
 
 		return async () => {
+			if (!API.visible) return;
 			await tick();
 			API.queryElements();
 		};

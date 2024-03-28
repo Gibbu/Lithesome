@@ -21,7 +21,7 @@
 		use = [],
 		class: klass,
 		self = $bindable(),
-		visible,
+		visible = $bindable(),
 		portalTarget = 'body',
 		...props
 	}: Props = $props();

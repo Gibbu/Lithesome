@@ -22,7 +22,7 @@
 		children,
 		class: klass,
 		use = [],
-		self,
+		self = $bindable(),
 		disabled = false,
 		value,
 		onClick,
