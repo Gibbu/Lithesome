@@ -9,14 +9,9 @@ export type CalcIndexAction = 'prev' | 'next' | 'first' | 'last';
  * @param index The current index of the component state.
  * @param loop Loops around the items array if true.
  */
-export const calculateIndex = <T>(
-	action: CalcIndexAction,
-	items: T[] | readonly T[],
-	index: number,
-	loop: boolean = false
-) => {
-	if (action === 'first') index = 0;
-	if (action === 'last') index = items.length - 1;
+export const calculateIndex = (action: CalcIndexAction, items: any[], index: number, loop: boolean = false) => {
+	if (action === 'first') index = items.findIndex((el) => !el.disabled);
+	if (action === 'last') index = items.findLastIndex((el) => !el.disabled);
 
 	if (action === 'prev') {
 		if (loop) index = index === -1 ? items.length - 1 : index !== 0 ? index - 1 : items.length - 1;

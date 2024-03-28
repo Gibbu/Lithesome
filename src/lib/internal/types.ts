@@ -34,3 +34,8 @@ export interface BaseProps<T extends HTMLElement, C extends Record<string, any> 
 	 */
 	self?: T;
 }
+
+export type BasePropsNoChildren<T extends HTMLElement, C extends Record<string, any> = any> = Omit<
+	BaseProps<T, C>,
+	'children'
+>;

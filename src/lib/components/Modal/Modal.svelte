@@ -16,7 +16,15 @@
 		portalTarget?: string | HTMLElement;
 	}
 
-	let { children, use = [], class: klass, self, visible, portalTarget = 'body', ...props }: Props = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		self = $bindable(),
+		visible,
+		portalTarget = 'body',
+		...props
+	}: Props = $props();
 
 	const { uid } = createUID('modal');
 	const API = createContext(uid, visible);

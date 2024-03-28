@@ -7,10 +7,10 @@
 		useActions,
 		KEYS,
 		classProp,
+		PREVENT_KEYS,
 		type BaseProps,
 		type Handler,
-		type HandlerParam,
-		PREVENT_KEYS
+		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
@@ -19,7 +19,7 @@
 		onKeydown?: Handler<KeyboardEvent, HTMLDivElement>;
 	}
 
-	let { children, class: klass, use = [], self, onClick, onKeydown, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), onClick, onKeydown, ...props }: Props = $props();
 
 	const API = context();
 

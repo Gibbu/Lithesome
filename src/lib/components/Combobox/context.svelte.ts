@@ -16,17 +16,18 @@ export interface Option {
 }
 
 interface Hooks<ValueType> {
-	onChange: (value: ValueType) => void;
+	onChange: (values: { newValue?: ValueType; newTouched?: boolean; newLabel?: string }) => void;
 }
 
 export const createContext = <ValueType>(uid: UID, multiple: boolean = false, hooks: Hooks<ValueType>) => {
 	let visible = $state<boolean>(true);
 	let hoveredIndex = $state<number>(-1);
 	let options = $state<HTMLElement[]>([]);
-	let trigger = $state<HTMLElement | null>(null);
+	let trigger = $state<HTMLInputElement | null>(null);
 	let dropdown = $state<HTMLElement | null>(null);
 	let selectedOptions = $state<HTMLElement[]>([]);
 	let mounted = $state<boolean>(false);
+	let touched = $state<boolean>(false);
 
 	const hoveredOption = $derived(options[hoveredIndex]);
 
@@ -45,7 +46,13 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 			});
 		} else {
 			options = [];
+			touched = false;
 		}
+	});
+
+	$effect(() => {
+		if (!visible) return;
+		hooks.onChange({ newTouched: touched });
 	});
 
 	const functions = {
@@ -59,7 +66,7 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 			visible = !visible;
 		},
 		queryElements() {
-			const elements = removeDisabledElements(`#${uid('dropdown')} [data-selectoption]`);
+			const elements = removeDisabledElements(`#${uid('dropdown')} [data-comboboxoption]`);
 			if (!elements) return;
 			options = elements;
 		},
@@ -90,15 +97,16 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 			}
 
 			const value = multiple ? selectedOptions.map((el) => el.dataset.value) : selectedOptions[0].dataset.value;
-			hooks.onChange(value as ValueType);
+			const label = multiple ? '' : selectedOptions[0].dataset.label || '';
+			hooks.onChange({ newValue: value as ValueType, newLabel: label });
 		},
-		setInitialSelected(value: ValueType) {
+		async setInitialSelected(value: ValueType) {
 			selectedOptions = options.filter((el) => {
 				if (!Array.isArray(value) && el.dataset.value === value) return el;
 				else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
 			});
 		},
-		setTrigger(node: HTMLElement) {
+		setTrigger(node: HTMLInputElement) {
 			trigger = node;
 		},
 		setDropdown(node: HTMLElement) {
@@ -106,6 +114,9 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 		},
 		setMounted(value: boolean) {
 			mounted = value;
+		},
+		setTouched(value: boolean) {
+			touched = value;
 		}
 	};
 
@@ -121,11 +132,14 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 		get options() {
 			return options;
 		},
-		get mounted() {
-			return mounted;
+		get touched() {
+			return options;
 		},
 		get dropdown() {
 			return dropdown;
+		},
+		get mounted() {
+			return mounted;
 		},
 		get selectedOptions() {
 			return selectedOptions;

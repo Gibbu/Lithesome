@@ -4,7 +4,7 @@
 
 	interface Props extends BaseProps<HTMLHeadElement> {}
 
-	let { children, class: klass, use = [], self, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: Props = $props();
 
 	const API = context();
 </script>

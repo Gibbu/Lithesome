@@ -1,6 +1,7 @@
 ---
 title: 'Select'
 description: 'Allow users to chooe from a list of options.'
+badge: 'updated'
 ---
 
 <script>
@@ -37,7 +38,7 @@ The component will then detect the array and append the selected options.
 <script>
 	import { Select, SelectTrigger, SelectDropdown, SelectOption } from 'lithesome';
 
-	let value = [];
+	let value = $state([]);
 </script>
 
 <Select bind:value>

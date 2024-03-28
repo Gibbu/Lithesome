@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import { log, useActions, createUID, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { log, useActions, createUID, classProp, type BasePropsNoChildren } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
-	interface Props extends Omit<BaseProps<HTMLInputElement>, 'children'> {
+	interface Props extends BasePropsNoChildren<HTMLInputElement> {
 		/**
 		 * The HTML Input element name attribute.
 		 *
@@ -12,7 +12,7 @@
 		name?: string;
 	}
 
-	let { class: klass, use = [], self, name, ...props }: Props = $props();
+	let { class: klass, use = [], self = $bindable(), name, ...props }: Props = $props();
 
 	const API = context();
 	const { uid } = createUID('input');

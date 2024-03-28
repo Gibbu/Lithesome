@@ -38,7 +38,7 @@
 		use = [],
 		portalTarget = 'body',
 		class: klass,
-		self,
+		self = $bindable(),
 		placement = 'bottom',
 		constrainViewport,
 		sameWidth = false,

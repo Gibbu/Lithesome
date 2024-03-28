@@ -7,7 +7,7 @@
 		disabled?: boolean;
 	}
 
-	let { children, class: klass, use = [], self, disabled = false, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), disabled = false, ...props }: Props = $props();
 
 	const API = context();
 	const { uid } = createUID('item');

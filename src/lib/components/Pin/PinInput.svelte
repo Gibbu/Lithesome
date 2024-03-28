@@ -6,13 +6,13 @@
 		createUID,
 		KEYS,
 		classProp,
-		type BaseProps,
+		type BasePropsNoChildren,
 		type Handler,
 		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { onMount, tick } from 'svelte';
 
-	interface Props extends Omit<BaseProps<HTMLInputElement, { filled: boolean; disabled: boolean }>, 'children'> {
+	interface Props extends BasePropsNoChildren<HTMLInputElement, { filled: boolean; disabled: boolean }> {
 		onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
 		onInput?: Handler<Event, HTMLInputElement>;
 		onFocus?: Handler<FocusEvent, HTMLInputElement>;
@@ -20,7 +20,17 @@
 		onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
 	}
 
-	let { class: klass, use = [], self, onKeydown, onInput, onFocus, onBlur, onPaste, ...props }: Props = $props();
+	let {
+		class: klass,
+		use = [],
+		self = $bindable(),
+		onKeydown,
+		onInput,
+		onFocus,
+		onBlur,
+		onPaste,
+		...props
+	}: Props = $props();
 
 	const API = context();
 	const { uid } = createUID('input');

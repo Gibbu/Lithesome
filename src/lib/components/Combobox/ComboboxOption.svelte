@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { context } from './Select.svelte';
+	import { context } from './Combobox.svelte';
 	import {
 		useActions,
 		classProp,
@@ -62,6 +62,7 @@
 		API.queryElements();
 
 		return async () => {
+			if (!API.visible) return;
 			await tick();
 			API.queryElements();
 		};
@@ -81,7 +82,7 @@
 	aria-selected={selected}
 	data-hovered={hovered ? '' : undefined}
 	data-selected={selected ? '' : undefined}
-	data-selectoption=""
+	data-comboboxoption=""
 	data-value={value}
 	data-label={label}
 	onmouseover={handleMouseover}

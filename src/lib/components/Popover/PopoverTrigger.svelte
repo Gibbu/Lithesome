@@ -18,7 +18,7 @@
 		onKeydown?: Handler<KeyboardEvent, HTMLDivElement>;
 	}
 
-	let { children, class: klass, use = [], self, onClick, onKeydown, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), onClick, onKeydown, ...props }: Props = $props();
 
 	const API = context();
 

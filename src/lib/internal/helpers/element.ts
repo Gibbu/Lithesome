@@ -60,3 +60,20 @@ export const disableScroll = (state: boolean) => {
 		}
 	}
 };
+
+/**
+ * Filters out any disabled element.
+ * @param elements The array of elements
+ */
+export const removeDisabledElements = (query: string) => {
+	if (!query || !isBrowser) return;
+	const elements = Array.from(document.querySelectorAll(query));
+
+	return elements.filter((element) => {
+		const ariaDisabled = element.getAttribute('aria-disabled');
+		const disabled = element.getAttribute('disabled');
+		const dataDisabled = element.hasAttribute('data-disabled');
+
+		return ariaDisabled === 'true' || disabled !== null || dataDisabled ? false : true;
+	}) as HTMLElement[];
+};

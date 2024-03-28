@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { context } from './Menu.svelte';
+	import { context } from './Combobox.svelte';
 	import {
 		clickOutside,
 		anchorElement,
@@ -36,29 +36,29 @@
 		transition,
 		use = [],
 		portalTarget = 'body',
+		sameWidth = false,
 		class: klass,
 		self = $bindable(),
 		placement = 'bottom',
-		constrainViewport,
-		sameWidth = false,
+		constrainViewport = false,
 		...props
 	}: Props = $props();
 
 	const API = context();
-
 	let dropdownCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const _transition = getTransition(transition);
 	const attrs = $derived({
 		id: API.uid('dropdown'),
 		'aria-labelledby': API.uid('trigger'),
-		role: 'menu',
+		role: 'listbox',
 		class: classProp(klass, { visible: API.visible }),
-		'data-menudropdown': ''
+		'data-comboboxdropdown': '',
+		hidden: !API.mounted || undefined
 	});
 
-	onMount(async () => {
-		if (!API) log.error('<MenuDropdown> Must be a direct child of <Menu />');
+	onMount(() => {
+		if (!API) log.error('<ComboboxDropdown> Must be a direct child of <Combobox />');
 	});
 
 	$effect(() => {

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp, type BasePropsNoChildren } from '$lib/internal/index.js';
 
-	interface Props extends Omit<BaseProps<HTMLSpanElement, { placeholderVisible: boolean }>, 'children'> {
+	interface Props extends BasePropsNoChildren<HTMLSpanElement, { placeholderVisible: boolean }> {
 		placeholder?: string;
 	}
 
-	let { class: klass, use = [], self, placeholder = 'Select an option...', ...props }: Props = $props();
+	let { class: klass, use = [], self = $bindable(), placeholder = 'Select an option...', ...props }: Props = $props();
 
 	const API = context();
 	const placeholderVisible = $derived(API.selectedOptions.length === 0);
@@ -21,5 +21,5 @@
 	data-placeholder={placeholderVisible || undefined}
 	{...props}
 >
-	{placeholderVisible ? placeholder : API.selectedOptions.map((el) => el.label).join(',')}
+	{placeholderVisible ? placeholder : API.selectedOptions.map((el) => el.dataset.label).join(',')}
 </span>

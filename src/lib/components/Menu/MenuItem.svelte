@@ -19,7 +19,7 @@
 		class: klass,
 		use = [],
 		disabled,
-		self,
+		self = $bindable(),
 		href,
 		onClick,
 		onMouseover,

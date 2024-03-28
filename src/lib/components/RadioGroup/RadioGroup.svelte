@@ -16,7 +16,15 @@
 		required?: boolean;
 	}
 
-	let { children, use = [], class: klass, self, value, required, ...props }: Props = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		self = $bindable(),
+		value = $bindable(),
+		required,
+		...props
+	}: Props = $props();
 
 	const { uid } = createUID('accordion');
 	const API = createContext(uid, value, {

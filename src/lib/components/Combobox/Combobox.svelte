@@ -2,7 +2,7 @@
 	import { getContext, onMount, tick } from 'svelte';
 	import { createContext } from './context.svelte.js';
 
-	const contextName = 'select-context';
+	const contextName = 'combobox-context';
 
 	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
 </script>
@@ -13,16 +13,36 @@
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
 		value: ValueType;
-		onChange?: (value: JsonValue) => void;
+		label?: string;
+		touched?: boolean;
+		onChange?: (payload?: { value?: ValueType; label?: string }) => void;
 	}
 
-	let { children, use = [], class: klass, value = $bindable(), self, onChange, ...props }: Props = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		value = $bindable(),
+		label = $bindable(),
+		touched = $bindable(),
+		self = $bindable(),
+		onChange,
+		...props
+	}: Props = $props();
 
-	const { uid } = createUID('select');
+	const { uid } = createUID('combobox');
 	const multiple = Array.isArray(value);
 	const API = createContext<ValueType>(uid, multiple, {
-		onChange(val) {
-			value = val;
+		onChange({ newValue, newTouched, newLabel }) {
+			if (newValue) {
+				value = newValue;
+				onChange?.({ value: newValue });
+			}
+			if (newLabel && !multiple) {
+				label = newLabel;
+				onChange?.({ label: newLabel });
+			}
+			if (typeof newTouched === 'boolean') touched = newTouched;
 		}
 	});
 	setContext(contextName, API);

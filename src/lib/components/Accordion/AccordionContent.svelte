@@ -12,7 +12,7 @@
 		transition?: Transition;
 	}
 
-	let { children, class: klass, use = [], self, transition, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), transition, ...props }: Props = $props();
 
 	const API = context();
 	const itemId = getContext<string>('accordionitem-id');

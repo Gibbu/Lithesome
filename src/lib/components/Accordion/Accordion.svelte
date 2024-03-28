@@ -15,7 +15,7 @@
 		single?: boolean;
 	}
 
-	let { children, use = [], class: klass, self, single, ...props }: Props = $props();
+	let { children, use = [], class: klass, self = $bindable(), single, ...props }: Props = $props();
 
 	const { uid } = createUID('accordion');
 	const API = createContext(uid, single);

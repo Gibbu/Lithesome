@@ -15,7 +15,7 @@
 		visible?: boolean;
 	}
 
-	let { children, use = [], class: klass, self, visible = false, ...props }: Props = $props();
+	let { children, use = [], class: klass, self = $bindable(), visible = false, ...props }: Props = $props();
 
 	const { uid } = createUID('popover');
 	const API = createContext(uid, visible, {

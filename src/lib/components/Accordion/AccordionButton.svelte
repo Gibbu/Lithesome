@@ -7,7 +7,7 @@
 		onClick?: Handler<MouseEvent, HTMLButtonElement>;
 	}
 
-	let { children, class: klass, use = [], self, onClick, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: Props = $props();
 
 	const API = context();
 	const itemId = getContext<string>('accordionitem-id');

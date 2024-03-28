@@ -5,14 +5,18 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { scale } from 'svelte/transition';
 
+	let { multiple = false }: { multiple: boolean } = $props();
+
 	const options = [
 		{ value: 'aang', label: 'Avatar Aang' },
 		{ value: 'zuko', label: 'Firelord Zuko' },
 		{ value: 'sokka', label: 'Councilman Sokka' },
 		{ value: 'katara', label: 'Katara', disabled: true },
-		{ value: 'toph', label: 'Greatest Earthbender Alive' }
+		{ value: 'toph', label: 'Greatest Earthbender Alive' },
+		{ value: 'iroh', label: 'Uncle Iroh' },
+		{ value: 'azula', label: 'Firebending Prodigy' }
 	];
-	let value = $state('aang');
+	let value = $state(multiple ? ['aang'] : 'aang');
 </script>
 
 <Select bind:value>
@@ -31,13 +35,13 @@
 		)}
 		transition={[scale, { start: 0.8, duration: 150 }]}
 	>
-		{#each options as { value, label, disabled }}
+		{#each options as { value, label, disabled } (value)}
 			<SelectOption
 				{value}
 				{disabled}
 				class={({ hovered, selected }) =>
 					cn(
-						disabled ? 'text-black/40 dark:text-white/40' : '',
+						disabled ? 'text-black/40 line-through dark:text-white/30' : '',
 						hovered ? 'bg-black/10 text-black dark:bg-white/10 dark:text-white' : '',
 						selected ? 'text-teal-500' : '',
 						'flex w-full items-center gap-2 truncate rounded-md px-3.5 py-2.5 text-sm'
@@ -53,3 +57,5 @@
 		{/each}
 	</SelectDropdown>
 </Select>
+
+<span class="pointer-events-none absolute bottom-2 right-2 select-none text-xs opacity-40">Value: {value}</span>

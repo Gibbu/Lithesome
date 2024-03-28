@@ -40,8 +40,8 @@
 		class={cn(
 			'rounded-xl px-2.5 py-0.5 text-xs capitalize',
 			type === 'soon' ? 'bg-gray-500/20 text-gray-400' : '',
-			type === 'updated' ? 'bg-blue-500/20 text-blue-300' : '',
-			type === 'new' ? 'bg-emerald-500/20 text-emerald-300' : ''
+			type === 'updated' ? 'bg-blue-500/20 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300' : '',
+			type === 'new' ? 'bg-emerald-500/20 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-300' : ''
 		)}
 	>
 		{type}

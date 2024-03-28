@@ -13,7 +13,7 @@
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
 
-	let { children, class: klass, use = [], self, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: Props = $props();
 
 	const API = context();
 

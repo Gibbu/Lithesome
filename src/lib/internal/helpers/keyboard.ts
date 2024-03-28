@@ -30,5 +30,8 @@ export const PREVENT_KEYS = [
 	KEYS.meta,
 	KEYS.pageUp,
 	KEYS.pageDown,
-	KEYS.backspace
+	KEYS.backspace,
+	KEYS.control,
+	KEYS.meta,
+	KEYS.enter
 ];
