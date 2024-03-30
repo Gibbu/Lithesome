@@ -7,7 +7,7 @@
 		type?: 'text' | 'password';
 	}
 
-	let { use = [], class: klass, self, type = 'text', value, ...props }: Props = $props();
+	let { use = [], class: klass, self = $bindable(), type = 'text', value = $bindable(), ...props }: Props = $props();
 
 	const classProp = $derived(typeof klass === 'function' ? klass({}) : klass);
 </script>

@@ -20,7 +20,7 @@
 
 	let { children, class: klass, use = [], self = $bindable(), onClick, onKeydown, ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 
 	onMount(() => {
 		if (self && self.children.length > 1) {
@@ -31,7 +31,7 @@
 		const target = self?.children[0] as HTMLElement;
 
 		setNodeProps(target, {
-			id: API.uid('trigger'),
+			id: ctx.uid('trigger'),
 			role: 'button',
 			'aria-hasdialog': 'true',
 			'aria-expanded': 'false'
@@ -40,20 +40,20 @@
 			click: handleClick,
 			keydown: handleKeydown
 		});
-		API.setTrigger(target);
+		ctx.setTrigger(target);
 	});
 
 	$effect(() => {
-		if (!API.trigger) return;
-		const target = API.trigger;
+		if (!ctx.trigger) return;
+		const target = ctx.trigger;
 
-		if (API.visible) {
+		if (ctx.visible) {
 			setNodeProps(target, {
 				'aria-expanded': 'true',
-				'aria-controls': API.uid('content')
+				'aria-controls': ctx.uid('content')
 			});
 		}
-		if (!API.visible) {
+		if (!ctx.visible) {
 			setNodeProps(target, { 'aria-expanded': 'false' });
 		}
 	});
@@ -63,20 +63,20 @@
 
 		const { key } = e;
 
-		if (key === KEYS.escape || key === KEYS.tab) API.close();
+		if (key === KEYS.escape || key === KEYS.tab) ctx.close();
 	};
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
 		onClick?.(e);
-		API.toggle();
+		ctx.toggle();
 	};
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	class={classProp(klass, { visible: API.visible })}
+	class={classProp(klass, { visible: ctx.visible })}
 	data-popovertrigger=""
 	{...props}
 >
-	{@render children({ visible: API.visible })}
+	{@render children({ visible: ctx.visible })}
 </div>

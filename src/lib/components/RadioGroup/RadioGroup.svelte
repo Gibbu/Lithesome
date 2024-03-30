@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement> {

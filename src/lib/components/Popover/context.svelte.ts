@@ -11,7 +11,7 @@ interface Hooks {
 export const createContext = (init: InitialValues, hooks: Hooks) => {
 	const { uid } = createUID('popover');
 
-	let visible = $state<boolean>();
+	let visible = $state<boolean>(false);
 	let trigger = $state<HTMLElement | null>(null);
 	let content = $state<HTMLElement | null>(null);
 

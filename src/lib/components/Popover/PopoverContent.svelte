@@ -45,29 +45,29 @@
 		...props
 	}: Props = $props();
 
-	const API = context();
+	const ctx = context();
 
 	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const _transition = getTransition(transition);
 	const attrs = $derived({
-		id: API.uid('content'),
-		'aria-labelledby': API.uid('trigger'),
+		id: ctx.uid('content'),
+		'aria-labelledby': ctx.uid('trigger'),
 		role: 'menu',
-		class: classProp(klass, { visible: API.visible }),
+		class: classProp(klass, { visible: ctx.visible }),
 		'data-menucontent': ''
 	});
 
 	onMount(async () => {
-		if (!API) log.error('<PopoverContent> Must be a direct child of <Popover />');
+		if (!ctx) log.error('<PopoverContent> Must be a direct child of <Popover />');
 	});
 
 	$effect(() => {
-		if (API.visible && self) API.setContent(self);
+		if (ctx.visible && self) ctx.setContent(self);
 	});
 	$effect(() => {
-		if (API.visible && API.trigger && API.content) {
-			contentCleanup = anchorElement(API.trigger, API.content, {
+		if (ctx.visible && ctx.trigger && ctx.content) {
+			contentCleanup = anchorElement(ctx.trigger, ctx.content, {
 				placement,
 				constrainViewport,
 				sameWidth
@@ -80,16 +80,16 @@
 </script>
 
 {#if _transition}
-	{#if API.visible}
+	{#if ctx.visible}
 		<div
 			bind:this={self}
-			use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
+			use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
 			use:portal={portalTarget}
 			use:useActions={use}
 			use:trap={{
 				allowOutsideClick: true,
 				onDeactivate: () => {
-					API.setVisible(false);
+					ctx.setVisible(false);
 				}
 			}}
 			in:_transition.in.fn={_transition.in.params}
@@ -97,24 +97,24 @@
 			{...attrs}
 			{...props}
 		>
-			{@render children({ visible: API.visible })}
+			{@render children({ visible: ctx.visible })}
 		</div>
 	{/if}
-{:else if API.visible}
+{:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
+		use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
 		use:portal={portalTarget}
 		use:useActions={use}
 		use:trap={{
 			allowOutsideClick: true,
 			onDeactivate: () => {
-				API.setVisible(false);
+				ctx.setVisible(false);
 			}
 		}}
 		{...attrs}
 		{...props}
 	>
-		{@render children({ visible: API.visible })}
+		{@render children({ visible: ctx.visible })}
 	</div>
 {/if}

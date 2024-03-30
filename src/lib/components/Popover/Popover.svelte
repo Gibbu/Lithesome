@@ -18,12 +18,15 @@
 	let { children, use = [], class: klass, self = $bindable(), visible = $bindable(false), ...props }: Props = $props();
 
 	const { uid } = createUID('popover');
-	const API = createContext(uid, visible, {
-		onChange(val) {
-			visible = val;
+	const ctx = createContext(
+		{ visible },
+		{
+			onChange(val) {
+				visible = val;
+			}
 		}
-	});
-	setContext(contextName, API);
+	);
+	setContext(contextName, ctx);
 
 	const handleKeys = (e: KeyboardEvent) => {
 		const { key } = e;
@@ -31,7 +34,7 @@
 	};
 
 	$effect(() => {
-		API.setVisible(visible);
+		ctx.setVisible(visible);
 		if (isBrowser) {
 			if (visible) {
 				window.addEventListener('keydown', handleKeys);
@@ -46,10 +49,10 @@
 	bind:this={self}
 	use:useActions={use}
 	id={uid()}
-	class={classProp(klass, { visible: API.visible })}
+	class={classProp(klass, { visible: ctx.visible })}
 	data-popover=""
-	data-state={API.visible ? 'opened' : 'closed'}
+	data-state={ctx.visible ? 'opened' : 'closed'}
 	{...props}
 >
-	{@render children({ visible: API.visible })}
+	{@render children({ visible: ctx.visible })}
 </div>

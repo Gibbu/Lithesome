@@ -38,16 +38,16 @@
 	}: Props = $props();
 	let optionEl: HTMLButtonElement | HTMLAnchorElement;
 
-	const API = context();
+	const ctx = context();
 	const { uid } = createUID('item');
-	const hovered = $derived(API.hoveredOption?.id === uid());
-	const selected = $derived(!!API.selectedOptions.find((el) => el.dataset.value === value));
+	const hovered = $derived(ctx.hoveredOption?.id === uid());
+	const selected = $derived(!!ctx.selectedOptions.find((el) => el.dataset.value === value));
 	const label = $derived(labelProp || (isBrowser && self) ? self?.textContent?.trim() : '');
 
 	const handleClick = (e: HandlerParam<MouseEvent, HandlerEl>) => {
 		onClick?.(e);
 		if (!disabled) {
-			API.setSelectedOptions();
+			ctx.setSelectedOptions();
 		}
 	};
 	const handleFocus = (e: HandlerParam<FocusEvent, HandlerEl>) => {
@@ -55,16 +55,16 @@
 	};
 	const handleMouseover = (e: HandlerParam<MouseEvent, HandlerEl>) => {
 		onMouseenter?.(e);
-		if (!disabled) API.setHoveredOption(uid());
+		if (!disabled) ctx.setHoveredOption(uid());
 	};
 
 	onMount(() => {
-		API.queryElements();
+		ctx.queryElements();
 
 		return async () => {
-			if (!API.visible) return;
+			if (!ctx.visible) return;
 			await tick();
-			API.queryElements();
+			ctx.queryElements();
 		};
 	});
 </script>

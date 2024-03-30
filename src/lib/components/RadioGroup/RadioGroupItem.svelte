@@ -32,25 +32,25 @@
 		...props
 	}: Props = $props();
 
-	const API = context();
+	const ctx = context();
 	const { uid } = createUID('radio');
 
 	onMount(() => {
-		if (!API) log.error('<RadioGroupItem /> must be a direct child of <RadioGroup />');
+		if (!ctx) log.error('<RadioGroupItem /> must be a direct child of <RadioGroup />');
 		if (!disabled)
-			API.register({
+			ctx.register({
 				id: uid(),
 				value,
 				disabled
 			});
 	});
 
-	const checked = $derived(API.selectedItem.id === uid());
+	const checked = $derived(ctx.selectedItem.id === uid());
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);
 		if (!disabled) {
-			API.setSelected({
+			ctx.setSelected({
 				id: uid(),
 				value,
 				disabled
@@ -63,10 +63,10 @@
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
-		if (key === KEYS.home) API.navigateItems('first');
-		if (key === KEYS.end) API.navigateItems('last');
-		if (key === KEYS.arrowUp) API.navigateItems('prev');
-		if (key === KEYS.arrowDown) API.navigateItems('next');
+		if (key === KEYS.home) ctx.navigateItems('first');
+		if (key === KEYS.end) ctx.navigateItems('last');
+		if (key === KEYS.arrowUp) ctx.navigateItems('prev');
+		if (key === KEYS.arrowDown) ctx.navigateItems('next');
 	};
 </script>
 
