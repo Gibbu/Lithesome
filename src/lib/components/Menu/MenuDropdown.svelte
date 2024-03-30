@@ -44,29 +44,29 @@
 		...props
 	}: Props = $props();
 
-	const API = context();
+	const ctx = context();
 
 	let dropdownCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const _transition = getTransition(transition);
 	const attrs = $derived({
-		id: API.uid('dropdown'),
-		'aria-labelledby': API.uid('trigger'),
+		id: ctx.uid('dropdown'),
+		'aria-labelledby': ctx.uid('trigger'),
 		role: 'menu',
-		class: classProp(klass, { visible: API.visible }),
+		class: classProp(klass, { visible: ctx.visible }),
 		'data-menudropdown': ''
 	});
 
 	onMount(async () => {
-		if (!API) log.error('<MenuDropdown> Must be a direct child of <Menu />');
+		if (!ctx) log.error('<MenuDropdown> Must be a direct child of <Menu />');
 	});
 
 	$effect(() => {
-		if (API.visible && self) API.setDropdown(self);
+		if (ctx.visible && self) ctx.setDropdown(self);
 	});
 	$effect(() => {
-		if (API.visible && API.trigger && API.dropdown) {
-			dropdownCleanup = anchorElement(API.trigger, API.dropdown, {
+		if (ctx.visible && ctx.trigger && ctx.dropdown) {
+			dropdownCleanup = anchorElement(ctx.trigger, ctx.dropdown, {
 				placement,
 				constrainViewport,
 				sameWidth
@@ -79,10 +79,10 @@
 </script>
 
 {#if _transition}
-	{#if API.visible}
+	{#if ctx.visible}
 		<div
 			bind:this={self}
-			use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
+			use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
 			use:portal={portalTarget}
 			use:useActions={use}
 			in:_transition.in.fn={_transition.in.params}
@@ -90,18 +90,18 @@
 			{...attrs}
 			{...props}
 		>
-			{@render children({ visible: API.visible })}
+			{@render children({ visible: ctx.visible })}
 		</div>
 	{/if}
-{:else if API.visible}
+{:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:clickOutside={{ exclude: [API.trigger], callback: API.close }}
+		use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
 		use:portal={portalTarget}
 		use:useActions={use}
 		{...attrs}
 		{...props}
 	>
-		{@render children({ visible: API.visible })}
+		{@render children({ visible: ctx.visible })}
 	</div>
 {/if}

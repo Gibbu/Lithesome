@@ -14,13 +14,13 @@
 
 	let { children, class: klass, use = [], self = $bindable(), transition, ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 	const itemId = getContext<string>('accordionitem-id');
 
-	const active = $derived(API.activeItems.includes(itemId));
+	const active = $derived(ctx.activeItems.includes(itemId));
 	const _transition = getTransition(transition);
 	const attrs = $derived({
-		id: API.uid('content'),
+		id: ctx.uid('content'),
 		'data-accordioncontent': '',
 		'data-active': active || undefined,
 		class: classProp(klass, { active })

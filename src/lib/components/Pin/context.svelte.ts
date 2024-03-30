@@ -1,31 +1,34 @@
-import { type UID } from '$lib/internal/index.js';
+import { createUID } from '$lib/internal/index.js';
 
-interface Defaults {
-	value: string[];
-	disabled: boolean;
-	type: 'text' | 'password';
-	placeholder: string;
+interface InitialValues {
+	value?: string[];
+	disabled?: boolean;
+	type?: 'text' | 'password';
+	placeholder?: string;
 }
 
 interface Hooks {
-	onChange: (value: string) => void;
+	onChange?: (value: string) => void;
 }
 
-export const createContext = (uid: UID, defaults: Defaults, hooks: Hooks) => {
+export const createContext = (init: InitialValues, hooks?: Hooks) => {
+	const { uid } = createUID('pin');
+
 	let inputs = $state<string[]>([]);
-	let value = $state<string[]>(defaults.value);
-	let disabled = $state<boolean>(defaults.disabled);
-	let type = $state<'text' | 'password'>(defaults.type);
-	let placeholder = $state<string>(defaults.placeholder);
+	let value = $state<string[]>(init.value || []);
+	let disabled = $state<boolean>(init.disabled || false);
+	let type = $state<'text' | 'password'>(init.type || 'text');
+	let placeholder = $state<string>(init.placeholder || '');
 
 	const transformedValue = $derived(value.join(''));
 	const filled = $derived(value.every((el) => el?.length));
 
 	$effect(() => {
-		hooks.onChange(transformedValue);
+		hooks?.onChange?.(transformedValue);
 	});
 
-	const functions = {
+	return {
+		uid,
 		register(inputId: string) {
 			inputs = [...inputs, inputId];
 		},
@@ -37,12 +40,7 @@ export const createContext = (uid: UID, defaults: Defaults, hooks: Hooks) => {
 		},
 		setDisabled(newVal: boolean) {
 			disabled = newVal;
-		}
-	};
-
-	return {
-		uid,
-		...functions,
+		},
 		get inputs() {
 			return inputs;
 		},

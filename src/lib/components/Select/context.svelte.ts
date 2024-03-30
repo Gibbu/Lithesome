@@ -2,6 +2,7 @@ import {
 	calculateIndex,
 	disableScroll,
 	removeDisabledElements,
+	createUID,
 	type CalcIndexAction,
 	type UID,
 	type JsonValue
@@ -15,11 +16,17 @@ export interface Option {
 	disabled?: boolean;
 }
 
+interface InitialValues {
+	multiple?: boolean;
+}
+
 interface Hooks<ValueType> {
 	onChange: (value: ValueType) => void;
 }
 
-export const createContext = <ValueType>(uid: UID, multiple: boolean = false, hooks: Hooks<ValueType>) => {
+export const createContext = <ValueType>({ multiple }: InitialValues, hooks: Hooks<ValueType>) => {
+	const { uid } = createUID('select');
+
 	let visible = $state<boolean>(true);
 	let hoveredIndex = $state<number>(-1);
 	let options = $state<HTMLElement[]>([]);
@@ -48,7 +55,8 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 		}
 	});
 
-	const functions = {
+	return {
+		uid,
 		open() {
 			visible = true;
 		},
@@ -86,7 +94,7 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 			}
 
 			if (!multiple) {
-				functions.close();
+				visible = false;
 			}
 
 			const value = multiple ? selectedOptions.map((el) => el.dataset.value) : selectedOptions[0].dataset.value;
@@ -106,12 +114,7 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 		},
 		setMounted(value: boolean) {
 			mounted = value;
-		}
-	};
-
-	return {
-		uid,
-		...functions,
+		},
 		get visible() {
 			return visible;
 		},

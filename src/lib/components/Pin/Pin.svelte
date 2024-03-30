@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { filled: boolean }> {
@@ -26,17 +26,15 @@
 		class: klass,
 		self = $bindable(),
 		value = $bindable([]),
-		disabled = false,
-		type = 'text',
+		disabled = $bindable(false),
+		type = $bindable('text'),
 		placeholder = '○',
 		onChange,
 		onFilled,
 		...props
 	}: Props = $props();
 
-	const { uid } = createUID('pin');
-	const API = createContext(
-		uid,
+	const ctx = createContext(
 		{ value, disabled, type, placeholder },
 		{
 			onChange(val) {
@@ -45,28 +43,28 @@
 		}
 	);
 
-	setContext(contextName, API);
+	setContext(contextName, ctx);
 
 	$effect(() => {
-		API.setType(type);
-		API.setDisabled(disabled);
+		ctx.setType(type);
+		ctx.setDisabled(disabled);
 	});
 
 	$effect(() => {
-		if (API.filled) onFilled?.(API.transformedValue);
+		if (ctx.filled) onFilled?.(ctx.transformedValue);
 	});
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	id={uid()}
-	class={classProp(klass, { filled: API.filled })}
+	id={ctx.uid()}
+	class={classProp(klass, { filled: ctx.filled })}
 	aria-disabled={disabled || undefined}
 	data-disabled={disabled || undefined}
 	data-pin=""
-	data-filled={API.filled || undefined}
+	data-filled={ctx.filled || undefined}
 	{...props}
 >
-	{@render children({ filled: API.filled })}
+	{@render children({ filled: ctx.filled })}
 </div>

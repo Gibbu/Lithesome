@@ -25,7 +25,7 @@
 		class: klass,
 		use = [],
 		self = $bindable(),
-		disabled = false,
+		disabled = $bindable(false),
 		value,
 		onClick,
 		onKeydown,

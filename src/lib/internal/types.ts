@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HTMLAttributes } from 'svelte/elements';
-import type { HTMLActionArray } from './index.js';
+import type { HTMLActionArray, UID } from './index.js';
 
 export type JsonObject = { [key: string]: JsonValue };
 

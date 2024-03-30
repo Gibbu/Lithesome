@@ -1,17 +1,16 @@
-import { calculateIndex, disableScroll, type CalcIndexAction, type UID } from '$lib/internal/index.js';
+import { calculateIndex, disableScroll, createUID, type CalcIndexAction } from '$lib/internal/index.js';
 
-export const createContext = (uid: UID) => {
-	// Internal state
+export const createContext = () => {
+	const { uid } = createUID('menu');
+
 	let visible = $state<boolean>(false);
 	let hoveredIndex = $state<number>(-1);
 	let trigger = $state<HTMLElement | null>(null);
 	let dropdown = $state<HTMLElement | null>(null);
 	let items = $state<string[]>([]);
 
-	// Derived state
 	const hoveredItem = $derived(items[hoveredIndex]);
 
-	// Effects
 	$effect(() => {
 		disableScroll(visible && !document.body.style.overflow);
 	});
@@ -19,8 +18,8 @@ export const createContext = (uid: UID) => {
 		if (!visible) hoveredIndex = -1;
 	});
 
-	// Functions
-	const functions = {
+	return {
+		uid,
 		open() {
 			visible = true;
 		},
@@ -47,12 +46,7 @@ export const createContext = (uid: UID) => {
 		},
 		setDropdown(node: HTMLElement) {
 			dropdown = node;
-		}
-	};
-
-	return {
-		...functions,
-		uid,
+		},
 		get visible() {
 			return visible;
 		},

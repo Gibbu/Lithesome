@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts" generics="ValueType">
-	import { createUID, useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
@@ -30,39 +30,41 @@
 		...props
 	}: Props = $props();
 
-	const { uid } = createUID('combobox');
 	const multiple = Array.isArray(value);
-	const API = createContext<ValueType>(uid, multiple, {
-		onChange({ newValue, newTouched, newLabel }) {
-			if (newValue) {
-				value = newValue;
-				onChange?.({ value: newValue });
+	const ctx = createContext<ValueType>(
+		{ multiple },
+		{
+			onChange({ newValue, newTouched, newLabel }) {
+				if (newValue) {
+					value = newValue;
+					onChange?.({ value: newValue });
+				}
+				if (newLabel && !multiple) {
+					label = newLabel;
+					onChange?.({ label: newLabel });
+				}
+				if (typeof newTouched === 'boolean') touched = newTouched;
 			}
-			if (newLabel && !multiple) {
-				label = newLabel;
-				onChange?.({ label: newLabel });
-			}
-			if (typeof newTouched === 'boolean') touched = newTouched;
 		}
-	});
-	setContext(contextName, API);
+	);
+	setContext(contextName, ctx);
 
 	onMount(async () => {
 		await tick();
-		API.setInitialSelected(value);
-		API.close();
-		API.setMounted(true);
+		ctx.setInitialSelected(value);
+		ctx.close();
+		ctx.setMounted(true);
 	});
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	id={uid()}
-	class={classProp(klass, { visible: API.visible && API.mounted })}
+	id={ctx.uid()}
+	class={classProp(klass, { visible: ctx.visible && ctx.mounted })}
 	data-select=""
-	data-state={API.visible && API.mounted ? 'opened' : 'closed'}
+	data-state={ctx.visible && ctx.mounted ? 'opened' : 'closed'}
 	{...props}
 >
-	{@render children({ visible: API.visible && API.mounted })}
+	{@render children({ visible: ctx.visible && ctx.mounted })}
 </div>

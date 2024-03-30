@@ -1,20 +1,23 @@
-import { disableScroll, type UID } from '$lib/internal/index.js';
+import { disableScroll, createUID } from '$lib/internal/index.js';
 
-export const createContext = (uid: UID, visibleInitial: boolean) => {
-	let visible = $state<boolean>(visibleInitial);
+interface InitialValues {
+	visible?: boolean;
+}
+
+export const createContext = (init: InitialValues) => {
+	const { uid } = createUID('modal');
+
+	let visible = $state<boolean>(init.visible || false);
 
 	$effect(() => {
 		disableScroll(visible && !document.body.style.overflow);
 	});
 
-	const functions = {
-		setVisible(value: boolean) {
-			visible = value;
-		}
-	};
 	return {
 		uid,
-		...functions,
+		setVisible(value: boolean) {
+			visible = value;
+		},
 		get visible() {
 			return visible;
 		}

@@ -13,22 +13,22 @@
 
 	let { children, class: klass, use = [], self = $bindable(), transition, ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 	const _transition = getTransition(transition);
 	const attrs = $derived({
-		id: API.uid('content'),
+		id: ctx.uid('content'),
 		class: classProp(klass),
 		role: 'dialog',
 		'aria-modal': 'true',
 		tabindex: -1,
-		'aria-describedby': API.uid('description'),
-		'aria-labelledby': API.uid('title'),
+		'aria-describedby': ctx.uid('description'),
+		'aria-labelledby': ctx.uid('title'),
 		'data-modalcontent': ''
 	} as const);
 </script>
 
 {#if _transition}
-	{#if API.visible}
+	{#if ctx.visible}
 		<div
 			bind:this={self}
 			use:trap={{ allowOutsideClick: true }}
@@ -41,7 +41,7 @@
 			{@render children({})}
 		</div>
 	{/if}
-{:else if API.visible}
+{:else if ctx.visible}
 	<div bind:this={self} use:trap={{ allowOutsideClick: true }} use:useActions={use} {...props} {...attrs}>
 		{@render children({})}
 	</div>

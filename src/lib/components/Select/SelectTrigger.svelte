@@ -15,27 +15,27 @@
 
 	let { children, class: klass, use = [], self = $bindable(), ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 
 	const handleKeydown = (e: KeyboardEvent) => {
 		const { key } = e;
 
 		if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'End' || key === 'Home') e.preventDefault();
-		if (key === 'Home') API.navigateOptions('first');
-		if (key === 'End') API.navigateOptions('last');
-		if (key === 'ArrowUp') API.navigateOptions('prev');
-		if (key === 'ArrowDown') API.navigateOptions('next');
-		if (key === 'Escape') API.close();
+		if (key === 'Home') ctx.navigateOptions('first');
+		if (key === 'End') ctx.navigateOptions('last');
+		if (key === 'ArrowUp') ctx.navigateOptions('prev');
+		if (key === 'ArrowDown') ctx.navigateOptions('next');
+		if (key === 'Escape') ctx.close();
 		if (key === 'Enter') {
 			e.preventDefault();
-			if (API.hoveredOption && API.visible) {
-				(document.querySelector(`#${API.hoveredOption.id}`) as HTMLButtonElement).click();
-				if (!API.multiple) API.close();
+			if (ctx.hoveredOption && ctx.visible) {
+				(document.querySelector(`#${ctx.hoveredOption.id}`) as HTMLButtonElement).click();
+				if (!ctx.multiple) ctx.close();
 			} else {
-				API.open();
+				ctx.open();
 			}
 		}
-		if (key === 'Tab') API.close();
+		if (key === 'Tab') ctx.close();
 	};
 
 	onMount(() => {
@@ -47,29 +47,29 @@
 		const target = self?.children[0] as HTMLElement;
 
 		setNodeProps(target, {
-			id: API.uid('trigger'),
+			id: ctx.uid('trigger'),
 			'aria-haspopup': 'true',
 			'aria-expanded': 'false'
 		});
 		addEventListeners(target, {
-			click: API.toggle,
+			click: ctx.toggle,
 			keydown: handleKeydown
 		});
-		API.setTrigger(target);
+		ctx.setTrigger(target);
 	});
 
 	$effect(() => {
-		if (!API.trigger) return;
-		const target = API.trigger;
+		if (!ctx.trigger) return;
+		const target = ctx.trigger;
 
-		if (API.hoveredOption) setNodeProps(target, { 'aria-activedescendant': API.hoveredOption.id });
-		if (API.visible) {
+		if (ctx.hoveredOption) setNodeProps(target, { 'aria-activedescendant': ctx.hoveredOption.id });
+		if (ctx.visible) {
 			setNodeProps(target, {
 				'aria-expanded': 'true',
-				'aria-controls': API.uid('dropdown')
+				'aria-controls': ctx.uid('dropdown')
 			});
 		}
-		if (!API.visible) {
+		if (!ctx.visible) {
 			setNodeProps(target, { 'aria-expanded': 'false' });
 			removeNodeProps(target, 'aria-activedescendant', 'aria-controls');
 		}
@@ -79,10 +79,10 @@
 <div
 	bind:this={self}
 	use:useActions={use}
-	class={classProp(klass, { visible: API.visible })}
+	class={classProp(klass, { visible: ctx.visible })}
 	data-selecttrigger=""
 	{...props}
 	style="display: contents;"
 >
-	{@render children({ visible: API.visible })}
+	{@render children({ visible: ctx.visible })}
 </div>

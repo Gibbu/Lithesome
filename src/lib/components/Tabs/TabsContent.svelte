@@ -8,8 +8,8 @@
 
 	let { children, class: klass, use = [], self = $bindable(), value, ...props }: Props = $props();
 
-	const API = context();
-	const active = $derived(API.activeTab === value);
+	const ctx = context();
+	const active = $derived(ctx.activeTab === value);
 </script>
 
 <div
@@ -21,7 +21,7 @@
 	data-tabscontent=""
 	data-state={active ? 'active' : 'inactive'}
 	data-value={value}
-	data-orientation={API.orientation}
+	data-orientation={ctx.orientation}
 	style:display={!active ? 'none' : undefined}
 	{...props}
 >

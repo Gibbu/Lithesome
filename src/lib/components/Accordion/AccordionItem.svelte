@@ -3,29 +3,27 @@
 	import { log, useActions, createUID, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { onMount, setContext } from 'svelte';
 
-	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
+	interface Props extends BaseProps<HTMLDivElement, { active: boolean; disabled: boolean }> {
 		disabled?: boolean;
 	}
 
-	let { children, class: klass, use = [], self = $bindable(), disabled = false, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), disabled = $bindable(false), ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 	const { uid } = createUID('item');
+	const active = $derived(ctx.activeItems.includes(uid()));
+
+	setContext('accordionitem-id', uid());
 
 	onMount(() => {
-		if (!API) log.error('<AccordionItem /> must be a direct child of <Accordion />');
-		API.register({
+		if (!ctx) log.error('<AccordionItem /> must be a direct child of <Accordion />');
+		ctx.register({
 			id: uid(),
 			disabled
 		});
 	});
-
-	const active = $derived(API.activeItems.includes(uid()));
-
-	setContext('accordionitem-id', uid());
-
 	$effect(() => {
-		API.setDisabled(uid(), disabled);
+		ctx.setDisabled(uid(), disabled);
 	});
 </script>
 
@@ -33,11 +31,11 @@
 	bind:this={self}
 	use:useActions={use}
 	id={uid()}
-	class={classProp(klass, { active })}
+	class={classProp(klass, { active, disabled })}
 	data-accordionitem=""
 	data-disabled={disabled || undefined}
 	data-state={active ? 'opened' : 'closed'}
 	{...props}
 >
-	{@render children({ active })}
+	{@render children({ active, disabled })}
 </div>

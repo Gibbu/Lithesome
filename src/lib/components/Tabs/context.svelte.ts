@@ -1,4 +1,4 @@
-import { log, type UID, type CalcIndexAction, calculateIndex } from '$lib/internal/index.js';
+import { log, createUID, type CalcIndexAction, calculateIndex } from '$lib/internal/index.js';
 
 type Orientation = 'horizontal' | 'vertical';
 
@@ -7,19 +7,22 @@ interface TabBtn {
 	disabled: boolean;
 }
 
-interface Config {
+interface InitialValues {
 	orientation?: Orientation;
 	value?: string;
 }
 
-export const createContext = (uid: UID, config: Config) => {
+export const createContext = (init: InitialValues) => {
+	const { uid } = createUID('tabs');
+
 	let tabs = $state<string[]>([]);
-	let orientation = $state(config.orientation || 'horizontal');
-	let activeIndex = $state<number>(tabs.findIndex((el) => el === config.value));
+	let orientation = $state(init.orientation || 'horizontal');
+	let activeIndex = $state<number>(tabs.findIndex((el) => el === init.value));
 
 	const activeTab = $derived<string>(tabs[activeIndex] || tabs[0]);
 
-	const functions = {
+	return {
+		uid,
 		setOrientation(val: Orientation) {
 			orientation = val;
 		},
@@ -34,12 +37,7 @@ export const createContext = (uid: UID, config: Config) => {
 		navigate(action: CalcIndexAction) {
 			activeIndex = calculateIndex(action, tabs, activeIndex, true);
 			(document.querySelector(`[data-tabsbutton][data-value="${activeTab}"]`) as HTMLButtonElement)?.focus();
-		}
-	};
-
-	return {
-		uid,
-		...functions,
+		},
 		get orientation() {
 			return orientation;
 		},

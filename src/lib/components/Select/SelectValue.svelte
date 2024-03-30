@@ -8,18 +8,18 @@
 
 	let { class: klass, use = [], self = $bindable(), placeholder = 'Select an option...', ...props }: Props = $props();
 
-	const API = context();
-	const placeholderVisible = $derived(API.selectedOptions.length === 0);
+	const ctx = context();
+	const placeholderVisible = $derived(ctx.selectedOptions.length === 0);
 </script>
 
 <span
 	bind:this={self}
 	use:useActions={use}
-	id={API.uid('value')}
+	id={ctx.uid('value')}
 	class={classProp(klass, { placeholderVisible })}
 	data-selectvalue=""
 	data-placeholder={placeholderVisible || undefined}
 	{...props}
 >
-	{placeholderVisible ? placeholder : API.selectedOptions.map((el) => el.dataset.label).join(',')}
+	{placeholderVisible ? placeholder : ctx.selectedOptions.map((el) => el.dataset.label).join(',')}
 </span>

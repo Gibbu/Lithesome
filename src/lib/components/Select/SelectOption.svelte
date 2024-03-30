@@ -30,7 +30,7 @@
 		value,
 		label: labelProp,
 		self = $bindable(),
-		disabled,
+		disabled = $bindable(false),
 		onClick,
 		onFocus,
 		onMouseenter,

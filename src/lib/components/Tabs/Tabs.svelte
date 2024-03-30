@@ -18,27 +18,26 @@
 
 	let { children, use = [], class: klass, self, orientation = 'horizontal', value, ...props }: Props = $props();
 
-	const { uid } = createUID('tabs');
-	const API = createContext(uid, {
+	const ctx = createContext({
 		orientation,
 		value
 	});
-	setContext(contextName, API);
+	setContext(contextName, ctx);
 
 	$effect(() => {
-		API.setOrientation(orientation);
+		ctx.setOrientation(orientation);
 	});
 </script>
 
 <div
 	bind:this={self}
-	id={uid()}
+	id={ctx.uid()}
 	use:useActions={use}
-	class={classProp(klass, { active: API.activeTab })}
+	class={classProp(klass, { active: ctx.activeTab })}
 	data-tabs=""
 	data-orientation={orientation}
-	data-active={API.activeTab}
+	data-active={ctx.activeTab}
 	{...props}
 >
-	{@render children({ active: API.activeTab })}
+	{@render children({ active: ctx.activeTab })}
 </div>

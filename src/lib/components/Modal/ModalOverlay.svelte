@@ -19,10 +19,10 @@
 
 	let { class: klass, use = [], self, transition, ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 	const _transition = getTransition(transition);
 	const attrs = $derived({
-		id: API.uid('overlay'),
+		id: ctx.uid('overlay'),
 		'aria-hidden': 'true',
 		'data-modaloverlay': '',
 		class: classProp(klass)
@@ -30,7 +30,7 @@
 </script>
 
 {#if _transition}
-	{#if API.visible}
+	{#if ctx.visible}
 		<div
 			bind:this={self}
 			use:useActions={use}
@@ -40,6 +40,6 @@
 			{...attrs}
 		/>
 	{/if}
-{:else if API.visible}
+{:else if ctx.visible}
 	<div bind:this={self} use:useActions={use} {...props} {...attrs} />
 {/if}

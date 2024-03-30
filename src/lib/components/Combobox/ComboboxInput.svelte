@@ -24,25 +24,25 @@
 		use = [],
 		value = $bindable(),
 		self = $bindable(),
-		disabled,
+		disabled = $bindable(false),
 		onClick,
 		onFocus,
 		onKeydown,
 		...props
 	}: Props = $props();
 
-	const API = context();
+	const ctx = context();
 
 	onMount(() => {
-		if (!API || !self) return;
-		API.setTrigger(self);
+		if (!ctx || !self) return;
+		ctx.setTrigger(self);
 	});
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLInputElement>) => {
 		onClick?.(e);
 		if (disabled) return;
 
-		API.toggle();
+		ctx.toggle();
 	};
 	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLInputElement>) => {
 		onKeydown?.(e);
@@ -51,29 +51,29 @@
 		const { key } = e;
 
 		if (!PREVENT_KEYS.includes(key)) {
-			API.setTouched(true);
-			if (!API.visible) API.open();
+			ctx.setTouched(true);
+			if (!ctx.visible) ctx.open();
 		}
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) {
 			e.preventDefault();
-			if (!API.visible) API.open();
+			if (!ctx.visible) ctx.open();
 		}
-		if (key === KEYS.home) API.navigateOptions('first');
-		if (key === KEYS.end) API.navigateOptions('last');
-		if (key === KEYS.arrowUp) API.navigateOptions('prev');
-		if (key === KEYS.arrowDown) API.navigateOptions('next');
-		if (key === KEYS.escape) API.close();
+		if (key === KEYS.home) ctx.navigateOptions('first');
+		if (key === KEYS.end) ctx.navigateOptions('last');
+		if (key === KEYS.arrowUp) ctx.navigateOptions('prev');
+		if (key === KEYS.arrowDown) ctx.navigateOptions('next');
+		if (key === KEYS.escape) ctx.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (API.hoveredOption && API.visible) {
-				(document.querySelector(`#${API.hoveredOption.id}`) as HTMLButtonElement).click();
-				if (!API.multiple) API.close();
+			if (ctx.hoveredOption && ctx.visible) {
+				(document.querySelector(`#${ctx.hoveredOption.id}`) as HTMLButtonElement).click();
+				if (!ctx.multiple) ctx.close();
 			} else {
-				API.open();
+				ctx.open();
 			}
 		}
-		if (key === 'Tab') API.close();
+		if (key === 'Tab') ctx.close();
 	};
 </script>
 
@@ -81,8 +81,8 @@
 	type="text"
 	bind:this={self}
 	use:useActions={use}
-	id={API.uid('input')}
-	class={classProp(klass, { visible: API.visible })}
+	id={ctx.uid('input')}
+	class={classProp(klass, { visible: ctx.visible })}
 	onclick={handleClick}
 	onkeydown={handleKeydown}
 	bind:value

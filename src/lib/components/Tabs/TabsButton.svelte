@@ -30,13 +30,13 @@
 		...props
 	}: Props = $props();
 
-	const API = context();
-	const active = $derived(API.activeTab === value);
+	const ctx = context();
+	const active = $derived(ctx.activeTab === value);
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);
 		if (disabled) return;
-		API.setActive(value);
+		ctx.setActive(value);
 	};
 	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLButtonElement>) => {
 		onKeydown?.(e);
@@ -45,22 +45,22 @@
 
 		if (PREVENT_KEYS.includes(key)) e.preventDefault();
 
-		if (key === KEYS.home) API.navigate('first');
-		if (key === KEYS.end) API.navigate('last');
+		if (key === KEYS.home) ctx.navigate('first');
+		if (key === KEYS.end) ctx.navigate('last');
 		if (
-			(key === KEYS.arrowUp && API.orientation === 'vertical') ||
-			(key === KEYS.arrowLeft && API.orientation === 'horizontal')
+			(key === KEYS.arrowUp && ctx.orientation === 'vertical') ||
+			(key === KEYS.arrowLeft && ctx.orientation === 'horizontal')
 		)
-			API.navigate('prev');
+			ctx.navigate('prev');
 		if (
-			(key === KEYS.arrowDown && API.orientation === 'vertical') ||
-			(key === KEYS.arrowRight && API.orientation === 'horizontal')
+			(key === KEYS.arrowDown && ctx.orientation === 'vertical') ||
+			(key === KEYS.arrowRight && ctx.orientation === 'horizontal')
 		)
-			API.navigate('next');
+			ctx.navigate('next');
 	};
 
 	onMount(() => {
-		if (!disabled) API.register(value);
+		if (!disabled) ctx.register(value);
 	});
 </script>
 

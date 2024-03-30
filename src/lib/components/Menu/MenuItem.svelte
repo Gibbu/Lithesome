@@ -27,27 +27,27 @@
 		...props
 	}: Props = $props();
 
-	const API = context();
+	const ctx = context();
 	const { uid } = createUID('item');
 
-	const hovered = $derived(API.hoveredItem === uid());
+	const hovered = $derived(ctx.hoveredItem === uid());
 
 	onMount(() => {
-		if (!API.items.includes(uid()) && !disabled) API.register(uid());
+		if (!ctx.items.includes(uid()) && !disabled) ctx.register(uid());
 
 		return () => {
-			API.unregister(uid());
+			ctx.unregister(uid());
 		};
 	});
 
 	const handleClick = (e: HandlerParam<MouseEvent, HandlerEl>) => {
 		if (!disabled) {
-			API.close();
+			ctx.close();
 			onClick?.(e);
 		}
 	};
 	const handleMouseover = (e: HandlerParam<MouseEvent, HandlerEl>) => {
-		API.setHoveredItem(uid());
+		ctx.setHoveredItem(uid());
 		onMouseover?.(e);
 	};
 	const handleFocus = (e: HandlerParam<FocusEvent, HandlerEl>) => {

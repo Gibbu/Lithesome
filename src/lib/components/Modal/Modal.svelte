@@ -27,9 +27,9 @@
 	}: Props = $props();
 
 	const { uid } = createUID('modal');
-	const API = createContext(uid, visible);
+	const ctx = createContext({ visible });
 
-	setContext(contextName, API);
+	setContext(contextName, ctx);
 
 	const handleKeys = (e: KeyboardEvent) => {
 		const { key } = e;
@@ -37,7 +37,7 @@
 	};
 
 	$effect(() => {
-		API.setVisible(visible);
+		ctx.setVisible(visible);
 		if (isBrowser) {
 			if (visible) {
 				window.addEventListener('keydown', handleKeys);

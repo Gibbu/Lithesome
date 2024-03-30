@@ -5,8 +5,6 @@
 	import { cn } from '$site/index.js';
 	import { slide } from 'svelte/transition';
 
-	let disabled = $state(false);
-
 	const items = [
 		{
 			title: 'What is Lithesome?',
@@ -23,7 +21,7 @@
 	class="w-full max-w-[70%] rounded-md border border-neutral-300 bg-white dark:border-white/10 dark:bg-white/5"
 >
 	{#each items as { title, content }}
-		<AccordionItem class="border-b border-neutral-300 last:border-none dark:border-white/10" {disabled}>
+		<AccordionItem class="border-b border-neutral-300 last:border-none dark:border-white/10">
 			<AccordionHeading>
 				<AccordionButton
 					class="flex w-full items-center justify-between gap-4 p-4 hover:bg-black/[0.03] dark:hover:bg-white/5"

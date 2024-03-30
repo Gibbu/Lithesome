@@ -26,19 +26,22 @@
 		...props
 	}: Props = $props();
 
-	const { uid } = createUID('accordion');
-	const API = createContext(uid, value, {
-		onChange(val) {
-			value = val;
+	const ctx = createContext(
+		{ value },
+		{
+			onChange(val) {
+				value = val;
+			}
 		}
-	});
+	);
 
-	setContext(contextName, API);
+	setContext(contextName, ctx);
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
+	id={ctx.uid()}
 	class={classProp(klass)}
 	role="radiogroup"
 	aria-required={required}

@@ -21,7 +21,7 @@
 
 	let { children, class: klass, use = [], self = $bindable(), onClick, onKeydown, ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 
 	onMount(() => {
 		if (self && self.children.length > 1) {
@@ -32,7 +32,7 @@
 		const target = self?.children[0] as HTMLElement;
 
 		setNodeProps(target, {
-			id: API.uid('trigger'),
+			id: ctx.uid('trigger'),
 			'aria-haspopup': 'true',
 			'aria-expanded': 'false'
 		});
@@ -40,20 +40,20 @@
 			click: handleClick,
 			keydown: handleKeydown
 		});
-		API.setTrigger(target);
+		ctx.setTrigger(target);
 	});
 
 	$effect(() => {
-		if (!API.trigger) return;
-		const target = API.trigger;
+		if (!ctx.trigger) return;
+		const target = ctx.trigger;
 
-		if (API.visible) {
+		if (ctx.visible) {
 			setNodeProps(target, {
 				'aria-expanded': 'true',
-				'aria-controls': API.uid('dropdown')
+				'aria-controls': ctx.uid('dropdown')
 			});
 		}
-		if (!API.visible) {
+		if (!ctx.visible) {
 			setNodeProps(target, { 'aria-expanded': 'false' });
 		}
 	});
@@ -64,34 +64,34 @@
 		const { key } = e;
 
 		if (PREVENT_KEYS.includes(key)) e.preventDefault();
-		if (key === KEYS.home) API.navigateItems('first');
-		if (key === KEYS.end) API.navigateItems('last');
-		if (key === KEYS.arrowUp) API.navigateItems('prev');
-		if (key === KEYS.arrowDown) API.navigateItems('next');
-		if (key === KEYS.escape) API.close();
+		if (key === KEYS.home) ctx.navigateItems('first');
+		if (key === KEYS.end) ctx.navigateItems('last');
+		if (key === KEYS.arrowUp) ctx.navigateItems('prev');
+		if (key === KEYS.arrowDown) ctx.navigateItems('next');
+		if (key === KEYS.escape) ctx.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (API.hoveredItem && API.visible) {
-				(document.querySelector(`#${API.hoveredItem}`) as HTMLButtonElement).click();
-				API.close();
+			if (ctx.hoveredItem && ctx.visible) {
+				(document.querySelector(`#${ctx.hoveredItem}`) as HTMLButtonElement).click();
+				ctx.close();
 			} else {
-				API.open();
+				ctx.open();
 			}
 		}
-		if (key === KEYS.tab) API.close();
+		if (key === KEYS.tab) ctx.close();
 	};
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
 		onClick?.(e);
-		API.toggle();
+		ctx.toggle();
 	};
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	class={classProp(klass, { visible: API.visible })}
+	class={classProp(klass, { visible: ctx.visible })}
 	data-menutrigger=""
 	{...props}
 >
-	{@render children({ visible: API.visible })}
+	{@render children({ visible: ctx.visible })}
 </div>

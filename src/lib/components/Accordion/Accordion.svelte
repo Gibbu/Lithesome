@@ -8,22 +8,32 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
 		single?: boolean;
 	}
 
-	let { children, use = [], class: klass, self = $bindable(), single, ...props }: Props = $props();
+	let { children, use = [], class: klass, self = $bindable(), single = $bindable(false), ...props }: Props = $props();
 
-	const { uid } = createUID('accordion');
-	const API = createContext(uid, single);
-	const active = $derived(API.activeItems.length > 0);
+	const ctx = createContext({ single });
+	const active = $derived(ctx.activeItems.length > 0);
 
-	setContext(contextName, API);
+	setContext(contextName, ctx);
+
+	$effect(() => {
+		ctx.setSingle(single);
+	});
 </script>
 
-<div bind:this={self} use:useActions={use} id={uid()} class={classProp(klass, { active })} data-accordion="" {...props}>
+<div
+	bind:this={self}
+	use:useActions={use}
+	id={ctx.uid()}
+	class={classProp(klass, { active })}
+	data-accordion=""
+	{...props}
+>
 	{@render children({ active })}
 </div>

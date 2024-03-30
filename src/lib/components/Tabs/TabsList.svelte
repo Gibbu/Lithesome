@@ -6,7 +6,7 @@
 
 	let { children, class: klass, use = [], self, ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 </script>
 
 <div
@@ -14,9 +14,9 @@
 	use:useActions={use}
 	class={classProp(klass)}
 	role="tablist"
-	aria-orientation={API.orientation}
+	aria-orientation={ctx.orientation}
 	data-tabslist=""
-	data-orientation={API.orientation}
+	data-orientation={ctx.orientation}
 	{...props}
 >
 	{@render children({})}

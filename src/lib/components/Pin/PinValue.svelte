@@ -14,19 +14,18 @@
 
 	let { class: klass, use = [], self = $bindable(), name, ...props }: Props = $props();
 
-	const API = context();
-	const { uid } = createUID('input');
+	const ctx = context();
 
 	onMount(() => {
-		if (!API) log.error('<AccordionItem /> must be a direct child of <Accordion />');
+		if (!ctx) log.error('<AccordionItem /> must be a direct child of <Accordion />');
 	});
 </script>
 
 <input
 	bind:this={self}
-	bind:value={API.transformedValue}
+	bind:value={ctx.transformedValue}
 	use:useActions={use}
-	id={uid()}
+	id={ctx.uid('value')}
 	class={classProp(klass)}
 	aria-hidden="true"
 	tabindex="-1"

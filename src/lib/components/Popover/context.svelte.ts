@@ -1,19 +1,26 @@
-import { type UID } from '$lib/internal/index.js';
+import { createUID } from '$lib/internal/index.js';
+
+interface InitialValues {
+	visible?: boolean;
+}
 
 interface Hooks {
 	onChange: (val: boolean) => void;
 }
 
-export const createContext = (uid: UID, visibleInitial: boolean, hooks: Hooks) => {
-	let visible = $state<boolean>(visibleInitial);
+export const createContext = (init: InitialValues, hooks: Hooks) => {
+	const { uid } = createUID('popover');
+
+	let visible = $state<boolean>();
 	let trigger = $state<HTMLElement | null>(null);
 	let content = $state<HTMLElement | null>(null);
 
 	$effect(() => {
-		hooks.onChange(visible);
+		hooks.onChange(init.visible || false);
 	});
 
-	const functions = {
+	return {
+		uid,
 		close() {
 			visible = false;
 		},
@@ -28,11 +35,7 @@ export const createContext = (uid: UID, visibleInitial: boolean, hooks: Hooks) =
 		},
 		setContent(node: HTMLElement) {
 			content = node;
-		}
-	};
-	return {
-		uid,
-		...functions,
+		},
 		get visible() {
 			return visible;
 		},

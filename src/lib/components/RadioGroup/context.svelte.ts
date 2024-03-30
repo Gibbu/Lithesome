@@ -1,4 +1,4 @@
-import { calculateIndex, type JsonValue, type UID, type CalcIndexAction } from '$lib/internal/index.js';
+import { calculateIndex, createUID, type JsonValue, type CalcIndexAction } from '$lib/internal/index.js';
 
 interface Item {
 	id: string;
@@ -6,21 +6,30 @@ interface Item {
 	disabled?: boolean;
 }
 
+interface InitialValues {
+	value?: JsonValue;
+}
+
 interface Hooks {
 	onChange: (value: JsonValue) => void;
 }
 
-export const createContext = (uid: UID, value: JsonValue, hooks?: Hooks) => {
+export const createContext = (init: InitialValues, hooks?: Hooks) => {
+	const { uid } = createUID('radiogroup');
+
 	let items = $state<Item[]>([]);
 	let selectedIndex = $state<number>(-1);
 
-	const selectedItem = $derived(items[selectedIndex] || (items.length > 0 && items.find((el) => el.value === value)));
+	const selectedItem = $derived(
+		items[selectedIndex] || (items.length > 0 && items.find((el) => el.value === init.value))
+	);
 
 	$effect(() => {
 		hooks?.onChange?.(selectedItem.value);
 	});
 
-	const functions = {
+	return {
+		uid,
 		register(item: Item) {
 			items = [...items, item];
 		},
@@ -32,12 +41,7 @@ export const createContext = (uid: UID, value: JsonValue, hooks?: Hooks) => {
 		},
 		setSelected(item: Item) {
 			selectedIndex = items.findIndex((el) => el.value === item.value);
-		}
-	};
-
-	return {
-		uid,
-		...functions,
+		},
 		get items() {
 			return items;
 		},

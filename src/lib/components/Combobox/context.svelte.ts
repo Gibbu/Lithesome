@@ -2,8 +2,8 @@ import {
 	calculateIndex,
 	disableScroll,
 	removeDisabledElements,
+	createUID,
 	type CalcIndexAction,
-	type UID,
 	type JsonValue
 } from '$lib/internal/index.js';
 import { tick } from 'svelte';
@@ -15,11 +15,17 @@ export interface Option {
 	disabled?: boolean;
 }
 
-interface Hooks<ValueType> {
-	onChange: (values: { newValue?: ValueType; newTouched?: boolean; newLabel?: string }) => void;
+interface InitialValues {
+	multiple?: boolean;
 }
 
-export const createContext = <ValueType>(uid: UID, multiple: boolean = false, hooks: Hooks<ValueType>) => {
+interface Hooks<ValueType> {
+	onChange?: (values: { newValue?: ValueType; newTouched?: boolean; newLabel?: string }) => void;
+}
+
+export const createContext = <ValueType>({ multiple }: InitialValues, hooks?: Hooks<ValueType>) => {
+	const { uid } = createUID('combobox');
+
 	let visible = $state<boolean>(true);
 	let hoveredIndex = $state<number>(-1);
 	let options = $state<HTMLElement[]>([]);
@@ -52,10 +58,11 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 
 	$effect(() => {
 		if (!visible) return;
-		hooks.onChange({ newTouched: touched });
+		hooks?.onChange?.({ newTouched: touched });
 	});
 
-	const functions = {
+	return {
+		uid,
 		open() {
 			visible = true;
 		},
@@ -93,12 +100,12 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 			}
 
 			if (!multiple) {
-				functions.close();
+				visible = false;
 			}
 
 			const value = multiple ? selectedOptions.map((el) => el.dataset.value) : selectedOptions[0].dataset.value;
 			const label = multiple ? '' : selectedOptions[0].dataset.label || '';
-			hooks.onChange({ newValue: value as ValueType, newLabel: label });
+			hooks?.onChange?.({ newValue: value as ValueType, newLabel: label });
 		},
 		async setInitialSelected(value: ValueType) {
 			selectedOptions = options.filter((el) => {
@@ -117,12 +124,7 @@ export const createContext = <ValueType>(uid: UID, multiple: boolean = false, ho
 		},
 		setTouched(value: boolean) {
 			touched = value;
-		}
-	};
-
-	return {
-		uid,
-		...functions,
+		},
 		get visible() {
 			return visible;
 		},

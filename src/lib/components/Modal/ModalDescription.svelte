@@ -6,13 +6,13 @@
 
 	let { children, class: klass, use = [], self = $bindable(), ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 </script>
 
 <p
 	bind:this={self}
 	use:useActions={use}
-	id={API.uid('description')}
+	id={ctx.uid('description')}
 	class={classProp(klass)}
 	data-modaldescription=""
 	{...props}

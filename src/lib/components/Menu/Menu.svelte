@@ -8,27 +8,26 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
 
 	let { children, use = [], class: klass, self = $bindable(), ...props }: Props = $props();
 
-	const { uid } = createUID('menu');
-	const API = createContext(uid);
+	const ctx = createContext();
 
-	setContext(contextName, API);
+	setContext(contextName, ctx);
 </script>
 
 <div
 	bind:this={self}
 	use:useActions={use}
-	id={uid()}
-	class={classProp(klass, { visible: API.visible })}
+	id={ctx.uid()}
+	class={classProp(klass, { visible: ctx.visible })}
 	data-menu=""
-	data-state={API.visible ? 'opened' : 'closed'}
+	data-state={ctx.visible ? 'opened' : 'closed'}
 	{...props}
 >
-	{@render children({ visible: API.visible })}
+	{@render children({ visible: ctx.visible })}
 </div>

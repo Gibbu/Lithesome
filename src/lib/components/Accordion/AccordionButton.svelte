@@ -9,15 +9,15 @@
 
 	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: Props = $props();
 
-	const API = context();
+	const ctx = context();
 	const itemId = getContext<string>('accordionitem-id');
 
-	const active = $derived(API.activeItems.includes(itemId));
-	const item = $derived(API.items.find((el) => el.id === itemId));
+	const active = $derived(ctx.activeItems.includes(itemId));
+	const item = $derived(ctx.items.find((el) => el.id === itemId));
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);
-		if (!item?.disabled) API.toggle(itemId);
+		if (!item?.disabled) ctx.toggle(itemId);
 	};
 </script>
 
@@ -28,7 +28,7 @@
 	class={classProp(klass, { active, disabled: item?.disabled || false })}
 	aria-expanded={active}
 	aria-disabled={item?.disabled}
-	aria-controls={active ? API.uid('content') : undefined}
+	aria-controls={active ? ctx.uid('content') : undefined}
 	tabindex={item?.disabled ? -1 : 0}
 	data-accordionbutton=""
 	data-active={active || undefined}
