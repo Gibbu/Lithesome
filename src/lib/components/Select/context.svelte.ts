@@ -34,7 +34,7 @@ export class SelectContext<ValueType = any> extends Context<Hooks<ValueType>> {
 	mounted = $state<boolean>(false);
 	multiple = $state<boolean>(false);
 
-	hoveredOption = $state<HTMLElement | undefined>(undefined);
+	hoveredOption = $derived<HTMLElement | undefined>(this.options[this.hoveredIndex]);
 
 	constructor(init: Init, hooks: Hooks<ValueType>) {
 		super('select', hooks);

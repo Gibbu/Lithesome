@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts" generics="ValueType">
-	import { createUID, useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
@@ -16,7 +16,15 @@
 		onChange?: (value: JsonValue) => void;
 	}
 
-	let { children, use = [], class: klass, value = $bindable(), self, onChange, ...props }: Props = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		value = $bindable(),
+		self = $bindable(),
+		onChange,
+		...props
+	}: Props = $props();
 
 	const multiple = Array.isArray(value);
 	const ctx = new SelectContext<ValueType>(
