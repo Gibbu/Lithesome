@@ -2,7 +2,8 @@ import {
 	calculateIndex,
 	disableScroll,
 	removeDisabledElements,
-	createUID,
+	Context,
+	effects,
 	type CalcIndexAction,
 	type JsonValue
 } from '$lib/internal/index.js';
@@ -15,143 +16,105 @@ export interface Option {
 	disabled?: boolean;
 }
 
-interface InitialValues {
-	multiple?: boolean;
+interface Init {
+	multiple: boolean;
 }
 
 interface Hooks<ValueType> {
 	onChange?: (values: { newValue?: ValueType; newTouched?: boolean; newLabel?: string }) => void;
 }
 
-export const createContext = <ValueType>({ multiple }: InitialValues, hooks?: Hooks<ValueType>) => {
-	const { uid } = createUID('combobox');
+export class ComboboxContext<ValueType = any> extends Context<Hooks<ValueType>> {
+	visible = $state<boolean>(true);
+	hoveredIndex = $state<number>(-1);
+	options = $state<HTMLElement[]>([]);
+	trigger = $state<HTMLInputElement | null>(null);
+	dropdown = $state<HTMLElement | null>(null);
+	selectedOptions = $state<HTMLElement[]>([]);
+	mounted = $state<boolean>(false);
+	touched = $state<boolean>(false);
+	multiple = $state<boolean>(false);
 
-	let visible = $state<boolean>(true);
-	let hoveredIndex = $state<number>(-1);
-	let options = $state<HTMLElement[]>([]);
-	let trigger = $state<HTMLInputElement | null>(null);
-	let dropdown = $state<HTMLElement | null>(null);
-	let selectedOptions = $state<HTMLElement[]>([]);
-	let mounted = $state<boolean>(false);
-	let touched = $state<boolean>(false);
+	hoveredOption = $derived<HTMLElement | undefined>(this.options[this.hoveredIndex]);
 
-	const hoveredOption = $derived(options[hoveredIndex]);
+	constructor(init: Init, hooks: Hooks<ValueType>) {
+		super('combobox', hooks);
 
-	$effect(() => {
-		disableScroll(visible && !document.body.style.overflow);
-	});
-	$effect(() => {
-		if (!visible || !options || hoveredIndex > options.length - 1) {
-			hoveredIndex = -1;
-		}
-	});
-	$effect(() => {
-		if (visible) {
-			tick().then(() => {
-				hoveredIndex = options.findIndex((option) => option.ariaSelected === 'true');
-			});
-		} else {
-			options = [];
-			touched = false;
-		}
-	});
+		this.multiple = init.multiple;
+	}
 
-	$effect(() => {
-		if (!visible) return;
-		hooks?.onChange?.({ newTouched: touched });
-	});
+	open() {
+		this.visible = true;
+	}
+	close() {
+		this.visible = false;
+	}
+	toggle() {
+		this.visible = !this.visible;
+	}
+	queryElements() {
+		const elements = removeDisabledElements(`#${this.uid('dropdown')} [data-comboboxoption]`);
+		if (!elements) return;
+		this.options = elements;
+	}
+	navigate(action: CalcIndexAction) {
+		this.hoveredIndex = calculateIndex(action, this.options, this.hoveredIndex);
 
-	return {
-		uid,
-		open() {
-			visible = true;
-		},
-		close() {
-			visible = false;
-		},
-		toggle() {
-			visible = !visible;
-		},
-		queryElements() {
-			const elements = removeDisabledElements(`#${uid('dropdown')} [data-comboboxoption]`);
-			if (!elements) return;
-			options = elements;
-		},
-		navigateOptions(action: CalcIndexAction) {
-			hoveredIndex = calculateIndex(action, options, hoveredIndex);
+		if (this.hoveredOption) this.hoveredOption.scrollIntoView({ block: 'nearest' });
+	}
+	setHovered(optionId?: string) {
+		if (!optionId) return;
+		this.hoveredIndex = this.options.findIndex((el) => el.id === optionId);
+	}
+	setSelected() {
+		if (!this.hoveredOption) return;
 
-			document.querySelector(`#${hoveredOption?.id}`)?.scrollIntoView({ block: 'nearest' });
-		},
-		setHoveredOption(optionId?: string) {
-			if (!optionId) return;
-			hoveredIndex = options.findIndex((el) => el.id === optionId);
-		},
-		setSelectedOptions() {
-			if (!hoveredOption) return;
-
-			if (multiple) {
-				if (selectedOptions.find((el) => el.dataset.value === hoveredOption.dataset.value)) {
-					selectedOptions = selectedOptions.filter((el) => el.dataset.value !== hoveredOption.dataset.value);
-				} else {
-					selectedOptions = [...selectedOptions, hoveredOption];
-				}
+		if (this.multiple) {
+			if (this.selectedOptions.find((el) => el.dataset.value === this.hoveredOption?.dataset.value)) {
+				this.selectedOptions = this.selectedOptions.filter(
+					(el) => el.dataset.value !== this.hoveredOption?.dataset.value
+				);
 			} else {
-				selectedOptions[0] = hoveredOption;
+				this.selectedOptions.push(this.hoveredOption);
 			}
+		} else {
+			this.selectedOptions[0] = this.hoveredOption;
+		}
 
-			if (!multiple) {
-				visible = false;
+		if (!this.multiple) this.visible = false;
+
+		const value = this.multiple
+			? this.selectedOptions.map((el) => el.dataset.value)
+			: this.selectedOptions[0].dataset.value;
+		const label = this.multiple ? '' : this.selectedOptions[0].dataset.label || '';
+		this.hooks?.onChange?.({ newValue: value as ValueType, newLabel: label });
+	}
+	setInitialSelected(value: ValueType) {
+		this.selectedOptions = this.options.filter((el) => {
+			if (!Array.isArray(value) && el.dataset.value === value) return el;
+			else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
+		});
+	}
+
+	#effects = effects(() => {
+		$effect(() => {
+			disableScroll(this.visible && !document.body.style.overflow);
+		});
+		$effect(() => {
+			if (!this.visible || !this.options || this.hoveredIndex > this.options.length - 1) this.hoveredIndex = -1;
+		});
+		$effect(() => {
+			if (this.visible) {
+				tick().then(() => {
+					this.hoveredIndex = this.options.findIndex((option) => option.ariaSelected === 'true');
+				});
+			} else {
+				this.options = [];
+				this.touched = false;
 			}
-
-			const value = multiple ? selectedOptions.map((el) => el.dataset.value) : selectedOptions[0].dataset.value;
-			const label = multiple ? '' : selectedOptions[0].dataset.label || '';
-			hooks?.onChange?.({ newValue: value as ValueType, newLabel: label });
-		},
-		async setInitialSelected(value: ValueType) {
-			selectedOptions = options.filter((el) => {
-				if (!Array.isArray(value) && el.dataset.value === value) return el;
-				else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
-			});
-		},
-		setTrigger(node: HTMLInputElement) {
-			trigger = node;
-		},
-		setDropdown(node: HTMLElement) {
-			dropdown = node;
-		},
-		setMounted(value: boolean) {
-			mounted = value;
-		},
-		setTouched(value: boolean) {
-			touched = value;
-		},
-		get visible() {
-			return visible;
-		},
-		get hoveredIndex() {
-			return hoveredIndex;
-		},
-		get options() {
-			return options;
-		},
-		get touched() {
-			return options;
-		},
-		get dropdown() {
-			return dropdown;
-		},
-		get mounted() {
-			return mounted;
-		},
-		get selectedOptions() {
-			return selectedOptions;
-		},
-		get hoveredOption() {
-			return hoveredOption;
-		},
-		get trigger() {
-			return trigger;
-		},
-		multiple
-	};
-};
+		});
+		$effect(() => {
+			if (this.visible) this.hooks?.onChange?.({ newTouched: this.touched });
+		});
+	});
+}

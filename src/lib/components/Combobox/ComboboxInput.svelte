@@ -35,7 +35,7 @@
 
 	onMount(() => {
 		if (!ctx || !self) return;
-		ctx.setTrigger(self);
+		ctx.trigger = self;
 	});
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLInputElement>) => {
@@ -51,7 +51,7 @@
 		const { key } = e;
 
 		if (!PREVENT_KEYS.includes(key)) {
-			ctx.setTouched(true);
+			ctx.touched = true;
 			if (!ctx.visible) ctx.open();
 		}
 
@@ -59,15 +59,15 @@
 			e.preventDefault();
 			if (!ctx.visible) ctx.open();
 		}
-		if (key === KEYS.home) ctx.navigateOptions('first');
-		if (key === KEYS.end) ctx.navigateOptions('last');
-		if (key === KEYS.arrowUp) ctx.navigateOptions('prev');
-		if (key === KEYS.arrowDown) ctx.navigateOptions('next');
+		if (key === KEYS.home) ctx.navigate('first');
+		if (key === KEYS.end) ctx.navigate('last');
+		if (key === KEYS.arrowUp) ctx.navigate('prev');
+		if (key === KEYS.arrowDown) ctx.navigate('next');
 		if (key === KEYS.escape) ctx.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
 			if (ctx.hoveredOption && ctx.visible) {
-				(document.querySelector(`#${ctx.hoveredOption.id}`) as HTMLButtonElement).click();
+				(ctx.hoveredOption as HTMLButtonElement).click();
 				if (!ctx.multiple) ctx.close();
 			} else {
 				ctx.open();

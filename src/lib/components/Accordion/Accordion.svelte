@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { AccordionContext } from './context.svelte.js';
 
 	const contextName = 'accordion-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<AccordionContext>(contextName);
 </script>
 
 <script lang="ts">
@@ -17,13 +17,13 @@
 
 	let { children, use = [], class: klass, self = $bindable(), single = $bindable(false), ...props }: Props = $props();
 
-	const ctx = createContext({ single });
+	const ctx = new AccordionContext({ single });
 	const active = $derived(ctx.activeItems.length > 0);
 
 	setContext(contextName, ctx);
 
 	$effect(() => {
-		ctx.setSingle(single);
+		ctx.single = single;
 	});
 </script>
 

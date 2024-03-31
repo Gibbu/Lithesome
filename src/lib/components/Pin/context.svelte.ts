@@ -1,66 +1,45 @@
-import { createUID } from '$lib/internal/index.js';
+import { Context, effects } from '$lib/internal/index.js';
 
-interface InitialValues {
-	value?: string[];
-	disabled?: boolean;
-	type?: 'text' | 'password';
-	placeholder?: string;
+interface Init {
+	value: string[];
+	disabled: boolean;
+	type: 'text' | 'password';
+	placeholder: string;
 }
 
 interface Hooks {
 	onChange?: (value: string) => void;
 }
 
-export const createContext = (init: InitialValues, hooks?: Hooks) => {
-	const { uid } = createUID('pin');
+export class PinContext extends Context<Hooks> {
+	inputs = $state<string[]>([]);
+	value = $state<string[]>([]);
+	disabled = $state<boolean>(false);
+	type = $state<'text' | 'password'>('text');
+	placeholder = $state<string>('');
 
-	let inputs = $state<string[]>([]);
-	let value = $state<string[]>(init.value || []);
-	let disabled = $state<boolean>(init.disabled || false);
-	let type = $state<'text' | 'password'>(init.type || 'text');
-	let placeholder = $state<string>(init.placeholder || '');
+	transformedValue = $derived(this.value.join());
+	filled = $derived(this.value.every((el) => el?.length));
 
-	const transformedValue = $derived(value.join(''));
-	const filled = $derived(value.every((el) => el?.length));
+	constructor(init: Init, hooks: Hooks) {
+		super('pin', hooks);
 
-	$effect(() => {
-		hooks?.onChange?.(transformedValue);
+		this.value = init.value;
+		this.disabled = init.disabled;
+		this.type = init.type;
+		this.placeholder = init.placeholder;
+	}
+
+	register(inputId: string) {
+		this.inputs.push(inputId);
+	}
+	setValue(i: number, value: string) {
+		this.value[i] = value;
+	}
+
+	#effects = effects(() => {
+		$effect(() => {
+			this.hooks?.onChange?.(this.transformedValue);
+		});
 	});
-
-	return {
-		uid,
-		register(inputId: string) {
-			inputs = [...inputs, inputId];
-		},
-		setValue(index: number, newVal: string) {
-			value[index] = newVal;
-		},
-		setType(newVal: 'text' | 'password') {
-			type = newVal;
-		},
-		setDisabled(newVal: boolean) {
-			disabled = newVal;
-		},
-		get inputs() {
-			return inputs;
-		},
-		get value() {
-			return value;
-		},
-		get disabled() {
-			return disabled;
-		},
-		get transformedValue() {
-			return transformedValue;
-		},
-		get type() {
-			return type;
-		},
-		get filled() {
-			return filled;
-		},
-		get placeholder() {
-			return placeholder;
-		}
-	};
-};
+}

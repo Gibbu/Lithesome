@@ -1,4 +1,4 @@
-import { calculateIndex, createUID, type JsonValue, type CalcIndexAction } from '$lib/internal/index.js';
+import { calculateIndex, Context, effects, type JsonValue, type CalcIndexAction } from '$lib/internal/index.js';
 
 interface Item {
 	id: string;
@@ -6,47 +6,45 @@ interface Item {
 	disabled?: boolean;
 }
 
-interface InitialValues {
-	value?: JsonValue;
+interface Init {
+	value: JsonValue;
 }
 
 interface Hooks {
 	onChange: (value: JsonValue) => void;
 }
 
-export const createContext = (init: InitialValues, hooks?: Hooks) => {
-	const { uid } = createUID('radiogroup');
+export class RadiogroupContext extends Context<Hooks> {
+	items = $state<Item[]>([]);
+	value = $state<JsonValue>();
+	selectedIndex = $state<number>(-1);
 
-	let items = $state<Item[]>([]);
-	let selectedIndex = $state<number>(-1);
-
-	const selectedItem = $derived(
-		items[selectedIndex] || (items.length > 0 && items.find((el) => el.value === init.value))
+	selectedItem = $derived(
+		this.items[this.selectedIndex] || (this.items.length > 0 && this.items.find((el) => el.value === this.value))
 	);
 
-	$effect(() => {
-		hooks?.onChange?.(selectedItem.value);
-	});
+	constructor(init: Init, hooks: Hooks) {
+		super('radiogroup', hooks);
 
-	return {
-		uid,
-		register(item: Item) {
-			items = [...items, item];
-		},
-		navigateItems(action: CalcIndexAction) {
-			selectedIndex = calculateIndex(action, items, selectedIndex);
-			(
-				document.querySelector(`[data-radiogroupitem][data-value="${selectedItem.value}"]`) as HTMLButtonElement
-			)?.focus();
-		},
-		setSelected(item: Item) {
-			selectedIndex = items.findIndex((el) => el.value === item.value);
-		},
-		get items() {
-			return items;
-		},
-		get selectedItem() {
-			return selectedItem;
-		}
-	};
-};
+		this.value = init.value;
+	}
+
+	register(item: Item) {
+		this.items.push(item);
+	}
+	navigate(action: CalcIndexAction) {
+		this.selectedIndex = calculateIndex(action, this.items, this.selectedIndex);
+		(
+			document.querySelector(`[data-radiogroupitem][data-value="${this.selectedItem.value}"]`) as HTMLButtonElement
+		)?.focus();
+	}
+	setSelected(item: Item) {
+		this.selectedIndex = this.items.findIndex((el) => el.value === item.value);
+	}
+
+	#effects = effects(() => {
+		$effect(() => {
+			this.hooks?.onChange?.(this.selectedItem.value);
+		});
+	});
+}

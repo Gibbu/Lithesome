@@ -1,14 +1,14 @@
 <script lang="ts" context="module">
 	import { getContext } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { TabsContext } from './context.svelte.js';
 
 	const contextName = 'tabs-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<TabsContext>(contextName);
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { active: string }> {
@@ -16,16 +16,24 @@
 		value?: string;
 	}
 
-	let { children, use = [], class: klass, self, orientation = 'horizontal', value, ...props }: Props = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		self,
+		orientation = 'horizontal',
+		value = $bindable(''),
+		...props
+	}: Props = $props();
 
-	const ctx = createContext({
+	const ctx = new TabsContext({
 		orientation,
 		value
 	});
 	setContext(contextName, ctx);
 
 	$effect(() => {
-		ctx.setOrientation(orientation);
+		ctx.orientation = orientation;
 	});
 </script>
 

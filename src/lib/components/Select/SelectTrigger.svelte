@@ -21,10 +21,10 @@
 		const { key } = e;
 
 		if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'End' || key === 'Home') e.preventDefault();
-		if (key === 'Home') ctx.navigateOptions('first');
-		if (key === 'End') ctx.navigateOptions('last');
-		if (key === 'ArrowUp') ctx.navigateOptions('prev');
-		if (key === 'ArrowDown') ctx.navigateOptions('next');
+		if (key === 'Home') ctx.navigate('first');
+		if (key === 'End') ctx.navigate('last');
+		if (key === 'ArrowUp') ctx.navigate('prev');
+		if (key === 'ArrowDown') ctx.navigate('next');
 		if (key === 'Escape') ctx.close();
 		if (key === 'Enter') {
 			e.preventDefault();
@@ -52,10 +52,10 @@
 			'aria-expanded': 'false'
 		});
 		addEventListeners(target, {
-			click: ctx.toggle,
+			click: () => ctx.toggle(),
 			keydown: handleKeydown
 		});
-		ctx.setTrigger(target);
+		ctx.trigger = target;
 	});
 
 	$effect(() => {

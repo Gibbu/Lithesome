@@ -62,7 +62,7 @@
 	});
 
 	$effect(() => {
-		if (ctx.visible && self) ctx.setDropdown(self);
+		if (ctx.visible && self) ctx.dropdown = self;
 	});
 	$effect(() => {
 		if (ctx.visible && ctx.trigger && ctx.dropdown) {
@@ -82,7 +82,7 @@
 	{#if ctx.visible}
 		<div
 			bind:this={self}
-			use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
+			use:clickOutside={{ exclude: [ctx.trigger], callback: () => ctx.close() }}
 			use:portal={portalTarget}
 			use:useActions={use}
 			in:_transition.in.fn={_transition.in.params}
@@ -96,7 +96,7 @@
 {:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
+		use:clickOutside={{ exclude: [ctx.trigger], callback: () => ctx.close() }}
 		use:portal={portalTarget}
 		use:useActions={use}
 		{...attrs}

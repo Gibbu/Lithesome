@@ -23,7 +23,7 @@ export interface BaseProps<T extends HTMLElement, C extends Record<string, any> 
 	 */
 	use?: HTMLActionArray;
 	/**
-	 * And classes to be set on the underlying HTML element.
+	 * Any classes to be set on the underlying HTML element.
 	 * A function can be used to expose the component states, if any are present.
 	 *
 	 * @see https://lithesome.dev/docs/styling#class-prop-function

@@ -40,7 +40,7 @@
 			click: handleClick,
 			keydown: handleKeydown
 		});
-		ctx.setTrigger(target);
+		ctx.trigger = target;
 	});
 
 	$effect(() => {

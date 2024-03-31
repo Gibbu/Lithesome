@@ -63,10 +63,10 @@
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
-		if (key === KEYS.home) ctx.navigateItems('first');
-		if (key === KEYS.end) ctx.navigateItems('last');
-		if (key === KEYS.arrowUp) ctx.navigateItems('prev');
-		if (key === KEYS.arrowDown) ctx.navigateItems('next');
+		if (key === KEYS.home) ctx.navigate('first');
+		if (key === KEYS.end) ctx.navigate('last');
+		if (key === KEYS.arrowUp) ctx.navigate('prev');
+		if (key === KEYS.arrowDown) ctx.navigate('next');
 	};
 </script>
 

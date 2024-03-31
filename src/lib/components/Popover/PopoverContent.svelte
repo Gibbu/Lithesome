@@ -63,7 +63,7 @@
 	});
 
 	$effect(() => {
-		if (ctx.visible && self) ctx.setContent(self);
+		if (ctx.visible && self) ctx.content = self;
 	});
 	$effect(() => {
 		if (ctx.visible && ctx.trigger && ctx.content) {
@@ -83,13 +83,18 @@
 	{#if ctx.visible}
 		<div
 			bind:this={self}
-			use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
+			use:clickOutside={{
+				exclude: [ctx.trigger],
+				callback: () => {
+					ctx.close();
+				}
+			}}
 			use:portal={portalTarget}
 			use:useActions={use}
 			use:trap={{
 				allowOutsideClick: true,
 				onDeactivate: () => {
-					ctx.setVisible(false);
+					ctx.visible = false;
 				}
 			}}
 			in:_transition.in.fn={_transition.in.params}
@@ -103,13 +108,18 @@
 {:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:clickOutside={{ exclude: [ctx.trigger], callback: ctx.close }}
+		use:clickOutside={{
+			exclude: [ctx.trigger],
+			callback: () => {
+				ctx.close();
+			}
+		}}
 		use:portal={portalTarget}
 		use:useActions={use}
 		use:trap={{
 			allowOutsideClick: true,
 			onDeactivate: () => {
-				ctx.setVisible(false);
+				ctx.visible = false;
 			}
 		}}
 		{...attrs}

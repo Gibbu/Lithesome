@@ -1,51 +1,37 @@
-import { log, createUID, type CalcIndexAction, calculateIndex } from '$lib/internal/index.js';
+import { log, Context, type CalcIndexAction, calculateIndex } from '$lib/internal/index.js';
 
 type Orientation = 'horizontal' | 'vertical';
 
-interface TabBtn {
+interface Init {
+	orientation: Orientation;
 	value: string;
-	disabled: boolean;
 }
 
-interface InitialValues {
-	orientation?: Orientation;
-	value?: string;
+export class TabsContext extends Context {
+	tabs = $state<string[]>([]);
+	orientation = $state<Orientation>('horizontal');
+	activeIndex = $state<number>(0);
+
+	activeTab = $derived<string>(this.tabs[this.activeIndex] || this.tabs[0]);
+
+	constructor(init: Init) {
+		super('tabs');
+
+		this.orientation = init.orientation;
+		this.activeIndex = this.tabs.findIndex((el) => el === init.value);
+	}
+
+	register(tab: string) {
+		this.tabs.push(tab);
+	}
+	setActive(btnValue: string) {
+		if (!this.tabs.find((el) => el === btnValue))
+			log.error('There are no matching vales between the <TabsButton /> and <TabsContent /> components.');
+
+		this.activeIndex = this.tabs.findIndex((el) => el === btnValue);
+	}
+	navigate(action: CalcIndexAction) {
+		this.activeIndex = calculateIndex(action, this.tabs, this.activeIndex);
+		(document.querySelector(`[data-tabsbutton][data-value="${this.activeTab}"]`) as HTMLButtonElement)?.focus();
+	}
 }
-
-export const createContext = (init: InitialValues) => {
-	const { uid } = createUID('tabs');
-
-	let tabs = $state<string[]>([]);
-	let orientation = $state(init.orientation || 'horizontal');
-	let activeIndex = $state<number>(tabs.findIndex((el) => el === init.value));
-
-	const activeTab = $derived<string>(tabs[activeIndex] || tabs[0]);
-
-	return {
-		uid,
-		setOrientation(val: Orientation) {
-			orientation = val;
-		},
-		register(tab: string) {
-			tabs = [...tabs, tab];
-		},
-		setActive(btnValue: string) {
-			if (!tabs.find((el) => el === btnValue))
-				log.error('There are no matching vales between the <TabsButton /> and <TabsContent /> components.');
-			activeIndex = tabs.findIndex((el) => el === btnValue);
-		},
-		navigate(action: CalcIndexAction) {
-			activeIndex = calculateIndex(action, tabs, activeIndex, true);
-			(document.querySelector(`[data-tabsbutton][data-value="${activeTab}"]`) as HTMLButtonElement)?.focus();
-		},
-		get orientation() {
-			return orientation;
-		},
-		get activeTab() {
-			return activeTab;
-		},
-		get activeIndex() {
-			return activeIndex;
-		}
-	};
-};

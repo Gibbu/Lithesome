@@ -1,69 +1,46 @@
-import { calculateIndex, disableScroll, createUID, type CalcIndexAction } from '$lib/internal/index.js';
+import { calculateIndex, disableScroll, Context, effects, type CalcIndexAction } from '$lib/internal/index.js';
 
-export const createContext = () => {
-	const { uid } = createUID('menu');
+export class MenuContext extends Context {
+	visible = $state<boolean>(false);
+	hoveredIndex = $state<number>(-1);
+	trigger = $state<HTMLElement | null>(null);
+	dropdown = $state<HTMLElement | null>(null);
+	items = $state<string[]>([]);
 
-	let visible = $state<boolean>(false);
-	let hoveredIndex = $state<number>(-1);
-	let trigger = $state<HTMLElement | null>(null);
-	let dropdown = $state<HTMLElement | null>(null);
-	let items = $state<string[]>([]);
+	hoveredItem = $derived<string | undefined>(this.items[this.hoveredIndex]);
 
-	const hoveredItem = $derived(items[hoveredIndex]);
+	constructor() {
+		super('menu');
+	}
 
-	$effect(() => {
-		disableScroll(visible && !document.body.style.overflow);
+	open() {
+		this.visible = true;
+	}
+	close() {
+		this.visible = false;
+	}
+	toggle() {
+		this.visible = !this.visible;
+	}
+	navigate(action: CalcIndexAction) {
+		this.hoveredIndex = calculateIndex(action, this.items, this.hoveredIndex);
+	}
+	register(itemId: string) {
+		this.items.push(itemId);
+	}
+	unregister(itemId: string) {
+		this.items = this.items.filter((el) => el !== itemId);
+	}
+	setHovered(itemId: string) {
+		this.hoveredIndex = this.items.findIndex((el) => el === itemId);
+	}
+
+	#effects = effects(() => {
+		$effect(() => {
+			disableScroll(this.visible && !document.body.style.overflow);
+		});
+		$effect(() => {
+			if (!this.visible) this.hoveredIndex = -1;
+		});
 	});
-	$effect(() => {
-		if (!visible) hoveredIndex = -1;
-	});
-
-	return {
-		uid,
-		open() {
-			visible = true;
-		},
-		close() {
-			visible = false;
-		},
-		toggle() {
-			visible = !visible;
-		},
-		navigateItems(action: CalcIndexAction) {
-			hoveredIndex = calculateIndex(action, items, hoveredIndex);
-		},
-		register(item: string) {
-			items = [...items, item];
-		},
-		unregister(item: string) {
-			items = items.filter((el) => el === item);
-		},
-		setHoveredItem(itemId: string) {
-			hoveredIndex = items.findIndex((el) => el === itemId);
-		},
-		setTrigger(node: HTMLElement) {
-			trigger = node;
-		},
-		setDropdown(node: HTMLElement) {
-			dropdown = node;
-		},
-		get visible() {
-			return visible;
-		},
-		get hoveredIndex() {
-			return hoveredIndex;
-		},
-		get trigger() {
-			return trigger;
-		},
-		get dropdown() {
-			return dropdown;
-		},
-		get items() {
-			return items;
-		},
-		get hoveredItem() {
-			return hoveredItem;
-		}
-	};
-};
+}

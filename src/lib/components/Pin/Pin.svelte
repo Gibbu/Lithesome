@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { PinContext } from './context.svelte.js';
 
 	const contextName = 'pin-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<PinContext>(contextName);
 </script>
 
 <script lang="ts">
@@ -34,7 +34,7 @@
 		...props
 	}: Props = $props();
 
-	const ctx = createContext(
+	const ctx = new PinContext(
 		{ value, disabled, type, placeholder },
 		{
 			onChange(val) {
@@ -46,8 +46,8 @@
 	setContext(contextName, ctx);
 
 	$effect(() => {
-		ctx.setType(type);
-		ctx.setDisabled(disabled);
+		ctx.type = type;
+		ctx.disabled = disabled;
 	});
 
 	$effect(() => {

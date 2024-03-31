@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { RadiogroupContext } from './context.svelte.js';
 
 	const contextName = 'radiogroup-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<RadiogroupContext>(contextName);
 </script>
 
 <script lang="ts">
@@ -26,7 +26,7 @@
 		...props
 	}: Props = $props();
 
-	const ctx = createContext(
+	const ctx = new RadiogroupContext(
 		{ value },
 		{
 			onChange(val) {

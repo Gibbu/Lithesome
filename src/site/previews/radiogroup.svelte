@@ -38,3 +38,5 @@
 		</RadioGroupItem>
 	{/each}
 </RadioGroup>
+
+<span class="pointer-events-none absolute bottom-2 right-2 select-none text-xs opacity-40">Value: {value}</span>

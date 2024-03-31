@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { ModalContext } from './context.svelte.js';
 
 	const contextName = 'modal-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<ModalContext>(contextName);
 </script>
 
 <script lang="ts">
@@ -27,7 +27,7 @@
 	}: Props = $props();
 
 	const { uid } = createUID('modal');
-	const ctx = createContext({ visible });
+	const ctx = new ModalContext({ visible });
 
 	setContext(contextName, ctx);
 
@@ -37,13 +37,11 @@
 	};
 
 	$effect(() => {
-		ctx.setVisible(visible);
-		if (isBrowser) {
-			if (visible) {
-				window.addEventListener('keydown', handleKeys);
-			} else {
-				window.removeEventListener('keydown', handleKeys);
-			}
+		ctx.visible = visible;
+		if (visible) {
+			window.addEventListener('keydown', handleKeys);
+		} else {
+			window.removeEventListener('keydown', handleKeys);
 		}
 	});
 </script>

@@ -47,7 +47,7 @@
 	const handleClick = (e: HandlerParam<MouseEvent, HandlerEl>) => {
 		onClick?.(e);
 		if (!disabled) {
-			ctx.setSelectedOptions();
+			ctx.setSelected();
 		}
 	};
 	const handleFocus = (e: HandlerParam<FocusEvent, HandlerEl>) => {
@@ -55,7 +55,7 @@
 	};
 	const handleMouseover = (e: HandlerParam<MouseEvent, HandlerEl>) => {
 		onMouseenter?.(e);
-		if (!disabled) ctx.setHoveredOption(uid());
+		if (!disabled) ctx.setHovered(uid());
 	};
 
 	onMount(() => {

@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { PopoverContext } from './context.svelte.js';
 
 	const contextName = 'popover-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<PopoverContext>(contextName);
 </script>
 
 <script lang="ts">
@@ -18,7 +18,7 @@
 	let { children, use = [], class: klass, self = $bindable(), visible = $bindable(false), ...props }: Props = $props();
 
 	const { uid } = createUID('popover');
-	const ctx = createContext(
+	const ctx = new PopoverContext(
 		{ visible },
 		{
 			onChange(val) {
@@ -34,13 +34,11 @@
 	};
 
 	$effect(() => {
-		ctx.setVisible(visible);
-		if (isBrowser) {
-			if (visible) {
-				window.addEventListener('keydown', handleKeys);
-			} else {
-				window.removeEventListener('keydown', handleKeys);
-			}
+		ctx.visible = visible;
+		if (visible) {
+			window.addEventListener('keydown', handleKeys);
+		} else {
+			window.removeEventListener('keydown', handleKeys);
 		}
 	});
 </script>

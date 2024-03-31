@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext, onMount, tick } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { SelectContext } from './context.svelte.js';
 
 	const contextName = 'select-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<SelectContext>(contextName);
 </script>
 
 <script lang="ts" generics="ValueType">
@@ -19,7 +19,7 @@
 	let { children, use = [], class: klass, value = $bindable(), self, onChange, ...props }: Props = $props();
 
 	const multiple = Array.isArray(value);
-	const ctx = createContext<ValueType>(
+	const ctx = new SelectContext<ValueType>(
 		{ multiple },
 		{
 			onChange(val) {
@@ -33,7 +33,7 @@
 		await tick();
 		ctx.setInitialSelected(value);
 		ctx.close();
-		ctx.setMounted(true);
+		ctx.mounted = true;
 	});
 </script>
 

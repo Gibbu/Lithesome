@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { MenuContext } from './context.svelte.js';
 
 	const contextName = 'menu-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<MenuContext>(contextName);
 </script>
 
 <script lang="ts">
@@ -15,7 +15,7 @@
 
 	let { children, use = [], class: klass, self = $bindable(), ...props }: Props = $props();
 
-	const ctx = createContext();
+	const ctx = new MenuContext();
 
 	setContext(contextName, ctx);
 </script>

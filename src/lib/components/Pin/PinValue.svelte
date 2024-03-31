@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import { log, useActions, createUID, classProp, type BasePropsNoChildren } from '$lib/internal/index.js';
+	import { log, useActions, classProp, type BasePropsNoChildren } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
 	interface Props extends BasePropsNoChildren<HTMLInputElement> {

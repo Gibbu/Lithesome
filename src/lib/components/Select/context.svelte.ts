@@ -2,9 +2,9 @@ import {
 	calculateIndex,
 	disableScroll,
 	removeDisabledElements,
-	createUID,
+	Context,
+	effects,
 	type CalcIndexAction,
-	type UID,
 	type JsonValue
 } from '$lib/internal/index.js';
 import { tick } from 'svelte';
@@ -16,129 +16,101 @@ export interface Option {
 	disabled?: boolean;
 }
 
-interface InitialValues {
-	multiple?: boolean;
+interface Init {
+	multiple: boolean;
 }
 
 interface Hooks<ValueType> {
 	onChange: (value: ValueType) => void;
 }
 
-export const createContext = <ValueType>({ multiple }: InitialValues, hooks: Hooks<ValueType>) => {
-	const { uid } = createUID('select');
+export class SelectContext<ValueType = any> extends Context<Hooks<ValueType>> {
+	visible = $state<boolean>(true);
+	hoveredIndex = $state<number>(-1);
+	options = $state<HTMLElement[]>([]);
+	trigger = $state<HTMLElement | null>(null);
+	dropdown = $state<HTMLElement | null>(null);
+	selectedOptions = $state<HTMLElement[]>([]);
+	mounted = $state<boolean>(false);
+	multiple = $state<boolean>(false);
 
-	let visible = $state<boolean>(true);
-	let hoveredIndex = $state<number>(-1);
-	let options = $state<HTMLElement[]>([]);
-	let trigger = $state<HTMLElement | null>(null);
-	let dropdown = $state<HTMLElement | null>(null);
-	let selectedOptions = $state<HTMLElement[]>([]);
-	let mounted = $state<boolean>(false);
+	hoveredOption = $state<HTMLElement | undefined>(undefined);
 
-	const hoveredOption = $derived(options[hoveredIndex]);
+	constructor(init: Init, hooks: Hooks<ValueType>) {
+		super('select', hooks);
 
-	$effect(() => {
-		disableScroll(visible && !document.body.style.overflow);
-	});
-	$effect(() => {
-		if (!visible || !options || hoveredIndex > options.length - 1) {
-			hoveredIndex = -1;
-		}
-	});
-	$effect(() => {
-		if (visible) {
-			tick().then(() => {
-				hoveredIndex = options.findIndex((option) => option.ariaSelected === 'true');
-			});
-		} else {
-			options = [];
-		}
-	});
+		this.multiple = init.multiple;
+	}
 
-	return {
-		uid,
-		open() {
-			visible = true;
-		},
-		close() {
-			visible = false;
-		},
-		toggle() {
-			visible = !visible;
-		},
-		queryElements() {
-			const elements = removeDisabledElements(`#${uid('dropdown')} [data-selectoption]`);
-			if (!elements) return;
-			options = elements;
-		},
-		navigateOptions(action: CalcIndexAction) {
-			hoveredIndex = calculateIndex(action, options, hoveredIndex);
+	open() {
+		this.visible = true;
+	}
+	close() {
+		this.visible = false;
+	}
+	toggle() {
+		this.visible = !this.visible;
+	}
+	queryElements() {
+		const elements = removeDisabledElements(`#${this.uid('dropdown')} [data-selectoption]`);
+		if (!elements) return;
+		this.options = elements;
+	}
+	navigate(action: CalcIndexAction) {
+		this.hoveredIndex = calculateIndex(action, this.options, this.hoveredIndex);
 
-			document.querySelector(`#${hoveredOption?.id}`)?.scrollIntoView({ block: 'nearest' });
-		},
-		setHoveredOption(optionId?: string) {
-			if (!optionId) return;
-			hoveredIndex = options.findIndex((el) => el.id === optionId);
-		},
-		setSelectedOptions() {
-			if (!hoveredOption) return;
+		if (this.hoveredOption) this.hoveredOption.scrollIntoView({ block: 'nearest' });
+	}
+	setHovered(optionId?: string) {
+		if (!optionId) return;
+		this.hoveredIndex = this.options.findIndex((el) => el.id === optionId);
+	}
+	setSelected() {
+		if (!this.hoveredOption) return;
 
-			if (multiple) {
-				if (selectedOptions.find((el) => el.dataset.value === hoveredOption.dataset.value)) {
-					selectedOptions = selectedOptions.filter((el) => el.dataset.value !== hoveredOption.dataset.value);
-				} else {
-					selectedOptions = [...selectedOptions, hoveredOption];
-				}
+		if (this.multiple) {
+			if (this.selectedOptions.find((el) => el.dataset.value === this.hoveredOption?.dataset.value)) {
+				this.selectedOptions = this.selectedOptions.filter(
+					(el) => el.dataset.value !== this.hoveredOption?.dataset.value
+				);
 			} else {
-				selectedOptions[0] = hoveredOption;
+				this.selectedOptions.push(this.hoveredOption);
 			}
+		} else {
+			this.selectedOptions[0] = this.hoveredOption;
+		}
 
-			if (!multiple) {
-				visible = false;
+		if (!this.multiple) this.visible = false;
+
+		const value = this.multiple
+			? this.selectedOptions.map((el) => el.dataset.value)
+			: this.selectedOptions[0].dataset.value;
+		this.hooks?.onChange?.(value as ValueType);
+	}
+	setInitialSelected(value: ValueType) {
+		this.selectedOptions = this.options.filter((el) => {
+			if (!Array.isArray(value) && el.dataset.value === value) return el;
+			else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
+		});
+	}
+
+	#effects = effects(() => {
+		$effect(() => {
+			disableScroll(this.visible && !document.body.style.overflow);
+		});
+		$effect(() => {
+			if (!this.visible || !this.options || this.hoveredIndex > this.options.length - 1) {
+				this.hoveredIndex = -1;
 			}
-
-			const value = multiple ? selectedOptions.map((el) => el.dataset.value) : selectedOptions[0].dataset.value;
-			hooks.onChange(value as ValueType);
-		},
-		setInitialSelected(value: ValueType) {
-			selectedOptions = options.filter((el) => {
-				if (!Array.isArray(value) && el.dataset.value === value) return el;
-				else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
-			});
-		},
-		setTrigger(node: HTMLElement) {
-			trigger = node;
-		},
-		setDropdown(node: HTMLElement) {
-			dropdown = node;
-		},
-		setMounted(value: boolean) {
-			mounted = value;
-		},
-		get visible() {
-			return visible;
-		},
-		get hoveredIndex() {
-			return hoveredIndex;
-		},
-		get options() {
-			return options;
-		},
-		get mounted() {
-			return mounted;
-		},
-		get dropdown() {
-			return dropdown;
-		},
-		get selectedOptions() {
-			return selectedOptions;
-		},
-		get hoveredOption() {
-			return hoveredOption;
-		},
-		get trigger() {
-			return trigger;
-		},
-		multiple
-	};
-};
+		});
+		$effect(() => {
+			if (this.visible) {
+				tick().then(() => {
+					this.hoveredIndex = this.options.findIndex((option) => option.ariaSelected === 'true');
+				});
+			} else {
+				this.options = [];
+			}
+		});
+	});
+}

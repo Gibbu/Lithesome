@@ -47,7 +47,7 @@
 		}
 	};
 	const handleMouseover = (e: HandlerParam<MouseEvent, HandlerEl>) => {
-		ctx.setHoveredItem(uid());
+		ctx.setHovered(uid());
 		onMouseover?.(e);
 	};
 	const handleFocus = (e: HandlerParam<FocusEvent, HandlerEl>) => {

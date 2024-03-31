@@ -13,7 +13,7 @@
 
 <div
 	class={cn(
-		'not-prose flex-centre highlight relative min-h-[450px] rounded-xl bg-neutral-100 p-8 backdrop-blur dark:bg-neutral-900',
+		'not-prose flex-centre highlight relative min-h-[450px] flex-col rounded-xl bg-neutral-100 p-8 backdrop-blur dark:bg-neutral-900',
 		klass
 	)}
 >

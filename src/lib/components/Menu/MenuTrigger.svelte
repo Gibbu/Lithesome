@@ -40,7 +40,7 @@
 			click: handleClick,
 			keydown: handleKeydown
 		});
-		ctx.setTrigger(target);
+		ctx.trigger = target;
 	});
 
 	$effect(() => {
@@ -64,10 +64,10 @@
 		const { key } = e;
 
 		if (PREVENT_KEYS.includes(key)) e.preventDefault();
-		if (key === KEYS.home) ctx.navigateItems('first');
-		if (key === KEYS.end) ctx.navigateItems('last');
-		if (key === KEYS.arrowUp) ctx.navigateItems('prev');
-		if (key === KEYS.arrowDown) ctx.navigateItems('next');
+		if (key === KEYS.home) ctx.navigate('first');
+		if (key === KEYS.end) ctx.navigate('last');
+		if (key === KEYS.arrowUp) ctx.navigate('prev');
+		if (key === KEYS.arrowDown) ctx.navigate('next');
 		if (key === KEYS.escape) ctx.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();

@@ -1,49 +1,32 @@
-import { createUID } from '$lib/internal/index.js';
+import { Context, effects } from '$lib/internal/index.js';
 
-interface InitialValues {
-	visible?: boolean;
+interface Init {
+	visible: boolean;
 }
 
 interface Hooks {
 	onChange: (val: boolean) => void;
 }
 
-export const createContext = (init: InitialValues, hooks: Hooks) => {
-	const { uid } = createUID('popover');
+export class PopoverContext extends Context<Hooks> {
+	visible = $state<boolean>(false);
+	trigger = $state<HTMLElement | null>(null);
+	content = $state<HTMLElement | null>(null);
 
-	let visible = $state<boolean>(false);
-	let trigger = $state<HTMLElement | null>(null);
-	let content = $state<HTMLElement | null>(null);
+	constructor(init: Init, hooks: Hooks) {
+		super('popover', hooks);
 
-	$effect(() => {
-		hooks.onChange(init.visible || false);
+		this.visible = init.visible;
+	}
+
+	close() {
+		this.visible = false;
+	}
+	toggle() {
+		this.visible = !this.visible;
+	}
+
+	#effects = effects(() => {
+		this.hooks?.onChange?.(this.visible);
 	});
-
-	return {
-		uid,
-		close() {
-			visible = false;
-		},
-		toggle() {
-			visible = !visible;
-		},
-		setVisible(value: boolean) {
-			visible = value;
-		},
-		setTrigger(node: HTMLElement) {
-			trigger = node;
-		},
-		setContent(node: HTMLElement) {
-			content = node;
-		},
-		get visible() {
-			return visible;
-		},
-		get trigger() {
-			return trigger;
-		},
-		get content() {
-			return content;
-		}
-	};
-};
+}

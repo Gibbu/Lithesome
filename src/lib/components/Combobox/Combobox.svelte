@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
 	import { getContext, onMount, tick } from 'svelte';
-	import { createContext } from './context.svelte.js';
+	import { ComboboxContext } from './context.svelte.js';
 
 	const contextName = 'combobox-context';
 
-	export const context = () => getContext<ReturnType<typeof createContext>>(contextName);
+	export const context = () => getContext<ComboboxContext>(contextName);
 </script>
 
 <script lang="ts" generics="ValueType">
@@ -31,7 +31,7 @@
 	}: Props = $props();
 
 	const multiple = Array.isArray(value);
-	const ctx = createContext<ValueType>(
+	const ctx = new ComboboxContext<ValueType>(
 		{ multiple },
 		{
 			onChange({ newValue, newTouched, newLabel }) {
@@ -53,7 +53,7 @@
 		await tick();
 		ctx.setInitialSelected(value);
 		ctx.close();
-		ctx.setMounted(true);
+		ctx.mounted = true;
 	});
 </script>
 
