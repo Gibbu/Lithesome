@@ -3,7 +3,6 @@ import { Context, effects } from '$lib/internal/index.js';
 interface Init {
 	visible: boolean;
 }
-
 interface Hooks {
 	onChange: (val: boolean) => void;
 }

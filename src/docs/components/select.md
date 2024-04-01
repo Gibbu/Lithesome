@@ -1,7 +1,6 @@
 ---
 title: 'Select'
 description: 'Allow users to chooe from a list of options.'
-badge: 'updated'
 ---
 
 <script>

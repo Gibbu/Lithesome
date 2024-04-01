@@ -8,3 +8,4 @@ export * from './components/Select/index.js';
 export * from './components/Tabs/index.js';
 export * from './components/Popover/index.js';
 export * from './components/Combobox/index.js';
+export * from './components/Hovercard/index.js';

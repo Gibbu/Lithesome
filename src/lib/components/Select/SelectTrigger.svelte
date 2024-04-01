@@ -40,7 +40,7 @@
 
 	onMount(() => {
 		if (self && self.children.length > 1) {
-			log.error('<SelectTrigger /> comoponent can only take 1 children node.');
+			log.error('<SelectTrigger /> comoponent can only take 1 child node.');
 			return;
 		}
 

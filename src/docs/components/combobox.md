@@ -1,7 +1,6 @@
 ---
 title: 'Combobox'
 description: 'Allow users to choose from a list of options with search filtering functionality.'
-badge: 'new'
 ---
 
 <script>

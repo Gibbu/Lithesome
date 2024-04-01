@@ -1,6 +1,7 @@
 Future plans:
 
 - [ ] Allow submenus for the Menu component.
+- [ ] Add arrow component for popover/hovercard/menu components.
 
 Website:
 

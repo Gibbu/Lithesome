@@ -25,7 +25,7 @@
 
 	onMount(() => {
 		if (self && self.children.length > 1) {
-			log.error('<MenuTrigger /> comoponent can only take 1 children node.');
+			log.error('<MenuTrigger /> comoponent can only take 1 child node.');
 			return;
 		}
 

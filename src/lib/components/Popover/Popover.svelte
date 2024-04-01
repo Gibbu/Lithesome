@@ -17,7 +17,6 @@
 
 	let { children, use = [], class: klass, self = $bindable(), visible = $bindable(false), ...props }: Props = $props();
 
-	const { uid } = createUID('popover');
 	const ctx = new PopoverContext(
 		{ visible },
 		{
@@ -46,7 +45,7 @@
 <div
 	bind:this={self}
 	use:useActions={use}
-	id={uid()}
+	id={ctx.uid()}
 	class={classProp(klass, { visible: ctx.visible })}
 	data-popover=""
 	data-state={ctx.visible ? 'opened' : 'closed'}

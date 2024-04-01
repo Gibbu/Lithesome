@@ -79,3 +79,13 @@ export const classProp = <T extends Record<string, any>>(klass: ClassProp<T>, pr
 	const cls = $derived(typeof klass === 'function' ? klass(_props) : klass);
 	return cls;
 };
+
+/**
+ * Contructs a object with in and out properties.
+ */
+export const parseDelay = (delay: number | [number, number]) => {
+	return {
+		in: Array.isArray(delay) ? delay[0] : delay,
+		out: Array.isArray(delay) ? delay[1] : delay
+	};
+};
