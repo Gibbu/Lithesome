@@ -5,12 +5,6 @@ const hovercard: APIReference = {
 	name: 'Hovercard',
 	props: [
 		{
-			name: 'visible',
-			type: 'boolean',
-			default: 'false',
-			description: 'Whether or not the content is visible or not.'
-		},
-		{
 			name: 'delay',
 			type: 'number | [number, number]',
 			default: '700',

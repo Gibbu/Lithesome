@@ -1,14 +1,10 @@
 import { Context, effects } from '$lib/internal/index.js';
 
 interface Init {
-	visible: boolean;
 	delays: { in: number; out: number };
 }
-interface Hooks {
-	onChange: (value: boolean) => void;
-}
 
-export class HovercardContext extends Context<Hooks> {
+export class HovercardContext extends Context {
 	visible = $state<boolean>(false);
 	trigger = $state<HTMLElement | null>(null);
 	content = $state<HTMLElement | null>(null);
@@ -16,10 +12,9 @@ export class HovercardContext extends Context<Hooks> {
 	delays = $state<{ in: number; out: number }>({ in: 700, out: 700 });
 	hovered = $state<boolean>(false);
 
-	constructor(init: Init, hooks: Hooks) {
-		super('hovercard', hooks);
+	constructor(init: Init) {
+		super('hovercard');
 
-		this.visible = init.visible;
 		this.delays = init.delays;
 	}
 
