@@ -1,6 +1,7 @@
 import type { Snippet } from 'svelte';
 import type { HTMLAttributes } from 'svelte/elements';
-import type { HTMLActionArray, UID } from './index.js';
+import type { HTMLActionArray, Transition } from './index.js';
+import type { Placement } from '@floating-ui/dom';
 
 export type JsonObject = { [key: string]: JsonValue };
 
@@ -39,3 +40,20 @@ export type BasePropsNoChildren<T extends HTMLElement, C extends Record<string, 
 	BaseProps<T, C>,
 	'children'
 >;
+
+export interface DropdownProps {
+	/**
+	 * The `svelte/transtion` you wish to use.
+	 *
+	 * @see https://lithesome.dev/docs/api#transition-prop
+	 */
+	transition?: Transition;
+	/** The element to portal the dropdown menu to. */
+	portalTarget?: string | HTMLElement;
+	/** The anchor point of the dropdown relative to the trigger. */
+	placement?: Placement;
+	/** Keeps the dropdown from ever growing outside of the viewport. */
+	constrainViewport?: boolean;
+	/** Makes the dropdown the same width as the trigger. */
+	sameWidth?: boolean;
+}

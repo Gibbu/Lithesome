@@ -1,10 +1,8 @@
 <script lang="ts" context="module">
-	import { getContext } from 'svelte';
+	import { setupContext } from '$lib/internal/index.js';
 	import { RadiogroupContext } from './context.svelte.js';
 
-	const contextName = 'radiogroup-context';
-
-	export const context = () => getContext<RadiogroupContext>(contextName);
+	export const { context, contextName } = setupContext<RadiogroupContext>('radiogroup');
 </script>
 
 <script lang="ts">

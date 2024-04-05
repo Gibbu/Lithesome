@@ -1,10 +1,8 @@
 <script lang="ts" context="module">
-	import { getContext } from 'svelte';
+	import { setupContext } from '$lib/internal/index.js';
 	import { HovercardContext } from './context.svelte.js';
 
-	const contextName = 'hovercard-context';
-
-	export const context = () => getContext<HovercardContext>(contextName);
+	export const { context, contextName } = setupContext<HovercardContext>('hovercard');
 </script>
 
 <script lang="ts">

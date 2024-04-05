@@ -1,14 +1,12 @@
 <script lang="ts" context="module">
-	import { getContext } from 'svelte';
+	import { setupContext } from '$lib/internal/index.js';
 	import { PopoverContext } from './context.svelte.js';
 
-	const contextName = 'popover-context';
-
-	export const context = () => getContext<PopoverContext>(contextName);
+	export const { context, contextName } = setupContext<PopoverContext>('popover');
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, KEYS, isBrowser, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, KEYS, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {

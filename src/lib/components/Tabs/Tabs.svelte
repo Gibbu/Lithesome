@@ -1,10 +1,8 @@
 <script lang="ts" context="module">
-	import { getContext } from 'svelte';
+	import { setupContext } from '$lib/internal/index.js';
 	import { TabsContext } from './context.svelte.js';
 
-	const contextName = 'tabs-context';
-
-	export const context = () => getContext<TabsContext>(contextName);
+	export const { context, contextName } = setupContext<TabsContext>('tabs');
 </script>
 
 <script lang="ts">
@@ -20,7 +18,7 @@
 		children,
 		use = [],
 		class: klass,
-		self,
+		self = $bindable(),
 		orientation = 'horizontal',
 		value = $bindable(''),
 		...props

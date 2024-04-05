@@ -5,33 +5,17 @@
 		anchorElement,
 		portal,
 		useActions,
-		trap,
 		getTransition,
 		classProp,
-		type Transition,
 		type BaseProps,
 		type Handler,
-		type HandlerParam
+		type HandlerParam,
+		type DropdownProps
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-	import type { Placement } from '@floating-ui/dom';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
-		/**
-		 * The `svelte/transtion` you wish to use.
-		 *
-		 * @see https://lithesome.dev/docs/api#transition-prop
-		 */
-		transition?: Transition;
-		/** The element to portal the content menu to. */
-		portalTarget?: string | HTMLElement;
-		/** The anchor point of the content relative to the trigger. */
-		placement?: Placement;
-		/** Keeps the content from ever growing outside of the viewport. */
-		constrainViewport?: boolean;
-		/** Makes the content the same width as the trigger. */
-		sameWidth?: boolean;
+	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, DropdownProps {
 		onMouseenter?: Handler<MouseEvent, HTMLDivElement>;
 		onMouseleave?: Handler<MouseEvent, HTMLDivElement>;
 	}
@@ -60,9 +44,7 @@
 		id: ctx.uid('content'),
 		'aria-labelledby': ctx.uid('trigger'),
 		class: classProp(klass, { visible: ctx.visible }),
-		'data-menucontent': '',
-		role: 'menu',
-		tabindex: -1
+		'data-hovercardcontent': ''
 	} as const);
 
 	onMount(async () => {
@@ -113,6 +95,8 @@
 			out:_transition.out.fn={_transition.out.params}
 			onmouseenter={handleMouseenter}
 			onmouseleave={handleMouseleave}
+			role="menu"
+			tabindex={-1}
 			{...attrs}
 			{...props}
 		>
@@ -132,6 +116,8 @@
 		use:useActions={use}
 		onmouseenter={handleMouseenter}
 		onmouseleave={handleMouseleave}
+		role="menu"
+		tabindex={-1}
 		{...attrs}
 		{...props}
 	>

@@ -1,15 +1,13 @@
 <script lang="ts" context="module">
-	import { getContext, onMount, tick } from 'svelte';
+	import { setupContext } from '$lib/internal/index.js';
 	import { ComboboxContext } from './context.svelte.js';
 
-	const contextName = 'combobox-context';
-
-	export const context = () => getContext<ComboboxContext>(contextName);
+	export const { context, contextName } = setupContext<ComboboxContext>('combobox');
 </script>
 
 <script lang="ts" generics="ValueType">
 	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
-	import { setContext } from 'svelte';
+	import { setContext, onMount, tick } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
 		value: ValueType;

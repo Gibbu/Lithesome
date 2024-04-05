@@ -7,9 +7,7 @@
 		useActions,
 		removeNodeProps,
 		classProp,
-		type BaseProps,
-		type HandlerParam,
-		type Handler
+		type BaseProps
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 

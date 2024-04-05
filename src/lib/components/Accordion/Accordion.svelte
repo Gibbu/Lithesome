@@ -1,10 +1,8 @@
 <script lang="ts" context="module">
-	import { getContext } from 'svelte';
+	import { setupContext } from '$lib/internal/index.js';
 	import { AccordionContext } from './context.svelte.js';
 
-	const contextName = 'accordion-context';
-
-	export const context = () => getContext<AccordionContext>(contextName);
+	export const { context, contextName } = setupContext<AccordionContext>('accordion');
 </script>
 
 <script lang="ts">

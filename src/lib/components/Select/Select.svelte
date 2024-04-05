@@ -1,15 +1,13 @@
 <script lang="ts" context="module">
-	import { getContext, onMount, tick } from 'svelte';
+	import { setupContext } from '$lib/internal/index.js';
 	import { SelectContext } from './context.svelte.js';
 
-	const contextName = 'select-context';
-
-	export const context = () => getContext<SelectContext>(contextName);
+	export const { context, contextName } = setupContext<SelectContext>('select');
 </script>
 
 <script lang="ts" generics="ValueType">
 	import { useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
-	import { setContext } from 'svelte';
+	import { setContext, onMount, tick } from 'svelte';
 
 	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
 		value: ValueType;

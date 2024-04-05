@@ -1,6 +1,7 @@
 import type { JsonValue, ClassProp } from '../types.js';
 
 export type CalcIndexAction = 'prev' | 'next' | 'first' | 'last';
+export type UID = (component?: string) => string;
 
 /**
  * Calculates the index position of the action given.
@@ -24,8 +25,6 @@ export const calculateIndex = (action: CalcIndexAction, items: any[], index: num
 
 	return index;
 };
-
-export type UID = (component?: string) => string;
 
 /**
  * Creates a unique ID to be used for accessability.
