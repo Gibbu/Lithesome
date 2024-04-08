@@ -4,12 +4,11 @@ description: 'Allow users to chooe from a list of options.'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/select.ts';
-	import component from '$site/previews/select.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/select';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -51,4 +50,4 @@ The component will then detect the array and append the selected options.
 </Select>
 ```
 
-<API {data} />
+<APITable data={api} />

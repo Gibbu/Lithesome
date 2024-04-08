@@ -1,4 +1,4 @@
-import { self, use, transition } from './_helpers.js';
+import { self, use, transition } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const menu: APIReference = {

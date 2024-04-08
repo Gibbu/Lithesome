@@ -4,12 +4,11 @@ description: 'A menu of items that is hidden until triggered.'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/menu.ts';
-	import component from '$site/previews/menu.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/menu';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -48,4 +47,4 @@ If you need to navigate to another page via the dropdown items. Simply pass the 
 </MenuItem>
 ```
 
-<API {data} />
+<APITable data={api} />

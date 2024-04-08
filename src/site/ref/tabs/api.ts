@@ -1,4 +1,4 @@
-import { use, self, transition } from './_helpers.js';
+import { use, self } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const tabs: APIReference = {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/index.js';
-	import { Button, Input, cn } from '$site/index.js';
+	import { Button, cn } from '$site/index.js';
 	import { scale } from 'svelte/transition';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { HelpCircle, BookTemplate, KeyRound } from '@steeze-ui/lucide-icons';

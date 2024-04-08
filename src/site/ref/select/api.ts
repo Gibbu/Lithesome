@@ -1,27 +1,15 @@
-import { use, self, transition } from './_helpers.js';
+import { use, self, transition } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
-const combobox: APIReference = {
-	name: 'Combobox',
+const select: APIReference = {
+	name: 'Select',
 	props: [
 		{
 			name: 'value',
-			type: 'T',
+			type: 'JsonValue',
 			default: '——',
 			required: true,
 			description: 'The selected value of the available options.'
-		},
-		{
-			name: 'touched',
-			type: 'boolean',
-			default: '——',
-			description: 'True if the input has been given any input.'
-		},
-		{
-			name: 'label',
-			type: 'string',
-			default: '——',
-			description: 'The label of the selected value(s). This is blank if the value is set to an array.'
 		},
 		use,
 		self('Div')
@@ -43,55 +31,29 @@ const combobox: APIReference = {
 	events: [
 		{
 			name: 'onChange',
-			params: ['payload: {value: string, label: string}'],
+			params: ['value: JsonValue'],
 			return: 'void',
 			description: `Fires any time a new option is selected.`
 		}
 	]
 };
 
-const input: APIReference = {
-	name: 'ComboboxInput',
-	childOf: combobox.name,
-	props: [
+const trigger: APIReference = {
+	name: 'SelectTrigger',
+	childOf: select.name,
+	props: [use, self('Div')],
+	childrenProps: [
 		{
-			name: 'value',
-			type: 'string',
-			default: '——',
-			required: true,
-			description: 'The value of the underlying input element.'
-		},
-		{
-			name: 'disabled',
+			name: 'visible',
 			type: 'boolean',
-			default: 'false',
-			description: 'Disables the input.'
-		},
-		use,
-		self('Input')
-	],
-	events: [
-		{
-			name: 'onClick',
-			params: ['e: MouseEvent'],
-			return: 'void'
-		},
-		{
-			name: 'onFocus',
-			params: ['e: FocusEvent'],
-			return: 'void'
-		},
-		{
-			name: 'onKeydown',
-			params: ['e: KeyboardEvent'],
-			return: 'void'
+			description: 'Whether or not the dropdown component is visible or not.'
 		}
 	]
 };
 
 const dropdown: APIReference = {
-	name: 'ConboboxDropdown',
-	childOf: combobox.name,
+	name: 'SelectDropdown',
+	childOf: select.name,
 	props: [
 		{
 			name: 'placement',
@@ -131,7 +93,7 @@ const dropdown: APIReference = {
 };
 
 const option: APIReference = {
-	name: 'ComboboxOption',
+	name: 'SelectOption',
 	childOf: dropdown.name,
 	props: [
 		{
@@ -185,7 +147,7 @@ const option: APIReference = {
 			return: 'void'
 		},
 		{
-			name: 'onMouseeneter',
+			name: 'onMouseenter',
 			params: ['e: MouseEvent'],
 			return: 'void'
 		},
@@ -197,4 +159,26 @@ const option: APIReference = {
 	]
 };
 
-export default [combobox, input, dropdown, option];
+const value: APIReference = {
+	name: 'SelectValue',
+	childOf: select.name,
+	description: `Displays the selected value's label, or the placeholder if none is found.`,
+	props: [
+		{
+			name: 'placeholder',
+			type: 'string',
+			default: 'Select an option...',
+			description: 'The value to be displayed if no option is selected.'
+		},
+		use,
+		self('Span')
+	],
+	dataAttrs: [
+		{
+			name: 'placeholder',
+			description: 'Only applied if the placeholder is active.'
+		}
+	]
+};
+
+export default [select, trigger, dropdown, option, value];

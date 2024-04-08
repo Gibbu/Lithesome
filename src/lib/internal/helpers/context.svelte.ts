@@ -2,14 +2,21 @@ import { createUID, type UID } from './utils.svelte.js';
 import { onDestroy, getContext } from 'svelte';
 
 export class Context<H = any> {
-	uid = $state<UID>()!;
+	public uid = $state<UID>()!;
 	protected hooks: H | null = null;
+	protected _mounted = $state<boolean>(false);
 
 	constructor(name: string, hooks?: H) {
 		const { uid } = createUID(name);
 		this.uid = uid;
 		if (hooks) this.hooks = hooks;
 	}
+
+	readonly #onMount = effects(() => {
+		$effect(() => {
+			this._mounted = true;
+		});
+	});
 }
 
 /**

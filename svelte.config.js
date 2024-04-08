@@ -21,7 +21,7 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$site: './src/site',
-			$ref: './src/site/api'
+			$ref: './src/site/ref'
 		}
 	}
 };

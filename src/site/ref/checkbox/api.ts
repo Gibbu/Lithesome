@@ -1,5 +1,5 @@
-import { use, self } from './_helpers.js';
-import type { APIReference } from '../types.js';
+import { use, self } from '../helpers.js';
+import type { APIReference } from '../../types.js';
 
 const checkbox: APIReference = {
 	name: 'Checkbox',

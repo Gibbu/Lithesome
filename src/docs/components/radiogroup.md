@@ -4,12 +4,11 @@ description: 'Allow users to select a single choice from a list'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/radiogroup.ts';
-	import component from '$site/previews/radiogroup.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/radiogroup';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -23,4 +22,4 @@ description: 'Allow users to select a single choice from a list'
 </RadioGroup>
 ```
 
-<API {data} />
+<APITable data={api} />

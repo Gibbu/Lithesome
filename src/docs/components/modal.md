@@ -4,12 +4,11 @@ description: 'An overlaying window to take focus away from the current context.'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/modal.ts';
-	import component from '$site/previews/modal.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/modal';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -27,4 +26,4 @@ description: 'An overlaying window to take focus away from the current context.'
 </Modal>
 ```
 
-<API {data} />
+<APITable data={api} />

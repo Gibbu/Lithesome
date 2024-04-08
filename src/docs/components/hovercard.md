@@ -5,12 +5,11 @@ badge: 'new'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/hovercard.ts';
-	import component from '$site/previews/hovercard.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/hovercard';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -42,4 +41,4 @@ Passing a number will set both in and out delays. Passing an array of 2 indexes 
 </Hovercard>
 ```
 
-<API {data} />
+<APITable data={api} />

@@ -4,12 +4,11 @@ description: 'Display content over the window without taking away focus from the
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/popover.ts';
-	import component from '$site/previews/popover.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/popover';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -26,4 +25,4 @@ description: 'Display content over the window without taking away focus from the
 </Popover>
 ```
 
-<API {data} />
+<APITable data={api} />

@@ -1,4 +1,4 @@
-import { use, self, transition } from './_helpers.js';
+import { use, self, transition } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const accordion: APIReference = {

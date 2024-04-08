@@ -4,12 +4,11 @@ description: 'An interactive set of panels that hide and reveal sections.'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/accordion.ts';
-	import component from '$site/previews/accordion.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/accordion';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -48,4 +47,4 @@ If you wish to only allow one `<AccordionItem />` to be opened at a give time, p
 </Accordion>
 ```
 
-<API {data} />
+<APITable data={api} />

@@ -4,12 +4,11 @@ description: 'Allow users to choose from a list of options with search filtering
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/combobox.ts';
-	import component from '$site/previews/combobox.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/combobox';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -48,4 +47,4 @@ The component will then detect the array and append the selected options.
 </Combobox>
 ```
 
-<API {data} />
+<APITable data={api} />

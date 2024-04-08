@@ -26,6 +26,8 @@ export class PopoverContext extends Context<Hooks> {
 	}
 
 	#effects = effects(() => {
-		this.hooks?.onChange?.(this.visible);
+		$effect(() => {
+			if (this._mounted) this.hooks?.onChange?.(this.visible);
+		});
 	});
 }

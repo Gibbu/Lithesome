@@ -38,8 +38,11 @@
 	}
 }
 
+.preview-codeblock pre {
+	@apply highlight max-h-[450px] min-h-[450px] overflow-y-auto border-none !bg-neutral-100 px-6 pb-4 pt-12 text-sm dark:!bg-neutral-900;
+}
 pre {
-	@apply relative rounded-md border dark:border-neutral-800 dark:!bg-neutral-900/50;
+	@apply relative overflow-x-auto rounded-md border dark:border-neutral-800 dark:!bg-neutral-900/50;
 }
 pre .language-id {
 	@apply pointer-events-none absolute right-4 top-2 select-none text-xs text-white/30;

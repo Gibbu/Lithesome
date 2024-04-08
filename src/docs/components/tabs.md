@@ -4,12 +4,11 @@ description: 'Organize content to sections.'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/tabs.ts';
-	import component from '$site/previews/tabs.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/tabs';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -26,4 +25,4 @@ description: 'Organize content to sections.'
 </Tabs>
 ```
 
-<API {data} />
+<APITable data={api} />

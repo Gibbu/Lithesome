@@ -124,7 +124,7 @@
 		</ul>
 	</aside>
 	<main
-		class="dark:highlight min-h-[calc(100vh-var(--nav-height))] w-full rounded-tl-xl rounded-tr-xl bg-white p-12 pb-24 shadow-xl dark:bg-neutral-920/70"
+		class="dark:highlight min-h-[calc(100vh-var(--nav-height))] w-full min-w-0 rounded-tl-xl rounded-tr-xl bg-white p-12 pb-24 shadow-xl dark:bg-neutral-920/70"
 	>
 		{#if !hideEarlyDev}
 			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>

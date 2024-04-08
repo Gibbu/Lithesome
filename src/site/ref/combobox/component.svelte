@@ -5,8 +5,6 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { scale } from 'svelte/transition';
 
-	let { multiple = false }: { multiple: boolean } = $props();
-
 	const options = [
 		{ value: 'aang', label: 'Avatar Aang' },
 		{ value: 'zuko', label: 'Firelord Zuko' },
@@ -17,7 +15,7 @@
 		{ value: 'azula', label: 'Firebending Prodigy' }
 	];
 	let value = $state('aang');
-	let query = $state(multiple ? '' : 'Avatar Aang');
+	let query = $state('Avatar Aang');
 	let touched = $state(false);
 	let label = $state('');
 

@@ -1,4 +1,4 @@
-import { transition, use, self } from './_helpers.js';
+import { transition, use, self } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const modal: APIReference = {

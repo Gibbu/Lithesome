@@ -4,12 +4,11 @@ description: 'Allows a sequence of one-character inputs.'
 ---
 
 <script>
-	import {API, Preview} from '$site/index.ts';
-	import data from '$ref/pin.ts';
-	import component from '$site/previews/pin.svelte';
+	import {APITable, Preview} from '$site/index.ts';
+	import {api, component, code} from '$ref/pin';
 </script>
 
-<Preview {component} />
+<Preview {component} {code} />
 
 ## Structure
 
@@ -23,4 +22,4 @@ description: 'Allows a sequence of one-character inputs.'
 </Pin>
 ```
 
-<API {data} />
+<APITable data={api} />
