@@ -2,7 +2,7 @@
 	import { setupContext } from '$lib/internal/index.js';
 	import { ModalContext } from './context.svelte.js';
 
-	export const { context, contextName } = setupContext<ModalContext>('modal');
+	export const { context, contextName } = setupContext<ModalContext>();
 </script>
 
 <script lang="ts">

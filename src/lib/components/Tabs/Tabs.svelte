@@ -2,7 +2,7 @@
 	import { setupContext } from '$lib/internal/index.js';
 	import { TabsContext } from './context.svelte.js';
 
-	export const { context, contextName } = setupContext<TabsContext>('tabs');
+	export const { context, contextName } = setupContext<TabsContext>();
 </script>
 
 <script lang="ts">

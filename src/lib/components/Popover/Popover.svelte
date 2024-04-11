@@ -2,7 +2,7 @@
 	import { setupContext } from '$lib/internal/index.js';
 	import { PopoverContext } from './context.svelte.js';
 
-	export const { context, contextName } = setupContext<PopoverContext>('popover');
+	export const { context, contextName } = setupContext<PopoverContext>();
 </script>
 
 <script lang="ts">

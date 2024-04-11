@@ -2,7 +2,7 @@
 	import { setupContext } from '$lib/internal/index.js';
 	import { ComboboxContext } from './context.svelte.js';
 
-	export const { context, contextName } = setupContext<ComboboxContext>('combobox');
+	export const { context, contextName } = setupContext<ComboboxContext>();
 </script>
 
 <script lang="ts" generics="ValueType">

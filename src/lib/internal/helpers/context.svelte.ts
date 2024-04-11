@@ -1,5 +1,5 @@
 import { createUID, type UID } from './utils.svelte.js';
-import { onDestroy, getContext } from 'svelte';
+import { onDestroy, getContext, onMount } from 'svelte';
 
 export class Context<H = any> {
 	public uid = $state<UID>()!;
@@ -20,13 +20,11 @@ export class Context<H = any> {
 }
 
 /**
- * Helper function to create a svelte context with a
- * unique name to avoid naming collisions.
+ * Helper function to create a svelte context with a unique name to avoid naming collisions.
  * @param name The name of the context
- * @returns
  */
-export const setupContext = <T>(name: string) => {
-	let { uid } = createUID(name + 'Context');
+export const setupContext = <T>() => {
+	let { uid } = createUID('context');
 	return {
 		contextName: uid(),
 		context: () => getContext<T>(uid())
@@ -37,7 +35,7 @@ export const setupContext = <T>(name: string) => {
  * Auto cleanup effects when the component is unmounted from the DOM.
  */
 export const effects = (fn: () => void) => {
-	let cleanUp: (() => void) | null = $effect.root(fn);
+	let cleanUp: (() => void) | null = null;
 
 	const destroy = () => {
 		if (cleanUp === null) return;
@@ -45,6 +43,9 @@ export const effects = (fn: () => void) => {
 		cleanUp = null;
 	};
 
+	onMount(() => {
+		cleanUp = $effect.root(fn);
+	});
 	onDestroy(destroy);
 
 	return destroy;

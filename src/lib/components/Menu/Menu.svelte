@@ -2,7 +2,7 @@
 	import { setupContext } from '$lib/internal/index.js';
 	import { MenuContext } from './context.svelte.js';
 
-	export const { context, contextName } = setupContext<MenuContext>('menu');
+	export const { context, contextName } = setupContext<MenuContext>();
 </script>
 
 <script lang="ts">

@@ -39,7 +39,7 @@
 		'aria-labelledby': ctx.uid('trigger'),
 		role: 'menu',
 		class: classProp(klass, { visible: ctx.visible }),
-		'data-menucontent': ''
+		'data-popovercontent': ''
 	});
 
 	onMount(async () => {

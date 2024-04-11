@@ -2,7 +2,7 @@
 	import { setupContext } from '$lib/internal/index.js';
 	import { PinContext } from './context.svelte.js';
 
-	export const { context, contextName } = setupContext<PinContext>('pin');
+	export const { context, contextName } = setupContext<PinContext>();
 </script>
 
 <script lang="ts">

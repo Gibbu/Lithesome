@@ -2,7 +2,7 @@
 	import { setupContext } from '$lib/internal/index.js';
 	import { SelectContext } from './context.svelte.js';
 
-	export const { context, contextName } = setupContext<SelectContext>('select');
+	export const { context, contextName } = setupContext<SelectContext>();
 </script>
 
 <script lang="ts" generics="ValueType">

@@ -26,7 +26,7 @@
 		self = $bindable(),
 		checked = $bindable(false),
 		required = false,
-		disabled = false,
+		disabled = $bindable(false),
 		onClick,
 		...props
 	}: Props = $props();

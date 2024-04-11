@@ -6,7 +6,7 @@ const checkbox: APIReference = {
 	props: [
 		{
 			name: 'checked',
-			type: 'boolean',
+			type: `boolean | 'mixed'`,
 			default: 'false',
 			description: 'Whether or not the checkbox is checked or not.'
 		},
