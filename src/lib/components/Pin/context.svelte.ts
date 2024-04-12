@@ -8,7 +8,7 @@ interface Init {
 }
 
 interface Hooks {
-	onChange?: (value: string) => void;
+	onChange: (value: string) => void;
 }
 
 export class PinContext extends Context<Hooks> {
@@ -19,7 +19,7 @@ export class PinContext extends Context<Hooks> {
 	placeholder = $state<string>('');
 
 	transformedValue = $derived(this.value.join());
-	filled = $derived(this.value.every((el) => el?.length));
+	filled = $derived(this.value.length === this.inputs.length && this.value.every((el) => el?.length === 1));
 
 	constructor(init: Init, hooks: Hooks) {
 		super('pin', hooks);
@@ -39,7 +39,7 @@ export class PinContext extends Context<Hooks> {
 
 	#effects = effects(() => {
 		$effect(() => {
-			this.hooks?.onChange?.(this.transformedValue);
+			this.hooks?.onChange(this.transformedValue);
 		});
 	});
 }

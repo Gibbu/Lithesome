@@ -54,6 +54,9 @@ pre[data-code-title]::before {
 	content: attr(data-code-title);
 	@apply absolute left-4 top-4 text-sm;
 }
+table {
+	@apply !text-left;
+}
 table code:not(pre code)::before,
 table code:not(pre code)::after {
 	content: none !important;

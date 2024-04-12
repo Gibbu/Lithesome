@@ -51,6 +51,8 @@
 		if (e.inputType !== 'insertText' && e.inputType !== 'deleteContentBackward') return;
 		await tick();
 
+		if (e.target.value.length > 1) e.target.value = e.data!;
+
 		ctx.setValue(index, e.data!);
 		if (value.length === 1) {
 			moveFocus('next');
@@ -139,7 +141,7 @@
 	disabled={ctx.disabled}
 	placeholder={focused ? '' : ctx.placeholder}
 	data-pininput=""
-	data-filled={ctx.filled || undefined}
+	data-filled={ctx.filled}
 	oninput={handleInput}
 	onkeydown={handleKeyDown}
 	onfocus={handleFocus}

@@ -47,7 +47,7 @@ const pin: APIReference = {
 		{
 			name: 'filled',
 			value: 'true',
-			description: 'Only applied if all inputs are filled.'
+			description: 'True if all inputs are filled.'
 		}
 	],
 	events: [
