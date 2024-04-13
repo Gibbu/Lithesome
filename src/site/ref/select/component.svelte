@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Select, SelectDropdown, SelectOption, SelectTrigger, SelectValue } from '$lib/index.js';
+	import { Select, SelectContent, SelectOption, SelectTrigger, SelectValue } from '$lib/index.js';
 	import { Button, cn } from '$site/index.js';
 	import { Check, ChevronDown } from '@steeze-ui/lucide-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -26,7 +26,7 @@
 			<Icon src={ChevronDown} class="h-6 w-6" />
 		</Button>
 	</SelectTrigger>
-	<SelectDropdown
+	<SelectContent
 		sameWidth
 		class={cn(
 			'origin-top translate-y-1 rounded-xl border p-2 shadow-xl backdrop-blur ',
@@ -55,7 +55,7 @@
 				{/snippet}
 			</SelectOption>
 		{/each}
-	</SelectDropdown>
+	</SelectContent>
 </Select>
 
 <span class="pointer-events-none absolute bottom-2 right-2 select-none text-xs opacity-40">Value: {value}</span>

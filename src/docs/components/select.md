@@ -14,16 +14,16 @@ description: 'Allow users to chooe from a list of options.'
 
 ```svelte
 <script>
-	import { Select, SelectTrigger, SelectDropdown, SelectOption } from 'lithesome';
+	import { Select, SelectTrigger, SelectContent, SelectOption } from 'lithesome';
 </script>
 
 <Select>
 	<SelectTrigger>
 		<button></button>
 	</SelectTrigger>
-	<SelectDropdown>
+	<SelectContent>
 		<SelectOption />
-	</SelectDropdown>
+	</SelectContent>
 </Select>
 ```
 
@@ -34,7 +34,7 @@ The component will then detect the array and append the selected options.
 
 ```svelte
 <script>
-	import { Select, SelectTrigger, SelectDropdown, SelectOption } from 'lithesome';
+	import { Select, SelectTrigger, SelectContent, SelectOption } from 'lithesome';
 
 	let value = $state([]);
 </script>
@@ -43,10 +43,10 @@ The component will then detect the array and append the selected options.
 	<SelectTrigger>
 		<button></button>
 	</SelectTrigger>
-	<SelectDropdown>
+	<SelectContent>
 		<SelectOption value="hamburger" />
 		<SelectOption value="cheeseburger" />
-	</SelectDropdown>
+	</SelectContent>
 </Select>
 ```
 

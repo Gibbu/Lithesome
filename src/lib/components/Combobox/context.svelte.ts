@@ -24,12 +24,10 @@ interface Hooks<ValueType> {
 	onChange?: (values: { newValue?: ValueType; newTouched?: boolean; newLabel?: string }) => void;
 }
 
-export class ComboboxContext<ValueType = any> extends Context<Hooks<ValueType>> {
+export class ComboboxContext<ValueType = any> extends Context<Hooks<ValueType>, HTMLInputElement> {
 	visible = $state<boolean>(true);
 	hoveredIndex = $state<number>(-1);
 	options = $state<HTMLElement[]>([]);
-	trigger = $state<HTMLInputElement | null>(null);
-	dropdown = $state<HTMLElement | null>(null);
 	selectedOptions = $state<HTMLElement[]>([]);
 	mounted = $state<boolean>(false);
 	touched = $state<boolean>(false);
@@ -53,7 +51,7 @@ export class ComboboxContext<ValueType = any> extends Context<Hooks<ValueType>> 
 		this.visible = !this.visible;
 	}
 	queryElements() {
-		const elements = removeDisabledElements(`#${this.uid('dropdown')} [data-comboboxoption]`);
+		const elements = removeDisabledElements(`#${this.uid('content')} [data-comboboxoption]`);
 		if (!elements) return;
 		this.options = elements;
 	}

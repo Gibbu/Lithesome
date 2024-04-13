@@ -17,18 +17,18 @@ pnpm i -D lithesome
 
 ```svelte
 <script>
-	import { Menu, MenuTrigger, MenuDropdown, MenuItem } from 'lithesome';
+	import { Menu, MenuTrigger, MenuContent, MenuItem } from 'lithesome';
 </script>
 
 <Menu>
 	<MenuTrigger>
 		<button>Auth</button>
 	</MenuTrigger>
-	<MenuDropdown>
+	<MenuContent>
 		<MenuItem>My Profile</MenuItem>
 		<MenuItem>Account Settings</MenuItem>
 		<MenuItem>Logout</MenuItem>
-	</MenuDropdown>
+	</MenuContent>
 </Menu>
 ```
 

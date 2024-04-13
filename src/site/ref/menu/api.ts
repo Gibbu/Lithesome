@@ -1,4 +1,4 @@
-import { self, use, transition } from '../helpers.js';
+import { self, use, transition, arrow } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const menu: APIReference = {
@@ -9,14 +9,14 @@ const menu: APIReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether the dropdown component is visible.'
+			description: 'Whether the content component is visible.'
 		}
 	],
 	dataAttrs: [
 		{
 			name: 'state',
 			value: `'opened' | 'closed'`,
-			description: 'Whether the dropdown component is visible.'
+			description: 'Whether the content component is visible.'
 		}
 	]
 };
@@ -30,7 +30,7 @@ const trigger: APIReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether the dropdown component is visible.'
+			description: 'Whether the content component is visible.'
 		}
 	],
 	events: [
@@ -42,14 +42,14 @@ const trigger: APIReference = {
 	]
 };
 
-const dropdown: APIReference = {
-	name: 'MenuDropdown',
+const content: APIReference = {
+	name: 'MenuContent',
 	childOf: menu.name,
 	childrenProps: [
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether the dropdown component is visible.'
+			description: 'Whether the content component is visible.'
 		}
 	],
 	props: [
@@ -63,19 +63,19 @@ const dropdown: APIReference = {
 			name: 'constrainViewport',
 			type: 'boolean',
 			default: 'false',
-			description: 'Keeps the dropdown from ever growing outside of the viewport.'
+			description: 'Keeps the content from ever growing outside of the viewport.'
 		},
 		{
 			name: 'sameWidth',
 			type: 'boolean',
 			default: 'false',
-			description: 'Makes the dropdown the same width as the trigger.'
+			description: 'Makes the content the same width as the trigger.'
 		},
 		{
 			name: 'portalTarget',
 			type: 'strng | HTMLElement',
 			default: `'body'`,
-			description: 'The target position for the dropdown to be mounted.'
+			description: 'The target position for the content to be mounted.'
 		},
 		use,
 		self('Div'),
@@ -85,19 +85,19 @@ const dropdown: APIReference = {
 		{
 			name: 'side',
 			value: `'top' | 'right' | 'bottom' | 'left'`,
-			description: 'The position of the dropdown relative to the trigger.'
+			description: 'The position of the content relative to the trigger.'
 		},
 		{
 			name: 'alignment',
 			value: `'start' | 'center' | 'end'`,
-			description: 'The alignment of dropdown relative to the trigger.'
+			description: 'The alignment of content relative to the trigger.'
 		}
 	]
 };
 
 const item: APIReference = {
 	name: 'MenuItem',
-	childOf: dropdown.name,
+	childOf: content.name,
 	childrenProps: [
 		{
 			name: 'hovered',
@@ -147,4 +147,4 @@ const item: APIReference = {
 	]
 };
 
-export default [menu, trigger, dropdown, item];
+export default [menu, trigger, content, arrow(menu.name), item];

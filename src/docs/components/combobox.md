@@ -14,14 +14,14 @@ description: 'Allow users to choose from a list of options with search filtering
 
 ```svelte
 <script>
-	import { Combobox, ComboboxInput, ComboboxDropdown, ComboboxOption } from 'lithesome';
+	import { Combobox, ComboboxInput, ComboboxContent, ComboboxOption } from 'lithesome';
 </script>
 
 <Combobox>
 	<ComboboxInput />
-	<ComboboxDropdown>
+	<ComboboxContent>
 		<ComboboxOption />
-	</ComboboxDropdown>
+	</ComboboxContent>
 </Combobox>
 ```
 
@@ -32,7 +32,7 @@ The component will then detect the array and append the selected options.
 
 ```svelte
 <script>
-	import { Combobox, ComboboxInput, ComboboxDropdown, ComboboxOption } from 'lithesome';
+	import { Combobox, ComboboxInput, ComboboxContent, ComboboxOption } from 'lithesome';
 
 	let value = $state([]);
 	let query = $state('');
@@ -40,10 +40,10 @@ The component will then detect the array and append the selected options.
 
 <Combobox bind:value>
 	<ComboboxInput bind:query />
-	<ComboboxDropdown>
+	<ComboboxContent>
 		<ComboboxOption value="hamburger" />
 		<ComboboxOption value="cheeseburger" />
-	</ComboboxDropdown>
+	</ComboboxContent>
 </Combobox>
 ```
 

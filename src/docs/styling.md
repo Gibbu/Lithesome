@@ -39,7 +39,7 @@ Each component has their own unqiue html `[data]` applied to the underlying elem
 
 To figure out what the data attribute is called, look at the component, add `data` infront and make them all lowercase.
 
-`<MenuDropdown>` = `[data-menudropdown]`  
+`<MenuContent>` = `[data-menucontent]`  
 `<SelectOption>` = `[data-selectoption]`  
 ect...
 
@@ -76,7 +76,7 @@ Whenever there's a "state" that is controlled by the components, they are expose
 For example:
 
 - `[data-hovered]` is exposed on the `<MenuItem />` when the user has hovered over it, via mouse or keyboard.
-- `[data-state="opened"]` is exposed on the `<Menu />` when the dropdown of that menu is visible.
+- `[data-state="opened"]` is exposed on the `<Menu />` when the content of that menu is visible.
 
 Check each component API reference to see what data attributes are exposed on each slot.
 

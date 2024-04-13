@@ -1,4 +1,4 @@
-import { use, self, transition } from '../helpers.js';
+import { use, self, transition, arrow } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const hovercard: APIReference = {
@@ -56,19 +56,19 @@ const content: APIReference = {
 			name: 'constrainViewport',
 			type: 'boolean',
 			default: 'false',
-			description: 'Keeps the dropdown from ever growing outside of the viewport.'
+			description: 'Keeps the content dropdown from ever growing outside of the viewport.'
 		},
 		{
 			name: 'sameWidth',
 			type: 'boolean',
 			default: 'false',
-			description: 'Makes the dropdown the same width as the trigger.'
+			description: 'Makes the content dropdown the same width as the trigger.'
 		},
 		{
 			name: 'portalTarget',
 			type: 'strng | HTMLElement',
 			default: `'body'`,
-			description: 'The target position for the dropdown to be mounted.'
+			description: 'The target position for the content dropdown to be mounted.'
 		},
 		use,
 		self('Div'),
@@ -78,12 +78,12 @@ const content: APIReference = {
 		{
 			name: 'side',
 			value: `'top' | 'right' | 'bottom' | 'left'`,
-			description: 'The position of the dropdown relative to the trigger.'
+			description: 'The position of the content dropdown relative to the trigger.'
 		},
 		{
 			name: 'alignment',
 			value: `'start' | 'center' | 'end'`,
-			description: 'The alignment of dropdown relative to the trigger.'
+			description: 'The alignment of content dropdown relative to the trigger.'
 		}
 	],
 	events: [
@@ -100,4 +100,4 @@ const content: APIReference = {
 	]
 };
 
-export default [hovercard, trigger, content];
+export default [hovercard, trigger, content, arrow(hovercard.name)];

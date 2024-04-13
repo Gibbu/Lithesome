@@ -26,17 +26,17 @@ Once installed, you can import them in any `.svelte` file and construct them as 
 
 ```svelte
 <script>
-	import { Menu, MenuTrigger, MenuDropdown, MenuItem } from 'lithesome';
+	import { Menu, MenuTrigger, MenuContent, MenuItem } from 'lithesome';
 </script>
 
 <Menu>
 	<MenuTrigger>
 		<button>Post options</button>
 	</MenuTrigger>
-	<MenuDropdown>
+	<MenuContent>
 		<MenuItem>Edit</MenuItem>
 		<MenuItem>Hide</MenuItem>
 		<MenuItem>Delete</MenuItem>
-	</MenuDropdown>
+	</MenuContent>
 </Menu>
 ```

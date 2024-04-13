@@ -1,4 +1,4 @@
-import type { Prop } from '$site/types.js';
+import type { APIReference, Prop } from '$site/types.js';
 
 type HTMLEl = 'Div' | 'Button' | 'Input' | 'Anchor' | 'Heading' | 'Paragraph' | 'Span';
 
@@ -21,4 +21,16 @@ export const self = (...el: HTMLEl[]): Prop => ({
 	type: el.map((e) => `HTML${e}Element`).join(' | '),
 	default: '——',
 	description: 'The underlying html element that you can use to bind to.'
+});
+
+export const arrow = (component: string): APIReference => ({
+	name: `${component}Arrow`,
+	childOf: `${component}Content`,
+	dataAttrs: [
+		{
+			name: 'side',
+			value: `'top' | 'right' | 'bottom' | 'left'`
+		}
+	],
+	props: [self('Div'), use]
 });

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Combobox, ComboboxDropdown, ComboboxInput, ComboboxOption } from '$lib/index.js';
+	import { Combobox, ComboboxContent, ComboboxInput, ComboboxOption, ComboboxArrow } from '$lib/index.js';
 	import { cn } from '$site/utils.js';
 	import { Check, ChevronDown } from '@steeze-ui/lucide-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -53,7 +53,7 @@
 			<Icon src={ChevronDown} class={cn('absolute right-4 h-4 w-4', visible ? 'rotate-180' : '')} />
 		</div>
 
-		<ComboboxDropdown
+		<ComboboxContent
 			class={cn(
 				'origin-top translate-y-1 rounded-xl border p-2 shadow-xl backdrop-blur ',
 				'border-neutral-300 bg-white shadow-neutral-200',
@@ -62,6 +62,7 @@
 			transition={[scale, { start: 0.8, duration: 150 }]}
 			sameWidth
 		>
+			<ComboboxArrow class="size-1 bg-red-500" />
 			{#each filteredOptions as { value, label, disabled } (value)}
 				<ComboboxOption
 					{value}
@@ -84,7 +85,7 @@
 			{:else}
 				<span class="block p-3 text-sm text-neutral-400 dark:text-neutral-500">No results found...</span>
 			{/each}
-		</ComboboxDropdown>
+		</ComboboxContent>
 	{/snippet}
 </Combobox>
 

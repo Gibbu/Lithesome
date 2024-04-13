@@ -50,7 +50,7 @@
 		if (ctx.visible) {
 			setNodeProps(target, {
 				'aria-expanded': 'true',
-				'aria-controls': ctx.uid('dropdown')
+				'aria-controls': ctx.uid('content')
 			});
 		}
 		if (!ctx.visible) {

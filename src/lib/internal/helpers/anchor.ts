@@ -1,26 +1,41 @@
-import { computePosition, flip, shift, autoUpdate, size, type Placement } from '@floating-ui/dom';
+import {
+	computePosition,
+	flip,
+	shift,
+	autoUpdate,
+	size,
+	arrow as floatingArrow,
+	type Placement
+} from '@floating-ui/dom';
 import { defaultConfig } from './utils.svelte.js';
 
 type AnchorElement = HTMLElement | undefined | null;
+interface AnchorElements {
+	anchor: AnchorElement;
+	target: AnchorElement;
+	arrow?: AnchorElement;
+}
 interface AnchorConfig {
 	placement?: Placement;
 	constrainViewport?: boolean;
 	sameWidth?: boolean;
 }
 
-export const anchorElement = (anchor: AnchorElement, target: AnchorElement, config?: AnchorConfig) => {
-	if (!anchor || !target) return;
+export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) => {
+	if (!elements.anchor || !elements.target) return;
 
 	const { placement, constrainViewport, sameWidth } = defaultConfig(config, {
 		placement: 'bottom',
 		constrainViewport: false,
 		sameWidth: false
 	});
+	const { anchor, target, arrow } = elements;
 
 	const cleanup = autoUpdate(anchor, target, () => {
 		computePosition(anchor, target, {
 			placement,
 			middleware: [
+				arrow ? floatingArrow({ element: arrow }) : undefined,
 				flip(),
 				shift({
 					padding: 10
@@ -37,7 +52,7 @@ export const anchorElement = (anchor: AnchorElement, target: AnchorElement, conf
 					}
 				})
 			]
-		}).then(({ x, y, placement }) => {
+		}).then(({ x, y, placement, middlewareData }) => {
 			const [side, alignment] = placement.split('-');
 
 			Object.assign(target.style, {
@@ -47,6 +62,29 @@ export const anchorElement = (anchor: AnchorElement, target: AnchorElement, conf
 			});
 			target.setAttribute('data-side', side);
 			target.setAttribute('data-alignment', alignment || 'center');
+
+			if (arrow) {
+				const arrowPos = middlewareData.arrow;
+				const side = {
+					top: 'bottom',
+					right: 'left',
+					bottom: 'top',
+					left: 'right'
+				}[placement.split('-')[0]];
+				if (!arrowPos || !side) return;
+
+				const arrowSize = (arrow.getBoundingClientRect().width / 3).toFixed();
+
+				Object.assign(arrow.style, {
+					left: arrowPos.x != null ? `${arrowPos.x}px` : '',
+					top: arrowPos.y != null ? `${arrowPos.y}px` : '',
+					right: '',
+					bottom: '',
+					[side]: `-${arrowSize}px`,
+					position: 'absolute'
+				});
+				arrow.setAttribute('data-side', side);
+			}
 		});
 	});
 

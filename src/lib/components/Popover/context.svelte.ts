@@ -9,8 +9,6 @@ interface Hooks {
 
 export class PopoverContext extends Context<Hooks> {
 	visible = $state<boolean>(false);
-	trigger = $state<HTMLElement | null>(null);
-	content = $state<HTMLElement | null>(null);
 
 	constructor(init: Init, hooks: Hooks) {
 		super('popover', hooks);

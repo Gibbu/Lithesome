@@ -14,7 +14,7 @@ Each transition "prop" is an array 2 two indexes.
 2. And the second being the config you want to use for that transition (which is optional).
 
 ```svelte
-<SelectDropdown
+<SelectContent
 	transition={[fly, {y: 15, duration: 150}]}
 >
 ```
@@ -24,7 +24,7 @@ Giving an array like the example above will apply both in and out transitions.
 But if you wish to use different transitions for both in and out, provide an object with the `in` and `out` properties.
 
 ```svelte
-<SelectDropdown
+<SelectContent
 	transition={{
 		in: [fly, {y: 15, duration: 150}],
 		out: [fly, {y: -15, duration: 200}]

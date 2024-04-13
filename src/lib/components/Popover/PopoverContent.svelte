@@ -9,12 +9,12 @@
 		getTransition,
 		classProp,
 		type BaseProps,
-		type DropdownProps
+		type ContentProps
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, DropdownProps {}
+	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, ContentProps {}
 
 	let {
 		children,
@@ -51,11 +51,18 @@
 	});
 	$effect(() => {
 		if (ctx.visible && ctx.trigger && ctx.content) {
-			contentCleanup = anchorElement(ctx.trigger, ctx.content, {
-				placement,
-				constrainViewport,
-				sameWidth
-			});
+			contentCleanup = anchorElement(
+				{
+					anchor: ctx.trigger,
+					target: ctx.content,
+					arrow: ctx.arrow
+				},
+				{
+					placement,
+					constrainViewport,
+					sameWidth
+				}
+			);
 		}
 		return () => {
 			contentCleanup?.();

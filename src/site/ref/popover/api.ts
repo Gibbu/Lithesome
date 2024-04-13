@@ -1,4 +1,4 @@
-import { self, use, transition } from '../helpers.js';
+import { self, use, transition, arrow } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const popover: APIReference = {
@@ -66,13 +66,13 @@ const content: APIReference = {
 			name: 'constrainViewport',
 			type: 'boolean',
 			default: 'false',
-			description: 'Keeps the dropdown from ever growing outside of the viewport.'
+			description: 'Keeps the content dropdown from ever growing outside of the viewport.'
 		},
 		{
 			name: 'sameWidth',
 			type: 'boolean',
 			default: 'false',
-			description: 'Makes the dropdown the same width as the trigger.'
+			description: 'Makes the content dropdown the same width as the trigger.'
 		},
 		{
 			name: 'portalTarget',
@@ -93,4 +93,4 @@ const content: APIReference = {
 	]
 };
 
-export default [popover, trigger, content];
+export default [popover, trigger, content, arrow(popover.name)];

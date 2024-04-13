@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Popover, PopoverContent, PopoverTrigger } from '$lib/index.js';
+	import { Popover, PopoverContent, PopoverTrigger, PopoverArrow } from '$lib/index.js';
 	import { Button, cn } from '$site/index.js';
 	import { scale } from 'svelte/transition';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -26,6 +26,7 @@
 	<PopoverTrigger>
 		<Button variant="primary">Resources</Button>
 	</PopoverTrigger>
+
 	<PopoverContent
 		class={cn(
 			'w-[450px] origin-top translate-y-1 rounded-xl border p-4 shadow-xl backdrop-blur ',

@@ -41,19 +41,19 @@ export type BasePropsNoChildren<T extends HTMLElement, C extends Record<string, 
 	'children'
 >;
 
-export interface DropdownProps {
+export interface ContentProps {
 	/**
 	 * The `svelte/transtion` you wish to use.
 	 *
 	 * @see https://lithesome.dev/docs/api#transition-prop
 	 */
 	transition?: Transition;
-	/** The element to portal the dropdown menu to. */
+	/** The element to portal the content menu to. */
 	portalTarget?: string | HTMLElement;
-	/** The anchor point of the dropdown relative to the trigger. */
+	/** The anchor point of the content relative to the trigger. */
 	placement?: Placement;
-	/** Keeps the dropdown from ever growing outside of the viewport. */
+	/** Keeps the content from ever growing outside of the viewport. */
 	constrainViewport?: boolean;
-	/** Makes the dropdown the same width as the trigger. */
+	/** Makes the content the same width as the trigger. */
 	sameWidth?: boolean;
 }

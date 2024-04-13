@@ -1,4 +1,4 @@
-import { use, self, transition } from '../helpers.js';
+import { use, self, transition, arrow } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const combobox: APIReference = {
@@ -30,14 +30,14 @@ const combobox: APIReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether or not the dropdown component is visible or not.'
+			description: 'Whether or not the content component is visible or not.'
 		}
 	],
 	dataAttrs: [
 		{
 			name: 'state',
 			value: `'opened' | 'closed'`,
-			description: 'Whether or not the dropdown component is visible or not.'
+			description: 'Whether or not the content component is visible or not.'
 		}
 	],
 	events: [
@@ -89,8 +89,8 @@ const input: APIReference = {
 	]
 };
 
-const dropdown: APIReference = {
-	name: 'ConboboxDropdown',
+const content: APIReference = {
+	name: 'ConboboxContent',
 	childOf: combobox.name,
 	props: [
 		{
@@ -103,19 +103,19 @@ const dropdown: APIReference = {
 			name: 'constrainViewport',
 			type: 'boolean',
 			default: 'false',
-			description: 'Keeps the dropdown from ever growing outside of the viewport.'
+			description: 'Keeps the content from ever growing outside of the viewport.'
 		},
 		{
 			name: 'sameWidth',
 			type: 'boolean',
 			default: 'false',
-			description: 'Makes the dropdown the same width as the trigger.'
+			description: 'Makes the content the same width as the trigger.'
 		},
 		{
 			name: 'portalTarget',
 			type: 'strng | HTMLElement',
 			default: `'body'`,
-			description: 'The target position for the dropdown to be mounted.'
+			description: 'The target position for the content to be mounted.'
 		},
 		use,
 		self('Div'),
@@ -125,14 +125,14 @@ const dropdown: APIReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether or not the dropdown component is visible or not.'
+			description: 'Whether or not the content component is visible or not.'
 		}
 	]
 };
 
 const option: APIReference = {
 	name: 'ComboboxOption',
-	childOf: dropdown.name,
+	childOf: content.name,
 	props: [
 		{
 			name: 'value',
@@ -197,4 +197,4 @@ const option: APIReference = {
 	]
 };
 
-export default [combobox, input, dropdown, option];
+export default [combobox, input, content, arrow(combobox.name), option];

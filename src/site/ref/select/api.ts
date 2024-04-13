@@ -1,4 +1,4 @@
-import { use, self, transition } from '../helpers.js';
+import { use, self, transition, arrow } from '../helpers.js';
 import type { APIReference } from '$site/types.js';
 
 const select: APIReference = {
@@ -46,13 +46,13 @@ const trigger: APIReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether or not the dropdown component is visible or not.'
+			description: 'Whether or not the content dropdown component is visible or not.'
 		}
 	]
 };
 
-const dropdown: APIReference = {
-	name: 'SelectDropdown',
+const content: APIReference = {
+	name: 'SelectContent',
 	childOf: select.name,
 	props: [
 		{
@@ -65,19 +65,19 @@ const dropdown: APIReference = {
 			name: 'constrainViewport',
 			type: 'boolean',
 			default: 'false',
-			description: 'Keeps the dropdown from ever growing outside of the viewport.'
+			description: 'Keeps the content dropdown from ever growing outside of the viewport.'
 		},
 		{
 			name: 'sameWidth',
 			type: 'boolean',
 			default: 'false',
-			description: 'Makes the dropdown the same width as the trigger.'
+			description: 'Makes the content dropdown the same width as the trigger.'
 		},
 		{
 			name: 'portalTarget',
 			type: 'strng | HTMLElement',
 			default: `'body'`,
-			description: 'The target position for the dropdown to be mounted.'
+			description: 'The target position for the content dropdown to be mounted.'
 		},
 		use,
 		self('Div'),
@@ -87,14 +87,14 @@ const dropdown: APIReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether or not the dropdown component is visible or not.'
+			description: 'Whether or not the content dropdown component is visible or not.'
 		}
 	]
 };
 
 const option: APIReference = {
 	name: 'SelectOption',
-	childOf: dropdown.name,
+	childOf: content.name,
 	props: [
 		{
 			name: 'value',
@@ -181,4 +181,4 @@ const value: APIReference = {
 	]
 };
 
-export default [select, trigger, dropdown, option, value];
+export default [select, trigger, content, arrow(select.name), option, value];

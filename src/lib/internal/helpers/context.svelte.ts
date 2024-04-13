@@ -1,8 +1,11 @@
 import { createUID, type UID } from './utils.svelte.js';
 import { onDestroy, getContext, onMount } from 'svelte';
 
-export class Context<H = any> {
+export class Context<H = any, T extends HTMLElement = any> {
 	public uid = $state<UID>()!;
+	public arrow = $state<HTMLElement | null>(null);
+	public content = $state<HTMLElement | null>(null);
+	public trigger = $state<T | null>(null);
 	protected hooks: H | null = null;
 	protected _mounted = $state<boolean>(false);
 

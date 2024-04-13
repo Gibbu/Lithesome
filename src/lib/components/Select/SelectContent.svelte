@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { context } from './Menu.svelte';
+	import { context } from './Select.svelte';
 	import {
 		clickOutside,
 		anchorElement,
@@ -8,56 +8,63 @@
 		getTransition,
 		classProp,
 		type BaseProps,
-		type DropdownProps
+		type ContentProps
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, DropdownProps {}
+	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, ContentProps {}
 
 	let {
 		children,
 		transition,
 		use = [],
 		portalTarget = 'body',
+		sameWidth = false,
 		class: klass,
 		self = $bindable(),
 		placement = 'bottom',
-		constrainViewport,
-		sameWidth = false,
+		constrainViewport = false,
 		...props
 	}: Props = $props();
 
 	const ctx = context();
-
-	let dropdownCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
+	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const _transition = getTransition(transition);
 	const attrs = $derived({
-		id: ctx.uid('dropdown'),
+		id: ctx.uid('content'),
 		'aria-labelledby': ctx.uid('trigger'),
-		role: 'menu',
+		role: 'listbox',
 		class: classProp(klass, { visible: ctx.visible }),
-		'data-menudropdown': ''
+		'data-selectcontent': '',
+		hidden: !ctx.mounted || undefined
 	});
 
-	onMount(async () => {
-		if (!ctx) log.error('<MenuDropdown> Must be a direct child of <Menu />');
+	onMount(() => {
+		if (!ctx) log.error('<SelectContent> Must be a direct child of <Select />');
 	});
 
 	$effect(() => {
-		if (ctx.visible && self) ctx.dropdown = self;
+		if (ctx.visible && self) ctx.content = self;
 	});
 	$effect(() => {
-		if (ctx.visible && ctx.trigger && ctx.dropdown) {
-			dropdownCleanup = anchorElement(ctx.trigger, ctx.dropdown, {
-				placement,
-				constrainViewport,
-				sameWidth
-			});
+		if (ctx.visible && ctx.trigger && ctx.content) {
+			contentCleanup = anchorElement(
+				{
+					anchor: ctx.trigger,
+					target: ctx.content,
+					arrow: ctx.arrow
+				},
+				{
+					placement,
+					constrainViewport,
+					sameWidth
+				}
+			);
 		}
 		return () => {
-			dropdownCleanup?.();
+			contentCleanup?.();
 		};
 	});
 </script>

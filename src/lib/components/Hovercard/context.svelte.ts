@@ -6,8 +6,6 @@ interface Init {
 
 export class HovercardContext extends Context {
 	visible = $state<boolean>(false);
-	trigger = $state<HTMLElement | null>(null);
-	content = $state<HTMLElement | null>(null);
 	timeout = $state<number | null>(null);
 	delays = $state<{ in: number; out: number }>({ in: 700, out: 700 });
 	hovered = $state<boolean>(false);

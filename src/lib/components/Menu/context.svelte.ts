@@ -3,8 +3,6 @@ import { calculateIndex, disableScroll, Context, effects, type CalcIndexAction }
 export class MenuContext extends Context {
 	visible = $state<boolean>(false);
 	hoveredIndex = $state<number>(-1);
-	trigger = $state<HTMLElement | null>(null);
-	dropdown = $state<HTMLElement | null>(null);
 	items = $state<string[]>([]);
 
 	hoveredItem = $derived<string | undefined>(this.items[this.hoveredIndex]);

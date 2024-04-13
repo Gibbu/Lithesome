@@ -14,16 +14,16 @@ description: 'A menu of items that is hidden until triggered.'
 
 ```svelte
 <script>
-	import { Menu, MenuTrigger, MenuDropdown, MenuItem } from 'lithesome';
+	import { Menu, MenuTrigger, MenuContent, MenuItem } from 'lithesome';
 </script>
 
 <Menu>
 	<MenuTrigger>
 		<button></button>
 	</MenuTrigger>
-	<MenuDropdown>
+	<MenuContent>
 		<MenuItem />
-	</MenuDropdown>
+	</MenuContent>
 </Menu>
 ```
 
@@ -39,7 +39,7 @@ By passing the `disabled` prop, it will disable the item. Disallowing clicking a
 
 ## Site navigation
 
-If you need to navigate to another page via the dropdown items. Simply pass the link via the `href` prop.
+If you need to navigate to another page via the Content items. Simply pass the link via the `href` prop.
 
 ```svelte
 <MenuItem href="/@gibbu">

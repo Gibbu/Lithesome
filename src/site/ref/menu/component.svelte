@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { User, Cog, LogOut, CreditCard } from '@steeze-ui/lucide-icons';
-	import { Menu, MenuDropdown, MenuItem, MenuTrigger } from '$lib/index.js';
+	import { Menu, MenuContent, MenuItem, MenuTrigger } from '$lib/index.js';
 	import { Button, cn } from '$site/index.js';
 	import { scale } from 'svelte/transition';
 
@@ -17,7 +17,7 @@
 	<MenuTrigger>
 		<Button variant="primary">Open Menu</Button>
 	</MenuTrigger>
-	<MenuDropdown
+	<MenuContent
 		transition={[scale, { start: 0.8, duration: 150 }]}
 		class={cn(
 			'w-[215px] origin-top translate-y-1 rounded-xl border p-2 shadow-xl backdrop-blur ',
@@ -48,5 +48,5 @@
 				{/if}
 			</MenuItem>
 		{/each}
-	</MenuDropdown>
+	</MenuContent>
 </Menu>

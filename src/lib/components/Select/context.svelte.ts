@@ -28,8 +28,6 @@ export class SelectContext<ValueType = any> extends Context<Hooks<ValueType>> {
 	visible = $state<boolean>(true);
 	hoveredIndex = $state<number>(-1);
 	options = $state<HTMLElement[]>([]);
-	trigger = $state<HTMLElement | null>(null);
-	dropdown = $state<HTMLElement | null>(null);
 	selectedOptions = $state<HTMLElement[]>([]);
 	mounted = $state<boolean>(false);
 	multiple = $state<boolean>(false);
@@ -52,7 +50,7 @@ export class SelectContext<ValueType = any> extends Context<Hooks<ValueType>> {
 		this.visible = !this.visible;
 	}
 	queryElements() {
-		const elements = removeDisabledElements(`#${this.uid('dropdown')} [data-selectoption]`);
+		const elements = removeDisabledElements(`#${this.uid('content')} [data-selectoption]`);
 		if (!elements) return;
 		this.options = elements;
 	}
