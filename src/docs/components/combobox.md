@@ -14,12 +14,13 @@ description: 'Allow users to choose from a list of options with search filtering
 
 ```svelte
 <script>
-	import { Combobox, ComboboxInput, ComboboxContent, ComboboxOption } from 'lithesome';
+	import { Combobox, ComboboxInput, ComboboxContent, ComboboxOption, ComboboxArrow } from 'lithesome';
 </script>
 
 <Combobox>
 	<ComboboxInput />
 	<ComboboxContent>
+		<ComboboxArrow />
 		<ComboboxOption />
 	</ComboboxContent>
 </Combobox>

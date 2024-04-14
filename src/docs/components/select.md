@@ -14,7 +14,7 @@ description: 'Allow users to chooe from a list of options.'
 
 ```svelte
 <script>
-	import { Select, SelectTrigger, SelectContent, SelectOption } from 'lithesome';
+	import { Select, SelectTrigger, SelectContent, SelectOption, SelectArrow } from 'lithesome';
 </script>
 
 <Select>
@@ -22,6 +22,7 @@ description: 'Allow users to chooe from a list of options.'
 		<button></button>
 	</SelectTrigger>
 	<SelectContent>
+		<SelectArrow />
 		<SelectOption />
 	</SelectContent>
 </Select>

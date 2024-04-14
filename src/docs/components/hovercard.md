@@ -15,14 +15,16 @@ badge: 'new'
 
 ```svelte
 <script>
-	import { Hovercard, HovercardTrigger, HovercardContent } from 'lithesome';
+	import { Hovercard, HovercardTrigger, HovercardContent, HovercardArrow } from 'lithesome';
 </script>
 
 <Hovercard>
 	<HovercardTrigger>
 		<button></button>
 	</HovercardTrigger>
-	<HovercardContent />
+	<HovercardContent>
+		<HovercardArrow />
+	</HovercardContent>
 </Hovercard>
 ```
 

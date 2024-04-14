@@ -14,14 +14,16 @@ description: 'Display content over the window without taking away focus from the
 
 ```svelte
 <script>
-	import { Popover, PopoverTrigger, PopoverContent } from 'lithesome';
+	import { Popover, PopoverTrigger, PopoverContent, PopoverArrow } from 'lithesome';
 </script>
 
 <Popover>
 	<PopoverTrigger>
 		<button></button>
 	</PopoverTrigger>
-	<PopoverContent />
+	<PopoverContent>
+		<PopoverArrow />
+	</PopoverContent>
 </Popover>
 ```
 

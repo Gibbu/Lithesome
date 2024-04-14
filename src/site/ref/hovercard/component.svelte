@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Hovercard, HovercardTrigger, HovercardContent } from '$lib/index.js';
+	import { Hovercard, HovercardTrigger, HovercardContent, HovercardArrow } from '$lib/index.js';
 	import { cn } from '$site/utils.js';
 	import { Book, Star } from '@steeze-ui/lucide-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -25,6 +25,13 @@
 			'dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-[#111]'
 		)}
 	>
+		<HovercardArrow
+			class={cn(
+				'size-3 rotate-45 border-l border-t',
+				'border-neutral-300 bg-white',
+				'bg-neutral-900 dark:border-neutral-700'
+			)}
+		/>
 		<header class="flex items-center gap-4">
 			<img src="https://github.com/Gibbu.png" alt="GitHub avatar" class="block size-10 rounded-full" />
 			<div>

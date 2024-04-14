@@ -14,7 +14,7 @@ description: 'A menu of items that is hidden until triggered.'
 
 ```svelte
 <script>
-	import { Menu, MenuTrigger, MenuContent, MenuItem } from 'lithesome';
+	import { Menu, MenuTrigger, MenuContent, MenuItem, MenuArrow } from 'lithesome';
 </script>
 
 <Menu>
@@ -22,6 +22,7 @@ description: 'A menu of items that is hidden until triggered.'
 		<button></button>
 	</MenuTrigger>
 	<MenuContent>
+		<MenuArrow />
 		<MenuItem />
 	</MenuContent>
 </Menu>
