@@ -23,3 +23,5 @@ export const copy = (node: HTMLElement, config: CopyConfig) => {
 		}
 	});
 };
+
+export const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

@@ -2,10 +2,11 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import Banner from '$site/Banner.svelte';
-	import { cn } from '$site/index.js';
+	import { Button, cn, isMobile } from '$site/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Github, Moon, Sun } from '@steeze-ui/lucide-icons';
-	import { isBrowser } from '$lib/internal/index.js';
+	import { Github, Menu, Moon, Sun } from '@steeze-ui/lucide-icons';
+	import { disableScroll, isBrowser } from '$lib/internal/index.js';
+	import { afterNavigate } from '$app/navigation';
 
 	let { data, children } = $props();
 
@@ -14,6 +15,7 @@
 		'bg-white text-black border-white shadow-md dark:bg-neutral-900 dark:text-white dark:border-neutral-800 dark:shadow-none';
 	let theme = $state<'dark' | 'light'>(isBrowser ? localStorage.theme : 'light');
 	let hideEarlyDev = $state(browser ? localStorage.getItem('earlyDev') : true);
+	let mobileSidebar = $state<boolean>(!isMobile);
 
 	const active = (route: string) => {
 		if (!route || (route === '/' && $page.url.pathname === '/docs')) return true;
@@ -33,6 +35,19 @@
 			document.documentElement.classList.add('dark');
 		}
 	};
+
+	$effect(() => {
+		if (isMobile) {
+			disableScroll(mobileSidebar && !document.body.style.overflow);
+			if (mobileSidebar) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+		}
+	});
+
+	afterNavigate(() => {
+		mobileSidebar = false;
+	});
 </script>
 
 {#snippet badge(type: 'soon' | 'updated' | 'new')}
@@ -50,7 +65,12 @@
 
 <nav class="h-[var(--nav-height)]">
 	<div class="wrap flex h-full items-center justify-between">
-		<div class="flex items-center gap-4">
+		<div class="flex items-center">
+			{#if isMobile}
+				<Button variant="text" onclick={() => (mobileSidebar = !mobileSidebar)}>
+					<Icon src={Menu} class="size-5 text-black dark:text-white" />
+				</Button>
+			{/if}
 			<a
 				href="/"
 				class="pl-3.5 text-xl font-semibold tracking-widest text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white"
@@ -78,8 +98,14 @@
 	</div>
 </nav>
 
-<div class="wrap grid grid-cols-[190px,1fr] items-start gap-6">
-	<aside class="sticky top-8 h-[calc(100vh-var(--nav-height))] overflow-auto pb-8">
+<div class="wrap items-start md:grid md:grid-cols-[190px,1fr] md:gap-6">
+	<aside
+		class={cn(
+			'sticky top-8 overflow-auto pb-8',
+			'mb-6 h-[calc(100vh-var(--nav-height)-24px)] md:mb-0 md:h-[calc(100vh-var(--nav-height))]',
+			mobileSidebar ? 'block' : 'hidden md:block'
+		)}
+	>
 		<ul class="h-full">
 			{#each data.routes as route}
 				<li>
@@ -124,7 +150,10 @@
 		</ul>
 	</aside>
 	<main
-		class="dark:highlight min-h-[calc(100vh-var(--nav-height))] w-full min-w-0 rounded-tl-xl rounded-tr-xl bg-white p-12 pb-24 shadow-xl dark:bg-neutral-920/70"
+		class={cn(
+			'min-h-[calc(100vh-var(--nav-height))] w-full min-w-0 rounded-tl-xl rounded-tr-xl bg-white p-8 shadow-xl md:p-12 md:pb-24',
+			'dark:highlight dark:bg-neutral-920/70'
+		)}
 	>
 		{#if !hideEarlyDev}
 			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>

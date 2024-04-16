@@ -11,8 +11,8 @@
 <Meta />
 
 <header class="mb-12">
-	<h1 class="text-5xl font-bold text-neutral-800 dark:text-white">{data.meta.title}</h1>
-	<p class="mt-4 text-lg font-medium text-neutral-400 dark:text-neutral-500">{data.meta.description}</p>
+	<h1 class="text-3xl font-bold text-neutral-800 dark:text-white md:text-5xl">{data.meta.title}</h1>
+	<p class="mt-4 text-sm font-medium text-neutral-400 dark:text-neutral-500 md:text-lg">{data.meta.description}</p>
 </header>
 <article
 	class={cn(

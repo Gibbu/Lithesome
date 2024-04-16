@@ -55,14 +55,13 @@
 
 		<ComboboxContent
 			class={cn(
-				'origin-top translate-y-1 rounded-xl border p-2 shadow-xl backdrop-blur ',
+				'z-10 origin-top translate-y-1 rounded-xl border p-2 shadow-xl backdrop-blur',
 				'border-neutral-300 bg-white shadow-neutral-200',
 				'dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-[#111]'
 			)}
 			transition={[scale, { start: 0.8, duration: 150 }]}
 			sameWidth
 		>
-			<ComboboxArrow class="size-1 bg-red-500" />
 			{#each filteredOptions as { value, label, disabled } (value)}
 				<ComboboxOption
 					{value}
