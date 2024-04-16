@@ -77,7 +77,7 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 
 				const arrowSize = (arrow.getBoundingClientRect().width / 3).toFixed();
 
-				setNodeStyles(target, {
+				setNodeStyles(arrow, {
 					left: arrowPos.x != null ? `${arrowPos.x}px` : '',
 					top: arrowPos.y != null ? `${arrowPos.y}px` : '',
 					right: '',
@@ -85,7 +85,7 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 					[side]: `-${arrowSize}px`,
 					position: 'absolute'
 				});
-				setNodeProps(target, {
+				setNodeProps(arrow, {
 					'data-side': side
 				});
 			}
