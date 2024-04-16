@@ -7,7 +7,7 @@ import {
 	arrow as floatingArrow,
 	type Placement
 } from '@floating-ui/dom';
-import { defaultConfig } from './utils.svelte.js';
+import { defaultConfig, setNodeStyles, setNodeProps } from '$lib/internal/index.js';
 
 type AnchorElement = HTMLElement | undefined | null;
 interface AnchorElements {
@@ -44,7 +44,7 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 					apply({ availableHeight, availableWidth, elements }) {
 						if (sameWidth) elements.floating.style.width = elements.reference.getBoundingClientRect().width + 'px';
 						if (constrainViewport) {
-							Object.assign(target.style, {
+							setNodeStyles(target, {
 								maxWidth: `${availableWidth}px`,
 								maxHeight: `${availableHeight}px`
 							});
@@ -55,13 +55,15 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 		}).then(({ x, y, placement, middlewareData }) => {
 			const [side, alignment] = placement.split('-');
 
-			Object.assign(target.style, {
+			setNodeStyles(target, {
 				left: `${x}px`,
 				top: `${y}px`,
 				position: 'absolute'
 			});
-			target.setAttribute('data-side', side);
-			target.setAttribute('data-alignment', alignment || 'center');
+			setNodeProps(target, {
+				'data-side': side,
+				'data-alignment': alignment || 'center'
+			});
 
 			if (arrow) {
 				const arrowPos = middlewareData.arrow;
@@ -75,7 +77,7 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 
 				const arrowSize = (arrow.getBoundingClientRect().width / 3).toFixed();
 
-				Object.assign(arrow.style, {
+				setNodeStyles(target, {
 					left: arrowPos.x != null ? `${arrowPos.x}px` : '',
 					top: arrowPos.y != null ? `${arrowPos.y}px` : '',
 					right: '',
@@ -83,7 +85,9 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 					[side]: `-${arrowSize}px`,
 					position: 'absolute'
 				});
-				arrow.setAttribute('data-side', side);
+				setNodeProps(target, {
+					'data-side': side
+				});
 			}
 		});
 	});

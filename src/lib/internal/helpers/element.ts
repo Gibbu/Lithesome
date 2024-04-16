@@ -23,6 +23,28 @@ export const removeNodeProps = <T extends HTMLElement>(node: T, ...attrs: string
 };
 
 /**
+ * Set styles to a html element.
+ * @param node The element to apply the styles to.
+ * @param styles The styles to be added.
+ */
+export const setNodeStyles = <T extends HTMLElement>(node: T, styles: Record<string, any>) => {
+	Object.entries(styles).forEach(([k, v]) => {
+		node.style.setProperty(k, v);
+	});
+};
+
+/**
+ * Removes styles from the html element.
+ * @param node The element to remove the styles from.
+ * @param styles The styles to be removed.
+ */
+export const removeNodeStyles = <T extends HTMLElement>(node: T, ...styles: string[]) => {
+	styles.forEach((k) => {
+		node.style.removeProperty(k);
+	});
+};
+
+/**
  * Adds event listeners to a html element.
  * @param node The element to apply the listeners to.
  * @param listeners The listeners to be applied.
