@@ -1,3 +1,4 @@
+import { isBrowser } from '$lib/internal/index.js';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -24,4 +25,4 @@ export const copy = (node: HTMLElement, config: CopyConfig) => {
 	});
 };
 
-export const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+export const isMobile = isBrowser && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
