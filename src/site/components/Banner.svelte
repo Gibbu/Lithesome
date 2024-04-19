@@ -2,7 +2,7 @@
 	import { useActions, type BaseProps } from '$lib/internal/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Info, AlertOctagon, X } from '@steeze-ui/lucide-icons';
-	import { cn } from './utils.js';
+	import { cn } from '../utils.js';
 
 	interface Props extends BaseProps<HTMLElement> {
 		type: 'info' | 'warning';

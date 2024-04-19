@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type SvelteComponent } from 'svelte';
-	import { cn } from './utils.js';
+	import { cn } from '../utils.js';
 	import { getHighlighter } from 'shiki';
 	import { Tabs, TabsList, TabsButton, TabsContent } from '$lib/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -22,7 +22,7 @@
 </script>
 
 {#snippet pill()}
-	<div class="absolute bottom-1 size-1 rounded-full bg-teal-500 dark:bg-teal-400" />
+	<div class="absolute bottom-1 size-1 rounded-full bg-teal-500 dark:bg-teal-400"></div>
 {/snippet}
 
 <Tabs

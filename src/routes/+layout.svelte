@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import Meta from '$site/Meta.svelte';
+	import { Meta } from '$site/index.js';
 	import NProgress from 'nprogress';
 	import '../app.pcss';
 

@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import Banner from '$site/Banner.svelte';
-	import { Button, cn, isMobile } from '$site/index.js';
+	import { Button, cn, isMobile, Banner } from '$site/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Github, Menu, Moon, Sun } from '@steeze-ui/lucide-icons';
 	import { disableScroll, isBrowser } from '$lib/internal/index.js';

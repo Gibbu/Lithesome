@@ -1,7 +1,6 @@
 ---
 title: 'Hover Card'
 description: 'Display a summary/preview of a link.'
-badge: 'new'
 ---
 
 <script>

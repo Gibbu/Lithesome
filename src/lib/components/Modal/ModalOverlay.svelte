@@ -38,8 +38,8 @@
 			out:_transition.out.fn={_transition.out.params}
 			{...props}
 			{...attrs}
-		/>
+		></div>
 	{/if}
 {:else if ctx.visible}
-	<div bind:this={self} use:useActions={use} {...props} {...attrs} />
+	<div bind:this={self} use:useActions={use} {...props} {...attrs}></div>
 {/if}

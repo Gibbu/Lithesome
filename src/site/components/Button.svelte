@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type BaseProps, useActions } from '$lib/internal/index.js';
-	import { cn } from './utils.js';
+	import { cn } from '../utils.js';
 
 	interface Props extends BaseProps<HTMLButtonElement | HTMLAnchorElement> {
 		variant: 'primary' | 'secondary' | 'text';

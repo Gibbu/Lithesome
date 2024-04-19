@@ -28,7 +28,7 @@
 		An unstyled component library for Svelte 5.
 	</h3>
 	<div class="mt-10 flex flex-col items-center gap-4 md:flex-row">
-		<Button variant="primary" size="lg" href="/docs" class="w-full">Get Started</Button>
+		<Button variant="primary" size="lg" href="/docs" class="w-full md:w-auto">Get Started</Button>
 		<Button variant="secondary" size="lg" use={[[copy, { on: 'click', onSuccess: copySuccess }]]}>
 			npm install -D lithesome
 			<Icon src={copied ? Check : Copy} class="h-5 w-5" />

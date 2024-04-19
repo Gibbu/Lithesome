@@ -23,4 +23,4 @@
 	class={classProp(klass, { visible: ctx.visible })}
 	data-selectarrow=""
 	{...props}
-/>
+></div>

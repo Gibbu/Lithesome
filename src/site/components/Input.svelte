@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useActions, type BasePropsNoChildren } from '$lib/internal/index.js';
-	import { cn } from './utils.js';
+	import { cn } from '../utils.js';
 
 	interface Props extends BasePropsNoChildren<HTMLInputElement> {
 		value?: string;
