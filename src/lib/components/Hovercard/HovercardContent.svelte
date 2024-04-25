@@ -39,7 +39,7 @@
 
 	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
-	const _transition = getTransition(transition);
+	const { inTransition, outTransition } = getTransition(transition);
 	const attrs = $derived({
 		id: ctx.uid('content'),
 		'aria-labelledby': ctx.uid('trigger'),
@@ -86,30 +86,30 @@
 	};
 </script>
 
-{#if _transition}
-	{#if ctx.visible}
-		<div
-			bind:this={self}
-			use:clickOutside={{
-				exclude: [ctx.trigger],
-				callback: () => {
-					ctx.visible = false;
-				}
-			}}
-			use:portal={portalTarget}
-			use:useActions={use}
-			in:_transition.in.fn={_transition.in.params}
-			out:_transition.out.fn={_transition.out.params}
-			onmouseenter={handleMouseenter}
-			onmouseleave={handleMouseleave}
-			role="menu"
-			tabindex={-1}
-			{...attrs}
-			{...props}
-		>
-			{@render children({ visible: ctx.visible })}
-		</div>
-	{/if}
+{#if inTransition && outTransition && ctx.visible}
+	{@const { config: inConf, transition: inFn } = inTransition}
+	{@const { config: outConf, transition: outFn } = outTransition}
+	<div
+		bind:this={self}
+		use:clickOutside={{
+			exclude: [ctx.trigger],
+			callback: () => {
+				ctx.visible = false;
+			}
+		}}
+		use:portal={portalTarget}
+		use:useActions={use}
+		in:inFn={inConf}
+		out:outFn={outConf}
+		onmouseenter={handleMouseenter}
+		onmouseleave={handleMouseleave}
+		role="menu"
+		tabindex={-1}
+		{...attrs}
+		{...props}
+	>
+		{@render children({ visible: ctx.visible })}
+	</div>
 {:else if ctx.visible}
 	<div
 		bind:this={self}

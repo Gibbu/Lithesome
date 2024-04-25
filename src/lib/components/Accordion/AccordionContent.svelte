@@ -18,7 +18,7 @@
 	const itemId = getContext<string>('accordionitem-id');
 
 	const active = $derived(ctx.activeItems.includes(itemId));
-	const _transition = getTransition(transition);
+	const { inTransition, outTransition } = getTransition(transition);
 	const attrs = $derived({
 		id: ctx.uid('content'),
 		'data-accordioncontent': '',
@@ -27,19 +27,12 @@
 	} as const);
 </script>
 
-{#if _transition}
-	{#if active}
-		<div
-			bind:this={self}
-			use:useActions={use}
-			in:_transition.in.fn={_transition.in.params}
-			out:_transition.out.fn={_transition.out.params}
-			{...attrs}
-			{...props}
-		>
-			{@render children({ active })}
-		</div>
-	{/if}
+{#if inTransition && outTransition && active}
+	{@const { config: inConf, transition: inFn } = inTransition}
+	{@const { config: outConf, transition: outFn } = outTransition}
+	<div bind:this={self} use:useActions={use} in:inFn={inConf} out:outFn={outConf} {...attrs} {...props}>
+		{@render children({ active })}
+	</div>
 {:else if active}
 	<div bind:this={self} use:useActions={use} {...attrs} {...props}>
 		{@render children({ active })}
