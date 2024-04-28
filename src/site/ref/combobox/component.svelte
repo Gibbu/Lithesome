@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Combobox, ComboboxContent, ComboboxInput, ComboboxOption, ComboboxArrow } from '$lib/index.js';
+	import { Combobox, ComboboxContent, ComboboxInput, ComboboxOption } from '$lib/index.js';
 	import { cn } from '$site/utils.js';
 	import { Check, ChevronDown } from '@steeze-ui/lucide-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
