@@ -6,13 +6,9 @@
 </script>
 
 <script lang="ts">
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement, { active: string }> {
-		orientation?: 'vertical' | 'horizontal';
-		value?: string;
-	}
+	import type { TabsProps } from './types.js';
 
 	let {
 		children,
@@ -22,7 +18,7 @@
 		orientation = 'horizontal',
 		value = $bindable(''),
 		...props
-	}: Props = $props();
+	}: TabsProps = $props();
 
 	const ctx = new TabsContext({
 		orientation,
@@ -39,11 +35,11 @@
 	bind:this={self}
 	id={ctx.uid()}
 	use:useActions={use}
-	class={classProp(klass, { active: ctx.activeTab })}
+	class={classProp(klass, { tab: ctx.activeTab })}
 	data-tabs=""
 	data-orientation={orientation}
 	data-active={ctx.activeTab}
 	{...props}
 >
-	{@render children({ active: ctx.activeTab })}
+	{@render children({ tab: ctx.activeTab })}
 </div>

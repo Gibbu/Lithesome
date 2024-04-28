@@ -1,27 +1,9 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import {
-		useActions,
-		classProp,
-		type BaseProps,
-		type JsonValue,
-		type Handler,
-		type HandlerParam,
-		isBrowser
-	} from '$lib/internal/index.js';
+	import { useActions, classProp, isBrowser, type HandlerParam } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount, tick } from 'svelte';
-
-	type HandlerEl = HTMLAnchorElement | HTMLButtonElement;
-
-	interface Props extends BaseProps<HTMLAnchorElement | HTMLButtonElement, { hovered: boolean; selected: boolean }> {
-		value: JsonValue;
-		disabled?: boolean;
-		label?: string;
-		onClick?: Handler<MouseEvent, HandlerEl>;
-		onFocus?: Handler<FocusEvent, HandlerEl>;
-		onMouseenter?: Handler<MouseEvent, HandlerEl>;
-	}
+	import type { SelectOptionProps } from './types.js';
 
 	let {
 		children,
@@ -35,7 +17,7 @@
 		onFocus,
 		onMouseenter,
 		...props
-	}: Props = $props();
+	}: SelectOptionProps = $props();
 	let optionEl: HTMLButtonElement | HTMLAnchorElement;
 
 	const ctx = context();
@@ -44,16 +26,16 @@
 	const selected = $derived(!!ctx.selectedOptions.find((el) => el.dataset.value === value));
 	const label = $derived(labelProp || (isBrowser && self) ? self?.textContent?.trim() : '');
 
-	const handleClick = (e: HandlerParam<MouseEvent, HandlerEl>) => {
+	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);
 		if (!disabled) {
 			ctx.setSelected();
 		}
 	};
-	const handleFocus = (e: HandlerParam<FocusEvent, HandlerEl>) => {
+	const handleFocus = (e: HandlerParam<FocusEvent, HTMLButtonElement>) => {
 		onFocus?.(e);
 	};
-	const handleMouseover = (e: HandlerParam<MouseEvent, HandlerEl>) => {
+	const handleMouseover = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onMouseenter?.(e);
 		if (!disabled) ctx.setHovered(uid());
 	};

@@ -1,18 +1,10 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { useActions, getTransition, classProp, type BaseProps, type Transition } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp } from '$lib/internal/index.js';
 	import { getContext } from 'svelte';
+	import type { AccordionContentProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
-		/**
-		 * The `svelte/transtion` you wish to use.
-		 *
-		 * @see https://lithesome.dev/docs/api#transition-prop
-		 */
-		transition?: Transition;
-	}
-
-	let { children, class: klass, use = [], self = $bindable(), transition, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), transition, ...props }: AccordionContentProps = $props();
 
 	const ctx = context();
 	const itemId = getContext<string>('accordionitem-id');

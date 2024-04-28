@@ -1,23 +1,8 @@
 <script lang="ts">
 	import { context } from './Combobox.svelte';
-	import {
-		useActions,
-		classProp,
-		PREVENT_KEYS,
-		KEYS,
-		type BasePropsNoChildren,
-		type Handler,
-		type HandlerParam
-	} from '$lib/internal/index.js';
+	import { useActions, classProp, PREVENT_KEYS, KEYS, type HandlerParam } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-
-	interface Props extends BasePropsNoChildren<HTMLInputElement, { visible: boolean }> {
-		value: string;
-		disabled?: boolean;
-		onClick?: Handler<MouseEvent, HTMLInputElement>;
-		onFocus?: Handler<FocusEvent, HTMLInputElement>;
-		onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
-	}
+	import type { ComboboxInputProps } from './types.js';
 
 	let {
 		class: klass,
@@ -29,7 +14,7 @@
 		onFocus,
 		onKeydown,
 		...props
-	}: Props = $props();
+	}: ComboboxInputProps = $props();
 
 	const ctx = context();
 

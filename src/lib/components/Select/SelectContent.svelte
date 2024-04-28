@@ -1,19 +1,9 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import {
-		clickOutside,
-		anchorElement,
-		portal,
-		useActions,
-		getTransition,
-		classProp,
-		type BaseProps,
-		type ContentProps
-	} from '$lib/internal/index.js';
+	import { clickOutside, anchorElement, portal, useActions, getTransition, classProp } from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, ContentProps {}
+	import type { SelectContentProps } from './types.js';
 
 	let {
 		children,
@@ -26,7 +16,7 @@
 		placement = 'bottom',
 		constrainViewport = false,
 		...props
-	}: Props = $props();
+	}: SelectContentProps = $props();
 
 	const ctx = context();
 	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
@@ -74,7 +64,7 @@
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
-		use:clickOutside={{ exclude: [ctx.trigger], callback: () => ctx.close() }}
+		use:clickOutside={{ exclude: ctx.trigger, callback: () => ctx.close() }}
 		use:portal={portalTarget}
 		use:useActions={use}
 		in:inFn={inConf}
@@ -87,7 +77,7 @@
 {:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:clickOutside={{ exclude: [ctx.trigger], callback: () => ctx.close() }}
+		use:clickOutside={{ exclude: ctx.trigger, callback: () => ctx.close() }}
 		use:portal={portalTarget}
 		use:useActions={use}
 		{...attrs}

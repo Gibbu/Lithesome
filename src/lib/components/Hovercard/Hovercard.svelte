@@ -6,19 +6,11 @@
 </script>
 
 <script lang="ts">
-	import { useActions, classProp, type BaseProps, parseDelay } from '$lib/internal/index.js';
+	import { useActions, classProp, parseDelay } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
+	import type { HovercardProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
-		/**
-		 * The delay between the the content being visible or not.
-		 *
-		 * Passing an array will allow you to change the delays for in and out.
-		 */
-		delay?: number | [number, number];
-	}
-
-	let { children, use = [], class: klass, self = $bindable(), delay = 700, ...props }: Props = $props();
+	let { children, use = [], class: klass, self = $bindable(), delay = 700, ...props }: HovercardProps = $props();
 
 	const delays = parseDelay(delay);
 

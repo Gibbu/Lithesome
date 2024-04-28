@@ -6,13 +6,9 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, portal, KEYS, isBrowser, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { createUID, useActions, portal, KEYS, classProp } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement> {
-		visible: boolean;
-		portalTarget?: string | HTMLElement;
-	}
+	import type { ModalProps } from './types.js';
 
 	let {
 		children,
@@ -22,7 +18,7 @@
 		visible = $bindable(),
 		portalTarget = 'body',
 		...props
-	}: Props = $props();
+	}: ModalProps = $props();
 
 	const { uid } = createUID('modal');
 	const ctx = new ModalContext({ visible });

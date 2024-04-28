@@ -6,13 +6,9 @@
 </script>
 
 <script lang="ts">
-	import { useActions, classProp, type BaseProps, type JsonValue } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement> {
-		value: JsonValue;
-		required?: boolean;
-	}
+	import type { RadioGroupProps } from './types.js';
 
 	let {
 		children,
@@ -22,7 +18,7 @@
 		value = $bindable(),
 		required,
 		...props
-	}: Props = $props();
+	}: RadioGroupProps = $props();
 
 	const ctx = new RadiogroupContext(
 		{ value },

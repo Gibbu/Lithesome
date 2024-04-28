@@ -7,18 +7,11 @@
 		useActions,
 		getTransition,
 		classProp,
-		type BaseProps,
-		type Handler,
-		type HandlerParam,
-		type ContentProps
+		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, ContentProps {
-		onMouseenter?: Handler<MouseEvent, HTMLDivElement>;
-		onMouseleave?: Handler<MouseEvent, HTMLDivElement>;
-	}
+	import type { HovercardContentProps } from './types.js';
 
 	let {
 		children,
@@ -33,7 +26,7 @@
 		onMouseenter,
 		onMouseleave,
 		...props
-	}: Props = $props();
+	}: HovercardContentProps = $props();
 
 	const ctx = context();
 
@@ -92,7 +85,7 @@
 	<div
 		bind:this={self}
 		use:clickOutside={{
-			exclude: [ctx.trigger],
+			exclude: ctx.trigger,
 			callback: () => {
 				ctx.visible = false;
 			}
@@ -114,7 +107,7 @@
 	<div
 		bind:this={self}
 		use:clickOutside={{
-			exclude: [ctx.trigger],
+			exclude: ctx.trigger,
 			callback: () => {
 				ctx.visible = false;
 			}

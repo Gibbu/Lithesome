@@ -1,24 +1,8 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import {
-		log,
-		useActions,
-		createUID,
-		KEYS,
-		classProp,
-		type BasePropsNoChildren,
-		type Handler,
-		type HandlerParam
-	} from '$lib/internal/index.js';
+	import { log, useActions, createUID, KEYS, classProp, type HandlerParam } from '$lib/internal/index.js';
 	import { onMount, tick } from 'svelte';
-
-	interface Props extends BasePropsNoChildren<HTMLInputElement, { filled: boolean; disabled: boolean }> {
-		onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
-		onInput?: Handler<Event, HTMLInputElement>;
-		onFocus?: Handler<FocusEvent, HTMLInputElement>;
-		onBlur?: Handler<FocusEvent, HTMLInputElement>;
-		onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
-	}
+	import type { PinInputProps } from './types.js';
 
 	let {
 		class: klass,
@@ -30,7 +14,7 @@
 		onBlur,
 		onPaste,
 		...props
-	}: Props = $props();
+	}: PinInputProps = $props();
 
 	const ctx = context();
 	const { uid } = createUID('input');

@@ -8,18 +8,12 @@
 		KEYS,
 		classProp,
 		PREVENT_KEYS,
-		type BaseProps,
-		type Handler,
 		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+	import type { MenuTriggerProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
-		onClick?: Handler<MouseEvent, HTMLDivElement>;
-		onKeydown?: Handler<KeyboardEvent, HTMLDivElement>;
-	}
-
-	let { children, class: klass, use = [], self = $bindable(), onClick, onKeydown, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: MenuTriggerProps = $props();
 
 	const ctx = context();
 
@@ -59,8 +53,6 @@
 	});
 
 	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLDivElement>) => {
-		onKeydown?.(e);
-
 		const { key } = e;
 
 		if (PREVENT_KEYS.includes(key)) e.preventDefault();
@@ -81,7 +73,6 @@
 		if (key === KEYS.tab) ctx.close();
 	};
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
-		onClick?.(e);
 		ctx.toggle();
 	};
 </script>

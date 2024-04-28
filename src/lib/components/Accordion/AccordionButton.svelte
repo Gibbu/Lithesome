@@ -4,6 +4,11 @@
 	import { getContext } from 'svelte';
 
 	interface Props extends BaseProps<HTMLButtonElement, { active: boolean; disabled: boolean }> {
+		/**
+		 * The onclick event.
+		 *
+		 * Using the regular `onclick` will overwrite and behaviour the component requires.
+		 */
 		onClick?: Handler<MouseEvent, HTMLButtonElement>;
 	}
 

@@ -1,22 +1,8 @@
 <script lang="ts">
 	import { context } from './Tabs.svelte';
-	import {
-		useActions,
-		KEYS,
-		PREVENT_KEYS,
-		classProp,
-		type BaseProps,
-		type Handler,
-		type HandlerParam
-	} from '$lib/internal/index.js';
+	import { useActions, KEYS, PREVENT_KEYS, classProp, type HandlerParam } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-
-	interface Props extends BaseProps<HTMLButtonElement, { active: boolean }> {
-		value: string;
-		disabled?: boolean;
-		onClick?: Handler<MouseEvent, HTMLButtonElement>;
-		onKeydown?: Handler<KeyboardEvent, HTMLButtonElement>;
-	}
+	import type { TabsButtonProps } from './types.js';
 
 	let {
 		children,
@@ -28,7 +14,7 @@
 		onClick,
 		onKeydown,
 		...props
-	}: Props = $props();
+	}: TabsButtonProps = $props();
 
 	const ctx = context();
 	const active = $derived(ctx.activeTab === value);

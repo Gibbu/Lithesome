@@ -1,19 +1,9 @@
 <script lang="ts">
 	import { context } from './Combobox.svelte';
-	import {
-		clickOutside,
-		anchorElement,
-		portal,
-		useActions,
-		getTransition,
-		classProp,
-		type BaseProps,
-		type ContentProps
-	} from '$lib/internal/index.js';
+	import { clickOutside, anchorElement, portal, useActions, getTransition, classProp } from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, ContentProps {}
+	import type { ComboboxContentProps } from './types.js';
 
 	let {
 		children,
@@ -26,7 +16,7 @@
 		placement = 'bottom',
 		constrainViewport = false,
 		...props
-	}: Props = $props();
+	}: ComboboxContentProps = $props();
 
 	const ctx = context();
 	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
@@ -75,7 +65,7 @@
 	<div
 		bind:this={self}
 		use:clickOutside={{
-			exclude: [ctx.trigger],
+			exclude: ctx.trigger,
 			callback: () => ctx.close()
 		}}
 		use:portal={portalTarget}
@@ -91,7 +81,7 @@
 	<div
 		bind:this={self}
 		use:clickOutside={{
-			exclude: [ctx.trigger],
+			exclude: ctx.trigger,
 			callback: () => ctx.close()
 		}}
 		use:portal={portalTarget}

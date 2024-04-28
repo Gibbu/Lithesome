@@ -1,18 +1,10 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import { log, useActions, classProp, type BasePropsNoChildren } from '$lib/internal/index.js';
+	import { log, useActions, classProp } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+	import type { PinValueProps } from './types.js';
 
-	interface Props extends BasePropsNoChildren<HTMLInputElement> {
-		/**
-		 * The HTML Input element name attribute.
-		 *
-		 * Used for native form submissions.
-		 */
-		name?: string;
-	}
-
-	let { class: klass, use = [], self = $bindable(), name, ...props }: Props = $props();
+	let { class: klass, use = [], self = $bindable(), name, ...props }: PinValueProps = $props();
 
 	const ctx = context();
 

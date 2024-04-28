@@ -2,7 +2,7 @@ import {
 	calculateIndex,
 	disableScroll,
 	removeDisabledElements,
-	Context,
+	FloatingContext,
 	effects,
 	type CalcIndexAction,
 	type JsonValue
@@ -24,7 +24,7 @@ interface Hooks<ValueType> {
 	onChange?: (values: { newValue?: ValueType; newTouched?: boolean; newLabel?: string }) => void;
 }
 
-export class ComboboxContext<ValueType = any> extends Context<Hooks<ValueType>, HTMLInputElement> {
+export class ComboboxContext<ValueType = any> extends FloatingContext<Hooks<ValueType>, HTMLInputElement> {
 	visible = $state<boolean>(true);
 	hoveredIndex = $state<number>(-1);
 	options = $state<HTMLElement[]>([]);

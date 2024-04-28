@@ -6,17 +6,9 @@
 </script>
 
 <script lang="ts">
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement, { filled: boolean }> {
-		value?: string[];
-		disabled?: boolean;
-		type?: 'text' | 'password';
-		placeholder?: string;
-		onChange?: (value: string) => void;
-		onFilled?: (value: string) => void;
-	}
+	import type { PinProps } from './types.js';
 
 	let {
 		children,
@@ -30,7 +22,7 @@
 		onChange,
 		onFilled,
 		...props
-	}: Props = $props();
+	}: PinProps = $props();
 
 	const ctx = new PinContext(
 		{ value, disabled, type, placeholder },

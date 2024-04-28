@@ -6,12 +6,11 @@
 </script>
 
 <script lang="ts">
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
+	import type { MenuProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
-
-	let { children, use = [], class: klass, self = $bindable(), ...props }: Props = $props();
+	let { children, use = [], class: klass, self = $bindable(), ...props }: MenuProps = $props();
 
 	const ctx = new MenuContext();
 

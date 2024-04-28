@@ -1,3 +1,5 @@
+type ExlcudeElement = HTMLElement | null | undefined;
+
 /**
  * @param node Element to hide when clicking outside.
  * This element is parsed automatically.
@@ -9,14 +11,15 @@ export const clickOutside = (
 	node: HTMLElement,
 	options: {
 		callback: () => void;
-		exclude?: (HTMLElement | null | undefined)[];
+		exclude?: ExlcudeElement[] | ExlcudeElement;
 	}
 ): { destroy: () => void } => {
 	const onClick = (e: MouseEvent) => {
+		const { callback, exclude } = options;
 		const target = e.target as HTMLElement;
-		const cont = options.exclude?.some((el) => el?.contains(target));
+		const contains = Array.isArray(exclude) ? exclude.some((el) => el?.contains(target)) : exclude?.contains(target);
 
-		if (node && !node.contains(target) && !e.defaultPrevented && !cont) options.callback();
+		if (node && !node.contains(target) && !e.defaultPrevented && !contains) callback();
 	};
 
 	document.addEventListener('click', onClick, true);

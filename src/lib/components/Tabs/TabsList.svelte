@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { context } from './Tabs.svelte';
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
+	import type { TabsListProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement> {}
-
-	let { children, class: klass, use = [], self, ...props }: Props = $props();
+	let { children, class: klass, use = [], self, ...props }: TabsListProps = $props();
 
 	const ctx = context();
 </script>

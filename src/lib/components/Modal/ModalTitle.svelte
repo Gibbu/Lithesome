@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
 	import { context } from './Modal.svelte';
+	import type { ModalTitleProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLHeadElement> {}
-
-	let { children, class: klass, use = [], self = $bindable(), ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: ModalTitleProps = $props();
 
 	const ctx = context();
 </script>

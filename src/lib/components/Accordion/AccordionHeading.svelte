@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
+	import type { AccordionHeadingProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement> {
-		level?: 1 | 2 | 3 | 4 | 5 | 6;
-	}
-
-	let { children, class: klass, use = [], level = 3, self = $bindable(), ...props }: Props = $props();
+	let { children, class: klass, use = [], level = 3, self = $bindable(), ...props }: AccordionHeadingProps = $props();
 </script>
 
 <div

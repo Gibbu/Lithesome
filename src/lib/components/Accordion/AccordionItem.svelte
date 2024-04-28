@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { log, useActions, createUID, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { log, useActions, createUID, classProp } from '$lib/internal/index.js';
 	import { onMount, setContext } from 'svelte';
 
-	interface Props extends BaseProps<HTMLDivElement, { active: boolean; disabled: boolean }> {
-		disabled?: boolean;
-	}
+	import type { AccordionItemProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), disabled = $bindable(false), ...props }: Props = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self = $bindable(),
+		disabled = $bindable(false),
+		...props
+	}: AccordionItemProps = $props();
 
 	const ctx = context();
 	const { uid } = createUID('item');

@@ -1,4 +1,4 @@
-import { Context, effects } from '$lib/internal/index.js';
+import { FloatingContext, effects } from '$lib/internal/index.js';
 
 interface Init {
 	visible: boolean;
@@ -7,7 +7,7 @@ interface Hooks {
 	onChange: (val: boolean) => void;
 }
 
-export class PopoverContext extends Context<Hooks> {
+export class PopoverContext extends FloatingContext<Hooks> {
 	visible = $state<boolean>(false);
 
 	constructor(init: Init, hooks: Hooks) {

@@ -1,6 +1,6 @@
-import { calculateIndex, disableScroll, Context, effects, type CalcIndexAction } from '$lib/internal/index.js';
+import { calculateIndex, disableScroll, FloatingContext, effects, type CalcIndexAction } from '$lib/internal/index.js';
 
-export class MenuContext extends Context {
+export class MenuContext extends FloatingContext {
 	visible = $state<boolean>(false);
 	hoveredIndex = $state<number>(-1);
 	items = $state<string[]>([]);

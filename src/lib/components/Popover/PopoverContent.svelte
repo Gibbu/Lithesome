@@ -7,14 +7,11 @@
 		useActions,
 		trap,
 		getTransition,
-		classProp,
-		type BaseProps,
-		type ContentProps
+		classProp
 	} from '$lib/internal/index.js';
 	import { log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }>, ContentProps {}
+	import type { PopoverContentProps } from './types.js';
 
 	let {
 		children,
@@ -27,7 +24,7 @@
 		constrainViewport,
 		sameWidth = false,
 		...props
-	}: Props = $props();
+	}: PopoverContentProps = $props();
 
 	const ctx = context();
 
@@ -76,7 +73,7 @@
 	<div
 		bind:this={self}
 		use:clickOutside={{
-			exclude: [ctx.trigger],
+			exclude: ctx.trigger,
 			callback: () => {
 				ctx.close();
 			}
@@ -100,7 +97,7 @@
 	<div
 		bind:this={self}
 		use:clickOutside={{
-			exclude: [ctx.trigger],
+			exclude: ctx.trigger,
 			callback: () => {
 				ctx.close();
 			}

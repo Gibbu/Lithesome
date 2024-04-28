@@ -1,19 +1,10 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import {
-		log,
-		setNodeProps,
-		removeNodeProps,
-		addEventListeners,
-		useActions,
-		classProp,
-		type BaseProps
-	} from '$lib/internal/index.js';
+	import { log, setNodeProps, removeNodeProps, addEventListeners, useActions, classProp } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+	import type { SelectTriggerProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
-
-	let { children, class: klass, use = [], self = $bindable(), ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: SelectTriggerProps = $props();
 
 	const ctx = context();
 

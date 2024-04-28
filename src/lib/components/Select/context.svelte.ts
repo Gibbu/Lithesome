@@ -2,7 +2,7 @@ import {
 	calculateIndex,
 	disableScroll,
 	removeDisabledElements,
-	Context,
+	FloatingContext,
 	effects,
 	type CalcIndexAction,
 	type JsonValue
@@ -24,7 +24,7 @@ interface Hooks<ValueType> {
 	onChange: (value: ValueType) => void;
 }
 
-export class SelectContext<ValueType = any> extends Context<Hooks<ValueType>> {
+export class SelectContext<ValueType = any> extends FloatingContext<Hooks<ValueType>> {
 	visible = $state<boolean>(true);
 	hoveredIndex = $state<number>(-1);
 	options = $state<HTMLElement[]>([]);

@@ -1,24 +1,8 @@
 <script lang="ts">
 	import { context } from './RadioGroup.svelte';
-	import {
-		log,
-		useActions,
-		createUID,
-		KEYS,
-		classProp,
-		type BaseProps,
-		type JsonValue,
-		type Handler,
-		type HandlerParam
-	} from '$lib/internal/index.js';
+	import { log, useActions, createUID, KEYS, classProp, type HandlerParam } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
-
-	interface Props extends BaseProps<HTMLButtonElement, { checked: boolean }> {
-		value: JsonValue;
-		disabled?: boolean;
-		onClick?: Handler<MouseEvent, HTMLButtonElement>;
-		onKeydown?: Handler<KeyboardEvent, HTMLButtonElement>;
-	}
+	import type { RadioGroupItemProps } from './types.js';
 
 	let {
 		children,
@@ -30,7 +14,7 @@
 		onClick,
 		onKeydown,
 		...props
-	}: Props = $props();
+	}: RadioGroupItemProps = $props();
 
 	const ctx = context();
 	const { uid } = createUID('radio');

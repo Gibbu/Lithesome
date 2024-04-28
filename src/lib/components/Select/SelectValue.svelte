@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { useActions, classProp, type BasePropsNoChildren } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
+	import type { SelectValueProps } from './types.js';
 
-	interface Props extends BasePropsNoChildren<HTMLSpanElement, { placeholderVisible: boolean }> {
-		placeholder?: string;
-	}
-
-	let { class: klass, use = [], self = $bindable(), placeholder = 'Select an option...', ...props }: Props = $props();
+	let {
+		class: klass,
+		use = [],
+		self = $bindable(),
+		placeholder = 'Select an option...',
+		...props
+	}: SelectValueProps = $props();
 
 	const ctx = context();
 	const placeholderVisible = $derived(ctx.selectedOptions.length === 0);

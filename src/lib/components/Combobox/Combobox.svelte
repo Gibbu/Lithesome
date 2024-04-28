@@ -6,15 +6,9 @@
 </script>
 
 <script lang="ts" generics="ValueType">
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
 	import { setContext, onMount, tick } from 'svelte';
-
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
-		value: ValueType;
-		label?: string;
-		touched?: boolean;
-		onChange?: (payload?: { value?: ValueType; label?: string }) => void;
-	}
+	import type { ComboboxProps } from './types.js';
 
 	let {
 		children,
@@ -26,7 +20,7 @@
 		self = $bindable(),
 		onChange,
 		...props
-	}: Props = $props();
+	}: ComboboxProps<ValueType> = $props();
 
 	const multiple = Array.isArray(value);
 	const ctx = new ComboboxContext<ValueType>(

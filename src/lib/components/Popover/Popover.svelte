@@ -6,14 +6,18 @@
 </script>
 
 <script lang="ts">
-	import { useActions, KEYS, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, KEYS, classProp } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
+	import type { PopoverProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
-		visible?: boolean;
-	}
-
-	let { children, use = [], class: klass, self = $bindable(), visible = $bindable(false), ...props }: Props = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		self = $bindable(),
+		visible = $bindable(false),
+		...props
+	}: PopoverProps = $props();
 
 	const ctx = new PopoverContext(
 		{ visible },

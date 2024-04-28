@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { context } from './Tabs.svelte';
-	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
+	import type { TabsContentProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
-		value: string;
-	}
-
-	let { children, class: klass, use = [], self = $bindable(), value, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), value, ...props }: TabsContentProps = $props();
 
 	const ctx = context();
 	const active = $derived(ctx.activeTab === value);

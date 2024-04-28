@@ -1,19 +1,10 @@
 <script lang="ts">
 	import { context } from './Hovercard.svelte';
-	import {
-		log,
-		setNodeProps,
-		addEventListeners,
-		useActions,
-		removeNodeProps,
-		classProp,
-		type BaseProps
-	} from '$lib/internal/index.js';
+	import { log, setNodeProps, addEventListeners, useActions, removeNodeProps, classProp } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+	import type { HovercardTriggerProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {}
-
-	let { children, class: klass, use = [], self = $bindable(), ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: HovercardTriggerProps = $props();
 
 	const ctx = context();
 

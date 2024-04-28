@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { context } from './Popover.svelte';
-	import { useActions, classProp, log, type BasePropsNoChildren } from '$lib/internal/index.js';
+	import { useActions, classProp, log } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+	import type { PopoverArrowProps } from './types.js';
 
-	interface Props extends BasePropsNoChildren<HTMLDivElement, { visible: boolean }> {}
-
-	let { class: klass, use = [], self = $bindable(), ...props }: Props = $props();
+	let { class: klass, use = [], self = $bindable(), ...props }: PopoverArrowProps = $props();
 
 	const ctx = context();
 

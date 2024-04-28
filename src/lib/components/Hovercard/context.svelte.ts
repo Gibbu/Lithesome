@@ -1,10 +1,10 @@
-import { Context, effects } from '$lib/internal/index.js';
+import { FloatingContext, effects } from '$lib/internal/index.js';
 
 interface Init {
 	delays: { in: number; out: number };
 }
 
-export class HovercardContext extends Context {
+export class HovercardContext extends FloatingContext {
 	visible = $state<boolean>(false);
 	timeout = $state<number | null>(null);
 	delays = $state<{ in: number; out: number }>({ in: 700, out: 700 });

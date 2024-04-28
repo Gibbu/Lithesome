@@ -1,26 +1,12 @@
 <script lang="ts">
-	import {
-		useActions,
-		getTransition,
-		classProp,
-		type BasePropsNoChildren,
-		type Transition
-	} from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp } from '$lib/internal/index.js';
 	import { context } from './Modal.svelte';
+	import type { ModalOverlayProps } from './types.js';
 
-	interface Props extends BasePropsNoChildren<HTMLDivElement> {
-		/**
-		 * The `svelte/transtion` you wish to use.
-		 *
-		 * @see https://lithesome.dev/docs/api#transition-prop
-		 */
-		transition?: Transition;
-	}
-
-	let { class: klass, use = [], self, transition, ...props }: Props = $props();
+	let { class: klass, use = [], self, transition, ...props }: ModalOverlayProps = $props();
 
 	const ctx = context();
-	const _transition = getTransition(transition);
+	const { inTransition, outTransition } = getTransition(transition);
 	const attrs = $derived({
 		id: ctx.uid('overlay'),
 		'aria-hidden': 'true',
@@ -29,17 +15,10 @@
 	} as const);
 </script>
 
-{#if _transition}
-	{#if ctx.visible}
-		<div
-			bind:this={self}
-			use:useActions={use}
-			in:_transition.in.fn={_transition.in.params}
-			out:_transition.out.fn={_transition.out.params}
-			{...props}
-			{...attrs}
-		></div>
-	{/if}
+{#if inTransition && outTransition && ctx.visible}
+	{@const { config: inConf, transition: inFn } = inTransition}
+	{@const { config: outConf, transition: outFn } = outTransition}
+	<div bind:this={self} use:useActions={use} in:inFn={inConf} out:outFn={outConf} {...props} {...attrs}></div>
 {:else if ctx.visible}
 	<div bind:this={self} use:useActions={use} {...props} {...attrs}></div>
 {/if}

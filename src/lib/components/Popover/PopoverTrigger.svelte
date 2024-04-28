@@ -7,19 +7,13 @@
 		useActions,
 		KEYS,
 		classProp,
-		type BaseProps,
-		type Handler,
-		type HandlerParam,
-		removeNodeProps
+		removeNodeProps,
+		type HandlerParam
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
+	import type { PopoverTriggerProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { visible: boolean }> {
-		onClick?: Handler<MouseEvent, HTMLDivElement>;
-		onKeydown?: Handler<KeyboardEvent, HTMLDivElement>;
-	}
-
-	let { children, class: klass, use = [], self = $bindable(), onClick, onKeydown, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: PopoverTriggerProps = $props();
 
 	const ctx = context();
 
@@ -61,14 +55,11 @@
 	});
 
 	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLDivElement>) => {
-		onKeydown?.(e);
-
 		const { key } = e;
 
 		if (key === KEYS.escape || key === KEYS.tab) ctx.close();
 	};
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
-		onClick?.(e);
 		ctx.toggle();
 	};
 </script>

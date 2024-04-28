@@ -8,12 +8,16 @@
 <script lang="ts">
 	import { useActions, classProp, type BaseProps } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
+	import type { AccordionProps } from './types.js';
 
-	interface Props extends BaseProps<HTMLDivElement, { active: boolean }> {
-		single?: boolean;
-	}
-
-	let { children, use = [], class: klass, self = $bindable(), single = $bindable(false), ...props }: Props = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		self = $bindable(),
+		single = $bindable(false),
+		...props
+	}: AccordionProps = $props();
 
 	const ctx = new AccordionContext({ single });
 	const active = $derived(ctx.activeItems.length > 0);
