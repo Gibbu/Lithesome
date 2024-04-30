@@ -1,6 +1,7 @@
 Future plans:
 
 - [ ] Allow submenus for the Menu component.
+- [ ] Allow for removal of floating elements.
 
 Other stuff
 

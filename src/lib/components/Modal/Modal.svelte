@@ -6,7 +6,8 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, portal, KEYS, classProp } from '$lib/internal/index.js';
+	import { createUID, useActions, KEYS, classProp } from '$lib/internal/index.js';
+	import { usePortal } from '$lib/index.js';
 	import { setContext } from 'svelte';
 	import type { ModalProps } from './types.js';
 
@@ -43,7 +44,7 @@
 {#if visible}
 	<div
 		bind:this={self}
-		use:portal={portalTarget}
+		use:usePortal={portalTarget}
 		use:useActions={use}
 		id={uid()}
 		class={classProp(klass)}
