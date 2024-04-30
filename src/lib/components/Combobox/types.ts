@@ -1,4 +1,4 @@
-import type { BaseProps, BasePropsNoChildren, ContentProps, Handler, JsonValue } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$lib/internal/types.js';
 
 export type ComboboxElement = HTMLAnchorElement | HTMLButtonElement;
 
@@ -6,7 +6,7 @@ interface ComboboxState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface ComboboxProps<T> extends BaseProps<HTMLDivElement, ComboboxState> {
+export interface ComboboxProps<T> extends Props<HTMLDivElement, ComboboxState> {
 	/** The value of the combobox. */
 	value: T;
 	/** The label of the selected item. */
@@ -16,11 +16,11 @@ export interface ComboboxProps<T> extends BaseProps<HTMLDivElement, ComboboxStat
 	onChange?: (payload?: { value?: T; label?: string }) => void;
 }
 
-export interface ComboboxArrowProps extends BasePropsNoChildren<HTMLDivElement, ComboboxState> {}
+export interface ComboboxArrowProps extends PropsNoChildren<HTMLDivElement, ComboboxState> {}
 
-export interface ComboboxContentProps extends BaseProps<HTMLDivElement, ComboboxState>, ContentProps {}
+export interface ComboboxContentProps extends Props<HTMLDivElement, ComboboxState>, ContentProps {}
 
-export interface ComboboxInputProps extends BasePropsNoChildren<HTMLInputElement, ComboboxState> {
+export interface ComboboxInputProps extends PropsNoChildren<HTMLInputElement, ComboboxState> {
 	/** Bind the value of the input value. */
 	value: string;
 	/** Disables the input. */
@@ -36,7 +36,7 @@ interface ComboboxOptionState {
 	/** If the option is selected. */
 	selected: boolean;
 }
-export interface ComboboxOptionProps extends BaseProps<ComboboxElement, ComboboxOptionState> {
+export interface ComboboxOptionProps extends Props<ComboboxElement, ComboboxOptionState> {
 	/** The value of the option. */
 	value: JsonValue;
 	/** Disables the option. */

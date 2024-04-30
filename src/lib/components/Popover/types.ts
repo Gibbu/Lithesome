@@ -1,16 +1,16 @@
-import type { BaseProps, BasePropsNoChildren, ContentProps } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps } from '$lib/internal/types.js';
 
 interface PopoverState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface PopoverProps extends BaseProps<HTMLDivElement, PopoverState> {
+export interface PopoverProps extends Props<HTMLDivElement, PopoverState> {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
 
-export interface PopoverArrowProps extends BasePropsNoChildren<HTMLDivElement, PopoverState> {}
+export interface PopoverArrowProps extends PropsNoChildren<HTMLDivElement, PopoverState> {}
 
-export interface PopoverContentProps extends BaseProps<HTMLDivElement, PopoverState>, ContentProps {}
+export interface PopoverContentProps extends Props<HTMLDivElement, PopoverState>, ContentProps {}
 
-export interface PopoverTriggerProps extends BaseProps<HTMLDivElement, PopoverState> {}
+export interface PopoverTriggerProps extends Props<HTMLDivElement, PopoverState> {}

@@ -3,7 +3,7 @@ import { createFocusTrap, type FocusTrap, type Options } from 'focus-trap';
 /**
  * Creates a focus trap.
  */
-export const trap = (node: HTMLElement, options: Options = { fallbackFocus: node }) => {
+export const useTrap = (node: HTMLElement, options: Options = { fallbackFocus: node }) => {
 	let trap: undefined | FocusTrap;
 
 	if (trap) return;

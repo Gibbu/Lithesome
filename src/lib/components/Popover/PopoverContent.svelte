@@ -1,15 +1,7 @@
 <script lang="ts">
 	import { context } from './Popover.svelte';
-	import {
-		clickOutside,
-		anchorElement,
-		portal,
-		useActions,
-		trap,
-		getTransition,
-		classProp
-	} from '$lib/internal/index.js';
-	import { log } from '$lib/internal/index.js';
+	import { anchorElement, useActions, getTransition, classProp, log } from '$lib/internal/index.js';
+	import { useOutside, usePortal, useTrap } from '$lib/index.js';
 	import { onMount } from 'svelte';
 	import type { PopoverContentProps } from './types.js';
 
@@ -72,15 +64,15 @@
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
-		use:clickOutside={{
+		use:useOutside={{
 			exclude: ctx.trigger,
 			callback: () => {
 				ctx.close();
 			}
 		}}
-		use:portal={portalTarget}
+		use:usePortal={portalTarget}
 		use:useActions={use}
-		use:trap={{
+		use:useTrap={{
 			allowOutsideClick: true,
 			onDeactivate: () => {
 				ctx.visible = false;
@@ -96,15 +88,15 @@
 {:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:clickOutside={{
+		use:useOutside={{
 			exclude: ctx.trigger,
 			callback: () => {
 				ctx.close();
 			}
 		}}
-		use:portal={portalTarget}
+		use:usePortal={portalTarget}
 		use:useActions={use}
-		use:trap={{
+		use:useTrap={{
 			allowOutsideClick: true,
 			onDeactivate: () => {
 				ctx.visible = false;

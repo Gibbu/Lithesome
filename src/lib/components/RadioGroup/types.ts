@@ -1,6 +1,6 @@
-import type { BaseProps, Handler, JsonValue } from '$lib/internal/types.js';
+import type { Props, Handler, JsonValue } from '$lib/internal/types.js';
 
-export interface RadioGroupProps extends BaseProps<HTMLDivElement> {
+export interface RadioGroupProps extends Props<HTMLDivElement> {
 	/** The value of the radiogroup. */
 	value: JsonValue;
 	/** Set aria attributes. */
@@ -11,7 +11,7 @@ interface RadioGroupItemState {
 	/** True if the item is selected. */
 	checked: boolean;
 }
-export interface RadioGroupItemProps extends BaseProps<HTMLButtonElement, RadioGroupItemState> {
+export interface RadioGroupItemProps extends Props<HTMLButtonElement, RadioGroupItemState> {
 	/** The value of the individual item. */
 	value: JsonValue;
 	/** Disable the item, disallowing clicking and keyboard navigation. */

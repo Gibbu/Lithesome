@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { type BaseProps, useActions } from '$lib/internal/index.js';
+	import { type Props, useActions } from '$lib/internal/index.js';
 	import { cn } from '../utils.js';
 
-	interface Props extends BaseProps<HTMLButtonElement | HTMLAnchorElement> {
+	interface ComponentProps extends Props<HTMLButtonElement | HTMLAnchorElement> {
 		variant: 'primary' | 'secondary' | 'text';
 		href?: string;
 		size?: 'sm' | 'md' | 'lg';
@@ -21,7 +21,7 @@
 		type = 'button',
 		disabled,
 		...props
-	}: Props = $props();
+	}: ComponentProps = $props();
 </script>
 
 <svelte:element

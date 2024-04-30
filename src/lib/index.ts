@@ -10,3 +10,7 @@ export * from './components/Popover/index.js';
 export * from './components/Combobox/index.js';
 export * from './components/Hovercard/index.js';
 export * from './components/Portal/index.js';
+
+export * from './actions/portal.js';
+export * from './actions/outside.js';
+export * from './actions/trap.js';

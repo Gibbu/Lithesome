@@ -1,12 +1,12 @@
-import type { BaseProps, Handler, Optional } from '$lib/internal/types.js';
+import type { Handler, PropsMaybeChildren } from '$lib/internal/types.js';
 
-type Checked = boolean | 'mixed';
+export type Checked = boolean | 'mixed';
 
 interface CheckboxState {
 	/** If the checkbox is checked or not. */
 	checked: Checked;
 }
-export interface CheckboxProps extends Optional<BaseProps<HTMLButtonElement, CheckboxState>, 'children'> {
+export interface CheckboxProps extends PropsMaybeChildren<HTMLButtonElement, CheckboxState> {
 	/** If the checkbox is checked or not. */
 	checked?: Checked;
 	/** Adds aria attributes. */

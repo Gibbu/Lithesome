@@ -1,10 +1,10 @@
-import type { BaseProps, BasePropsNoChildren, Handler } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, Handler } from '$lib/internal/types.js';
 
 interface PinState {
 	/** True if all inputs are filled out. */
 	filled: boolean;
 }
-export interface PinProps extends BaseProps<HTMLDivElement, PinState> {
+export interface PinProps extends Props<HTMLDivElement, PinState> {
 	/** The resulting value of the inputs. */
 	value?: string[];
 	/** Disable all inputs. */
@@ -25,7 +25,7 @@ interface PinInputState extends PinState {
 	/** If the input is disabled by the `Pin` parent component. */
 	disabled: boolean;
 }
-export interface PinInputProps extends BasePropsNoChildren<HTMLInputElement, PinInputState> {
+export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState> {
 	onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
 	onInput?: Handler<Event, HTMLInputElement>;
 	onFocus?: Handler<FocusEvent, HTMLInputElement>;
@@ -33,7 +33,7 @@ export interface PinInputProps extends BasePropsNoChildren<HTMLInputElement, Pin
 	onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
 }
 
-export interface PinValueProps extends BasePropsNoChildren<HTMLInputElement> {
+export interface PinValueProps extends PropsNoChildren<HTMLInputElement> {
 	/**
 	 * The HTML Input element name attribute.
 	 *

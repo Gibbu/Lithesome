@@ -1,23 +1,6 @@
-<script lang="ts" context="module">
-	export type Checked = boolean | 'mixed';
-</script>
-
 <script lang="ts">
-	import {
-		useActions,
-		classProp,
-		type BaseProps,
-		type Optional,
-		type Handler,
-		type HandlerParam
-	} from '$lib/internal/index.js';
-
-	interface Props extends Optional<BaseProps<HTMLButtonElement, { checked: Checked }>, 'children'> {
-		checked?: Checked;
-		required?: boolean;
-		disabled?: boolean;
-		onClick?: Handler<MouseEvent, HTMLButtonElement>;
-	}
+	import { useActions, classProp, type HandlerParam } from '$lib/internal/index.js';
+	import type { CheckboxProps } from './types.js';
 
 	let {
 		children,
@@ -29,7 +12,7 @@
 		disabled = $bindable(false),
 		onClick,
 		...props
-	}: Props = $props();
+	}: CheckboxProps = $props();
 
 	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
 		onClick?.(e);

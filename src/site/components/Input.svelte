@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { useActions, type BasePropsNoChildren } from '$lib/internal/index.js';
+	import { useActions, type PropsNoChildren } from '$lib/internal/index.js';
 	import { cn } from '../utils.js';
 
-	interface Props extends BasePropsNoChildren<HTMLInputElement> {
+	interface Props extends PropsNoChildren<HTMLInputElement> {
 		value?: string;
 		type?: 'text' | 'password';
 	}

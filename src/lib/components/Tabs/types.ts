@@ -1,10 +1,10 @@
-import type { BaseProps, Handler } from '$lib/internal/types.js';
+import type { Props, Handler } from '$lib/internal/types.js';
 
 interface TabsState {
 	/** The current active tab. */
 	tab: string;
 }
-export interface TabsProps extends BaseProps<HTMLDivElement, TabsState> {
+export interface TabsProps extends Props<HTMLDivElement, TabsState> {
 	/** The direction of the tabs. */
 	orientation?: 'vertical' | 'horizontal';
 	/**
@@ -19,7 +19,7 @@ interface TabsButtonState {
 	/** True if the button value is selected. */
 	active: boolean;
 }
-export interface TabsButtonProps extends BaseProps<HTMLButtonElement, TabsButtonState> {
+export interface TabsButtonProps extends Props<HTMLButtonElement, TabsButtonState> {
 	/**
 	 * The unique value of the button.
 	 *
@@ -32,7 +32,7 @@ export interface TabsButtonProps extends BaseProps<HTMLButtonElement, TabsButton
 	onKeydown?: Handler<KeyboardEvent, HTMLButtonElement>;
 }
 
-export interface TabsContentProps extends BaseProps<HTMLDivElement, TabsButtonState> {
+export interface TabsContentProps extends Props<HTMLDivElement, TabsButtonState> {
 	/**
 	 * The unique value of the content.
 	 *
@@ -41,4 +41,4 @@ export interface TabsContentProps extends BaseProps<HTMLDivElement, TabsButtonSt
 	value: string;
 }
 
-export interface TabsListProps extends BaseProps<HTMLDivElement> {}
+export interface TabsListProps extends Props<HTMLDivElement> {}

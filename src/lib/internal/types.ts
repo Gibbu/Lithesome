@@ -15,7 +15,7 @@ export type HandlerParam<E, T extends HTMLElement> = E & { currentTarget: EventT
 export type Handler<E, T extends HTMLElement> = (e: HandlerParam<E, T>) => void;
 
 // @ts-ignore
-export interface BaseProps<T extends HTMLElement, C extends Record<string, any> = any> extends HTMLAttributes<T> {
+export interface Props<T extends HTMLElement, C extends Record<string, any> = any> extends HTMLAttributes<T> {
 	children: Snippet<[C]>;
 	/**
 	 * Any svelte actions you wish to pass to the underlying HTML element.
@@ -36,8 +36,10 @@ export interface BaseProps<T extends HTMLElement, C extends Record<string, any> 
 	self?: T;
 }
 
-export type BasePropsNoChildren<T extends HTMLElement, C extends Record<string, any> = any> = Omit<
-	BaseProps<T, C>,
+export type PropsNoChildren<T extends HTMLElement, C extends Record<string, any> = any> = Omit<Props<T, C>, 'children'>;
+
+export type PropsMaybeChildren<T extends HTMLElement, C extends Record<string, any> = any> = Optional<
+	Props<T, C>,
 	'children'
 >;
 

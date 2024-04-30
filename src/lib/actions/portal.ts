@@ -1,12 +1,12 @@
 import { tick } from 'svelte';
-import { log } from '../helpers/log.js';
+import { log } from '../internal/helpers/log.js';
 
 /**
  * A svelte action to portal content from one part of the dom to another.
  * @param target The element to be portaled to.\
  * Default = `body`.
  */
-export const portal = (node: HTMLElement, target: HTMLElement | string = '#layers') => {
+export const usePortal = (node: HTMLElement, target: HTMLElement | string = '#layers') => {
 	const update = async (newTarget: HTMLElement | string) => {
 		let el: HTMLElement | null = typeof newTarget === 'string' ? document.querySelector(newTarget) : newTarget;
 
@@ -19,7 +19,8 @@ export const portal = (node: HTMLElement, target: HTMLElement | string = '#layer
 
 		el.appendChild(node);
 	};
-	const destroy = () => {
+	const destroy = async () => {
+		await tick();
 		if (node) node.remove();
 	};
 

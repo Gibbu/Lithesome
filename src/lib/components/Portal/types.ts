@@ -1,6 +1,6 @@
-import type { BaseProps } from '$lib/internal/types.js';
+import type { Props } from '$lib/internal/types.js';
 
-export interface PortalProps extends BaseProps<HTMLDivElement> {
+export interface PortalProps extends Props<HTMLDivElement> {
 	/**
 	 * The element to mount the children content.
 	 *

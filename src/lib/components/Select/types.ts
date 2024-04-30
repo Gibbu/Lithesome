@@ -1,18 +1,18 @@
-import type { BaseProps, BasePropsNoChildren, ContentProps, Handler, JsonValue } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$lib/internal/types.js';
 
 interface SelectState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface SelectProps<T> extends BaseProps<HTMLDivElement, SelectState> {
+export interface SelectProps<T> extends Props<HTMLDivElement, SelectState> {
 	/** The value of select. */
 	value: T;
 	onChange?: (value: JsonValue) => void;
 }
 
-export interface SelectArrowProps extends BasePropsNoChildren<HTMLDivElement, SelectState> {}
+export interface SelectArrowProps extends PropsNoChildren<HTMLDivElement, SelectState> {}
 
-export interface SelectContentProps extends BaseProps<HTMLDivElement, SelectState>, ContentProps {}
+export interface SelectContentProps extends Props<HTMLDivElement, SelectState>, ContentProps {}
 
 interface SelectOptionState {
 	/** If the option is hovered, either via mouse or keyboard. */
@@ -20,7 +20,7 @@ interface SelectOptionState {
 	/** If the option is selected. */
 	selected: boolean;
 }
-export interface SelectOptionProps extends BaseProps<HTMLButtonElement, SelectOptionState> {
+export interface SelectOptionProps extends Props<HTMLButtonElement, SelectOptionState> {
 	/** The value of the option. */
 	value: JsonValue;
 	/** Disables the option. */
@@ -36,12 +36,12 @@ export interface SelectOptionProps extends BaseProps<HTMLButtonElement, SelectOp
 	onMouseenter?: Handler<MouseEvent, HTMLButtonElement>;
 }
 
-export interface SelectTriggerProps extends BaseProps<HTMLDivElement, SelectState> {}
+export interface SelectTriggerProps extends Props<HTMLDivElement, SelectState> {}
 
 interface SelectValueState {
 	placeholderVisibie: boolean;
 }
-export interface SelectValueProps extends BasePropsNoChildren<HTMLSpanElement> {
+export interface SelectValueProps extends PropsNoChildren<HTMLSpanElement> {
 	/** The fallback value of no option is selected. */
 	placeholder?: string;
 }

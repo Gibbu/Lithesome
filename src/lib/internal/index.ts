@@ -1,10 +1,6 @@
 export * from './types.js';
 
-export * from './actions/clickOutside.js';
-export * from './actions/portal.js';
-export * from './actions/action.js';
-export * from './actions/focusTrap.js';
-
+export * from './helpers/action.js';
 export * from './helpers/utils.svelte.js';
 export * from './helpers/is.js';
 export * from './helpers/keyboard.js';

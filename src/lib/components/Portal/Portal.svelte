@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { useActions, classProp, portal } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
+	import { usePortal } from '$lib/index.js';
 	import type { PortalProps } from './types.js';
 
 	let {
@@ -12,6 +13,6 @@
 	}: PortalProps = $props();
 </script>
 
-<div bind:this={self} use:useActions={use} use:portal={target} class={classProp(klass)} data-portal="" {...props}>
+<div bind:this={self} use:useActions={use} use:usePortal={target} class={classProp(klass)} data-portal="" {...props}>
 	{@render children({})}
 </div>

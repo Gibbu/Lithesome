@@ -1,10 +1,10 @@
-import type { BaseProps, BasePropsNoChildren, ContentProps, Handler } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps, Handler } from '$lib/internal/types.js';
 
 interface HovercardState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface HovercardProps extends BaseProps<HTMLDivElement, HovercardState> {
+export interface HovercardProps extends Props<HTMLDivElement, HovercardState> {
 	/**
 	 * The delay between the the content being visible or not.
 	 *
@@ -13,11 +13,11 @@ export interface HovercardProps extends BaseProps<HTMLDivElement, HovercardState
 	delay?: number | [number, number];
 }
 
-export interface HovercardArrowProps extends BasePropsNoChildren<HTMLDivElement, HovercardState> {}
+export interface HovercardArrowProps extends PropsNoChildren<HTMLDivElement, HovercardState> {}
 
-export interface HovercardContentProps extends BaseProps<HTMLDivElement, HovercardState>, ContentProps {
+export interface HovercardContentProps extends Props<HTMLDivElement, HovercardState>, ContentProps {
 	onMouseenter?: Handler<MouseEvent, HTMLDivElement>;
 	onMouseleave?: Handler<MouseEvent, HTMLDivElement>;
 }
 
-export interface HovercardTriggerProps extends BaseProps<HTMLDivElement, HovercardState> {}
+export interface HovercardTriggerProps extends Props<HTMLDivElement, HovercardState> {}

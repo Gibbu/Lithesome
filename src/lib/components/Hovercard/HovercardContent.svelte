@@ -1,15 +1,7 @@
 <script lang="ts">
 	import { context } from './Hovercard.svelte';
-	import {
-		clickOutside,
-		anchorElement,
-		portal,
-		useActions,
-		getTransition,
-		classProp,
-		type HandlerParam
-	} from '$lib/internal/index.js';
-	import { log } from '$lib/internal/index.js';
+	import { anchorElement, useActions, getTransition, classProp, log, type HandlerParam } from '$lib/internal/index.js';
+	import { useOutside, usePortal } from '$lib/index.js';
 	import { onMount } from 'svelte';
 	import type { HovercardContentProps } from './types.js';
 
@@ -84,13 +76,13 @@
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
-		use:clickOutside={{
+		use:useOutside={{
 			exclude: ctx.trigger,
 			callback: () => {
 				ctx.visible = false;
 			}
 		}}
-		use:portal={portalTarget}
+		use:usePortal={portalTarget}
 		use:useActions={use}
 		in:inFn={inConf}
 		out:outFn={outConf}
@@ -106,13 +98,13 @@
 {:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:clickOutside={{
+		use:useOutside={{
 			exclude: ctx.trigger,
 			callback: () => {
 				ctx.visible = false;
 			}
 		}}
-		use:portal={portalTarget}
+		use:usePortal={portalTarget}
 		use:useActions={use}
 		onmouseenter={handleMouseenter}
 		onmouseleave={handleMouseleave}

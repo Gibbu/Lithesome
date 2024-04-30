@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { useActions, classProp, type BaseProps, type Handler, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, classProp, type Props, type Handler, type HandlerParam } from '$lib/internal/index.js';
 	import { getContext } from 'svelte';
 
-	interface Props extends BaseProps<HTMLButtonElement, { active: boolean; disabled: boolean }> {
+	interface Props extends Props<HTMLButtonElement, { active: boolean; disabled: boolean }> {
 		/**
 		 * The onclick event.
 		 *

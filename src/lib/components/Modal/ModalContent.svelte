@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { useActions, getTransition, classProp, trap } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp } from '$lib/internal/index.js';
+	import { useTrap } from '$lib/index.js';
 	import { context } from './Modal.svelte';
 	import type { ModalContentProps } from './types.js';
 
@@ -24,7 +25,7 @@
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
-		use:trap={{ allowOutsideClick: true }}
+		use:useTrap={{ allowOutsideClick: true }}
 		use:useActions={use}
 		in:inFn|global={inConf}
 		out:outFn|global={outConf}
@@ -34,7 +35,7 @@
 		{@render children({})}
 	</div>
 {:else if ctx.visible}
-	<div bind:this={self} use:trap={{ allowOutsideClick: true }} use:useActions={use} {...props} {...attrs}>
+	<div bind:this={self} use:useTrap={{ allowOutsideClick: true }} use:useActions={use} {...props} {...attrs}>
 		{@render children({})}
 	</div>
 {/if}

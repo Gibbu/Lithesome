@@ -1,16 +1,25 @@
 <script lang="ts">
-	import { useActions, type BaseProps } from '$lib/internal/index.js';
+	import { useActions, type Props } from '$lib/internal/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Info, AlertOctagon, X } from '@steeze-ui/lucide-icons';
 	import { cn } from '../utils.js';
 
-	interface Props extends BaseProps<HTMLElement> {
+	interface ComponentProps extends Props<HTMLElement> {
 		type: 'info' | 'warning';
 		dismissable?: boolean;
 		onClick?: () => void;
 	}
 
-	let { children, class: klass, use = [], self, type, dismissable = false, onClick, ...props }: Props = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self,
+		type,
+		dismissable = false,
+		onClick,
+		...props
+	}: ComponentProps = $props();
 
 	const icon = { info: Info, warning: AlertOctagon }[type];
 </script>
