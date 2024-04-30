@@ -25,20 +25,16 @@ badge: 'new'
 
 ## Svelte action
 
-If you don't want to use a whole component, you can use the `portal` action.
+If you don't want to use a whole component, you can use the `usePortal` action.
 
 ```svelte
 <script>
-	import { portal } from 'lithesome';
+	import { usePortal } from 'lithesome';
 </script>
 
-<div use:portal>
+<div use:usePortal>
 	<!-- content... -->
 </div>
 ```
-
-<Banner type="info">
-	The lowercased "portal" is the svelte action, while the capitalized "Portal" is the component.
-</Banner>
 
 <APITable data={api} />
