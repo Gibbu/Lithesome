@@ -1,7 +1,6 @@
 ---
 title: 'Portal'
 description: 'A component or action to mount content from one part of the dom to another.'
-badge: 'new'
 ---
 
 <script>
