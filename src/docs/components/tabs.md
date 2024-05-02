@@ -4,7 +4,7 @@ description: 'Organize content to sections.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/tabs';
 </script>
 
@@ -25,4 +25,4 @@ description: 'Organize content to sections.'
 </Tabs>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

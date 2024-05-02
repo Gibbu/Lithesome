@@ -4,7 +4,7 @@ description: 'Display content over the window without taking away focus from the
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/popover';
 </script>
 
@@ -27,4 +27,4 @@ description: 'Display content over the window without taking away focus from the
 </Popover>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

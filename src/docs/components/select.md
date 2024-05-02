@@ -4,7 +4,7 @@ description: 'Allow users to chooe from a list of options.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/select';
 </script>
 
@@ -51,4 +51,4 @@ The component will then detect the array and append the selected options.
 </Select>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

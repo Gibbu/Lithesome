@@ -4,7 +4,7 @@ description: 'An overlaying window to take focus away from the current context.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/modal';
 </script>
 
@@ -26,4 +26,4 @@ description: 'An overlaying window to take focus away from the current context.'
 </Modal>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

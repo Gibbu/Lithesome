@@ -4,7 +4,7 @@ description: 'A menu of items that is hidden until triggered.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/menu';
 </script>
 
@@ -48,4 +48,4 @@ If you need to navigate to another page via the Content items. Simply pass the l
 </MenuItem>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

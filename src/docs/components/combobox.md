@@ -4,7 +4,7 @@ description: 'Allow users to choose from a list of options with search filtering
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/combobox';
 </script>
 
@@ -48,4 +48,4 @@ The component will then detect the array and append the selected options.
 </Combobox>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

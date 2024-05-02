@@ -4,7 +4,7 @@ description: 'An interactive set of panels that hide and reveal sections.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/accordion';
 </script>
 
@@ -47,4 +47,4 @@ If you wish to only allow one `<AccordionItem />` to be opened at a give time, p
 </Accordion>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

@@ -4,7 +4,7 @@ description: 'Allows a sequence of one-character inputs.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/pin';
 </script>
 
@@ -22,4 +22,4 @@ description: 'Allows a sequence of one-character inputs.'
 </Pin>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

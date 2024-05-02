@@ -40,3 +40,12 @@ export interface DocsPageMeta {
 	sidebar?: string;
 	badge?: 'new' | 'updated' | 'soon';
 }
+
+export interface ActionProps {
+	name: string;
+	type: string;
+	description: string;
+	required?: boolean;
+	default?: string;
+}
+export type ActionReference = ActionProps[];

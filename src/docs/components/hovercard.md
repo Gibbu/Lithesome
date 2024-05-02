@@ -4,7 +4,7 @@ description: 'Display a summary/preview of a link.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/hovercard';
 </script>
 
@@ -42,4 +42,4 @@ Passing a number will set both in and out delays. Passing an array of 2 indexes 
 </Hovercard>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

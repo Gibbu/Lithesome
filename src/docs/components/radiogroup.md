@@ -4,7 +4,7 @@ description: 'Allow users to select a single choice from a list'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/radiogroup';
 </script>
 
@@ -22,4 +22,4 @@ description: 'Allow users to select a single choice from a list'
 </RadioGroup>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

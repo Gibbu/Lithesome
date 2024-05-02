@@ -5,8 +5,8 @@ badge: 'new'
 ---
 
 <script>
-  import {Banner, Preview} from '$site';
-  import {component, code} from '$ref/outside';
+  import {Banner, Preview, ActionAPI} from '$site';
+  import {component, code, api} from '$ref/useOutside';
 </script>
 
 <Preview {component} {code} />
@@ -79,3 +79,5 @@ The default event to run the callback is `click`. But you can change this by pas
 	<!-- content... -->
 </div>
 ```
+
+<ActionAPI data={api} />

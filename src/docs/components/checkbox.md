@@ -4,7 +4,7 @@ description: 'Allow users to check and uncheck things.'
 ---
 
 <script>
-	import {APITable, Preview} from '$site/index.ts';
+	import {ComponentAPI, Preview} from '$site/index.ts';
 	import {api, component, code} from '$ref/checkbox';
 </script>
 
@@ -42,4 +42,4 @@ If you want to use a native `<input />` checkbox for forms, simply bind the chec
 </form>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />

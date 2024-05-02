@@ -4,7 +4,7 @@ description: 'A component or action to mount content from one part of the dom to
 ---
 
 <script>
-	import {APITable, Preview, Banner} from '$site/index.ts';
+	import {ComponentAPI, Preview, Banner} from '$site/index.ts';
 	import {api, component, code} from '$ref/portal';
 </script>
 
@@ -36,4 +36,4 @@ If you don't want to use a whole component, you can use the `usePortal` action.
 </div>
 ```
 
-<APITable data={api} />
+<ComponentAPI data={api} />
