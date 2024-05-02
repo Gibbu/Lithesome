@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { useActions, classProp, isBrowser, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, classProp, isBrowser, type Handler } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount, tick } from 'svelte';
 	import type { SelectOptionProps } from './types.js';
@@ -26,16 +26,16 @@
 	const selected = $derived(!!ctx.selectedOptions.find((el) => el.dataset.value === value));
 	const label = $derived(labelProp || (isBrowser && self) ? self?.textContent?.trim() : '');
 
-	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
+	const handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
 		onClick?.(e);
 		if (!disabled) {
 			ctx.setSelected();
 		}
 	};
-	const handleFocus = (e: HandlerParam<FocusEvent, HTMLButtonElement>) => {
+	const handleFocus: Handler<FocusEvent, HTMLButtonElement> = (e) => {
 		onFocus?.(e);
 	};
-	const handleMouseover = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
+	const handleMouseover: Handler<MouseEvent, HTMLButtonElement> = (e) => {
 		onMouseenter?.(e);
 		if (!disabled) ctx.setHovered(uid());
 	};

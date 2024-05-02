@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Menu.svelte';
-	import { useActions, classProp, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, classProp, type Handler } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 	import type { MenuItemProps, MenuItemElement } from './types.js';
@@ -31,17 +31,17 @@
 		};
 	});
 
-	const handleClick = (e: HandlerParam<MouseEvent, MenuItemElement>) => {
+	const handleClick: Handler<MouseEvent, MenuItemElement> = (e) => {
 		if (!disabled) {
 			ctx.close();
 			onClick?.(e);
 		}
 	};
-	const handleMouseover = (e: HandlerParam<MouseEvent, MenuItemElement>) => {
+	const handleMouseover: Handler<MouseEvent, MenuItemElement> = (e) => {
 		ctx.setHovered(uid());
 		onMouseover?.(e);
 	};
-	const handleFocus = (e: HandlerParam<FocusEvent, MenuItemElement>) => {
+	const handleFocus: Handler<FocusEvent, MenuItemElement> = (e) => {
 		onFocus?.(e);
 	};
 </script>

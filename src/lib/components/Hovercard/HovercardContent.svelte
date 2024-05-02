@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Hovercard.svelte';
-	import { anchorElement, useActions, getTransition, classProp, log, type HandlerParam } from '$lib/internal/index.js';
+	import { anchorElement, useActions, getTransition, classProp, log, type Handler } from '$lib/internal/index.js';
 	import { useOutside, usePortal } from '$lib/index.js';
 	import { onMount } from 'svelte';
 	import type { HovercardContentProps } from './types.js';
@@ -59,12 +59,12 @@
 		};
 	});
 
-	const handleMouseenter = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
+	const handleMouseenter: Handler<MouseEvent, HTMLDivElement> = (e) => {
 		onMouseenter?.(e);
 		ctx.hovered = true;
 		ctx.timeout = null;
 	};
-	const handleMouseleave = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
+	const handleMouseleave: Handler<MouseEvent, HTMLDivElement> = (e) => {
 		onMouseleave?.(e);
 		ctx.hovered = false;
 		ctx.close();

@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-	import { useActions, classProp, type Props } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$lib/internal/index.js';
 	import { setContext } from 'svelte';
 	import type { AccordionProps } from './types.js';
 

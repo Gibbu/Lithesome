@@ -8,7 +8,7 @@
 		KEYS,
 		classProp,
 		PREVENT_KEYS,
-		type HandlerParam
+		type Handler
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 	import type { MenuTriggerProps } from './types.js';
@@ -52,7 +52,7 @@
 		}
 	});
 
-	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLDivElement>) => {
+	const handleKeydown: Handler<KeyboardEvent, HTMLDivElement> = (e) => {
 		const { key } = e;
 
 		if (PREVENT_KEYS.includes(key)) e.preventDefault();
@@ -72,7 +72,7 @@
 		}
 		if (key === KEYS.tab) ctx.close();
 	};
-	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
+	const handleClick: Handler<MouseEvent, HTMLDivElement> = (e) => {
 		ctx.toggle();
 	};
 </script>

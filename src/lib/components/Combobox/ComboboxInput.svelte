@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Combobox.svelte';
-	import { useActions, classProp, PREVENT_KEYS, KEYS, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, classProp, PREVENT_KEYS, KEYS, type Handler } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 	import type { ComboboxInputProps } from './types.js';
 
@@ -23,13 +23,13 @@
 		ctx.trigger = self;
 	});
 
-	const handleClick = (e: HandlerParam<MouseEvent, HTMLInputElement>) => {
+	const handleClick: Handler<MouseEvent, HTMLInputElement> = (e) => {
 		onClick?.(e);
 		if (disabled) return;
 
 		ctx.toggle();
 	};
-	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLInputElement>) => {
+	const handleKeydown: Handler<KeyboardEvent, HTMLInputElement> = (e) => {
 		onKeydown?.(e);
 		if (disabled) return;
 

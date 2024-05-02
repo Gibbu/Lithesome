@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Combobox.svelte';
-	import { useActions, classProp, isBrowser, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, classProp, isBrowser, type Handler } from '$lib/internal/index.js';
 	import { createUID } from '$lib/internal/index.js';
 	import { onMount, tick } from 'svelte';
 	import type { ComboboxElement, ComboboxOptionProps } from './types.js';
@@ -26,16 +26,16 @@
 	const selected = $derived(!!ctx.selectedOptions.find((el) => el.dataset.value === value));
 	const label = $derived(labelProp || (isBrowser && self) ? self?.textContent?.trim() : '');
 
-	const handleClick = (e: HandlerParam<MouseEvent, ComboboxElement>) => {
+	const handleClick: Handler<MouseEvent, ComboboxElement> = (e) => {
 		onClick?.(e);
 		if (!disabled) {
 			ctx.setSelected();
 		}
 	};
-	const handleFocus = (e: HandlerParam<FocusEvent, ComboboxElement>) => {
+	const handleFocus: Handler<FocusEvent, ComboboxElement> = (e) => {
 		onFocus?.(e);
 	};
-	const handleMouseover = (e: HandlerParam<MouseEvent, ComboboxElement>) => {
+	const handleMouseover: Handler<MouseEvent, ComboboxElement> = (e) => {
 		onMouseenter?.(e);
 		if (!disabled) ctx.setHovered(uid());
 	};

@@ -8,7 +8,7 @@
 		KEYS,
 		classProp,
 		removeNodeProps,
-		type HandlerParam
+		type Handler
 	} from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 	import type { PopoverTriggerProps } from './types.js';
@@ -54,12 +54,12 @@
 		}
 	});
 
-	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLDivElement>) => {
+	const handleKeydown: Handler<KeyboardEvent, HTMLDivElement> = (e) => {
 		const { key } = e;
 
 		if (key === KEYS.escape || key === KEYS.tab) ctx.close();
 	};
-	const handleClick = (e: HandlerParam<MouseEvent, HTMLDivElement>) => {
+	const handleClick: Handler<MouseEvent, HTMLDivElement> = (e) => {
 		ctx.toggle();
 	};
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Tabs.svelte';
-	import { useActions, KEYS, PREVENT_KEYS, classProp, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, KEYS, PREVENT_KEYS, classProp, type Handler } from '$lib/internal/index.js';
 	import { onMount } from 'svelte';
 	import type { TabsButtonProps } from './types.js';
 
@@ -19,12 +19,12 @@
 	const ctx = context();
 	const active = $derived(ctx.activeTab === value);
 
-	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
+	const handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
 		onClick?.(e);
 		if (disabled) return;
 		ctx.setActive(value);
 	};
-	const handleKeydown = (e: HandlerParam<KeyboardEvent, HTMLButtonElement>) => {
+	const handleKeydown: Handler<KeyboardEvent, HTMLButtonElement> = (e) => {
 		onKeydown?.(e);
 		if (disabled) return;
 		const { key } = e;

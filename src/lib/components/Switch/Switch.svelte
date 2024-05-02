@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useActions, classProp, type Handler } from '$lib/internal/index.js';
-	import type { CheckboxProps } from './types.js';
+	import type { SwitchProps } from './types.js';
 
 	let {
 		children,
@@ -12,13 +12,13 @@
 		disabled = $bindable(false),
 		onClick,
 		...props
-	}: CheckboxProps = $props();
+	}: SwitchProps = $props();
 
 	const handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
 		onClick?.(e);
 		if (disabled) return;
 
-		checked = checked === 'mixed' ? true : !checked;
+		checked = !checked;
 	};
 </script>
 
@@ -26,15 +26,16 @@
 	type="button"
 	bind:this={self}
 	use:useActions={use}
-	class={classProp(klass, { checked })}
-	role="checkbox"
+	class={classProp(klass, { checked, disabled })}
+	role="switch"
 	aria-checked={checked}
 	aria-required={required}
+	aria-readonly={disabled || undefined}
 	disabled={disabled || undefined}
 	data-state={checked ? 'checked' : 'unchecked'}
-	data-checkbox=""
+	data-switch=""
 	onclick={handleClick}
 	{...props}
 >
-	{@render children?.({ checked })}
+	{@render children?.({ checked, disabled })}
 </button>

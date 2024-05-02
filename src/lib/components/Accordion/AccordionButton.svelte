@@ -1,18 +1,10 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { useActions, classProp, type Props, type Handler, type HandlerParam } from '$lib/internal/index.js';
+	import { useActions, classProp, type Handler } from '$lib/internal/index.js';
 	import { getContext } from 'svelte';
+	import type { AccordionButtonProps } from './types.js';
 
-	interface Props extends Props<HTMLButtonElement, { active: boolean; disabled: boolean }> {
-		/**
-		 * The onclick event.
-		 *
-		 * Using the regular `onclick` will overwrite and behaviour the component requires.
-		 */
-		onClick?: Handler<MouseEvent, HTMLButtonElement>;
-	}
-
-	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: Props = $props();
+	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: AccordionButtonProps = $props();
 
 	const ctx = context();
 	const itemId = getContext<string>('accordionitem-id');
@@ -20,7 +12,7 @@
 	const active = $derived(ctx.activeItems.includes(itemId));
 	const item = $derived(ctx.items.find((el) => el.id === itemId));
 
-	const handleClick = (e: HandlerParam<MouseEvent, HTMLButtonElement>) => {
+	const handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
 		onClick?.(e);
 		if (!item?.disabled) ctx.toggle(itemId);
 	};
