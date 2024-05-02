@@ -4,7 +4,8 @@ const action: ActionReference = [
 	{
 		name: 'callback',
 		type: '() => void',
-		description: 'The code to run when the outside event has been triggered.'
+		description: 'The code to run when the outside event has been triggered.',
+		required: true
 	},
 	{
 		name: 'exclude',

@@ -26,6 +26,8 @@ description: 'A component or action to mount content from one part of the dom to
 
 If you don't want to use a whole component, you can use the `usePortal` action.
 
+View the [usePortal](/docs/actions/usePortal) page for more info.
+
 ```svelte
 <script>
 	import { usePortal } from 'lithesome';

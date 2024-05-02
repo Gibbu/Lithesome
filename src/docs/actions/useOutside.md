@@ -35,17 +35,17 @@ If you want to exlude elements from triggering the callback, pass those elements
 <script>
 	import { useOutside } from 'lithesome';
 
-	let toggle = $state(false);
+	let visible = $state(false);
 	let btn = $state(null);
 </script>
 
-<button bind:this={btn}>Toggle</button>
+<button bind:this={btn} onclick={() => (visible = !visible)}>Toggle</button>
 
-{#if toggle}
+{#if visible}
 	<div
 		use:useOutside={{
 			callback() {
-				alert('outside');
+				visible = false;
 			},
 			exlude: btn
 		}}

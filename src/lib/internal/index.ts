@@ -9,3 +9,5 @@ export * from './helpers/transition.js';
 export * from './helpers/anchor.js';
 export * from './helpers/log.js';
 export * from './helpers/context.svelte.js';
+
+export { default as FloatingArrow } from './components/FloatingArrow.svelte';
