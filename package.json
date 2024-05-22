@@ -36,7 +36,6 @@
 		"svelte": "5.0.0-next.137"
 	},
 	"devDependencies": {
-		"@bitmachina/highlighter": "1.0.0-alpha",
 		"@steeze-ui/lucide-icons": "^1.2.0",
 		"@steeze-ui/svelte-icon": "^1.5.0",
 		"@sveltejs/adapter-vercel": "^5.1.1",
