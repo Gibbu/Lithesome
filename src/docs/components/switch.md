@@ -1,7 +1,6 @@
 ---
 title: 'Switch'
 description: 'A controlled element to represent "on" and "off" states.'
-badge: 'new'
 ---
 
 <script>

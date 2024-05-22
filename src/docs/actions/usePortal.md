@@ -1,7 +1,6 @@
 ---
 title: 'usePortal'
 description: 'Mount elements to different parts of the DOM.'
-badge: 'new'
 ---
 
 <script>

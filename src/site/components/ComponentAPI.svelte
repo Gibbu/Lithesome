@@ -137,9 +137,7 @@
 									<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">{e.name}</code>
 								</td>
 								<td>
-									{#each e.params as param}
-										<code>{param}</code>
-									{/each}
+									<code>({e.params})</code>
 									<br />
 									<br />
 									<code>{e.return}</code>

@@ -1,7 +1,6 @@
 ---
 title: 'useOutside'
 description: 'Run a callback when an event has triggered outside the node.'
-badge: 'new'
 ---
 
 <script>

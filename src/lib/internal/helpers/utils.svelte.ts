@@ -1,3 +1,4 @@
+import { log } from './log.js';
 import type { JsonValue, ClassProp } from '../types.js';
 
 export type CalcIndexAction = 'prev' | 'next' | 'first' | 'last';
@@ -87,4 +88,20 @@ export const parseDelay = (delay: number | [number, number]) => {
 		in: Array.isArray(delay) ? delay[0] : delay,
 		out: Array.isArray(delay) ? delay[1] : delay
 	};
+};
+
+/**
+ * Transforms the string value to a number.
+ *
+ * Supported identifiers: `ms`, `s`
+ * @param value The value to be transformed.
+ */
+export const parseDuration = (value: number | string): number => {
+	if (typeof value === 'number') return value;
+	if (!/ms|s$/.test(value)) throw log.error('`duration` prop was given a string but not a leading identifier (ms/s).');
+
+	const duration: number = parseFloat(value.split(/ms|s/)[0]);
+
+	if (/(?=ms)(?!s)/.test(value)) return duration;
+	return duration * 1000;
 };

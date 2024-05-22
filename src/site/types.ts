@@ -30,6 +30,7 @@ export interface APIReference {
 	events?: Event[];
 	dataAttrs?: DataAttrs[];
 	childrenProps?: ChildrenProps[];
+	function?: boolean;
 }
 
 export interface DocsPageMeta {

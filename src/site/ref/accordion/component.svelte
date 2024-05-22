@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Accordion, AccordionButton, AccordionContent, AccordionHeading, AccordionItem } from '$lib/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ChevronDown } from '@steeze-ui/lucide-icons';
+	import { ChevronRight } from '@steeze-ui/lucide-icons';
 	import { cn } from '$site/index.js';
 	import { slide } from 'svelte/transition';
 
@@ -16,23 +16,22 @@
 	];
 </script>
 
-<Accordion
-	single
-	class="w-full max-w-[70%] rounded-md border border-neutral-300 bg-white dark:border-white/10 dark:bg-white/5"
->
+<Accordion single class="w-full max-w-[70%]">
 	{#each items as { title, content }}
 		<AccordionItem class="border-b border-neutral-300 last:border-none dark:border-white/10">
 			<AccordionHeading>
 				<AccordionButton
-					class="flex w-full items-center justify-between gap-4 p-4 hover:bg-black/[0.03] dark:hover:bg-white/5"
+					class="flex w-full items-center justify-between gap-4 p-4 hover:text-black dark:hover:text-white"
 				>
 					{#snippet children({ active })}
 						{title}
-						<Icon src={ChevronDown} class={cn('h-6 w-6 transition-transform', active ? 'rotate-180' : '')} />
+						<Icon src={ChevronRight} class={cn('h-6 w-6 transition-transform', active ? 'rotate-90' : '')} />
 					{/snippet}
 				</AccordionButton>
 			</AccordionHeading>
-			<AccordionContent transition={[slide, { duration: 150 }]} class="p-4">{content}</AccordionContent>
+			<AccordionContent transition={[slide, { duration: 150 }]} class={() => cn('px-4 pb-4')}>
+				{content}
+			</AccordionContent>
 		</AccordionItem>
 	{/each}
 </Accordion>
