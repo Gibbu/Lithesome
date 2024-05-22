@@ -91,7 +91,11 @@
 				onclick={changeTheme}
 				class="flex-centre h-12 w-12 rounded-xl hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
 			>
-				<Icon src={theme === 'dark' ? Sun : Moon} class="h-6 w-6" />
+				{#if theme === 'dark'}
+					<Icon src={Sun} class="h-6 w-6" />
+				{:else}
+					<Icon src={Moon} class="h-6 w-6" />
+				{/if}
 			</button>
 		</div>
 	</div>
