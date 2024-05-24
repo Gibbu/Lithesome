@@ -86,41 +86,43 @@
 					</tbody>
 				</table>
 			{/if}
-			<table>
-				<thead>
-					<tr>
-						<th>Data attribute</th>
-						<th>Value</th>
-						<th>Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">data-{a.name.toLowerCase()}</code>
-						</td>
-						<td>
-							<code>''</code>
-						</td>
-						<td>The base data attribute, can be used for styling.</td>
-					</tr>
-					{#each a.dataAttrs || [] as d}
+			{#if !a.function}
+				<table>
+					<thead>
+						<tr>
+							<th>Data attribute</th>
+							<th>Value</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
 						<tr>
 							<td>
-								<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">data-{d.name}</code>
+								<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">data-{a.name.toLowerCase()}</code>
 							</td>
 							<td>
-								<code>{d.value}</code>
+								<code>''</code>
 							</td>
-							<td>
-								{#if d.description}
-									{@html d.description}
-								{/if}
-							</td>
+							<td>The base data attribute, can be used for styling.</td>
 						</tr>
-					{/each}
-				</tbody>
-			</table>
+						{#each a.dataAttrs || [] as d}
+							<tr>
+								<td>
+									<code class="rounded-md bg-black/10 px-2 py-1 dark:bg-white/10">data-{d.name}</code>
+								</td>
+								<td>
+									<code>{d.value}</code>
+								</td>
+								<td>
+									{#if d.description}
+										{@html d.description}
+									{/if}
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			{/if}
 			{#if a.events}
 				<table>
 					<thead>

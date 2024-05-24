@@ -41,6 +41,12 @@ const toasterFn: APIReference = {
 			params: ['type', 'config'],
 			return: 'void',
 			description: 'Add a toast to the toaster.'
+		},
+		{
+			name: 'removeById',
+			params: ['toastId: string'],
+			return: 'void',
+			description: 'Remove a toast by its unique ID.'
 		}
 	]
 };
