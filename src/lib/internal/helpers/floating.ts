@@ -19,7 +19,7 @@ interface FloatingConfig {
 	sameWidth?: boolean;
 }
 
-export const useFloating = (target: HTMLElement, config: FloatingConfig) => {
+export const useFloating = (node: HTMLElement, config: FloatingConfig) => {
 	const { anchor, arrow, placement, constrainViewport, sameWidth } = defaultConfig(config, {
 		anchor: null,
 		arrow: null,
@@ -32,8 +32,8 @@ export const useFloating = (target: HTMLElement, config: FloatingConfig) => {
 
 	let cleanUp: VoidFunction | null | undefined = null;
 
-	cleanUp = autoUpdate(anchor, target, () => {
-		computePosition(anchor, target, {
+	cleanUp = autoUpdate(anchor, node, () => {
+		computePosition(anchor, node, {
 			placement,
 			middleware: [
 				arrow ? floatingArrow({ element: arrow }) : undefined,
@@ -45,7 +45,7 @@ export const useFloating = (target: HTMLElement, config: FloatingConfig) => {
 					apply({ availableHeight, availableWidth, elements }) {
 						if (sameWidth) elements.floating.style.width = elements.reference.getBoundingClientRect().width + 'px';
 						if (constrainViewport) {
-							setNodeStyles(anchor, {
+							setNodeStyles(node, {
 								maxWidth: `${availableWidth}px`,
 								maxHeight: `${availableHeight}px`
 							});
@@ -56,12 +56,12 @@ export const useFloating = (target: HTMLElement, config: FloatingConfig) => {
 		}).then(({ x, y, placement, middlewareData }) => {
 			const [side, alignment] = placement.split('-');
 
-			setNodeStyles(target, {
+			setNodeStyles(node, {
 				left: `${x}px`,
 				top: `${y}px`,
 				position: 'absolute'
 			});
-			setNodeProps(target, {
+			setNodeProps(node, {
 				'data-side': side,
 				'data-alignment': alignment || 'center'
 			});
