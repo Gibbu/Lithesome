@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Hovercard.svelte';
-	import { anchorElement, useActions, getTransition, classProp, log, type Handler } from '$lib/internal/index.js';
+	import { useFloating, useActions, getTransition, classProp, log, type Handler } from '$lib/internal/index.js';
 	import { useOutside, usePortal } from '$lib/index.js';
 	import { onMount } from 'svelte';
 	import type { HovercardContentProps } from './types.js';
@@ -22,8 +22,6 @@
 
 	const ctx = context();
 
-	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
-
 	const { inTransition, outTransition } = getTransition(transition);
 	const attrs = $derived({
 		id: ctx.uid('content'),
@@ -38,25 +36,6 @@
 
 	$effect(() => {
 		if (ctx.visible && self) ctx.content = self;
-	});
-	$effect(() => {
-		if (ctx.visible && ctx.trigger && ctx.content) {
-			contentCleanup = anchorElement(
-				{
-					anchor: ctx.trigger,
-					target: ctx.content,
-					arrow: ctx.arrow
-				},
-				{
-					placement,
-					constrainViewport,
-					sameWidth
-				}
-			);
-		}
-		return () => {
-			contentCleanup?.();
-		};
 	});
 
 	const handleMouseenter: Handler<MouseEvent, HTMLDivElement> = (e) => {
@@ -76,6 +55,7 @@
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
+		use:useFloating={{ anchor: ctx.trigger, arrow: ctx.arrow, sameWidth, constrainViewport, placement }}
 		use:useOutside={{
 			exclude: ctx.trigger,
 			callback: () => {
@@ -98,6 +78,7 @@
 {:else if ctx.visible}
 	<div
 		bind:this={self}
+		use:useFloating={{ anchor: ctx.trigger, arrow: ctx.arrow, sameWidth, constrainViewport, placement }}
 		use:useOutside={{
 			exclude: ctx.trigger,
 			callback: () => {

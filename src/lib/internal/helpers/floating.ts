@@ -10,28 +10,29 @@ import {
 import { defaultConfig, setNodeStyles, setNodeProps } from '$lib/internal/index.js';
 
 type AnchorElement = HTMLElement | undefined | null;
-interface AnchorElements {
+
+interface FloatingConfig {
 	anchor: AnchorElement;
-	target: AnchorElement;
 	arrow?: AnchorElement;
-}
-interface AnchorConfig {
 	placement?: Placement;
 	constrainViewport?: boolean;
 	sameWidth?: boolean;
 }
 
-export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) => {
-	if (!elements.anchor || !elements.target) return;
-
-	const { placement, constrainViewport, sameWidth } = defaultConfig(config, {
+export const useFloating = (target: HTMLElement, config: FloatingConfig) => {
+	const { anchor, arrow, placement, constrainViewport, sameWidth } = defaultConfig(config, {
+		anchor: null,
+		arrow: null,
 		placement: 'bottom',
 		constrainViewport: false,
 		sameWidth: false
 	});
-	const { anchor, target, arrow } = elements;
 
-	const cleanup = autoUpdate(anchor, target, () => {
+	if (!anchor) return;
+
+	let cleanUp: VoidFunction | null | undefined = null;
+
+	cleanUp = autoUpdate(anchor, target, () => {
 		computePosition(anchor, target, {
 			placement,
 			middleware: [
@@ -44,7 +45,7 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 					apply({ availableHeight, availableWidth, elements }) {
 						if (sameWidth) elements.floating.style.width = elements.reference.getBoundingClientRect().width + 'px';
 						if (constrainViewport) {
-							setNodeStyles(target, {
+							setNodeStyles(anchor, {
 								maxWidth: `${availableWidth}px`,
 								maxHeight: `${availableHeight}px`
 							});
@@ -92,5 +93,9 @@ export const anchorElement = (elements: AnchorElements, config?: AnchorConfig) =
 		});
 	});
 
-	return cleanup;
+	return {
+		destroy() {
+			cleanUp?.();
+		}
+	};
 };

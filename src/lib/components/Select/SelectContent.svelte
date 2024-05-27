@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { anchorElement, useActions, getTransition, classProp, log } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp, log, useFloating } from '$lib/internal/index.js';
 	import { useOutside, usePortal } from '$lib/index.js';
 	import { onMount } from 'svelte';
 	import type { SelectContentProps } from './types.js';
@@ -19,7 +19,6 @@
 	}: SelectContentProps = $props();
 
 	const ctx = context();
-	let contentCleanup = $state<ReturnType<typeof anchorElement> | undefined>(undefined);
 
 	const { inTransition, outTransition } = getTransition(transition);
 	const attrs = $derived({
@@ -38,25 +37,6 @@
 	$effect(() => {
 		if (ctx.visible && self) ctx.content = self;
 	});
-	$effect(() => {
-		if (ctx.visible && ctx.trigger && ctx.content) {
-			contentCleanup = anchorElement(
-				{
-					anchor: ctx.trigger,
-					target: ctx.content,
-					arrow: ctx.arrow
-				},
-				{
-					placement,
-					constrainViewport,
-					sameWidth
-				}
-			);
-		}
-		return () => {
-			contentCleanup?.();
-		};
-	});
 </script>
 
 {#if inTransition && outTransition && ctx.visible}
@@ -64,7 +44,8 @@
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
-		use:useOutside={{ exclude: ctx.trigger, callback: () => ctx.close() }}
+		use:useFloating={{ anchor: ctx.trigger, arrow: ctx.arrow, sameWidth, constrainViewport, placement }}
+		use:useOutside={{ exclude: ctx.content, callback: () => ctx.close() }}
 		use:usePortal={portalTarget}
 		use:useActions={use}
 		in:inFn={inConf}
@@ -77,7 +58,8 @@
 {:else if ctx.visible}
 	<div
 		bind:this={self}
-		use:useOutside={{ exclude: ctx.trigger, callback: () => ctx.close() }}
+		use:useFloating={{ anchor: ctx.trigger, arrow: ctx.arrow, sameWidth, constrainViewport, placement }}
+		use:useOutside={{ exclude: ctx.content, callback: () => ctx.close() }}
 		use:usePortal={portalTarget}
 		use:useActions={use}
 		{...attrs}

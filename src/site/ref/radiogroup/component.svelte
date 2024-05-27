@@ -30,7 +30,7 @@
 					)}
 				>
 					{#if checked}
-						<div class="h-3 w-3 rounded-full bg-white dark:bg-black" />
+						<div class="h-3 w-3 rounded-full bg-white dark:bg-black"></div>
 					{/if}
 				</div>
 				{label}
