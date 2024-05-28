@@ -35,8 +35,8 @@
 
 		const { key } = e;
 
+		ctx.touched = true;
 		if (!PREVENT_KEYS.includes(key)) {
-			ctx.touched = true;
 			if (!ctx.visible) ctx.open();
 		}
 

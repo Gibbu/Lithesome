@@ -10,7 +10,7 @@ description: 'Allows a sequence of one-character inputs.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

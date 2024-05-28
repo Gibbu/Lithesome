@@ -10,7 +10,7 @@ description: 'An interactive set of panels that hide and reveal sections.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

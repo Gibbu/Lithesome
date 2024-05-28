@@ -10,7 +10,7 @@ description: 'Display a summary/preview of a link.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

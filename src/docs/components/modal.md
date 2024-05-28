@@ -10,7 +10,7 @@ description: 'An overlaying window to take focus away from the current context.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

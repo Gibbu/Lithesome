@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { context } from './Combobox.svelte';
-	import { useFloating, useActions, getTransition, classProp, log } from '$lib/internal/index.js';
-	import { usePortal, useOutside } from '$lib/index.js';
-	import { onMount } from 'svelte';
+	import { classProp, FloatingContent } from '$lib/internal/index.js';
 	import type { ComboboxContentProps } from './types.js';
 
 	let {
@@ -19,58 +17,25 @@
 	}: ComboboxContentProps = $props();
 
 	const ctx = context();
-
-	const { inTransition, outTransition } = getTransition(transition);
-	const attrs = $derived({
-		id: ctx.uid('content'),
-		'aria-labelledby': ctx.uid('trigger'),
-		role: 'listbox',
-		class: classProp(klass, { visible: ctx.visible }),
-		'data-comboboxcontent': '',
-		hidden: !ctx.mounted || undefined
-	});
-
-	onMount(() => {
-		if (!ctx) log.error('<ComboboxContent> Must be a direct child of <Combobox />');
-	});
-
-	$effect(() => {
-		if (ctx.visible && self) ctx.content = self;
-	});
+	const state = $derived({ visible: ctx.visible });
 </script>
 
-{#if inTransition && outTransition && ctx.visible}
-	{@const { config: inConf, transition: inFn } = inTransition}
-	{@const { config: outConf, transition: outFn } = outTransition}
-	<div
-		bind:this={self}
-		use:useFloating={{ anchor: ctx.trigger, arrow: ctx.arrow, sameWidth, constrainViewport, placement }}
-		use:useOutside={{
-			exclude: ctx.trigger,
-			callback: () => ctx.close()
-		}}
-		use:usePortal={portalTarget}
-		use:useActions={use}
-		in:inFn={inConf}
-		out:outFn={outConf}
-		{...attrs}
-		{...props}
-	>
-		{@render children({ visible: ctx.visible })}
-	</div>
-{:else if ctx.visible}
-	<div
-		bind:this={self}
-		use:useFloating={{ anchor: ctx.trigger, arrow: ctx.arrow, sameWidth, constrainViewport, placement }}
-		use:useOutside={{
-			exclude: ctx.trigger,
-			callback: () => ctx.close()
-		}}
-		use:usePortal={portalTarget}
-		use:useActions={use}
-		{...attrs}
-		{...props}
-	>
-		{@render children({ visible: ctx.visible })}
-	</div>
-{/if}
+<FloatingContent
+	{children}
+	componentName="Select"
+	visible={ctx.visible}
+	bind:self
+	{state}
+	{ctx}
+	{transition}
+	{use}
+	{sameWidth}
+	{constrainViewport}
+	{placement}
+	{portalTarget}
+	outsideCallback={() => ctx.close()}
+	role="listbox"
+	class={classProp(klass, state)}
+	hidden={!ctx.mounted || undefined}
+	{...props}
+/>

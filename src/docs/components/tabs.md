@@ -10,7 +10,7 @@ description: 'Organize content to sections.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

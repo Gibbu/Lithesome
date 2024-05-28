@@ -10,7 +10,7 @@ description: 'Display content over the window without taking away focus from the
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

@@ -11,7 +11,7 @@ badge: 'new'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

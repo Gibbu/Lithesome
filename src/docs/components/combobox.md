@@ -10,7 +10,7 @@ description: 'Allow users to choose from a list of options with search filtering
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

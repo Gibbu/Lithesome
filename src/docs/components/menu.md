@@ -10,7 +10,7 @@ description: 'A menu of items that is hidden until triggered.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

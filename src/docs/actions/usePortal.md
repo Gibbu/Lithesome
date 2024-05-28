@@ -10,7 +10,7 @@ description: 'Mount elements to different parts of the DOM.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

@@ -10,7 +10,7 @@ description: 'Allow users to check and uncheck things.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

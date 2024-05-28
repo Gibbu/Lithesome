@@ -10,7 +10,7 @@ description: 'A component or action to mount content from one part of the dom to
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

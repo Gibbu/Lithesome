@@ -10,7 +10,7 @@ description: 'A controlled element to represent "on" and "off" states.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

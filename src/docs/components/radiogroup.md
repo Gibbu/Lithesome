@@ -10,7 +10,7 @@ description: 'Allow users to select a single choice from a list'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>

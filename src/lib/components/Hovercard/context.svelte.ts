@@ -36,6 +36,10 @@ export class HovercardContext extends FloatingContext {
 			if (!this.hovered) this.visible = false;
 		}, this.delays.out);
 	}
+	forceClose() {
+		this.visible = false;
+		this.timeout = null;
+	}
 
 	#effects = effects(() => {
 		this.hooks?.onChange?.(this.visible);

@@ -11,3 +11,4 @@ export * from './helpers/log.js';
 export * from './helpers/context.svelte.js';
 
 export { default as FloatingArrow } from './components/FloatingArrow.svelte';
+export { default as FloatingContent } from './components/FloatingContent.svelte';

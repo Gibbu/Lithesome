@@ -10,7 +10,7 @@ description: 'Allow users to chooe from a list of options.'
 
 <Preview {component} {code} />
 
-## Structure
+## Basic Example
 
 ```svelte
 <script>
@@ -19,7 +19,9 @@ description: 'Allow users to chooe from a list of options.'
 
 <Select>
 	<SelectTrigger>
-		<button></button>
+		<button>
+			<SelectValue />
+		</button>
 	</SelectTrigger>
 	<SelectContent>
 		<SelectArrow />

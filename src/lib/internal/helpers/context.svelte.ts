@@ -45,7 +45,6 @@ export const setupContext = <T>() => {
  */
 export const effects = (fn: () => void) => {
 	let cleanUp: (() => void) | null = null;
-	let mounted: boolean = false;
 
 	const destroy = () => {
 		if (cleanUp === null) return;
@@ -53,11 +52,9 @@ export const effects = (fn: () => void) => {
 		cleanUp = null;
 	};
 
-	onMount(() => {
-		mounted = true;
-	});
-
-	if (mounted) $effect.root(fn);
+	try {
+		cleanUp = $effect.root(fn);
+	} catch (error) {}
 
 	onDestroy(destroy);
 
