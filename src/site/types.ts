@@ -40,6 +40,7 @@ export interface DocsPageMeta {
 	order: number;
 	sidebar?: string;
 	badge?: 'new' | 'updated' | 'soon';
+	hidden?: boolean;
 }
 
 export interface ActionProps {

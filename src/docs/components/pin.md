@@ -19,6 +19,7 @@ description: 'Allows a sequence of one-character inputs.'
 
 <Pin>
 	<PinInput />
+	<PinValue />
 </Pin>
 ```
 

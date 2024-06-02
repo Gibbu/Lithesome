@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import { Button, cn, isMobile, Banner } from '$site/index.js';
+	import { Button, cn, isMobile, Banner, type DocsPageMeta } from '$site/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Github, Menu, Moon, Sun } from '@steeze-ui/lucide-icons';
 	import { disableScroll, isBrowser } from '$lib/internal/index.js';
@@ -9,9 +9,6 @@
 
 	let { data, children } = $props();
 
-	let navLinkClass = 'flex items-center rounded-md px-3.5 py-2 text-sm font-semibold mb-1 border border-transparent';
-	let navLinkActive =
-		'bg-white text-black border-white shadow-md dark:bg-neutral-900 dark:text-white dark:border-neutral-800 dark:shadow-none';
 	let theme = $state<'dark' | 'light'>(isBrowser ? localStorage.theme : 'light');
 	let hideEarlyDev = $state(browser ? localStorage.getItem('earlyDev') : true);
 	let mobileSidebar = $state<boolean>(!isMobile);
@@ -49,21 +46,40 @@
 	});
 </script>
 
-{#snippet badge(type: 'soon' | 'updated' | 'new')}
-	<div
+{#snippet link(route: DocsPageMeta)}
+	<a
+		href="/docs{route.path === '/' ? '' : '/' + route.path}"
 		class={cn(
-			'rounded-xl px-2.5 py-0.5 text-xs capitalize',
-			type === 'soon' ? 'bg-gray-500/20 text-gray-400' : '',
-			type === 'updated' ? 'bg-blue-500/20 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300' : '',
-			type === 'new' ? 'bg-emerald-500/20 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-300' : ''
+			'flex items-center rounded-md px-3.5 py-2 text-sm',
+			active(route.path)
+				? 'bg-neutral-100 font-semibold text-black dark:bg-neutral-900 dark:text-white dark:shadow-none'
+				: 'hover:bg-neutral-50 dark:hover:bg-white/5'
 		)}
 	>
-		{type}
-	</div>
+		<span class="flex-1">{route.title}</span>
+		{#if route.badge}
+			<div
+				class={cn(
+					'rounded-xl px-2.5 py-0.5 text-xs capitalize',
+					route.badge === 'soon' ? 'bg-gray-500/20 text-gray-400' : '',
+					route.badge === 'updated' ? 'bg-blue-500/20 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300' : '',
+					route.badge === 'new' ? 'bg-emerald-500/20 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-300' : ''
+				)}
+			>
+				{route.badge}
+			</div>
+		{/if}
+	</a>
 {/snippet}
 
-<nav class="h-[var(--nav-height)]">
-	<div class="wrap flex h-full items-center justify-between">
+<nav
+	class={cn(
+		'fixed top-0 z-20 flex h-[var(--nav-height)] w-full items-center border-b',
+		'border-b-neutral-200 bg-white',
+		'dark:border-b-neutral-900 dark:bg-neutral-950'
+	)}
+>
+	<div class="wrap flex items-center justify-between">
 		<div class="flex items-center">
 			{#if isMobile}
 				<Button variant="text" onclick={() => (mobileSidebar = !mobileSidebar)}>
@@ -78,18 +94,19 @@
 			</a>
 		</div>
 		<div class="flex items-center">
+			<Button variant="ghost" class="mr-4" href="/docs/changelog">Changelog</Button>
 			<a
 				href="https://github.com/Gibbu/Lithesome"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="flex-centre h-12 w-12 rounded-xl hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
+				class="flex-centre h-12 w-12 rounded-xl hover:bg-neutral-100 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
 			>
 				<Icon src={Github} class="h-6 w-6" />
 			</a>
 			<button
 				type="button"
 				onclick={changeTheme}
-				class="flex-centre h-12 w-12 rounded-xl hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
+				class="flex-centre h-12 w-12 rounded-xl hover:bg-neutral-100 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
 			>
 				{#if theme === 'dark'}
 					<Icon src={Sun} class="h-6 w-6" />
@@ -101,63 +118,30 @@
 	</div>
 </nav>
 
-<div class="wrap items-start md:grid md:grid-cols-[190px,1fr] md:gap-6">
-	<aside
-		class={cn(
-			'sticky top-8 overflow-auto pb-8',
-			'mb-6 h-[calc(100vh-var(--nav-height)-24px)] md:mb-0 md:h-[calc(100vh-var(--nav-height))]',
-			mobileSidebar ? 'block' : 'hidden md:block'
-		)}
-	>
-		<ul class="h-full">
+<div class="wrap grid items-start pt-[var(--nav-height)] md:grid-cols-[250px,1fr]">
+	<aside class="sticky top-[var(--nav-height)] h-[calc(100vh-var(--nav-height))] gap-4 overflow-y-auto py-4 pr-4">
+		<ul class="flex h-full flex-col gap-2">
 			{#each data.routes as route}
-				<li>
-					{#if route.title}
-						<a
-							href="/docs{route.path === '/' ? '' : '/' + route.path}"
-							class={cn(
-								navLinkClass,
-								active(route.path) ? navLinkActive : 'hover:bg-neutral-400/10 dark:hover:bg-white/5'
-							)}
-						>
-							<span class="flex-1">{route.title}</span>
-							{#if route.badge}
-								{@render badge(route.badge)}
-							{/if}
-						</a>
-					{/if}
+				{#if route.title}
+					{@render link(route)}
+				{/if}
 
-					{#if route.folder}
-						<h3 class="ml-3.5 mt-8 text-xs font-bold uppercase text-neutral-400 dark:text-neutral-500">
-							{route.folder}
-						</h3>
-						<ul class="mt-2">
-							{#each route.children as subRoute}
-								<li>
-									<a
-										href="/docs{subRoute.path === '/' ? '' : '/' + subRoute.path}"
-										class={cn(
-											navLinkClass,
-											active(subRoute.path) ? navLinkActive : 'hover:bg-neutral-400/10 dark:hover:bg-white/5'
-										)}
-									>
-										<span class="flex-1">{subRoute.title}</span>
-										{@render badge(subRoute.badge)}
-									</a>
-								</li>
-							{/each}
-						</ul>
-					{/if}
-				</li>
+				{#if route.folder}
+					<h3 class="ml-3.5 mt-6 text-xs font-bold uppercase text-neutral-400 dark:text-neutral-500">
+						{route.folder}
+					</h3>
+					<ul class="mt-1">
+						{#each route.children as sub}
+							<li class="mb-1 last:mb-4">
+								{@render link(sub)}
+							</li>
+						{/each}
+					</ul>
+				{/if}
 			{/each}
 		</ul>
 	</aside>
-	<main
-		class={cn(
-			'min-h-[calc(100vh-var(--nav-height))] w-full min-w-0 rounded-tl-xl rounded-tr-xl bg-white p-8 shadow-xl md:p-12 md:pb-24',
-			'dark:highlight dark:bg-neutral-920/70'
-		)}
-	>
+	<main class="min-w-0 border-l border-neutral-200 p-12 pr-0 dark:border-neutral-900">
 		{#if !hideEarlyDev}
 			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>
 				This package and docs are still under very early development. Expect things to be broken.

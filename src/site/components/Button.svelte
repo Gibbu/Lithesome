@@ -3,7 +3,7 @@
 	import { cn } from '../utils.js';
 
 	interface ComponentProps extends Props<HTMLButtonElement | HTMLAnchorElement> {
-		variant: 'primary' | 'secondary' | 'text';
+		variant: 'primary' | 'secondary' | 'text' | 'ghost';
 		href?: string;
 		size?: 'sm' | 'md' | 'lg';
 		disabled?: boolean;
@@ -44,6 +44,9 @@
 			? 'border-black/20 bg-white/15 text-black hover:bg-black hover:text-white dark:border-white/20 dark:bg-black/15 dark:text-white dark:hover:bg-white dark:hover:text-black'
 			: '',
 		variant === 'text' ? 'border-transparent text-white hover:bg-white/5' : '',
+		variant === 'ghost'
+			? 'border-transparent bg-neutral-100 text-black hover:bg-neutral-200 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800'
+			: '',
 		klass
 	)}
 	{...props}

@@ -22,13 +22,14 @@ export const load = async () => {
 		const title = meta.sidebar || meta.title;
 		const order = meta.order;
 		const _path = path.replace(/\/src\/docs\/|\/index|.md/g, '').replace('index', '/');
-		const route = {
+		const route: DocsPageMeta = {
 			title,
 			description: meta.description,
 			path: _path,
 			badge: meta.badge,
 			sidebar: meta.sidebar,
-			order
+			order,
+			hidden: meta.hidden
 		};
 
 		if (_path.includes('/') && !_path.startsWith('/')) {
@@ -46,7 +47,7 @@ export const load = async () => {
 	}
 
 	return {
-		routes: [...routes.filter((el) => !el.children), ...routes.filter((el) => el.children)].toSorted(
+		routes: [...routes.filter((el) => !el.children && !el.hidden), ...routes.filter((el) => el.children)].toSorted(
 			(a, b) => a.order - b.order
 		)
 	};
