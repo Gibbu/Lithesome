@@ -8,7 +8,7 @@
 		getTransition,
 		type Props,
 		type ContentProps
-	} from '$lib/internal/index.js';
+	} from '$internal';
 	import { useOutside } from '$lib/actions/outside.js';
 	import { usePortal } from '$lib/actions/portal.js';
 

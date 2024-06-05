@@ -12,6 +12,7 @@ export * from './components/Hovercard/index.js';
 export * from './components/Portal/index.js';
 export * from './components/Switch/index.js';
 export * from './components/Toast/index.js';
+export * from './components/Slider/index.js';
 
 export * from './actions/portal.js';
 export * from './actions/outside.js';

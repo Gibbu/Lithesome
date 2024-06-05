@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './RadioGroup.svelte';
-	import { log, useActions, createUID, KEYS, classProp, type Handler } from '$lib/internal/index.js';
+	import { log, useActions, createUID, KEYS, classProp } from '$internal';
 	import { onMount } from 'svelte';
 	import type { RadioGroupItemProps } from './types.js';
 
@@ -31,7 +31,7 @@
 
 	const checked = $derived(ctx.selectedItem.id === uid());
 
-	const handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
+	const handleClick: typeof onClick = (e) => {
 		onClick?.(e);
 		if (!disabled) {
 			ctx.setSelected({
@@ -42,7 +42,7 @@
 		}
 	};
 
-	const handleKeydown: Handler<KeyboardEvent, HTMLButtonElement> = (e) => {
+	const handleKeydown: typeof onKeydown = (e) => {
 		onKeydown?.(e);
 		const { key } = e;
 

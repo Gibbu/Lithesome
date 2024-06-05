@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import { usePortal } from '$lib/index.js';
 	import type { PortalProps } from './types.js';
 

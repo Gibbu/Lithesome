@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Popover.svelte';
-	import { FloatingContent } from '$lib/internal/index.js';
+	import { FloatingContent } from '$internal';
 	import { useTrap } from '$lib/index.js';
 	import type { PopoverContentProps } from './types.js';
 

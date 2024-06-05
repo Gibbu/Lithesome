@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Tabs.svelte';
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import type { TabsContentProps } from './types.js';
 
 	let { children, class: klass, use = [], self = $bindable(), value, ...props }: TabsContentProps = $props();

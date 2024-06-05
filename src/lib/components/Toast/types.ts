@@ -1,4 +1,4 @@
-import type { Props } from '$lib/internal/index.js';
+import type { Props } from '$internal';
 
 export type ToastType = 'success' | 'warning' | 'error' | 'info' | 'attention';
 

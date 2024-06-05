@@ -1,4 +1,4 @@
-import { FloatingContext, effects } from '$lib/internal/index.js';
+import { FloatingContext, effects } from '$internal';
 
 interface Init {
 	visible: boolean;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, getTransition, classProp } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp } from '$internal';
 	import { useTrap } from '$lib/index.js';
 	import { context } from './Modal.svelte';
 	import type { ModalContentProps } from './types.js';

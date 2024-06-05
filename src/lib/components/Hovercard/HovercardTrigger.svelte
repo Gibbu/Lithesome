@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Hovercard.svelte';
-	import { log, setNodeProps, addEventListeners, useActions, removeNodeProps, classProp } from '$lib/internal/index.js';
+	import { log, setNodeProps, addEventListeners, useActions, removeNodeProps, classProp } from '$internal';
 	import { onMount } from 'svelte';
 	import type { HovercardTriggerProps } from './types.js';
 

@@ -1,4 +1,4 @@
-import { Context, createUID, log, parseDuration, defaultConfig } from '$lib/internal/index.js';
+import { Context, createUID, log, parseDuration, defaultConfig } from '$internal';
 import type { Toast, ToastConfig, ToastType } from './types.js';
 
 export let toasts = $state<Toast[]>([]);

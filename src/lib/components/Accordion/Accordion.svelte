@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { setupContext } from '$lib/internal/index.js';
+	import { setupContext } from '$internal';
 	import { AccordionContext } from './context.svelte.js';
 
 	export const { context, contextName } = setupContext<AccordionContext>();
 </script>
 
 <script lang="ts">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import { setContext } from 'svelte';
 	import type { AccordionProps } from './types.js';
 

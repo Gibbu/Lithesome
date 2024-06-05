@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Hovercard.svelte';
-	import { classProp, FloatingContent, type Handler } from '$lib/internal/index.js';
+	import { classProp, FloatingContent } from '$internal';
 	import type { HovercardContentProps } from './types.js';
 
 	let {
@@ -21,12 +21,12 @@
 	const ctx = context();
 	const state = $derived({ visible: ctx.visible });
 
-	const handleMouseenter: Handler<MouseEvent, HTMLDivElement> = (e) => {
+	const handleMouseenter: typeof onMouseenter = (e) => {
 		onMouseenter?.(e);
 		ctx.hovered = true;
 		ctx.timeout = null;
 	};
-	const handleMouseleave: Handler<MouseEvent, HTMLDivElement> = (e) => {
+	const handleMouseleave: typeof onMouseleave = (e) => {
 		onMouseleave?.(e);
 		ctx.hovered = false;
 		ctx.close();

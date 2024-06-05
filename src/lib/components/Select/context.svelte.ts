@@ -6,7 +6,7 @@ import {
 	effects,
 	type CalcIndexAction,
 	type JsonValue
-} from '$lib/internal/index.js';
+} from '$internal';
 import { tick } from 'svelte';
 
 export interface Option {

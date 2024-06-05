@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import { log, useActions, classProp } from '$lib/internal/index.js';
+	import { log, useActions, classProp } from '$internal';
 	import { onMount } from 'svelte';
 	import type { PinValueProps } from './types.js';
 

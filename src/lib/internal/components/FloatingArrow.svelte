@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { useActions, classProp, log, FloatingContext, type PropsNoChildren } from '$lib/internal/index.js';
+	import { useActions, classProp, log, FloatingContext, type PropsNoChildren } from '$internal';
 
 	interface ComponentProps extends PropsNoChildren<HTMLDivElement> {
 		component: string;

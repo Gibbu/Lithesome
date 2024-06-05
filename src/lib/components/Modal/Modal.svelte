@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { setupContext } from '$lib/internal/index.js';
+	import { setupContext } from '$internal';
 	import { ModalContext } from './context.svelte.js';
 
 	export const { context, contextName } = setupContext<ModalContext>();
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, KEYS, classProp } from '$lib/internal/index.js';
+	import { createUID, useActions, KEYS, classProp } from '$internal';
 	import { usePortal } from '$lib/index.js';
 	import { setContext } from 'svelte';
 	import type { ModalProps } from './types.js';

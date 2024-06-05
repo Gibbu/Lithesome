@@ -9,7 +9,7 @@
 		classProp,
 		PREVENT_KEYS,
 		type Handler
-	} from '$lib/internal/index.js';
+	} from '$internal';
 	import { onMount } from 'svelte';
 	import type { MenuTriggerProps } from './types.js';
 

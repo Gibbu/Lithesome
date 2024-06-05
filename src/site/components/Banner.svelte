@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, type Props } from '$lib/internal/index.js';
+	import { useActions, type Props } from '$internal';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Info, AlertOctagon, X } from '@steeze-ui/lucide-icons';
 	import { cn } from '../utils.js';

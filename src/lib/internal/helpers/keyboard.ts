@@ -20,6 +20,8 @@ export const KEYS = {
 
 export const ALL_KEYS = Object.values(KEYS);
 
+export const ALL_ARROW_KEYS = [KEYS.arrowUp, KEYS.arrowDown, KEYS.arrowLeft, KEYS.arrowRight];
+
 export const PREVENT_KEYS = [
 	KEYS.arrowUp,
 	KEYS.arrowDown,

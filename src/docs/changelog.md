@@ -4,6 +4,12 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.13.0
+
+<small>5th June, 2024</small>
+
+- New [Slider](/docs/components/slider) component.
+
 ### v0.12.3
 
 <small>28th May, 2024</small>

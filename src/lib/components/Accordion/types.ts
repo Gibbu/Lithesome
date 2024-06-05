@@ -1,4 +1,4 @@
-import type { Props, Handler, Transition } from '$lib/internal/index.js';
+import type { Props, Handler, Transition } from '$internal';
 
 interface AccordionState {
 	/** True if any item is opened. */

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { FloatingContent } from '$lib/internal/index.js';
+	import { FloatingContent } from '$internal';
 	import type { SelectContentProps } from './types.js';
 
 	let {

@@ -1,4 +1,4 @@
-import { Context, effects } from '$lib/internal/index.js';
+import { Context, effects } from '$internal';
 
 interface Init {
 	value: string[];

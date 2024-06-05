@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Menu.svelte';
-	import { FloatingArrow } from '$lib/internal/index.js';
+	import { FloatingArrow } from '$internal';
 	import type { MenuArrowProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), ...props }: MenuArrowProps = $props();

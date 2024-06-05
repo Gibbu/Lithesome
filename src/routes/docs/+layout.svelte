@@ -4,7 +4,7 @@
 	import { Button, cn, isMobile, Banner, type DocsPageMeta } from '$site/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Github, Menu, Moon, Sun } from '@steeze-ui/lucide-icons';
-	import { disableScroll, isBrowser } from '$lib/internal/index.js';
+	import { disableScroll, isBrowser } from '$internal';
 	import { afterNavigate } from '$app/navigation';
 
 	let { data, children } = $props();
@@ -74,9 +74,9 @@
 
 <nav
 	class={cn(
-		'fixed top-0 z-20 flex h-[var(--nav-height)] w-full items-center border-b',
-		'border-b-neutral-200 bg-white',
-		'dark:border-b-neutral-900 dark:bg-neutral-950'
+		'fixed top-0 z-20 flex h-[var(--nav-height)] w-full items-center border-b backdrop-blur',
+		'border-b-neutral-200 bg-white/50',
+		'dark:border-b-neutral-900 dark:bg-neutral-950/80'
 	)}
 >
 	<div class="wrap flex items-center justify-between">
@@ -141,7 +141,9 @@
 			{/each}
 		</ul>
 	</aside>
-	<main class="min-w-0 border-l border-neutral-200 p-12 pr-0 dark:border-neutral-900">
+	<main
+		class="min-h-[calc(100vh-var(--nav-height))] min-w-0 border-l border-neutral-200 p-12 pr-0 dark:border-neutral-900"
+	>
 		{#if !hideEarlyDev}
 			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>
 				This package and docs are still under very early development. Expect things to be broken.

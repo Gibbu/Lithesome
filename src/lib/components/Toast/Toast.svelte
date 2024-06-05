@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { setupContext } from '$lib/internal/index.js';
+	import { setupContext } from '$internal';
 	import { ToastContext } from './context.svelte.js';
 
 	export const { context, contextName } = setupContext<ToastContext>();
 </script>
 
 <script lang="ts">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import type { ToastProps } from './types.js';
 	import { setContext } from 'svelte';
 

@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { setupContext } from '$lib/internal/index.js';
+	import { setupContext } from '$internal';
 	import { TabsContext } from './context.svelte.js';
 
 	export const { context, contextName } = setupContext<TabsContext>();
 </script>
 
 <script lang="ts">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import { setContext } from 'svelte';
 	import type { TabsProps } from './types.js';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, type PropsNoChildren } from '$lib/internal/index.js';
+	import { useActions, type PropsNoChildren } from '$internal';
 	import { cn } from '../utils.js';
 
 	interface Props extends PropsNoChildren<HTMLInputElement> {

@@ -1,4 +1,4 @@
-import { Context } from '$lib/internal/index.js';
+import { Context } from '$internal';
 
 export interface Item {
 	id: string;

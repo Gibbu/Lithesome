@@ -33,15 +33,15 @@ export interface SelectOptionProps extends Props<HTMLButtonElement, SelectOption
 	label?: string;
 	onClick?: Handler<MouseEvent, HTMLButtonElement>;
 	onFocus?: Handler<FocusEvent, HTMLButtonElement>;
-	onMouseenter?: Handler<MouseEvent, HTMLButtonElement>;
+	onMouseover?: Handler<MouseEvent, HTMLButtonElement>;
 }
 
 export interface SelectTriggerProps extends Props<HTMLDivElement, SelectState> {}
 
 interface SelectValueState {
-	placeholderVisibie: boolean;
+	placeholderVisible: boolean;
 }
-export interface SelectValueProps extends PropsNoChildren<HTMLSpanElement> {
+export interface SelectValueProps extends PropsNoChildren<HTMLSpanElement, SelectValueState> {
 	/** The fallback value of no option is selected. */
 	placeholder?: string;
 }

@@ -1,4 +1,4 @@
-import { isBrowser } from '$lib/internal/index.js';
+import { isBrowser } from '$internal';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Combobox.svelte';
-	import { classProp, FloatingContent } from '$lib/internal/index.js';
+	import { classProp, FloatingContent } from '$internal';
 	import type { ComboboxContentProps } from './types.js';
 
 	let {

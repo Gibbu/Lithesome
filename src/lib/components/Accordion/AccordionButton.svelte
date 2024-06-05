@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { useActions, classProp, type Handler } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import { getContext } from 'svelte';
 	import type { AccordionButtonProps } from './types.js';
 
@@ -12,7 +12,7 @@
 	const active = $derived(ctx.activeItems.includes(itemId));
 	const item = $derived(ctx.items.find((el) => el.id === itemId));
 
-	const handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
+	const handleClick: typeof onClick = (e) => {
 		onClick?.(e);
 		if (!item?.disabled) ctx.toggle(itemId);
 	};

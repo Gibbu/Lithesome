@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import type { SelectValueProps } from './types.js';
 
 	let {

@@ -105,3 +105,13 @@ export const parseDuration = (value: number | string): number => {
 	if (/(?=ms)(?!s)/.test(value)) return duration;
 	return duration * 1000;
 };
+
+/**
+ * Restrict a number value between 2 values.
+ * @param min The minimun value of the number.
+ * @param value The value to be clamped.
+ * @param max The maximum value of the number.
+ */
+export const clamp = (min: number, value: number, max: number) => {
+	return Math.max(min, Math.min(value, max));
+};

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Accordion.svelte';
-	import { useActions, getTransition, classProp } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp } from '$internal';
 	import { getContext } from 'svelte';
 	import type { AccordionContentProps } from './types.js';
 

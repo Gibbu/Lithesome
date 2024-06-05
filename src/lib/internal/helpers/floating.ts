@@ -7,7 +7,7 @@ import {
 	arrow as floatingArrow,
 	type Placement
 } from '@floating-ui/dom';
-import { defaultConfig, setNodeStyles, setNodeProps } from '$lib/internal/index.js';
+import { defaultConfig, setNodeStyles, setNodeProps } from '$internal';
 
 type AnchorElement = HTMLElement | undefined | null;
 

@@ -1,4 +1,4 @@
-import { calculateIndex, Context, effects, type JsonValue, type CalcIndexAction } from '$lib/internal/index.js';
+import { calculateIndex, Context, effects, type JsonValue, type CalcIndexAction } from '$internal';
 
 interface Item {
 	id: string;

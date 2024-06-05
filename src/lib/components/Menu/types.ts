@@ -1,6 +1,6 @@
 import type { Props, PropsNoChildren, ContentProps, Handler } from '$lib/internal/types.js';
 
-export type MenuItemElement = HTMLButtonElement | HTMLAnchorElement;
+type MenuItemElement = HTMLButtonElement | HTMLAnchorElement;
 
 interface MenuState {
 	/** Whether or not the content is opened or not. */

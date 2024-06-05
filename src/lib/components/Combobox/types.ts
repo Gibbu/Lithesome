@@ -49,5 +49,5 @@ export interface ComboboxOptionProps extends Props<ComboboxElement, ComboboxOpti
 	label?: string;
 	onClick?: Handler<MouseEvent, ComboboxElement>;
 	onFocus?: Handler<FocusEvent, ComboboxElement>;
-	onMouseenter?: Handler<MouseEvent, ComboboxElement>;
+	onMouseover?: Handler<MouseEvent, ComboboxElement>;
 }

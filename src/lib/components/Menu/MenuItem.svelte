@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { context } from './Menu.svelte';
-	import { useActions, classProp, type Handler } from '$lib/internal/index.js';
-	import { createUID } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
+	import { createUID } from '$internal';
 	import { onMount } from 'svelte';
-	import type { MenuItemProps, MenuItemElement } from './types.js';
+	import type { MenuItemProps } from './types.js';
 
 	let {
 		children,
@@ -31,17 +31,17 @@
 		};
 	});
 
-	const handleClick: Handler<MouseEvent, MenuItemElement> = (e) => {
+	const handleClick: typeof onClick = (e) => {
 		if (!disabled) {
 			ctx.close();
 			onClick?.(e);
 		}
 	};
-	const handleMouseover: Handler<MouseEvent, MenuItemElement> = (e) => {
+	const handleMouseover: typeof onMouseover = (e) => {
 		ctx.setHovered(uid());
 		onMouseover?.(e);
 	};
-	const handleFocus: Handler<FocusEvent, MenuItemElement> = (e) => {
+	const handleFocus: typeof onFocus = (e) => {
 		onFocus?.(e);
 	};
 </script>

@@ -1,7 +1,6 @@
 ---
 title: 'Toast'
 description: 'Display a temporary message.'
-badge: 'new'
 ---
 
 <script>

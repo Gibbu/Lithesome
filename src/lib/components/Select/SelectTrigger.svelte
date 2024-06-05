@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Select.svelte';
-	import { log, setNodeProps, removeNodeProps, addEventListeners, useActions, classProp } from '$lib/internal/index.js';
+	import { log, setNodeProps, removeNodeProps, addEventListeners, useActions, classProp } from '$internal';
 	import { onMount } from 'svelte';
 	import type { SelectTriggerProps } from './types.js';
 

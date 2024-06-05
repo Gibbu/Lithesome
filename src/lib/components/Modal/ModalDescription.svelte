@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import { context } from './Modal.svelte';
 	import type { ModalDescriptionProps } from './types.js';
 

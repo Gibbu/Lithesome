@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Props, useActions } from '$lib/internal/index.js';
+	import { type Props, useActions } from '$internal';
 	import { cn } from '../utils.js';
 
 	interface ComponentProps extends Props<HTMLButtonElement | HTMLAnchorElement> {

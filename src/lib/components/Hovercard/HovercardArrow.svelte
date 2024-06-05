@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Hovercard.svelte';
-	import { FloatingArrow } from '$lib/internal/index.js';
+	import { FloatingArrow } from '$internal';
 	import type { HovercardArrowProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), ...props }: HovercardArrowProps = $props();

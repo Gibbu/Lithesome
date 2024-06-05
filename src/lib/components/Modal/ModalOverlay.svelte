@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, getTransition, classProp } from '$lib/internal/index.js';
+	import { useActions, getTransition, classProp } from '$internal';
 	import { context } from './Modal.svelte';
 	import type { ModalOverlayProps } from './types.js';
 

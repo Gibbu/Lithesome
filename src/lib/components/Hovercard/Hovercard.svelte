@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { setupContext } from '$lib/internal/index.js';
+	import { setupContext } from '$internal';
 	import { HovercardContext } from './context.svelte.js';
 
 	export const { context, contextName } = setupContext<HovercardContext>();
 </script>
 
 <script lang="ts">
-	import { useActions, classProp, parseDelay } from '$lib/internal/index.js';
+	import { useActions, classProp, parseDelay } from '$internal';
 	import { setContext } from 'svelte';
 	import type { HovercardProps } from './types.js';
 

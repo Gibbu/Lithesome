@@ -9,7 +9,7 @@
 		classProp,
 		removeNodeProps,
 		type Handler
-	} from '$lib/internal/index.js';
+	} from '$internal';
 	import { onMount } from 'svelte';
 	import type { PopoverTriggerProps } from './types.js';
 

@@ -1,4 +1,4 @@
-import { disableScroll, Context, effects } from '$lib/internal/index.js';
+import { disableScroll, Context, effects } from '$internal';
 
 interface Init {
 	visible: boolean;

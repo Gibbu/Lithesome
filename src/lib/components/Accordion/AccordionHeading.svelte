@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import type { AccordionHeadingProps } from './types.js';
 
 	let { children, class: klass, use = [], level = 3, self = $bindable(), ...props }: AccordionHeadingProps = $props();

@@ -1,4 +1,4 @@
-import { log, Context, type CalcIndexAction, calculateIndex } from '$lib/internal/index.js';
+import { log, Context, type CalcIndexAction, calculateIndex } from '$internal';
 
 type Orientation = 'horizontal' | 'vertical';
 

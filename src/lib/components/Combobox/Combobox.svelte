@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { setupContext } from '$lib/internal/index.js';
+	import { setupContext } from '$internal';
 	import { ComboboxContext } from './context.svelte.js';
 
 	export const { context, contextName } = setupContext<ComboboxContext>();
 </script>
 
 <script lang="ts" generics="ValueType">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import { setContext, onMount, tick } from 'svelte';
 	import type { ComboboxProps } from './types.js';
 

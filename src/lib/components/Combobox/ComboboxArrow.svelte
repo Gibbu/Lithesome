@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Combobox.svelte';
-	import { FloatingArrow } from '$lib/internal/index.js';
+	import { FloatingArrow } from '$internal';
 	import type { ComboboxArrowProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), ...props }: ComboboxArrowProps = $props();

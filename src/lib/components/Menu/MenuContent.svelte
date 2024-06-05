@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Menu.svelte';
-	import { FloatingContent } from '$lib/internal/index.js';
+	import { FloatingContent } from '$internal';
 	import type { MenuContentProps } from './types.js';
 
 	let {

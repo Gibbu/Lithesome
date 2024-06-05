@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Pin.svelte';
-	import { log, useActions, createUID, KEYS, classProp, type Handler } from '$lib/internal/index.js';
+	import { log, useActions, createUID, KEYS, classProp } from '$internal';
 	import { onMount, tick } from 'svelte';
 	import type { PinInputProps } from './types.js';
 
@@ -27,7 +27,7 @@
 		ctx.register(uid());
 	});
 
-	const handleInput: Handler<Event, HTMLInputElement> = async (event) => {
+	const handleInput: typeof onInput = async (event) => {
 		onInput?.(event);
 		if (ctx.disabled) return;
 		const e = event as unknown as InputEvent & { target: HTMLInputElement };
@@ -43,7 +43,7 @@
 			return;
 		}
 	};
-	const handleKeyDown: Handler<KeyboardEvent, HTMLInputElement> = async (e) => {
+	const handleKeyDown: typeof onKeydown = async (e) => {
 		onKeydown?.(e);
 		if (ctx.disabled) return;
 		const { key } = e;
@@ -76,17 +76,17 @@
 			return;
 		}
 	};
-	const handleFocus: Handler<FocusEvent, HTMLInputElement> = (e) => {
+	const handleFocus: typeof onFocus = (e) => {
 		onFocus?.(e);
 		if (ctx.disabled) return;
 		focused = true;
 	};
-	const handleBlur: Handler<FocusEvent, HTMLInputElement> = (e) => {
+	const handleBlur: typeof onBlur = (e) => {
 		onBlur?.(e);
 		if (ctx.disabled) return;
 		focused = false;
 	};
-	const handlePaste: Handler<ClipboardEvent, HTMLInputElement> = (e) => {
+	const handlePaste: typeof onPaste = (e) => {
 		onPaste?.(e);
 
 		if (!e.clipboardData) return;

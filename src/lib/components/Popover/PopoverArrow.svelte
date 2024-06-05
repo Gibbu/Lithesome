@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { context } from './Popover.svelte';
-	import { FloatingArrow } from '$lib/internal/index.js';
+	import { FloatingArrow } from '$internal';
 	import type { PopoverArrowProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), ...props }: PopoverArrowProps = $props();

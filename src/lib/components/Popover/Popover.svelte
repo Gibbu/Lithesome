@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { setupContext } from '$lib/internal/index.js';
+	import { setupContext } from '$internal';
 	import { PopoverContext } from './context.svelte.js';
 
 	export const { context, contextName } = setupContext<PopoverContext>();
 </script>
 
 <script lang="ts">
-	import { useActions, KEYS, classProp } from '$lib/internal/index.js';
+	import { useActions, KEYS, classProp } from '$internal';
 	import { setContext } from 'svelte';
 	import type { PopoverProps } from './types.js';
 

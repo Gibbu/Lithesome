@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import { context } from './Toast.svelte';
 	import type { ToastTitleProps } from './types.js';
 

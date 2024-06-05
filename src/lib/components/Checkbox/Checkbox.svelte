@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, type Handler } from '$lib/internal/index.js';
+	import { useActions, classProp } from '$internal';
 	import type { CheckboxProps } from './types.js';
 
 	let {
@@ -14,7 +14,7 @@
 		...props
 	}: CheckboxProps = $props();
 
-	const handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
+	const handleClick: typeof onClick = (e) => {
 		onClick?.(e);
 		if (disabled) return;
 
