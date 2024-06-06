@@ -21,7 +21,6 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$internal: './src/lib/internal/index.js',
-			$lib: './src/lib/index.js',
 			$site: './src/site',
 			$ref: './src/site/ref'
 		}

@@ -4,7 +4,13 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
-### v0.13.1
+### v0.13.3
+
+<small>6th June, 2024</small>
+
+- Removed redundant path alias.
+
+### v0.13.2
 
 <small>6th June, 2024</small>
 
