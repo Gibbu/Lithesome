@@ -4,6 +4,12 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.13.4
+
+<small>6th June, 2024</small>
+
+- Added onChange event to RadioGroup
+
 ### v0.13.3
 
 <small>6th June, 2024</small>

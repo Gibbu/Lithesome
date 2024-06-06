@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-	import { createUID, useActions, KEYS, classProp } from '$internal';
+	import { useActions, KEYS, classProp } from '$internal';
 	import { usePortal } from '$lib/index.js';
 	import { setContext } from 'svelte';
 	import type { ModalProps } from './types.js';
@@ -21,7 +21,6 @@
 		...props
 	}: ModalProps = $props();
 
-	const { uid } = createUID('modal');
 	const ctx = new ModalContext({ visible });
 
 	setContext(contextName, ctx);
@@ -46,7 +45,7 @@
 		bind:this={self}
 		use:usePortal={portalTarget}
 		use:useActions={use}
-		id={uid()}
+		id={ctx.uid()}
 		class={classProp(klass)}
 		data-modal=""
 		{...props}

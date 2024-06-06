@@ -16,7 +16,8 @@
 		class: klass,
 		self = $bindable(),
 		value = $bindable(),
-		required,
+		required = $bindable(false),
+		onChange,
 		...props
 	}: RadioGroupProps = $props();
 
@@ -25,6 +26,7 @@
 		{
 			onChange(val) {
 				value = val;
+				onChange?.(val);
 			}
 		}
 	);

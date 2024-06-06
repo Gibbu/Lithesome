@@ -8,7 +8,7 @@ export class ModalContext extends Context {
 	visible = $state<boolean>(false);
 
 	constructor(init: Init) {
-		super('menu');
+		super('modal');
 
 		this.visible = init.visible;
 	}

@@ -5,6 +5,7 @@ export interface RadioGroupProps extends Props<HTMLDivElement> {
 	value: JsonValue;
 	/** Set aria attributes. */
 	required?: boolean;
+	onChange?: (value: JsonValue) => void;
 }
 
 interface RadioGroupItemState {
