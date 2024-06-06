@@ -123,3 +123,36 @@ This means you can no longer do `let:prop` on the component itself, but rather u
 ```
 
 > It's not the nicest looking, but it apparently solves a lot of issues internally for svelte itself.
+
+Since you'll be composing your own components from these, you'll likely come across a a snippet like this:
+
+```svelte
+<script>
+	import { SelectOption } from 'lithesome';
+
+	let { children, value } = $props();
+</script>
+
+<SelectOption>
+	{#snippet children({ selected })}
+		{@render children()}
+	{/snippet}
+</SelectOption>
+```
+
+In this example, svelte looks at the `#snippet children()` and renders that in the `@render` block, causing an infinite loop.  
+To get around this, rename your local `children` prop to something else:
+
+```svelte
+<script>
+	import { SelectOption } from 'lithesome';
+
+	let { children: inner, value } = $props();
+</script>
+
+<SelectOption>
+	{#snippet children({ selected })}
+		{@render inner()}
+	{/snippet}
+</SelectOption>
+```

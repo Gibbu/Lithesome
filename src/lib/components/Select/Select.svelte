@@ -26,6 +26,7 @@
 		{
 			onChange(val) {
 				value = val;
+				onChange?.(val);
 			}
 		}
 	);

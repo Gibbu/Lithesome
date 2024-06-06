@@ -7,7 +7,7 @@ interface SelectState {
 export interface SelectProps<T> extends Props<HTMLDivElement, SelectState> {
 	/** The value of select. */
 	value: T;
-	onChange?: (value: JsonValue) => void;
+	onChange?: (value: T) => void;
 }
 
 export interface SelectArrowProps extends PropsNoChildren<HTMLDivElement, SelectState> {}
