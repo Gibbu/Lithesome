@@ -1,4 +1,4 @@
-import type { Props } from '$lib/internal/types.js';
+import type { Props } from '$internal';
 
 export interface PortalProps extends Props<HTMLDivElement> {
 	/**

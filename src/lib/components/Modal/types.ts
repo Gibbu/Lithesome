@@ -1,5 +1,5 @@
 import type { Transition } from '$internal';
-import type { Props, PropsNoChildren } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren } from '$internal';
 
 export interface ModalProps extends Props<HTMLDivElement> {
 	/** Control the visibility of the modal. */

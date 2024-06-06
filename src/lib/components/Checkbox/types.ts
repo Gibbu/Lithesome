@@ -1,4 +1,4 @@
-import type { Handler, PropsMaybeChildren } from '$lib/internal/types.js';
+import type { Handler, PropsMaybeChildren } from '$internal';
 
 export type Checked = boolean | 'mixed';
 

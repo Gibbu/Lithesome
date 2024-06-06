@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$internal';
 
 export type ComboboxElement = HTMLAnchorElement | HTMLButtonElement;
 

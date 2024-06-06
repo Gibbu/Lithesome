@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps } from '$internal';
 
 interface PopoverState {
 	/** Whether or not the content is opened or not. */

@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps, Handler } from '$internal';
 
 type MenuItemElement = HTMLButtonElement | HTMLAnchorElement;
 

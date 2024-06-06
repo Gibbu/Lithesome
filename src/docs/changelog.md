@@ -4,6 +4,12 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.13.1
+
+<small>6th June, 2024</small>
+
+- Remapped internal paths
+
 ### v0.13.0
 
 <small>5th June, 2024</small>

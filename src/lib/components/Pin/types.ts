@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, Handler } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, Handler } from '$internal';
 
 interface PinState {
 	/** True if all inputs are filled out. */

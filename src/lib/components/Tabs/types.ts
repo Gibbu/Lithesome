@@ -1,4 +1,4 @@
-import type { Props, Handler } from '$lib/internal/types.js';
+import type { Props, Handler } from '$internal';
 
 interface TabsState {
 	/** The current active tab. */

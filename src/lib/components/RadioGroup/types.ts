@@ -1,4 +1,4 @@
-import type { Props, Handler, JsonValue } from '$lib/internal/types.js';
+import type { Props, Handler, JsonValue } from '$internal';
 
 export interface RadioGroupProps extends Props<HTMLDivElement> {
 	/** The value of the radiogroup. */

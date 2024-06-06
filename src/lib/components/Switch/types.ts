@@ -1,4 +1,4 @@
-import type { Handler, PropsMaybeChildren } from '$lib/internal/types.js';
+import type { Handler, PropsMaybeChildren } from '$internal';
 
 interface SwitchState {
 	/** If the Switch is checked or not. */

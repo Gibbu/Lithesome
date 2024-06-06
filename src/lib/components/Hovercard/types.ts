@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps, Handler } from '$internal';
 
 interface HovercardState {
 	/** Whether or not the content is opened or not. */

@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$lib/internal/types.js';
+import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$internal';
 
 interface SelectState {
 	/** Whether or not the content is opened or not. */
