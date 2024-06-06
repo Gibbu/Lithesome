@@ -9,8 +9,7 @@
 		type Props,
 		type ContentProps
 	} from '$internal';
-	import { useOutside } from '$lib/actions/outside.js';
-	import { usePortal } from '$lib/actions/portal.js';
+	import { useOutside, usePortal } from '$lib/index.js';
 
 	interface ComponentProps extends Props<HTMLDivElement>, ContentProps {
 		componentName: string;

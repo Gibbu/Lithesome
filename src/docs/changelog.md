@@ -8,7 +8,13 @@ hidden: true
 
 <small>6th June, 2024</small>
 
-- Remapped internal paths
+- Fixed FloatingContent importing.
+
+### v0.13.1
+
+<small>6th June, 2024</small>
+
+- Remapped internal paths.
 
 ### v0.13.0
 
