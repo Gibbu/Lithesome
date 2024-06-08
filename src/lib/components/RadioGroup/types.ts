@@ -2,7 +2,7 @@ import type { Props, Handler, JsonValue } from '$internal';
 
 export interface RadioGroupProps extends Props<HTMLDivElement> {
 	/** The value of the radiogroup. */
-	value: JsonValue;
+	value?: JsonValue;
 	/** Set aria attributes. */
 	required?: boolean;
 	onChange?: (value: JsonValue) => void;

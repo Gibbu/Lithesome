@@ -7,7 +7,7 @@ interface Item {
 }
 
 interface Init {
-	value: JsonValue;
+	value?: JsonValue;
 }
 
 interface Hooks {
@@ -19,8 +19,10 @@ export class RadiogroupContext extends Context<Hooks> {
 	value = $state<JsonValue>();
 	selectedIndex = $state<number>(-1);
 
-	selectedItem = $derived(
-		this.items[this.selectedIndex] || (this.items.length > 0 && this.items.find((el) => el.value === this.value))
+	selectedItem = $derived<Item | null>(
+		this.items[this.selectedIndex] ||
+			(this.items.length > 0 && this.items.find((el) => el.value === this.value)) ||
+			null
 	);
 
 	constructor(init: Init, hooks: Hooks) {
@@ -35,7 +37,7 @@ export class RadiogroupContext extends Context<Hooks> {
 	navigate(action: CalcIndexAction) {
 		this.selectedIndex = calculateIndex(action, this.items, this.selectedIndex);
 		(
-			document.querySelector(`[data-radiogroupitem][data-value="${this.selectedItem.value}"]`) as HTMLButtonElement
+			document.querySelector(`[data-radiogroupitem][data-value="${this.selectedItem?.value}"]`) as HTMLButtonElement
 		)?.focus();
 	}
 	setSelected(item: Item) {
@@ -44,7 +46,7 @@ export class RadiogroupContext extends Context<Hooks> {
 
 	#effects = effects(() => {
 		$effect(() => {
-			this.hooks?.onChange?.(this.selectedItem.value);
+			if (this.selectedItem) this.hooks?.onChange?.(this.selectedItem?.value);
 		});
 	});
 }

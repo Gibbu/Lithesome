@@ -8,7 +8,7 @@
 		{ value: 'toph', label: 'Greatest Earthbender Alive' }
 	];
 
-	let value = $state('aang');
+	let value = $state('');
 </script>
 
 <RadioGroup bind:value class="flex w-[70%] flex-col gap-2">

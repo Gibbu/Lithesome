@@ -4,6 +4,12 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.13.6
+
+<small>9th June, 2024</small>
+
+- Allowed for `RadioGroup` to not require a starting value.
+
 ### v0.13.5
 
 <small>6th June, 2024</small>

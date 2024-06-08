@@ -29,7 +29,7 @@
 			});
 	});
 
-	const checked = $derived(ctx.selectedItem.id === uid());
+	const checked = $derived(ctx.selectedItem?.id === uid());
 
 	const handleClick: typeof onClick = (e) => {
 		onClick?.(e);
@@ -62,7 +62,7 @@
 	role="radio"
 	{disabled}
 	aria-checked={checked}
-	tabindex={checked ? 0 : -1}
+	tabindex={!ctx.selectedItem && ctx.items[0] ? 0 : checked ? 0 : -1}
 	data-radiogroupitem=""
 	data-value={value}
 	data-checked={checked || undefined}
