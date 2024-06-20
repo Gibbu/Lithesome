@@ -4,6 +4,15 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.13.7
+
+<small>20th June, 2024</small>
+
+- Narrowed component props.  
+  This was done to reduce the autocomplete list size.
+  > All props are able to be passed down.
+- Exported `Placement` type from `@floating-ui/dom`.
+
 ### v0.13.6
 
 <small>9th June, 2024</small>

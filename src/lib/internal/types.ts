@@ -1,5 +1,4 @@
 import type { Snippet } from 'svelte';
-import type { HTMLAttributes } from 'svelte/elements';
 import type { HTMLActionArray, Transition } from './index.js';
 import type { Placement } from '@floating-ui/dom';
 
@@ -14,8 +13,7 @@ export type Optional<T, K extends keyof T> = Omit<T, K> & { [P in keyof T]?: T[P
 export type HandlerParam<E, T extends HTMLElement> = E & { currentTarget: EventTarget & T };
 export type Handler<E, T extends HTMLElement> = (e: HandlerParam<E, T>) => void;
 
-// @ts-ignore
-export interface Props<T extends HTMLElement, C extends Record<string, any> = any> extends HTMLAttributes<T> {
+export interface Props<T extends HTMLElement, C extends Record<string, any> = any> {
 	children: Snippet<[C]>;
 	/**
 	 * Any svelte actions you wish to pass to the underlying HTML element.
@@ -34,6 +32,7 @@ export interface Props<T extends HTMLElement, C extends Record<string, any> = an
 	 * Alias for `bind:this`, allowing for the binding of the element.
 	 */
 	self?: T;
+	[key: string]: any;
 }
 
 export type PropsNoChildren<T extends HTMLElement, C extends Record<string, any> = any> = Omit<Props<T, C>, 'children'>;

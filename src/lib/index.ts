@@ -17,3 +17,4 @@ export * from './components/Slider/index.js';
 export * from './actions/portal.js';
 export * from './actions/outside.js';
 export * from './actions/trap.js';
+export type { Placement } from '@floating-ui/dom';
