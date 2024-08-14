@@ -2,8 +2,7 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { Button, cn, isMobile, Banner, type DocsPageMeta } from '$site/index.js';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Github, Menu, Moon, Sun } from '@steeze-ui/lucide-icons';
+	import { GithubIcon, MenuIcon, MoonIcon, SunIcon } from 'lucide-svelte';
 	import { disableScroll, isBrowser } from '$internal';
 	import { afterNavigate } from '$app/navigation';
 
@@ -83,7 +82,7 @@
 		<div class="flex items-center">
 			{#if isMobile}
 				<Button variant="text" onclick={() => (mobileSidebar = !mobileSidebar)}>
-					<Icon src={Menu} class="size-5 text-black dark:text-white" />
+					<MenuIcon class="size-5 text-black dark:text-white" />
 				</Button>
 			{/if}
 			<a
@@ -101,7 +100,7 @@
 				rel="noopener noreferrer"
 				class="flex-centre h-12 w-12 rounded-xl hover:bg-neutral-100 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
 			>
-				<Icon src={Github} class="h-6 w-6" />
+				<GithubIcon class="size-6" />
 			</a>
 			<button
 				type="button"
@@ -109,9 +108,9 @@
 				class="flex-centre h-12 w-12 rounded-xl hover:bg-neutral-100 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
 			>
 				{#if theme === 'dark'}
-					<Icon src={Sun} class="h-6 w-6" />
+					<SunIcon class="size-6" />
 				{:else}
-					<Icon src={Moon} class="h-6 w-6" />
+					<MoonIcon class="size-6" />
 				{/if}
 			</button>
 		</div>

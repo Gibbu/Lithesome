@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { context } from './Accordion.svelte';
-	import { log, useActions, createUID, classProp } from '$internal';
-	import { onMount, setContext } from 'svelte';
+	import { createAccordionItemContext } from './main.svelte.js';
+	import { useActions, classProp } from '$internal';
 
 	import type { AccordionItemProps } from './types.js';
 
@@ -14,33 +13,18 @@
 		...props
 	}: AccordionItemProps = $props();
 
-	const ctx = context();
-	const { uid } = createUID('item');
-	const active = $derived(ctx.activeItems.includes(uid()));
-
-	setContext('accordionitem-id', uid());
-
-	onMount(() => {
-		if (!ctx) log.error('<AccordionItem /> must be a direct child of <Accordion />');
-		ctx.register({
-			id: uid(),
-			disabled
-		});
+	const ctx = createAccordionItemContext({
+		disabled,
+		onContextChange(props) {
+			disabled = props.disabled;
+		}
 	});
+
 	$effect(() => {
-		ctx.setDisabled(uid(), disabled);
+		ctx.onComponentChange({ disabled });
 	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={uid()}
-	class={classProp(klass, { active, disabled })}
-	data-accordionitem=""
-	data-disabled={disabled || undefined}
-	data-state={active ? 'opened' : 'closed'}
-	{...props}
->
-	{@render children({ active, disabled })}
+<div bind:this={self} use:useActions={use} {...ctx.attrs} class={classProp(klass, ctx.state)} {...props}>
+	{@render children(ctx.state)}
 </div>

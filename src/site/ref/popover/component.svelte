@@ -2,8 +2,7 @@
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/index.js';
 	import { Button, cn } from '$site/index.js';
 	import { scale } from 'svelte/transition';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { HelpCircle, BookTemplate, KeyRound } from '@steeze-ui/lucide-icons';
+	import { HelpCircleIcon, BookTemplateIcon, KeyRoundIcon } from 'lucide-svelte';
 
 	let visible = $state(false);
 
@@ -11,13 +10,15 @@
 		{
 			name: 'Information',
 			children: [
-				{ title: 'Help Centre', text: 'Check out our FAQs or ask a real human!', icon: HelpCircle },
-				{ title: 'Templates', text: 'Setup your app in an instant!', icon: BookTemplate }
+				{ title: 'Help Centre', text: 'Check out our FAQs or ask a real human!', icon: HelpCircleIcon },
+				{ title: 'Templates', text: 'Setup your app in an instant!', icon: BookTemplateIcon }
 			]
 		},
 		{
 			name: 'Tools',
-			children: [{ title: 'Token Generator', text: 'Whip up a quick token to use in your next app.', icon: KeyRound }]
+			children: [
+				{ title: 'Token Generator', text: 'Whip up a quick token to use in your next app.', icon: KeyRoundIcon }
+			]
 		}
 	];
 </script>
@@ -44,7 +45,7 @@
 						class="focusOutline flex w-full items-center gap-4 rounded-md p-4 text-left hover:bg-black/[0.035] dark:hover:bg-white/5"
 						onclick={() => (visible = false)}
 					>
-						<Icon src={tool.icon} class="h-8 w-8" />
+						<svelte:component this={tool.icon} class="h-8 w-8" />
 						<div>
 							<p class="font-semibold text-neutral-800 dark:text-white">{tool.title}</p>
 							<p class="text-sm text-neutral-500 dark:text-neutral-400">{tool.text}</p>

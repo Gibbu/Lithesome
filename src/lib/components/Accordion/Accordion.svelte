@@ -1,41 +1,32 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { AccordionContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<AccordionContext>();
-</script>
-
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
-	import { setContext } from 'svelte';
 	import type { AccordionProps } from './types.js';
+	import { createAccordionRootContext } from './main.svelte.js';
 
 	let {
 		children,
 		use = [],
 		class: klass,
+		value = $bindable(),
 		self = $bindable(),
 		single = $bindable(false),
 		...props
 	}: AccordionProps = $props();
 
-	const ctx = new AccordionContext({ single });
-	const active = $derived(ctx.activeItems.length > 0);
-
-	setContext(contextName, ctx);
+	const ctx = createAccordionRootContext({
+		single,
+		value,
+		onContextChange(props) {
+			single = props.single;
+			value = props.value;
+		}
+	});
 
 	$effect(() => {
-		ctx.single = single;
+		ctx.onComponentChange({ single });
 	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid()}
-	class={classProp(klass, { active })}
-	data-accordion=""
-	{...props}
->
-	{@render children({ active })}
+<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
+	{@render children({})}
 </div>

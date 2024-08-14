@@ -1,5 +1,33 @@
+import { log } from './log.js';
 import { createUID, type UID } from './utils.svelte.js';
-import { onDestroy, getContext, onMount } from 'svelte';
+import { onDestroy, getContext, setContext, hasContext } from 'svelte';
+
+import type { Class, RootClass } from '../types.js';
+
+export const buildContext = <RC>(rootClass: Class<RC>) => {
+	const { uid } = createUID('context');
+
+	return {
+		createContext(...rest: any[]) {
+			const root = new rootClass(...rest);
+
+			return setContext(uid(), root);
+		},
+		getContext() {
+			return getContext(uid()) as RC;
+		},
+		register<C>(klass: Class<C>, ...rest: any[]) {
+			if (!hasContext(uid()))
+				throw log.error(`<${klass.name} /> is not placed inside the correct context of <${rootClass.name} />`);
+
+			const root = getContext(uid()) as RootClass;
+
+			return root.createChild(klass, ...rest);
+		}
+	};
+};
+
+// TODO: Remove below after rewrite.
 
 export class Context<H = any> {
 	public uid = $state<UID>()!;

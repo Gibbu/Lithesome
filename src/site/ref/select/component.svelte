@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Select, SelectContent, SelectOption, SelectTrigger, SelectValue } from '$lib/index.js';
 	import { Button, cn } from '$site/index.js';
-	import { Check, ChevronDown } from '@steeze-ui/lucide-icons';
-	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CheckIcon, ChevronDownIcon } from 'lucide-svelte';
 	import { scale } from 'svelte/transition';
 
 	let { multiple = false }: { multiple: boolean } = $props();
@@ -23,7 +22,7 @@
 	<SelectTrigger>
 		<Button variant="primary" class="w-[250px] max-w-[250px] justify-start truncate text-left">
 			<SelectValue placeholder="Select an option..." class="flex-1 truncate" />
-			<Icon src={ChevronDown} class="h-6 w-6" />
+			<ChevronDownIcon class="size-6" />
 		</Button>
 	</SelectTrigger>
 	<SelectContent
@@ -50,7 +49,7 @@
 				{#snippet children({ selected })}
 					<div class="flex-1 text-left">{label}</div>
 					{#if selected}
-						<Icon src={Check} class="h-4 w-4" />
+						<CheckIcon class="size-4" />
 					{/if}
 				{/snippet}
 			</SelectOption>

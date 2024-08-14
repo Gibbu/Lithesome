@@ -32,16 +32,32 @@ export const calculateIndex = (action: CalcIndexAction, items: any[], index: num
  */
 export const createUID = (namespace: string) => {
 	const UID_SET = 'qwertyuiopasdfghjklzxcvbnm1234567890_-';
-	const uid = '123456'
-		.split('')
-		.map(() => UID_SET.charAt(Math.floor(38 * Math.random())))
-		.join('');
+
+	let uid: string = '';
+
+	for (let i = 0; i < 5; i++) {
+		uid += UID_SET.charAt(Math.floor(UID_SET.length * Math.random()));
+	}
 
 	return {
 		uid: (component?: string) => {
 			const id = `${namespace}-${uid}`;
 			return component ? `${id}-${component}` : id;
 		}
+	};
+};
+export const uid = (namespace: string) => {
+	const UID_SET = 'qwertyuiopasdfghjklzxcvbnm1234567890_-';
+
+	let uid: string = '';
+
+	for (let i = 0; i < 5; i++) {
+		uid += UID_SET.charAt(Math.floor(UID_SET.length * Math.random()));
+	}
+
+	return (component?: string) => {
+		const id = `${namespace}-${uid}`;
+		return component ? `${id}-${component}` : id;
 	};
 };
 

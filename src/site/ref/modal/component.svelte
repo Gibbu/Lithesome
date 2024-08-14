@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Modal, ModalContent, ModalDescription, ModalOverlay, ModalTitle } from '$lib/index.js';
 	import { Button, Input } from '$site/index.js';
-	import { X } from '@steeze-ui/lucide-icons';
-	import { Icon } from '@steeze-ui/svelte-icon';
+	import { XIcon } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';
 
 	let visible = $state(false);
@@ -85,7 +84,7 @@
 			class="focusOutline absolute right-6 top-6 rounded-md p-2 hover:bg-black/10 dark:hover:bg-white/10"
 			onclick={() => (visible = false)}
 		>
-			<Icon src={X} class="h-6 w-6" />
+			<XIcon class="size-6" />
 		</button>
 	</ModalContent>
 </Modal>

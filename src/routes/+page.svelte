@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button, cn, copy } from '$site/index.js';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Copy, Check } from '@steeze-ui/lucide-icons';
+	import { CheckIcon, CopyIcon } from 'lucide-svelte';
 	import { version } from '$app/environment';
 
 	let copied = $state(false);
@@ -31,7 +30,7 @@
 		<Button variant="primary" size="lg" href="/docs" class="w-full md:w-auto">Get Started</Button>
 		<Button variant="secondary" size="lg" use={[[copy, { on: 'click', onSuccess: copySuccess }]]}>
 			npm install -D lithesome
-			<Icon src={copied ? Check : Copy} class="h-5 w-5" />
+			<svelte:component this={copied ? CheckIcon : CopyIcon} />
 		</Button>
 	</div>
 </div>

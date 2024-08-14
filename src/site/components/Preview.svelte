@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { type SvelteComponent } from 'svelte';
+	import { onDestroy, type SvelteComponent } from 'svelte';
 	import { cn } from '../utils.js';
-	import { getHighlighter } from 'shiki';
+	import { getSingletonHighlighter } from 'shiki';
 	import { Tabs, TabsList, TabsButton, TabsContent } from '$lib/index.js';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Eye, Code } from '@steeze-ui/lucide-icons';
+	import { EyeIcon, CodeIcon } from 'lucide-svelte';
 
 	interface Props {
 		component: typeof SvelteComponent<any, any, any>;
@@ -15,7 +14,7 @@
 
 	let { component, props, code, class: klass }: Props = $props();
 
-	const getHighlight = getHighlighter({
+	const getHighlight = getSingletonHighlighter({
 		themes: ['github-dark', 'github-light'],
 		langs: ['javascript', 'typescript', 'svelte', 'css', 'text']
 	});
@@ -40,7 +39,7 @@
 			class={({ active }) => cn('flex-centre relative p-2', active ? 'text-black dark:text-white' : '')}
 		>
 			{#snippet children({ active })}
-				<Icon src={Eye} class="size-6" />
+				<EyeIcon class="size-6" />
 				{#if active}
 					{@render pill()}
 				{/if}
@@ -51,7 +50,7 @@
 			class={({ active }) => cn('flex-centre relative p-2', active ? 'text-black dark:text-white' : '')}
 		>
 			{#snippet children({ active })}
-				<Icon src={Code} class="size-6" />
+				<CodeIcon class="size-6" />
 				{#if active}
 					{@render pill()}
 				{/if}

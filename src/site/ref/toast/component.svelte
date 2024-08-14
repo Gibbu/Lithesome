@@ -3,8 +3,7 @@
 	import { Button, cn } from '$site/index.js';
 	import { scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { X, XCircle, CheckCircle, AlertCircle, Info, Star } from '@steeze-ui/lucide-icons';
+	import { XIcon, XCircleIcon, CheckCircleIcon, AlertCircleIcon, InfoIcon, StarIcon } from 'lucide-svelte';
 	import type { ToastType } from '$lib/index.js';
 
 	const types = [
@@ -14,7 +13,7 @@
 				title: 'Profile updated.',
 				message: 'Your profile details have been updated.'
 			},
-			icon: CheckCircle,
+			icon: CheckCircleIcon,
 			colour: 'text-emerald-500'
 		},
 		{
@@ -23,7 +22,7 @@
 				title: 'Content removed.',
 				message: 'This content is no longer available.'
 			},
-			icon: AlertCircle,
+			icon: AlertCircleIcon,
 			colour: 'text-yellow-500'
 		},
 		{
@@ -32,7 +31,7 @@
 				title: 'Validation errors.',
 				message: 'The form has errors that are required to be amended.'
 			},
-			icon: XCircle,
+			icon: XCircleIcon,
 			colour: 'text-red-500'
 		},
 		{
@@ -41,7 +40,7 @@
 				title: 'New update.',
 				message: `We've dropped a new updated, check it out.`
 			},
-			icon: Star,
+			icon: StarIcon,
 			colour: 'text-blue-500'
 		},
 		{
@@ -50,7 +49,7 @@
 				title: 'Quick tip.',
 				message: `You can press M1 to oingo boingo.`
 			},
-			icon: Info,
+			icon: InfoIcon,
 			colour: 'text-neutral-500'
 		}
 	];
@@ -84,7 +83,7 @@
 				<Toast
 					class="dark:highlight group pointer-events-auto relative flex items-center gap-4 rounded-md bg-white px-5 py-4 shadow-lg dark:bg-neutral-900"
 				>
-					<Icon src={icon} class="size-6 {colour}" />
+					<svelte:component this={icon} class="size-6 {colour}" />
 					<div>
 						<ToastTitle class="font-semibold text-black dark:text-white">{toast.config.title}</ToastTitle>
 						<ToastMessage class="mt-2 text-sm">{toast.config.message}</ToastMessage>
@@ -97,7 +96,7 @@
 							)}
 							onclick={() => toaster.removeById(toast.id)}
 						>
-							<Icon src={X} class="size-3.5" />
+							<XIcon class="size-3.5" />
 						</button>
 					</div>
 				</Toast>
