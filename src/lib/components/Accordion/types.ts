@@ -27,9 +27,7 @@ interface AccordionButtonState {
 	/** True if the item is disabled. */
 	disabled: boolean;
 }
-export interface AccordionButtonProps extends Props<HTMLButtonElement, AccordionButtonState> {
-	onClick?: Handler<MouseEvent, HTMLButtonElement>;
-}
+export interface AccordionButtonProps extends Props<HTMLButtonElement, AccordionButtonState> {}
 
 interface AccordionItemState {
 	/** True if the item is opened. */

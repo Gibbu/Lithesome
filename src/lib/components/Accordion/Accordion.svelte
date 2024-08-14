@@ -23,7 +23,7 @@
 	});
 
 	$effect(() => {
-		ctx.onComponentChange({ single });
+		ctx.onComponentChange({ single, value });
 	});
 </script>
 

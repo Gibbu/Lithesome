@@ -1,5 +1,5 @@
 import { buildContext, createUID, type Handler, type RootEvents, type RootClass } from '$internal';
-import { type AccordionHeadingProps, type AccordionButtonProps } from './types.js';
+import { type AccordionHeadingProps } from './types.js';
 
 interface Item {
 	id: string;
@@ -29,7 +29,7 @@ class AccordionRootState implements RootClass {
 	}
 	onComponentChange(props: AccordionRootStateProps) {
 		this.single = props.single;
-		this.value;
+		this.value = props.value;
 	}
 
 	toggleActiveItem(itemId: string) {
@@ -103,9 +103,6 @@ class AccordionHeadingState {
 
 	constructor(root: AccordionRootState, props: AccordionHeadingStateProps) {
 		this.root = root;
-		this.level = props.level;
-	}
-	onComponentChange(props: AccordionHeadingStateProps) {
 		this.level = props.level;
 	}
 
