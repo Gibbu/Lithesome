@@ -1,14 +1,7 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { TabsContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<TabsContext>();
-</script>
-
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
-	import { setContext } from 'svelte';
 	import type { TabsProps } from './types.js';
+	import { createRootContext } from './main.svelte.js';
 
 	let {
 		children,
@@ -20,26 +13,19 @@
 		...props
 	}: TabsProps = $props();
 
-	const ctx = new TabsContext({
+	const ctx = createRootContext({
+		value,
 		orientation,
-		value
+		onContextChange(props) {
+			value = props.value;
+		}
 	});
-	setContext(contextName, ctx);
 
 	$effect(() => {
-		ctx.orientation = orientation;
+		ctx.onComponentChange({ value, orientation });
 	});
 </script>
 
-<div
-	bind:this={self}
-	id={ctx.uid()}
-	use:useActions={use}
-	class={classProp(klass, { tab: ctx.activeTab })}
-	data-tabs=""
-	data-orientation={orientation}
-	data-active={ctx.activeTab}
-	{...props}
->
-	{@render children({ tab: ctx.activeTab })}
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children(ctx.state)}
 </div>

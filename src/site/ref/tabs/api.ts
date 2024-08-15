@@ -108,6 +108,10 @@ const content: APIReference = {
 			value: `'active' | 'inactive'`
 		},
 		{
+			name: 'hidden',
+			value: `'true' | 'false'`
+		},
+		{
 			name: 'value',
 			value: '——',
 			description: 'The value of the button, passed through the prop.'

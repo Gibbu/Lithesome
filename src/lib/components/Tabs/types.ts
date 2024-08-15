@@ -1,4 +1,6 @@
-import type { Props, Handler } from '$internal';
+import type { Props } from '$internal';
+
+export type Orientation = 'vertical' | 'horizontal';
 
 interface TabsState {
 	/** The current active tab. */
@@ -6,7 +8,7 @@ interface TabsState {
 }
 export interface TabsProps extends Props<HTMLDivElement, TabsState> {
 	/** The direction of the tabs. */
-	orientation?: 'vertical' | 'horizontal';
+	orientation?: Orientation;
 	/**
 	 * The default selected tab.
 	 *
@@ -28,8 +30,6 @@ export interface TabsButtonProps extends Props<HTMLButtonElement, TabsButtonStat
 	value: string;
 	/** Disables the button, disallowing clicking and keyboard navigation. */
 	disabled?: boolean;
-	onClick?: Handler<MouseEvent, HTMLButtonElement>;
-	onKeydown?: Handler<KeyboardEvent, HTMLButtonElement>;
 }
 
 export interface TabsContentProps extends Props<HTMLDivElement, TabsButtonState> {

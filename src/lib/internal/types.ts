@@ -19,12 +19,6 @@ export interface RootEvents<T extends Record<string, any>> {
 
 export type Class<T> = new (...args: any[]) => T;
 
-export interface RootClass {
-	uid: UID;
-
-	createChild<C>(klass: Class<C>, ...rest: any[]): C;
-}
-
 export interface Props<T extends HTMLElement, C extends Record<string, any> = any> {
 	children: Snippet<[C]>;
 	/**

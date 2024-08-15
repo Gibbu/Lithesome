@@ -1,5 +1,5 @@
-import { buildContext, createUID, type Handler, type RootEvents, type RootClass } from '$internal';
-import { type AccordionHeadingProps } from './types.js';
+import { buildContext, createUID, type Handler, type RootEvents } from '$internal';
+import type { AccordionHeadingProps } from './types.js';
 
 interface Item {
 	id: string;
@@ -14,7 +14,7 @@ interface AccordionRootStateProps extends RootEvents<AccordionRootStateProps> {
 	single: boolean;
 	value?: string;
 }
-class AccordionRootState implements RootClass {
+class AccordionRootState {
 	uid = createUID('accordion').uid;
 	value = $state<string | undefined>(undefined);
 	items = $state<Item[]>([]);
@@ -41,14 +41,13 @@ class AccordionRootState implements RootClass {
 		}
 	}
 
-	createChild: RootClass['createChild'] = (klass, ...rest) => {
-		return new klass(this, ...rest);
-	};
-
-	attrs = $derived.by(() => ({
-		id: this.uid(),
-		'data-accordion': ''
-	}));
+	attrs = $derived.by(
+		() =>
+			({
+				id: this.uid(),
+				'data-accordion': ''
+			}) as const
+	);
 }
 
 //
@@ -58,7 +57,7 @@ class AccordionRootState implements RootClass {
 interface AccordionItemStateProps extends RootEvents<AccordionItemStateProps> {
 	disabled: boolean;
 }
-class AccordionItemState implements RootClass {
+class AccordionItemState {
 	uid = createUID('item').uid;
 	disabled = $state<boolean>(false);
 	root: AccordionRootState;
@@ -75,15 +74,14 @@ class AccordionItemState implements RootClass {
 		this.disabled = props.disabled;
 	}
 
-	createChild: RootClass['createChild'] = (klass, ...rest) => {
-		return new klass(this, ...rest);
-	};
-
-	attrs = $derived.by(() => ({
-		'data-accordionitem': '',
-		'data-disabled': this.disabled,
-		'data-state': this.Active ? 'opened' : 'closed'
-	}));
+	attrs = $derived.by(
+		() =>
+			({
+				'data-accordionitem': '',
+				'data-disabled': this.disabled,
+				'data-state': this.Active ? 'opened' : 'closed'
+			}) as const
+	);
 	state = $derived.by(() => ({
 		active: this.Active,
 		disabled: this.disabled
@@ -124,6 +122,7 @@ class AccordionButtonState {
 	constructor(item: AccordionItemState, root: AccordionRootState) {
 		this.root = root;
 		this.item = item;
+		console.log(this.root, this.item);
 	}
 
 	#handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
@@ -132,15 +131,18 @@ class AccordionButtonState {
 		this.root.toggleActiveItem(this.item.uid());
 	};
 
-	attrs = $derived.by(() => ({
-		'aria-expanded': this.item.Active,
-		'aria-disabled': this.item.disabled,
-		'aria-controls': this.item.Active ? this.root.uid('content') : undefined,
-		tabindex: this.item.disabled ? -1 : 0,
-		'data-accordionbutton': '',
-		'data-active': this.item.Active || undefined,
-		onclick: this.#handleClick
-	}));
+	attrs = $derived.by(
+		() =>
+			({
+				'aria-expanded': this.item.Active,
+				'aria-disabled': this.item.disabled,
+				'aria-controls': this.item.Active ? this.root.uid('content') : undefined,
+				tabindex: this.item.disabled ? -1 : 0,
+				'data-accordionbutton': '',
+				'data-active': this.item.Active || undefined,
+				onclick: this.#handleClick
+			}) as const
+	);
 	state = $derived.by(() => ({
 		active: this.item.Active,
 		disabled: this.item.disabled
@@ -182,8 +184,7 @@ export const createAccordionRootContext = (props: AccordionRootStateProps) => {
 	return rootContext.createContext(props);
 };
 export const createAccordionItemContext = (props: AccordionItemStateProps) => {
-	const root = rootContext.getContext();
-	return itemContext.createContext(root, props);
+	return itemContext.createContext(rootContext.getContext(), props);
 };
 export const useAccordionHeading = (props: AccordionHeadingStateProps) => {
 	return rootContext.register(AccordionHeadingState, props);

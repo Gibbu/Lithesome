@@ -46,20 +46,6 @@ export const createUID = (namespace: string) => {
 		}
 	};
 };
-export const uid = (namespace: string) => {
-	const UID_SET = 'qwertyuiopasdfghjklzxcvbnm1234567890_-';
-
-	let uid: string = '';
-
-	for (let i = 0; i < 5; i++) {
-		uid += UID_SET.charAt(Math.floor(UID_SET.length * Math.random()));
-	}
-
-	return (component?: string) => {
-		const id = `${namespace}-${uid}`;
-		return component ? `${id}-${component}` : id;
-	};
-};
 
 /**
  * Removes any "invalid" values from the given value.
@@ -130,4 +116,19 @@ export const parseDuration = (value: number | string): number => {
  */
 export const clamp = (min: number, value: number, max: number) => {
 	return Math.max(min, Math.min(value, max));
+};
+
+/**
+ * Convers an object to a string.
+ * @param obj The object to be converted to a string
+ */
+export const styleObjToString = (obj: Record<string, any>) => {
+	const css = $derived(
+		Object.entries(obj)
+			.filter(Boolean)
+			.map(([key, value]) => `${key}: ${value}`)
+			.join(';')
+	);
+
+	return css;
 };

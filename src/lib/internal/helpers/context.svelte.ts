@@ -2,7 +2,9 @@ import { log } from './log.js';
 import { createUID, type UID } from './utils.svelte.js';
 import { onDestroy, getContext, setContext, hasContext } from 'svelte';
 
-import type { Class, RootClass } from '../types.js';
+import type { Class } from '../types.js';
+
+const componentName = (name: string) => `<${name.replace('State', '')} />`;
 
 export const buildContext = <RC>(rootClass: Class<RC>) => {
 	const { uid } = createUID('context');
@@ -18,11 +20,13 @@ export const buildContext = <RC>(rootClass: Class<RC>) => {
 		},
 		register<C>(klass: Class<C>, ...rest: any[]) {
 			if (!hasContext(uid()))
-				throw log.error(`<${klass.name} /> is not placed inside the correct context of <${rootClass.name} />`);
+				throw log.error(
+					`${componentName(klass.name)} is not placed inside the correct context of ${componentName(rootClass.name)}`
+				);
 
-			const root = getContext(uid()) as RootClass;
+			const root = getContext(uid()) as RC;
 
-			return root.createChild(klass, ...rest);
+			return new klass(root, ...rest);
 		}
 	};
 };
