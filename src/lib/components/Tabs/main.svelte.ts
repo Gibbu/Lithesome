@@ -24,7 +24,7 @@ interface TabsRootStateProps extends RootEvents<TabsRootStateProps> {
 
 class TabsRootState {
 	uid = createUID('tabs').uid;
-	value = $state<string>();
+	value = $state<string>('');
 	tabs = $state<string[]>([]);
 	index = $state<number>(0);
 	orientation = $state<Orientation>('horizontal');
@@ -35,7 +35,9 @@ class TabsRootState {
 		this.value = props.value;
 		this.orientation = props.orientation;
 
-		props.onContextChange?.({ value: this.value, orientation: this.orientation });
+		$effect(() => {
+			props.onContextChange?.({ value: this.value, orientation: this.orientation });
+		});
 	}
 	onComponentChange(props: TabsRootStateProps) {
 		this.value = props.value;
@@ -108,7 +110,9 @@ class TabsButtonState {
 
 		this.root.tabs.push(props.value);
 
-		props.onContextChange?.({ value: this.value, disabled: this.disabled });
+		$effect(() => {
+			props.onContextChange?.({ value: this.value, disabled: this.disabled });
+		});
 	}
 	onComponentChange(props: TabsButtonStateProps) {
 		this.disabled = props.disabled;
@@ -161,7 +165,7 @@ class TabsButtonState {
 //
 // Content
 //
-interface TabsContentStateProps extends RootEvents<TabsContentStateProps> {
+interface TabsContentStateProps {
 	value: string;
 }
 class TabsContentState {
@@ -198,7 +202,6 @@ class TabsContentState {
 //
 // Builders
 //
-
 const rootContext = buildContext(TabsRootState);
 
 export const createRootContext = (props: TabsRootStateProps) => {

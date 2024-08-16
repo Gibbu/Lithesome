@@ -9,7 +9,6 @@ interface Item {
 //
 // Root
 //
-
 interface AccordionRootStateProps extends RootEvents<AccordionRootStateProps> {
 	single: boolean;
 	value?: string;
@@ -25,7 +24,9 @@ class AccordionRootState {
 		this.single = props.single;
 		this.value = props.value;
 
-		props.onContextChange?.({ single: this.single, value: this.value });
+		$effect(() => {
+			props.onContextChange?.({ single: this.single, value: this.value });
+		});
 	}
 	onComponentChange(props: AccordionRootStateProps) {
 		this.single = props.single;
@@ -53,7 +54,6 @@ class AccordionRootState {
 //
 // Item
 //
-
 interface AccordionItemStateProps extends RootEvents<AccordionItemStateProps> {
 	disabled: boolean;
 }
@@ -91,7 +91,6 @@ class AccordionItemState {
 //
 // Heading
 //
-
 interface AccordionHeadingStateProps extends RootEvents<AccordionHeadingStateProps> {
 	level: AccordionHeadingProps['level'];
 }
@@ -114,7 +113,6 @@ class AccordionHeadingState {
 //
 // Button
 //
-
 class AccordionButtonState {
 	root: AccordionRootState;
 	item: AccordionItemState;
@@ -152,7 +150,6 @@ class AccordionButtonState {
 //
 // Content
 //
-
 class AccordionContentState {
 	item: AccordionItemState;
 	root: AccordionRootState;
@@ -176,7 +173,6 @@ class AccordionContentState {
 //
 // Builders
 //
-
 const rootContext = buildContext(AccordionRootState);
 const itemContext = buildContext(AccordionItemState);
 
