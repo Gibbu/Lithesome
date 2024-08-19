@@ -5,9 +5,8 @@ import {
 	KEYS,
 	removeDisabledElements,
 	type CalcIndexAction,
-	type Handler,
 	type JsonValue,
-	type RootEvents,
+	type ContextChange,
 	type UID
 } from '$internal';
 
@@ -20,11 +19,11 @@ interface Item {
 //
 // Root
 //
-interface RadioGroupRootStateProps extends RootEvents<RadioGroupRootStateProps> {
+interface RadioGroupRootProps {
 	value: JsonValue;
 	required: boolean;
 }
-class RadioGroupRootState {
+class RadioGroupRoot {
 	uid: UID = createUID('radiogroup').uid;
 	items = $state<string[]>([]);
 	index = $state<number>(-1);
@@ -38,22 +37,22 @@ class RadioGroupRootState {
 		return elements[this.index];
 	});
 
-	constructor(props: RadioGroupRootStateProps) {
+	constructor(props: ContextChange<RadioGroupRootProps>) {
 		this.value = props.value;
 
 		$effect(() => {
-			props.onContextChange?.({ value: this.value, required: this.required });
+			props.onContextChange({ value: this.value, required: this.required });
 		});
 	}
-	onComponentChange(props: RadioGroupRootStateProps) {
+	onComponentChange = (props: RadioGroupRootProps) => {
 		this.value = props.value;
 		this.required = props.required;
-	}
+	};
 
-	queryElements() {
+	queryElements = () => {
 		return removeDisabledElements(`[data-radiogroup][id="${this.uid()}"] [data-radiogroupitem]`);
-	}
-	navigate(action: CalcIndexAction) {
+	};
+	navigate = (action: CalcIndexAction) => {
 		const elements = this.queryElements();
 		if (!elements) return;
 
@@ -64,8 +63,8 @@ class RadioGroupRootState {
 
 		this.value = element.dataset.value!;
 		this.SelectedItem?.focus();
-	}
-	setSelected(item: Item) {
+	};
+	setSelected = (item: Item) => {
 		if (item.disabled) return;
 
 		const elements = this.queryElements();
@@ -73,7 +72,7 @@ class RadioGroupRootState {
 
 		this.index = elements.findIndex((el) => el.dataset.value === item.value);
 		this.value = item.value;
-	}
+	};
 
 	attrs = $derived.by(
 		() =>
@@ -89,33 +88,35 @@ class RadioGroupRootState {
 //
 // Item
 //
-interface RadioGroupItemStateProps extends RootEvents<RadioGroupItemStateProps> {
+interface RadioGroupItemProps {
 	value: JsonValue;
 	disabled: boolean;
 }
-class RadioGroupItemState {
-	root: RadioGroupRootState;
+class RadioGroupItem {
+	root: RadioGroupRoot;
 	uid: UID = createUID('radioitem').uid;
 	value = $state<JsonValue>(null);
 	disabled = $state<boolean>(false);
 
 	Checked = $derived.by(() => this.root.SelectedItem?.id === this.uid());
 
-	constructor(root: RadioGroupRootState, props: RadioGroupItemStateProps) {
+	constructor(root: RadioGroupRoot, props: ContextChange<RadioGroupItemProps>) {
 		this.root = root;
 		this.value = props.value;
 		this.disabled = props.disabled;
 
 		this.root.items.push(this.uid());
 
-		props.onContextChange?.({ value: this.value, disabled: this.disabled });
+		$effect(() => {
+			props.onContextChange({ value: this.value, disabled: this.disabled });
+		});
 	}
-	onComponentChange(props: RadioGroupItemStateProps) {
+	onComponentChange = (props: RadioGroupItemProps) => {
 		this.value = props.value;
 		this.disabled = props.disabled;
-	}
+	};
 
-	#handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
+	#handleClick = () => {
 		if (this.disabled) return;
 
 		this.root.setSelected({
@@ -124,7 +125,7 @@ class RadioGroupItemState {
 			disabled: this.disabled
 		});
 	};
-	#handleKeydown: Handler<KeyboardEvent, HTMLButtonElement> = (e) => {
+	#handleKeydown = (e: KeyboardEvent) => {
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
@@ -158,11 +159,11 @@ class RadioGroupItemState {
 //
 // Builders
 //
-const rootContext = buildContext(RadioGroupRootState);
+const rootContext = buildContext(RadioGroupRoot);
 
-export const createRootContext = (props: RadioGroupRootStateProps) => {
+export const createRootContext = (props: ContextChange<RadioGroupRootProps>) => {
 	return rootContext.createContext(props);
 };
-export const useRadioItem = (props: RadioGroupItemStateProps) => {
-	return rootContext.register(RadioGroupItemState, props);
+export const useRadioItem = (props: ContextChange<RadioGroupItemProps>) => {
+	return rootContext.register(RadioGroupItem, props);
 };

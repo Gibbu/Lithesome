@@ -1,5 +1,4 @@
-import { buildContext, createUID, type Handler, type RootEvents } from '$internal';
-import type { AccordionHeadingProps } from './types.js';
+import { buildContext, createUID, type ContextChange } from '$internal';
 
 interface Item {
 	id: string;
@@ -9,38 +8,38 @@ interface Item {
 //
 // Root
 //
-interface AccordionRootStateProps extends RootEvents<AccordionRootStateProps> {
+interface AccordionRootProps {
 	single: boolean;
 	value?: string;
 }
-class AccordionRootState {
+class AccordionRoot {
 	uid = createUID('accordion').uid;
 	value = $state<string | undefined>(undefined);
 	items = $state<Item[]>([]);
 	activeItems = $state<string[]>([]);
 	single = $state<boolean>(false);
 
-	constructor(props: AccordionRootStateProps) {
+	constructor(props: ContextChange<AccordionRootProps>) {
 		this.single = props.single;
 		this.value = props.value;
 
 		$effect(() => {
-			props.onContextChange?.({ single: this.single, value: this.value });
+			props.onContextChange({ single: this.single, value: this.value });
 		});
 	}
-	onComponentChange(props: AccordionRootStateProps) {
+	onComponentChange = (props: AccordionRootProps) => {
 		this.single = props.single;
 		this.value = props.value;
-	}
+	};
 
-	toggleActiveItem(itemId: string) {
+	toggleActiveItem = (itemId: string) => {
 		if (this.single) {
 			this.activeItems = this.activeItems[0] === itemId ? [] : [itemId];
 		} else {
 			if (this.activeItems.includes(itemId)) this.activeItems = this.activeItems.filter((el) => el !== itemId);
 			else this.activeItems.push(itemId);
 		}
-	}
+	};
 
 	attrs = $derived.by(
 		() =>
@@ -54,25 +53,25 @@ class AccordionRootState {
 //
 // Item
 //
-interface AccordionItemStateProps extends RootEvents<AccordionItemStateProps> {
+interface AccordionItemProps {
 	disabled: boolean;
 }
-class AccordionItemState {
+class AccordionItem {
 	uid = createUID('item').uid;
 	disabled = $state<boolean>(false);
-	root: AccordionRootState;
+	root: AccordionRoot;
 
 	Active = $derived.by(() => this.root.activeItems.includes(this.uid()) || false);
 
-	constructor(root: AccordionRootState, props: AccordionItemStateProps) {
+	constructor(root: AccordionRoot, props: ContextChange<AccordionItemProps>) {
 		this.root = root;
 		this.disabled = props.disabled;
 
-		props.onContextChange?.({ disabled: this.disabled });
+		props.onContextChange({ disabled: this.disabled });
 	}
-	onComponentChange(props: AccordionItemStateProps) {
+	onComponentChange = (props: AccordionItemProps) => {
 		this.disabled = props.disabled;
-	}
+	};
 
 	attrs = $derived.by(
 		() =>
@@ -91,14 +90,14 @@ class AccordionItemState {
 //
 // Heading
 //
-interface AccordionHeadingStateProps extends RootEvents<AccordionHeadingStateProps> {
-	level: AccordionHeadingProps['level'];
+interface AccordionHeadingProps {
+	level: 1 | 2 | 3 | 4 | 5 | 6;
 }
-class AccordionHeadingState {
+class AccordionHeading {
 	level = $state<AccordionHeadingProps['level']>(3);
-	root: AccordionRootState;
+	root: AccordionRoot;
 
-	constructor(root: AccordionRootState, props: AccordionHeadingStateProps) {
+	constructor(root: AccordionRoot, props: AccordionHeadingProps) {
 		this.root = root;
 		this.level = props.level;
 	}
@@ -113,16 +112,16 @@ class AccordionHeadingState {
 //
 // Button
 //
-class AccordionButtonState {
-	root: AccordionRootState;
-	item: AccordionItemState;
+class AccordionButton {
+	root: AccordionRoot;
+	item: AccordionItem;
 
-	constructor(item: AccordionItemState, root: AccordionRootState) {
+	constructor(item: AccordionItem, root: AccordionRoot) {
 		this.root = root;
 		this.item = item;
 	}
 
-	#handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
+	#handleClick = () => {
 		if (this.item.disabled) return;
 
 		this.root.toggleActiveItem(this.item.uid());
@@ -149,11 +148,11 @@ class AccordionButtonState {
 //
 // Content
 //
-class AccordionContentState {
-	item: AccordionItemState;
-	root: AccordionRootState;
+class AccordionContent {
+	item: AccordionItem;
+	root: AccordionRoot;
 
-	constructor(item: AccordionItemState, root: AccordionRootState) {
+	constructor(item: AccordionItem, root: AccordionRoot) {
 		this.item = item;
 		this.root = root;
 	}
@@ -172,21 +171,21 @@ class AccordionContentState {
 //
 // Builders
 //
-const rootContext = buildContext(AccordionRootState);
-const itemContext = buildContext(AccordionItemState);
+const rootContext = buildContext(AccordionRoot);
+const itemContext = buildContext(AccordionItem);
 
-export const createAccordionRootContext = (props: AccordionRootStateProps) => {
+export const createAccordionRootContext = (props: ContextChange<AccordionRootProps>) => {
 	return rootContext.createContext(props);
 };
-export const createAccordionItemContext = (props: AccordionItemStateProps) => {
+export const createAccordionItemContext = (props: ContextChange<AccordionItemProps>) => {
 	return itemContext.createContext(rootContext.getContext(), props);
 };
-export const useAccordionHeading = (props: AccordionHeadingStateProps) => {
-	return rootContext.register(AccordionHeadingState, props);
+export const useAccordionHeading = (props: AccordionHeadingProps) => {
+	return rootContext.register(AccordionHeading, props);
 };
 export const useAccordionButton = () => {
-	return itemContext.register(AccordionButtonState, rootContext.getContext());
+	return itemContext.register(AccordionButton, rootContext.getContext());
 };
 export const useAccordionContent = () => {
-	return itemContext.register(AccordionContentState, rootContext.getContext());
+	return itemContext.register(AccordionContent, rootContext.getContext());
 };

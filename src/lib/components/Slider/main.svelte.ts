@@ -1,18 +1,9 @@
-import {
-	ALL_ARROW_KEYS,
-	buildContext,
-	clamp,
-	createUID,
-	KEYS,
-	type Handler,
-	type Orientation,
-	type RootEvents
-} from '$internal';
+import { ALL_ARROW_KEYS, buildContext, clamp, createUID, KEYS, type Orientation, type ContextChange } from '$internal';
 
 //
 // Root
 //
-interface SliderRootStateProps extends RootEvents<SliderRootStateProps> {
+interface SliderRootProps {
 	min: number;
 	max: number;
 	step: number;
@@ -22,7 +13,7 @@ interface SliderRootStateProps extends RootEvents<SliderRootStateProps> {
 	disabled: boolean;
 	trackElement: HTMLDivElement | undefined;
 }
-class SliderRootState {
+class SliderRoot {
 	uid = createUID('slider').uid;
 	min = $state<number>(0);
 	max = $state<number>(100);
@@ -39,7 +30,7 @@ class SliderRootState {
 
 	Percentage = $derived(Math.round(((this.value - this.min) / (this.max - this.min)) * 100));
 
-	constructor(props: SliderRootStateProps) {
+	constructor(props: ContextChange<SliderRootProps>) {
 		this.min = props.min;
 		this.max = props.max;
 		this.step = props.step;
@@ -50,7 +41,7 @@ class SliderRootState {
 		this.trackElement = props.trackElement;
 
 		$effect(() => {
-			props.onContextChange?.({
+			props.onContextChange({
 				min: this.min,
 				max: this.max,
 				step: this.step,
@@ -74,7 +65,7 @@ class SliderRootState {
 			};
 		});
 	}
-	onComponentChange(props: SliderRootStateProps) {
+	onComponentChange = (props: SliderRootProps) => {
 		this.min = props.min;
 		this.max = props.max;
 		this.step = props.step;
@@ -83,7 +74,7 @@ class SliderRootState {
 		this.reverse = props.reverse;
 		this.disabled = props.disabled;
 		this.trackElement = props.trackElement;
-	}
+	};
 
 	stepUp = () => {
 		this.value = clamp(this.min, (this.value += this.step), this.max);
@@ -124,7 +115,7 @@ class SliderRootState {
 		if (this.disabled) return;
 		this.dragging = true;
 	};
-	#handleClick: Handler<MouseEvent, HTMLDivElement> = (e) => {
+	#handleClick = (e: MouseEvent) => {
 		if (this.disabled) return;
 		e.preventDefault();
 		this.dragging = true;
@@ -156,10 +147,10 @@ class SliderRootState {
 //
 // Range
 //
-class SliderRangeState {
-	root: SliderRootState;
+class SliderRange {
+	root: SliderRoot;
 
-	constructor(root: SliderRootState) {
+	constructor(root: SliderRoot) {
 		this.root = root;
 	}
 
@@ -200,19 +191,19 @@ class SliderRangeState {
 //
 // Thumb
 //
-class SliderThumbState {
-	root: SliderRootState;
+class SliderThumb {
+	root: SliderRoot;
 
-	constructor(root: SliderRootState, thumbElement: HTMLDivElement | undefined) {
+	constructor(root: SliderRoot, thumbElement: HTMLDivElement | undefined) {
 		this.root = root;
 		this.root.thumbElement = thumbElement;
 	}
 
-	#handleMousedown: Handler<MouseEvent, HTMLDivElement> = (e) => {
+	#handleMousedown = (e: MouseEvent) => {
 		if (this.root.disabled) return;
 		e.preventDefault();
 	};
-	#handleKeydown: Handler<KeyboardEvent, HTMLDivElement> = (e) => {
+	#handleKeydown = (e: KeyboardEvent) => {
 		if (this.root.disabled) return;
 
 		const { key } = e;
@@ -270,10 +261,10 @@ class SliderThumbState {
 //
 // Builders
 //
-class SliderValueState {
-	root: SliderRootState;
+class SliderValue {
+	root: SliderRoot;
 
-	constructor(root: SliderRootState) {
+	constructor(root: SliderRoot) {
 		this.root = root;
 	}
 
@@ -299,17 +290,17 @@ class SliderValueState {
 //
 // Builders
 //
-const builder = buildContext(SliderRootState);
+const builder = buildContext(SliderRoot);
 
-export const createRootContext = (props: SliderRootStateProps) => {
+export const createRootContext = (props: ContextChange<SliderRootProps>) => {
 	return builder.createContext(props);
 };
 export const useSliderRange = () => {
-	return builder.register(SliderRangeState);
+	return builder.register(SliderRange);
 };
 export const useSliderThumb = (thumbElement: HTMLDivElement | undefined) => {
-	return builder.register(SliderThumbState, thumbElement);
+	return builder.register(SliderThumb, thumbElement);
 };
 export const useSliderValue = () => {
-	return builder.register(SliderValueState);
+	return builder.register(SliderValue);
 };

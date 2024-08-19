@@ -7,20 +7,19 @@ import {
 	PREVENT_KEYS,
 	styleObjToString,
 	type CalcIndexAction,
-	type Handler,
-	type RootEvents,
-	type Orientation
+	type Orientation,
+	type ContextChange
 } from '$internal';
 
 //
 // Root
 //
-interface TabsRootStateProps extends RootEvents<TabsRootStateProps> {
+interface TabsRootProps {
 	value: string;
 	orientation: Orientation;
 }
 
-class TabsRootState {
+class TabsRoot {
 	uid = createUID('tabs').uid;
 	value = $state<string>('');
 	tabs = $state<string[]>([]);
@@ -29,28 +28,28 @@ class TabsRootState {
 
 	ActiveTab = $derived.by(() => this.tabs[this.index] || this.tabs[0]);
 
-	constructor(props: TabsRootStateProps) {
+	constructor(props: ContextChange<TabsRootProps>) {
 		this.value = props.value;
 		this.orientation = props.orientation;
 
 		$effect(() => {
-			props.onContextChange?.({ value: this.value, orientation: this.orientation });
+			props.onContextChange({ value: this.value, orientation: this.orientation });
 		});
 	}
-	onComponentChange(props: TabsRootStateProps) {
+	onComponentChange = (props: TabsRootProps) => {
 		this.value = props.value;
 		this.orientation = props.orientation;
-	}
-	setActive(btnValue: string) {
+	};
+	setActive = (btnValue: string) => {
 		if (!this.tabs.find((el) => el === btnValue))
 			log.error('There are no matching vales between the <TabsButton /> and <TabsContent /> components.');
 
 		this.index = this.tabs.findIndex((el) => el === btnValue);
-	}
-	navigate(action: CalcIndexAction) {
+	};
+	navigate = (action: CalcIndexAction) => {
 		this.index = calculateIndex(action, this.tabs, this.index);
 		(document.querySelector(`[data-tabsbutton][data-value="${this.ActiveTab}"]`) as HTMLButtonElement)?.focus();
-	}
+	};
 
 	attrs = $derived.by(
 		() =>
@@ -69,10 +68,10 @@ class TabsRootState {
 //
 // List
 //
-class TabsListState {
-	root: TabsRootState;
+class TabsList {
+	root: TabsRoot;
 
-	constructor(root: TabsRootState) {
+	constructor(root: TabsRoot) {
 		this.root = root;
 	}
 
@@ -90,18 +89,18 @@ class TabsListState {
 //
 // Button
 //
-interface TabsButtonStateProps extends RootEvents<TabsButtonStateProps> {
+interface TabsButtonProps {
 	value: string;
 	disabled: boolean;
 }
-class TabsButtonState {
+class TabsButton {
 	disabled = $state<boolean>(false);
 	value = $state<string>('');
-	root: TabsRootState;
+	root: TabsRoot;
 
 	IsActive = $derived.by(() => this.root.ActiveTab === this.value);
 
-	constructor(root: TabsRootState, props: TabsButtonStateProps) {
+	constructor(root: TabsRoot, props: ContextChange<TabsButtonProps>) {
 		this.root = root;
 		this.value = props.value;
 		this.disabled = props.disabled;
@@ -109,19 +108,19 @@ class TabsButtonState {
 		this.root.tabs.push(props.value);
 
 		$effect(() => {
-			props.onContextChange?.({ value: this.value, disabled: this.disabled });
+			props.onContextChange({ value: this.value, disabled: this.disabled });
 		});
 	}
-	onComponentChange(props: TabsButtonStateProps) {
+	onComponentChange = (props: TabsButtonProps) => {
 		this.disabled = props.disabled;
-	}
+	};
 
-	#handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
+	#handleClick = () => {
 		if (this.disabled) return;
 
 		this.root.setActive(this.value);
 	};
-	#handleKeydown: Handler<KeyboardEvent, HTMLButtonElement> = (e) => {
+	#handleKeydown = (e: KeyboardEvent) => {
 		if (this.disabled) return;
 
 		const { key } = e;
@@ -163,16 +162,16 @@ class TabsButtonState {
 //
 // Content
 //
-interface TabsContentStateProps {
+interface TabsContentProps {
 	value: string;
 }
-class TabsContentState {
+class TabsContent {
 	value = $state<string>('');
-	root: TabsRootState;
+	root: TabsRoot;
 
 	IsActive = $derived.by(() => this.root.ActiveTab === this.value);
 
-	constructor(root: TabsRootState, props: TabsContentStateProps) {
+	constructor(root: TabsRoot, props: TabsContentProps) {
 		this.root = root;
 		this.value = props.value;
 	}
@@ -200,17 +199,17 @@ class TabsContentState {
 //
 // Builders
 //
-const rootContext = buildContext(TabsRootState);
+const rootContext = buildContext(TabsRoot);
 
-export const createRootContext = (props: TabsRootStateProps) => {
+export const createRootContext = (props: ContextChange<TabsRootProps>) => {
 	return rootContext.createContext(props);
 };
 export const useTabsList = () => {
-	return rootContext.register(TabsListState);
+	return rootContext.register(TabsList);
 };
-export const useTabsButton = (props: TabsButtonStateProps) => {
-	return rootContext.register(TabsButtonState, props);
+export const useTabsButton = (props: ContextChange<TabsButtonProps>) => {
+	return rootContext.register(TabsButton, props);
 };
-export const useTabsContent = (props: TabsContentStateProps) => {
-	return rootContext.register(TabsContentState, props);
+export const useTabsContent = (props: TabsContentProps) => {
+	return rootContext.register(TabsContent, props);
 };
