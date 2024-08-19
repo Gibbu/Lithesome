@@ -1,6 +1,8 @@
 import type { Snippet } from 'svelte';
-import type { HTMLActionArray, Transition, UID } from './index.js';
+import type { HTMLActionArray, Transition } from './index.js';
 import type { Placement } from '@floating-ui/dom';
+
+export type Orientation = 'horizontal' | 'vertical';
 
 export type JsonObject = { [key: string]: JsonValue };
 

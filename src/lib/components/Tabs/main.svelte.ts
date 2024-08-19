@@ -8,15 +8,13 @@ import {
 	styleObjToString,
 	type CalcIndexAction,
 	type Handler,
-	type RootEvents
+	type RootEvents,
+	type Orientation
 } from '$internal';
-
-import type { Orientation } from './types.js';
 
 //
 // Root
 //
-
 interface TabsRootStateProps extends RootEvents<TabsRootStateProps> {
 	value: string;
 	orientation: Orientation;

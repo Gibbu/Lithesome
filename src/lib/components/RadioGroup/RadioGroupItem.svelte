@@ -19,7 +19,6 @@
 		value,
 		disabled,
 		onContextChange(props) {
-			console.log('wowzers');
 			value = props.value;
 			disabled = props.disabled;
 		}

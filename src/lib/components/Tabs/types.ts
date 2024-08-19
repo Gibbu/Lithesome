@@ -1,6 +1,4 @@
-import type { Props } from '$internal';
-
-export type Orientation = 'vertical' | 'horizontal';
+import type { Props, Orientation } from '$internal';
 
 interface TabsState {
 	/** The current active tab. */

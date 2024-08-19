@@ -120,7 +120,6 @@ class AccordionButtonState {
 	constructor(item: AccordionItemState, root: AccordionRootState) {
 		this.root = root;
 		this.item = item;
-		console.log(this.root, this.item);
 	}
 
 	#handleClick: Handler<MouseEvent, HTMLButtonElement> = (e) => {
