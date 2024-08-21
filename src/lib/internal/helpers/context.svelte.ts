@@ -31,6 +31,12 @@ export const buildContext = <RC>(rootClass: Class<RC>) => {
 	};
 };
 
+export class Floating {
+	arrow = $state<HTMLElement | null>(null);
+	content = $state<HTMLElement | null>(null);
+	trigger = $state<HTMLElement | null>(null);
+}
+
 // TODO: Remove below after rewrite.
 
 export class Context<H = any> {
