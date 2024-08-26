@@ -26,7 +26,7 @@
 	});
 </script>
 
-{#if visible}
+{#if ctx.visible}
 	<div
 		bind:this={self}
 		use:usePortal={portalTarget}

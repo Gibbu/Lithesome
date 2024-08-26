@@ -15,8 +15,8 @@
 	<div
 		bind:this={self}
 		use:useActions={use}
-		in:inFn|global={inConf}
-		out:outFn|global={outConf}
+		in:inFn={inConf}
+		out:outFn={outConf}
 		{...props}
 		{...ctx.attrs}
 		class={classProp(klass)}
