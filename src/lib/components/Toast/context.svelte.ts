@@ -10,6 +10,8 @@ export class ToastContext extends Context {
 }
 
 export class Toaster {
+	#timeouts = new Map();
+
 	add(type: ToastType, config: ToastConfig) {
 		if (!config.title || !config.message) throw log.error('`title` and `message` must be provided.');
 
@@ -30,13 +32,21 @@ export class Toaster {
 
 		toasts.push(toast);
 
-		setTimeout(() => {
-			if (toasts.find((el) => el.id === toast.id)) {
-				this.removeById(toast.id);
-			}
-		}, duration);
+		this.#timeouts.set(
+			toast.id,
+			setTimeout(() => {
+				if (toasts.find((el) => el.id === toast.id)) {
+					this.removeById(toast.id);
+				}
+			}, duration)
+		);
 	}
 	removeById(toastId: string) {
+		const timeout = this.#timeouts.get(toastId);
+		if (timeout) {
+			clearTimeout(timeout);
+			this.#timeouts.delete(toastId);
+		}
 		const i = toasts.findIndex((el) => el.id === toastId);
 		toasts.splice(i, 1);
 	}

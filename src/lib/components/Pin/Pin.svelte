@@ -1,13 +1,6 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { PinContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<PinContext>();
-</script>
-
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
-	import { setContext } from 'svelte';
+	import { createRootContext } from './main.svelte.js';
 	import type { PinProps } from './types.js';
 
 	let {
@@ -24,37 +17,24 @@
 		...props
 	}: PinProps = $props();
 
-	const ctx = new PinContext(
-		{ value, disabled, type, placeholder },
-		{
-			onChange(val) {
-				onChange?.(val);
-			}
+	const ctx = createRootContext({
+		value,
+		disabled,
+		type,
+		placeholder,
+		onContextChange(props) {
+			value = typeof props.value === 'string' ? props.value.split('') : props.value;
+			disabled = props.disabled;
+			type = props.type;
 		}
-	);
-
-	setContext(contextName, ctx);
-
-	$effect(() => {
-		ctx.type = type;
-		ctx.disabled = disabled;
 	});
 
 	$effect(() => {
-		if (ctx.filled) onFilled?.(ctx.transformedValue);
+		ctx.onComponentChange({ value, disabled, type, placeholder });
+		if (ctx.Filled) onFilled?.(ctx.TransformedValue);
 	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid()}
-	class={classProp(klass, { filled: ctx.filled })}
-	aria-disabled={disabled || undefined}
-	data-disabled={disabled || undefined}
-	data-pin=""
-	data-filled={ctx.filled || undefined}
-	{...props}
->
-	{@render children({ filled: ctx.filled })}
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children(ctx.state)}
 </div>

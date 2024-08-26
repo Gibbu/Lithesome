@@ -1,5 +1,7 @@
 import type { Props, PropsNoChildren, Handler } from '$internal';
 
+export type PinType = 'text' | 'password';
+
 interface PinState {
 	/** True if all inputs are filled out. */
 	filled: boolean;
@@ -25,13 +27,7 @@ interface PinInputState extends PinState {
 	/** If the input is disabled by the `Pin` parent component. */
 	disabled: boolean;
 }
-export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState> {
-	onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
-	onInput?: Handler<Event, HTMLInputElement>;
-	onFocus?: Handler<FocusEvent, HTMLInputElement>;
-	onBlur?: Handler<FocusEvent, HTMLInputElement>;
-	onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
-}
+export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState> {}
 
 export interface PinValueProps extends PropsNoChildren<HTMLInputElement> {
 	/**

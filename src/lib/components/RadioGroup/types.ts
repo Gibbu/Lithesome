@@ -17,6 +17,4 @@ export interface RadioGroupItemProps extends Props<HTMLButtonElement, RadioGroup
 	value: JsonValue;
 	/** Disable the item, disallowing clicking and keyboard navigation. */
 	disabled?: boolean;
-	onClick?: Handler<MouseEvent, HTMLButtonElement>;
-	onKeydown?: Handler<KeyboardEvent, HTMLButtonElement>;
 }
