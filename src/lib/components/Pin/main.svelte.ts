@@ -156,8 +156,11 @@ class PinInput {
 		const values = data.split('');
 		if (values.length === 0) return;
 
-		this.root.inputs.forEach((_, i) => {
+		this.root.inputs.forEach((uid, i) => {
 			this.root.setValue(i, values[i]);
+
+			const input = document.querySelector(`[data-pininput][id="${uid}"]`) as HTMLInputElement;
+			if (input) input.value = values[i];
 		});
 		this.#moveFocus('last');
 	};

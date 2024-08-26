@@ -1,24 +1,26 @@
 <script lang="ts">
 	import { useActions, getTransition, classProp } from '$internal';
-	import { context } from './Modal.svelte';
+	import { useModalOverlay } from './main.svelte.js';
 	import type { ModalOverlayProps } from './types.js';
 
 	let { class: klass, use = [], self, transition, ...props }: ModalOverlayProps = $props();
 
-	const ctx = context();
+	const ctx = useModalOverlay();
 	const { inTransition, outTransition } = getTransition(transition);
-	const attrs = $derived({
-		id: ctx.uid('overlay'),
-		'aria-hidden': 'true',
-		'data-modaloverlay': '',
-		class: classProp(klass)
-	} as const);
 </script>
 
-{#if inTransition && outTransition && ctx.visible}
+{#if inTransition && outTransition && ctx.Visible}
 	{@const { config: inConf, transition: inFn } = inTransition}
 	{@const { config: outConf, transition: outFn } = outTransition}
-	<div bind:this={self} use:useActions={use} in:inFn={inConf} out:outFn={outConf} {...props} {...attrs}></div>
-{:else if ctx.visible}
-	<div bind:this={self} use:useActions={use} {...props} {...attrs}></div>
+	<div
+		bind:this={self}
+		use:useActions={use}
+		in:inFn|global={inConf}
+		out:outFn|global={outConf}
+		{...props}
+		{...ctx.attrs}
+		class={classProp(klass)}
+	></div>
+{:else if ctx.Visible}
+	<div bind:this={self} use:useActions={use} {...props} {...ctx.attrs} class={classProp(klass)}></div>
 {/if}

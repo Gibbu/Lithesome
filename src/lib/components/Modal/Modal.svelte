@@ -1,14 +1,7 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { ModalContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<ModalContext>();
-</script>
-
 <script lang="ts">
-	import { useActions, KEYS, classProp } from '$internal';
+	import { useActions, classProp } from '$internal';
 	import { usePortal } from '$lib/index.js';
-	import { setContext } from 'svelte';
+	import { createRootContext } from './main.svelte.js';
 	import type { ModalProps } from './types.js';
 
 	let {
@@ -16,27 +9,20 @@
 		use = [],
 		class: klass,
 		self = $bindable(),
-		visible = $bindable(),
+		visible = $bindable(false),
 		portalTarget = 'body',
 		...props
 	}: ModalProps = $props();
 
-	const ctx = new ModalContext({ visible });
-
-	setContext(contextName, ctx);
-
-	const handleKeys = (e: KeyboardEvent) => {
-		const { key } = e;
-		if (key === KEYS.escape) visible = false;
-	};
+	const ctx = createRootContext({
+		visible,
+		onContextChange(props) {
+			visible = props.visible;
+		}
+	});
 
 	$effect(() => {
-		ctx.visible = visible;
-		if (visible) {
-			window.addEventListener('keydown', handleKeys);
-		} else {
-			window.removeEventListener('keydown', handleKeys);
-		}
+		if (visible !== ctx.visible) ctx.onComponentChange({ visible });
 	});
 </script>
 
