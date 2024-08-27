@@ -33,9 +33,6 @@ class PopoverRoot extends Floating {
 			}
 		});
 	}
-	onComponentChange(props: PopoverRootProps) {
-		this.visible = props.visible;
-	}
 
 	close = () => {
 		this.visible.val = false;

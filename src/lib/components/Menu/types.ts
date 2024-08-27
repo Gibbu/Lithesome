@@ -7,6 +7,8 @@ interface MenuState {
 	visible: boolean;
 }
 export interface MenuProps extends Props<HTMLDivElement, MenuState> {
+	/** Control the visibility of the menu */
+	visible?: boolean;
 	/**
 	 * The delay between the the content being visible or not.
 	 *

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { context } from './Menu.svelte';
 	import { FloatingContent } from '$internal';
+	import { useMenuContent } from './main.svelte.js';
 	import type { MenuContentProps } from './types.js';
 
 	let {
@@ -16,15 +16,14 @@
 		...props
 	}: MenuContentProps = $props();
 
-	const ctx = context();
-	const state = $derived({ visible: ctx.visible });
+	const ctx = useMenuContent();
 </script>
 
 <FloatingContent
 	{children}
 	componentName="Menu"
-	visible={ctx.visible}
-	{state}
+	visible={ctx.root.visible.val}
+	state={ctx.state}
 	{ctx}
 	{transition}
 	{use}
@@ -32,7 +31,7 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
-	outsideCallback={() => ctx.close()}
+	outsideCallback={() => ctx.root.close()}
 	role="listbox"
 	class={klass}
 	{...props}
