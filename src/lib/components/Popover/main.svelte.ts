@@ -7,28 +7,26 @@ import {
 	log,
 	removeNodeProps,
 	setNodeProps,
-	type ContextChange
+	type StateValues
 } from '$internal';
 
 //
 // Root
 //
-interface PopoverRootProps {
+type PopoverRootProps = StateValues<{
 	visible: boolean;
-}
+}>;
 class PopoverRoot extends Floating {
 	uid = createUID('popover').uid;
-	visible = $state<boolean>(false);
 
-	constructor(props: ContextChange<PopoverRootProps>) {
+	visible: PopoverRootProps['visible'];
+
+	constructor(props: PopoverRootProps) {
 		super();
 		this.visible = props.visible;
 
 		$effect(() => {
-			props.onContextChange({ visible: this.visible });
-		});
-		$effect(() => {
-			if (this.visible) {
+			if (this.visible.val) {
 				window.addEventListener('keydown', this.#handleKeydown);
 			} else {
 				window.removeEventListener('keydown', this.#handleKeydown);
@@ -40,14 +38,14 @@ class PopoverRoot extends Floating {
 	}
 
 	close = () => {
-		this.visible = false;
+		this.visible.val = false;
 	};
 	toggle = () => {
-		this.visible = !this.visible;
+		this.visible.val = !this.visible.val;
 	};
 
 	#handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === KEYS.escape) this.visible = false;
+		if (e.key === KEYS.escape) this.visible.val = false;
 	};
 
 	attrs = $derived.by(
@@ -55,11 +53,11 @@ class PopoverRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-popover': '',
-				'data-state': this.visible ? 'opened' : 'closed'
+				'data-state': this.visible.val ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.visible
+		visible: this.visible.val
 	}));
 }
 
@@ -88,7 +86,7 @@ class PopoverTrigger {
 				$effect(() => {
 					if (!this.root.trigger) return;
 
-					if (this.root.visible) {
+					if (this.root.visible.val) {
 						setNodeProps(this.root.trigger, {
 							'aria-expanded': 'true',
 							'aria-controls': this.root.uid('content')
@@ -119,7 +117,7 @@ class PopoverTrigger {
 		'data-popovertrigger': ''
 	};
 	state = $derived.by(() => ({
-		visible: this.root.visible
+		visible: this.root.visible.val
 	}));
 }
 
@@ -149,7 +147,7 @@ class PopoverContent {
 	}
 
 	state = $derived.by(() => ({
-		visible: this.root.visible
+		visible: this.root.visible.val
 	}));
 }
 
@@ -158,7 +156,7 @@ class PopoverContent {
 //
 const rootContext = buildContext(PopoverRoot);
 
-export const createRootContext = (props: ContextChange<PopoverRootProps>) => {
+export const createRootContext = (props: PopoverRootProps) => {
 	return rootContext.createContext(props);
 };
 export const usePopoverTrigger = () => {

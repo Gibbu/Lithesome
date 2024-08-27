@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { PopoverProps } from './types.js';
 
@@ -13,10 +13,10 @@
 	}: PopoverProps = $props();
 
 	const ctx = createRootContext({
-		visible,
-		onContextChange(props) {
-			visible = props.visible;
-		}
+		visible: stateValue(
+			() => visible,
+			(v) => (visible = v)
+		)
 	});
 </script>
 
