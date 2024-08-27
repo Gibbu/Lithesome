@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { PinProps } from './types.js';
 
@@ -18,19 +18,13 @@
 	}: PinProps = $props();
 
 	const ctx = createRootContext({
-		value,
-		disabled,
-		type,
-		placeholder,
-		onContextChange(props) {
-			value = typeof props.value === 'string' ? props.value.split('') : props.value;
-			disabled = props.disabled;
-			type = props.type;
-		}
+		value: stateValue(() => value),
+		disabled: stateValue(() => disabled),
+		type: stateValue(() => type),
+		placeholder: stateValue(() => placeholder)
 	});
 
 	$effect(() => {
-		ctx.onComponentChange({ value, disabled, type, placeholder });
 		if (ctx.Filled) onFilled?.(ctx.TransformedValue);
 	});
 </script>

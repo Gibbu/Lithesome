@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import type { AccordionProps } from './types.js';
 	import { createAccordionRootContext } from './main.svelte.js';
 
@@ -14,16 +14,8 @@
 	}: AccordionProps = $props();
 
 	const ctx = createAccordionRootContext({
-		single,
-		value,
-		onContextChange(props) {
-			single = props.single;
-			value = props.value;
-		}
-	});
-
-	$effect(() => {
-		ctx.onComponentChange({ single, value });
+		single: stateValue(() => single),
+		value: stateValue(() => value)
 	});
 </script>
 

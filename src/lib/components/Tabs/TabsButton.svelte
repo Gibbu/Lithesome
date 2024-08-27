@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import { useTabsButton } from './main.svelte.js';
 	import type { TabsButtonProps } from './types.js';
 
@@ -14,11 +14,8 @@
 	}: TabsButtonProps = $props();
 
 	const ctx = useTabsButton({
-		value,
-		disabled,
-		onContextChange(props) {
-			disabled = props.disabled;
-		}
+		value: stateValue(() => value),
+		disabled: stateValue(() => disabled)
 	});
 </script>
 

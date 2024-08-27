@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import type { TabsProps } from './types.js';
 	import { createRootContext } from './main.svelte.js';
 
@@ -14,15 +14,8 @@
 	}: TabsProps = $props();
 
 	const ctx = createRootContext({
-		value,
-		orientation,
-		onContextChange(props) {
-			value = props.value;
-		}
-	});
-
-	$effect(() => {
-		ctx.onComponentChange({ value, orientation });
+		value: stateValue(() => value),
+		orientation: stateValue(() => orientation)
 	});
 </script>
 

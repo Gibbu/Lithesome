@@ -1,61 +1,50 @@
-import { buildContext, createUID, KEYS, type ContextChange, type Handler, type HandlerParam } from '$internal';
+import { buildContext, createUID, KEYS, type StateValues, type Handler } from '$internal';
 import { tick } from 'svelte';
 import type { PinType } from './types.js';
 
 //
 // Root
 //
-interface PinRootProps {
-	value: string | string[];
+type PinRootProps = StateValues<{
+	value: string[];
 	disabled: boolean;
 	type: PinType;
 	placeholder: string;
-}
+}>;
 class PinRoot {
 	uid = createUID('pin').uid;
+
+	value: PinRootProps['value'];
+	disabled: PinRootProps['disabled'];
+	type: PinRootProps['type'];
+	placeholder: PinRootProps['placeholder'];
+
 	inputs = $state<string[]>([]);
-	value = $state<string[]>([]);
-	disabled = $state<boolean>(false);
-	type = $state<PinType>('text');
-	placeholder = $state<string>('');
 
-	TransformedValue = $derived(this.value.join());
-	Filled = $derived(this.value.length === this.inputs.length && this.value.every((el) => el?.length === 1));
+	TransformedValue = $derived.by(() => this.value.val.join());
+	Filled = $derived.by(
+		() => this.value.val.length === this.inputs.length && this.value.val.every((el) => el?.length === 1)
+	);
 
-	constructor(props: ContextChange<PinRootProps>) {
-		this.value = typeof props.value === 'string' ? props.value.split('') : props.value;
-		this.disabled = props.disabled;
-		this.placeholder = props.placeholder;
-		this.type = props.type;
-
-		$effect(() => {
-			props.onContextChange({
-				value: this.value,
-				disabled: this.disabled,
-				placeholder: this.placeholder,
-				type: this.type
-			});
-		});
-	}
-	onComponentChange(props: PinRootProps) {
-		this.value = typeof props.value === 'string' ? props.value.split('') : props.value;
+	constructor(props: PinRootProps) {
+		this.value = props.value;
 		this.disabled = props.disabled;
 		this.placeholder = props.placeholder;
 		this.type = props.type;
 	}
 
 	setValue(index: number, value: string) {
-		this.value[index] = value;
+		this.value.val[index] = value;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
 				id: this.uid(),
-				'aria-disabled': this.disabled || undefined,
+				'aria-disabled': this.disabled.val || undefined,
 				'data-pin': '',
 				'data-filled': this.Filled,
-				'data-disabled': this.disabled || undefined
+				'data-disabled': this.disabled.val || undefined
 			}) as const
 	);
 	state = $derived.by(() => ({
@@ -72,7 +61,7 @@ class PinInput {
 
 	#focused = $state<boolean>(false);
 	#index = $derived.by<number>(() => this.root.inputs.indexOf(this.uid()));
-	#value = $derived.by<string>(() => this.root.value[this.#index] || '');
+	#value = $derived.by<string>(() => this.root.value.val[this.#index] || '');
 
 	constructor(root: PinRoot) {
 		this.root = root;
@@ -92,7 +81,7 @@ class PinInput {
 	};
 
 	#handleInput = async (event: Event) => {
-		if (this.root.disabled) return;
+		if (this.root.disabled.val) return;
 		const e = event as unknown as InputEvent & { target: HTMLInputElement };
 
 		if (e.inputType !== 'insertText' && e.inputType !== 'deleteContentBackward') return;
@@ -107,7 +96,7 @@ class PinInput {
 		}
 	};
 	#handleKeydown: Handler<KeyboardEvent, HTMLInputElement> = async (e) => {
-		if (this.root.disabled) return;
+		if (this.root.disabled.val) return;
 		const { key } = e;
 
 		if (key === KEYS.delete) {
@@ -139,11 +128,11 @@ class PinInput {
 		}
 	};
 	#handleFocus = () => {
-		if (this.root.disabled) return;
+		if (this.root.disabled.val) return;
 		this.#focused = true;
 	};
 	#handleBlur = () => {
-		if (this.root.disabled) return;
+		if (this.root.disabled.val) return;
 		this.#focused = false;
 	};
 	#handlePaste: Handler<ClipboardEvent, HTMLInputElement> = (e) => {
@@ -169,8 +158,8 @@ class PinInput {
 		() =>
 			({
 				id: this.uid(),
-				disabled: this.root.disabled,
-				placeholder: this.#focused ? '' : this.root.placeholder,
+				disabled: this.root.disabled.val,
+				placeholder: this.#focused ? '' : this.root.placeholder.val,
 				'data-pininput': '',
 				'data-filled': this.root.Filled,
 				oninput: this.#handleInput,
@@ -182,7 +171,7 @@ class PinInput {
 	);
 	state = $derived.by(() => ({
 		filled: this.root.Filled,
-		disabled: this.root.disabled
+		disabled: this.root.disabled.val
 	}));
 }
 
@@ -213,7 +202,7 @@ class PinValue {
 //
 const rootContext = buildContext(PinRoot);
 
-export const createRootContext = (props: ContextChange<PinRootProps>) => {
+export const createRootContext = (props: PinRootProps) => {
 	return rootContext.createContext(props);
 };
 export const usePinInput = () => {

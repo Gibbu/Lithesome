@@ -8,46 +8,44 @@ import {
 	styleObjToString,
 	type CalcIndexAction,
 	type Orientation,
-	type ContextChange
+	type StateValues
 } from '$internal';
 
 //
 // Root
 //
-interface TabsRootProps {
+type TabsRootProps = StateValues<{
 	value: string;
 	orientation: Orientation;
-}
+}>;
 
 class TabsRoot {
 	uid = createUID('tabs').uid;
-	value = $state<string>('');
-	tabs = $state<string[]>([]);
-	index = $state<number>(0);
-	orientation = $state<Orientation>('horizontal');
 
-	ActiveTab = $derived.by(() => this.tabs[this.index] || this.tabs[0]);
+	value: TabsRootProps['value'];
+	orientation: TabsRootProps['orientation'];
 
-	constructor(props: ContextChange<TabsRootProps>) {
+	#tabs = $state<string[]>([]);
+	#index = $state<number>(0);
+
+	ActiveTab = $derived.by(() => this.#tabs[this.#index] || this.#tabs[0]);
+
+	constructor(props: TabsRootProps) {
 		this.value = props.value;
 		this.orientation = props.orientation;
-
-		$effect(() => {
-			props.onContextChange({ value: this.value, orientation: this.orientation });
-		});
 	}
-	onComponentChange = (props: TabsRootProps) => {
-		this.value = props.value;
-		this.orientation = props.orientation;
-	};
+
+	register(tab: string) {
+		this.#tabs.push(tab);
+	}
 	setActive = (btnValue: string) => {
-		if (!this.tabs.find((el) => el === btnValue))
+		if (!this.#tabs.find((el) => el === btnValue))
 			log.error('There are no matching vales between the <TabsButton /> and <TabsContent /> components.');
 
-		this.index = this.tabs.findIndex((el) => el === btnValue);
+		this.#index = this.#tabs.findIndex((el) => el === btnValue);
 	};
 	navigate = (action: CalcIndexAction) => {
-		this.index = calculateIndex(action, this.tabs, this.index);
+		this.#index = calculateIndex(action, this.#tabs, this.#index);
 		(document.querySelector(`[data-tabsbutton][data-value="${this.ActiveTab}"]`) as HTMLButtonElement)?.focus();
 	};
 
@@ -79,9 +77,9 @@ class TabsList {
 		() =>
 			({
 				role: 'tablist',
-				'aria-orientation': this.root.orientation,
+				'aria-orientation': this.root.orientation.val,
 				'data-tabslist': '',
-				'data-orientation': this.root.orientation
+				'data-orientation': this.root.orientation.val
 			}) as const
 	);
 }
@@ -89,39 +87,33 @@ class TabsList {
 //
 // Button
 //
-interface TabsButtonProps {
+type TabsButtonProps = StateValues<{
 	value: string;
 	disabled: boolean;
-}
+}>;
 class TabsButton {
-	disabled = $state<boolean>(false);
-	value = $state<string>('');
 	root: TabsRoot;
 
-	IsActive = $derived.by(() => this.root.ActiveTab === this.value);
+	disabled: TabsButtonProps['disabled'];
+	value: TabsButtonProps['value'];
 
-	constructor(root: TabsRoot, props: ContextChange<TabsButtonProps>) {
+	IsActive = $derived.by(() => this.root.ActiveTab === this.value.val);
+
+	constructor(root: TabsRoot, props: TabsButtonProps) {
 		this.root = root;
 		this.value = props.value;
 		this.disabled = props.disabled;
 
-		this.root.tabs.push(props.value);
-
-		$effect(() => {
-			props.onContextChange({ value: this.value, disabled: this.disabled });
-		});
+		this.root.register(props.value.val);
 	}
-	onComponentChange = (props: TabsButtonProps) => {
-		this.disabled = props.disabled;
-	};
 
 	#handleClick = () => {
-		if (this.disabled) return;
+		if (this.disabled.val) return;
 
-		this.root.setActive(this.value);
+		this.root.setActive(this.value.val);
 	};
 	#handleKeydown = (e: KeyboardEvent) => {
-		if (this.disabled) return;
+		if (this.disabled.val) return;
 
 		const { key } = e;
 
@@ -130,13 +122,13 @@ class TabsButton {
 		if (key === KEYS.home) this.root.navigate('first');
 		if (key === KEYS.end) this.root.navigate('last');
 		if (
-			(key === KEYS.arrowUp && this.root.orientation === 'vertical') ||
-			(key === KEYS.arrowLeft && this.root.orientation === 'horizontal')
+			(key === KEYS.arrowUp && this.root.orientation.val === 'vertical') ||
+			(key === KEYS.arrowLeft && this.root.orientation.val === 'horizontal')
 		)
 			this.root.navigate('prev');
 		if (
-			(key === KEYS.arrowDown && this.root.orientation === 'vertical') ||
-			(key === KEYS.arrowRight && this.root.orientation === 'horizontal')
+			(key === KEYS.arrowDown && this.root.orientation.val === 'vertical') ||
+			(key === KEYS.arrowRight && this.root.orientation.val === 'horizontal')
 		)
 			this.root.navigate('next');
 	};
@@ -149,7 +141,7 @@ class TabsButton {
 				tabindex: this.IsActive ? 0 : -1,
 				'data-tabsbutton': '',
 				'data-state': this.IsActive ? 'active' : 'inactive',
-				'data-value': this.value,
+				'data-value': this.value.val,
 				onclick: this.#handleClick,
 				onkeydown: this.#handleKeydown
 			}) as const
@@ -162,14 +154,15 @@ class TabsButton {
 //
 // Content
 //
-interface TabsContentProps {
+type TabsContentProps = StateValues<{
 	value: string;
-}
+}>;
 class TabsContent {
-	value = $state<string>('');
 	root: TabsRoot;
 
-	IsActive = $derived.by(() => this.root.ActiveTab === this.value);
+	value: TabsContentProps['value'];
+
+	IsActive = $derived.by(() => this.root.ActiveTab === this.value.val);
 
 	constructor(root: TabsRoot, props: TabsContentProps) {
 		this.root = root;
@@ -201,13 +194,13 @@ class TabsContent {
 //
 const rootContext = buildContext(TabsRoot);
 
-export const createRootContext = (props: ContextChange<TabsRootProps>) => {
+export const createRootContext = (props: TabsRootProps) => {
 	return rootContext.createContext(props);
 };
 export const useTabsList = () => {
 	return rootContext.register(TabsList);
 };
-export const useTabsButton = (props: ContextChange<TabsButtonProps>) => {
+export const useTabsButton = (props: TabsButtonProps) => {
 	return rootContext.register(TabsButton, props);
 };
 export const useTabsContent = (props: TabsContentProps) => {

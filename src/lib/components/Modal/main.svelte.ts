@@ -1,21 +1,18 @@
-import { buildContext, createUID, disableScroll, KEYS, type ContextChange } from '$internal';
+import { buildContext, createUID, disableScroll, KEYS, type StateValues } from '$internal';
+
 //
 // Root
 //
-interface ModalRootProps {
+type ModalRootProps = StateValues<{
 	visible: boolean;
-}
+}>;
 class ModalRoot {
 	uid = createUID('modal').uid;
-	visible = $state<boolean>(false);
+	visible: ModalRootProps['visible'];
 
-	constructor(props: ContextChange<ModalRootProps>) {
+	constructor(props: ModalRootProps) {
 		this.visible = props.visible;
 
-		$effect(() => {
-			props.onContextChange({ visible: this.visible });
-			console.log(this.visible);
-		});
 		$effect(() => {
 			disableScroll(this.visible && !document.body.style.overflow);
 		});
@@ -26,13 +23,18 @@ class ModalRoot {
 			};
 		});
 	}
-	onComponentChange(props: ModalRootProps) {
-		this.visible = props.visible;
-	}
 
 	#handleKeys = (e: KeyboardEvent) => {
-		if (e.key === KEYS.escape) this.visible = false;
+		if (e.key === KEYS.escape) this.visible.val = false;
 	};
+
+	attrs = $derived.by(
+		() =>
+			({
+				id: this.uid(),
+				'data-modal': ''
+			}) as const
+	);
 }
 
 //
@@ -117,12 +119,13 @@ class ModalDescription {
 			}) as const
 	);
 }
+
 //
 // Builder
 //
 const rootContext = buildContext(ModalRoot);
 
-export const createRootContext = (props: ContextChange<ModalRootProps>) => {
+export const createRootContext = (props: ModalRootProps) => {
 	return rootContext.createContext(props);
 };
 

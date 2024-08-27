@@ -1,11 +1,11 @@
-import type { Props, Handler, JsonValue } from '$internal';
+import type { Props } from '$internal';
 
 export interface RadioGroupProps extends Props<HTMLDivElement> {
 	/** The value of the radiogroup. */
-	value?: JsonValue;
+	value?: string;
 	/** Set aria attributes. */
 	required?: boolean;
-	onChange?: (value: JsonValue) => void;
+	onChange?: (value: string) => void;
 }
 
 interface RadioGroupItemState {
@@ -14,7 +14,7 @@ interface RadioGroupItemState {
 }
 export interface RadioGroupItemProps extends Props<HTMLButtonElement, RadioGroupItemState> {
 	/** The value of the individual item. */
-	value: JsonValue;
+	value: string;
 	/** Disable the item, disallowing clicking and keyboard navigation. */
 	disabled?: boolean;
 }

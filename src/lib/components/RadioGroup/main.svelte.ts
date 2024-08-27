@@ -5,49 +5,51 @@ import {
 	KEYS,
 	removeDisabledElements,
 	type CalcIndexAction,
-	type JsonValue,
-	type ContextChange,
+	type StateValues,
 	type UID
 } from '$internal';
+import { tick } from 'svelte';
 
 interface Item {
 	id: string;
-	value: JsonValue;
+	value: string;
 	disabled?: boolean;
 }
 
 //
 // Root
 //
-interface RadioGroupRootProps {
-	value: JsonValue;
+type RadioGroupRootProps = StateValues<{
+	value: string;
 	required: boolean;
-}
+}>;
 class RadioGroupRoot {
 	uid: UID = createUID('radiogroup').uid;
+
+	value: RadioGroupRootProps['value'];
+	required: RadioGroupRootProps['required'];
+
 	items = $state<string[]>([]);
 	index = $state<number>(-1);
-	value = $state<JsonValue>(null);
-	required = $state<boolean>(false);
 
 	SelectedItem = $derived.by(() => {
 		const elements = this.queryElements();
 
 		if (!elements) return;
+
 		return elements[this.index];
 	});
 
-	constructor(props: ContextChange<RadioGroupRootProps>) {
-		this.value = props.value;
-
-		$effect(() => {
-			props.onContextChange({ value: this.value, required: this.required });
-		});
-	}
-	onComponentChange = (props: RadioGroupRootProps) => {
+	constructor(props: RadioGroupRootProps) {
 		this.value = props.value;
 		this.required = props.required;
-	};
+
+		if (this.value.val) {
+			tick().then(() => {
+				this.index = this.items.findIndex((el) => el === this.value.val);
+			});
+		}
+	}
 
 	queryElements = () => {
 		return removeDisabledElements(`[data-radiogroup][id="${this.uid()}"] [data-radiogroupitem]`);
@@ -61,7 +63,7 @@ class RadioGroupRoot {
 		const element = elements[this.index];
 		if (!element) return;
 
-		this.value = element.dataset.value!;
+		this.value.val = element.dataset.value!;
 		this.SelectedItem?.focus();
 	};
 	setSelected = (item: Item) => {
@@ -71,7 +73,7 @@ class RadioGroupRoot {
 		if (!elements) return;
 
 		this.index = elements.findIndex((el) => el.dataset.value === item.value);
-		this.value = item.value;
+		this.value.val = item.value;
 	};
 
 	attrs = $derived.by(
@@ -79,8 +81,9 @@ class RadioGroupRoot {
 			({
 				id: this.uid(),
 				role: 'radiogroup',
-				'aria-required': this.required,
-				'data-radiogroup': ''
+				'aria-required': this.required.val,
+				'data-radiogroup': '',
+				'data-value': this.value.val
 			}) as const
 	);
 }
@@ -88,41 +91,33 @@ class RadioGroupRoot {
 //
 // Item
 //
-interface RadioGroupItemProps {
-	value: JsonValue;
+type RadioGroupItemProps = StateValues<{
+	value: string;
 	disabled: boolean;
-}
+}>;
 class RadioGroupItem {
 	root: RadioGroupRoot;
 	uid: UID = createUID('radioitem').uid;
-	value = $state<JsonValue>(null);
-	disabled = $state<boolean>(false);
+
+	value: RadioGroupItemProps['value'];
+	disabled: RadioGroupItemProps['disabled'];
 
 	Checked = $derived.by(() => this.root.SelectedItem?.id === this.uid());
 
-	constructor(root: RadioGroupRoot, props: ContextChange<RadioGroupItemProps>) {
+	constructor(root: RadioGroupRoot, props: RadioGroupItemProps) {
 		this.root = root;
 		this.value = props.value;
 		this.disabled = props.disabled;
 
-		this.root.items.push(this.uid());
-
-		$effect(() => {
-			props.onContextChange({ value: this.value, disabled: this.disabled });
-		});
+		this.root.items.push(this.value.val);
 	}
-	onComponentChange = (props: RadioGroupItemProps) => {
-		this.value = props.value;
-		this.disabled = props.disabled;
-	};
-
 	#handleClick = () => {
-		if (this.disabled) return;
+		if (this.disabled.val) return;
 
 		this.root.setSelected({
 			id: this.uid(),
-			value: this.value,
-			disabled: this.disabled
+			value: this.value.val,
+			disabled: this.disabled.val
 		});
 	};
 	#handleKeydown = (e: KeyboardEvent) => {
@@ -141,11 +136,11 @@ class RadioGroupItem {
 				id: this.uid(),
 				type: 'button',
 				role: 'radio',
-				disabled: this.disabled,
+				disabled: this.disabled.val,
 				'aria-checked': this.Checked,
 				tabindex: !this.root.SelectedItem && this.root.items[0] ? 0 : this.Checked ? 0 : -1,
 				'data-radiogroupitem': '',
-				'data-value': this.value,
+				'data-value': this.value.val,
 				'data-checked': this.Checked || undefined,
 				onclick: this.#handleClick,
 				onkeydown: this.#handleKeydown
@@ -161,9 +156,9 @@ class RadioGroupItem {
 //
 const rootContext = buildContext(RadioGroupRoot);
 
-export const createRootContext = (props: ContextChange<RadioGroupRootProps>) => {
+export const createRootContext = (props: RadioGroupRootProps) => {
 	return rootContext.createContext(props);
 };
-export const useRadioItem = (props: ContextChange<RadioGroupItemProps>) => {
+export const useRadioItem = (props: RadioGroupItemProps) => {
 	return rootContext.register(RadioGroupItem, props);
 };

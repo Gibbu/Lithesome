@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import { useRadioItem } from './main.svelte.js';
 	import type { RadioGroupItemProps } from './types.js';
 
@@ -16,17 +16,8 @@
 	}: RadioGroupItemProps = $props();
 
 	const ctx = useRadioItem({
-		value,
-		disabled,
-		onContextChange(props) {
-			value = props.value;
-			disabled = props.disabled;
-		}
-	});
-
-	$effect(() => {
-		console.log(value);
-		ctx.onComponentChange({ disabled, value });
+		value: stateValue(() => value),
+		disabled: stateValue(() => disabled)
 	});
 </script>
 

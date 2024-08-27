@@ -6,18 +6,29 @@ import type { Class } from '../types.js';
 
 const componentName = (name: string) => `<${name.replace('State', '')} />`;
 
+/**
+ * Setup and control context of components.
+ * @param rootClass The "root" class of the context.
+ */
 export const buildContext = <RC>(rootClass: Class<RC>) => {
 	const { uid } = createUID('context');
 
 	return {
+		/** Create the root context. */
 		createContext(...rest: any[]) {
 			const root = new rootClass(...rest);
 
 			return setContext(uid(), root);
 		},
+		/** Get the current context. */
 		getContext() {
 			return getContext(uid()) as RC;
 		},
+		/**
+		 * Creates a new class with the "root" class already passed through.
+		 * @param klass The class to apply for the context.
+		 * @param rest Any props to be passed down to the class.
+		 */
 		register<C>(klass: Class<C>, ...rest: any[]) {
 			if (!hasContext(uid()))
 				throw log.error(
@@ -36,6 +47,24 @@ export class Floating {
 	content = $state<HTMLElement | null>(null);
 	trigger = $state<HTMLElement | null>(null);
 }
+
+/**
+ * State machine to allow for dynamic two-way binding through function params.
+ * @param value The current value of the state
+ * @param updater The function to call when needing to update state outside of the context.
+ */
+export const stateValue = <T>(value: () => T, updater?: (newValue: T) => void) => {
+	const val = $derived.by(value);
+
+	return {
+		get val() {
+			return val;
+		},
+		set val(v: T) {
+			updater?.(v);
+		}
+	};
+};
 
 // TODO: Remove below after rewrite.
 

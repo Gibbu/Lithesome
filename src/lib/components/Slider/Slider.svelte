@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { SliderProps } from './types.js';
 
@@ -21,34 +21,20 @@
 	}: SliderProps = $props();
 
 	const ctx = createRootContext({
-		value,
-		min,
-		max,
-		disabled,
-		orientation,
-		reverse,
-		step,
-		trackElement: self,
-		onContextChange(props) {
-			value = props.value;
-			min = props.min;
-			max = props.max;
-			disabled = props.disabled;
-			reverse = props.reverse;
-		}
-	});
-
-	$effect(() => {
-		ctx.onComponentChange({
-			value,
-			disabled,
-			max,
-			min,
-			orientation,
-			reverse,
-			step,
-			trackElement: self
-		});
+		value: stateValue(
+			() => value,
+			(v) => (value = v)
+		),
+		min: stateValue(() => min),
+		max: stateValue(() => max),
+		disabled: stateValue(
+			() => disabled,
+			(v) => (disabled = v)
+		),
+		orientation: stateValue(() => orientation),
+		reverse: stateValue(() => reverse),
+		step: stateValue(() => step),
+		trackElement: stateValue(() => self)
 	});
 </script>
 

@@ -10,7 +10,7 @@
 	const { inTransition, outTransition } = getTransition(transition);
 </script>
 
-{#if inTransition && outTransition && ctx.Visible}
+{#if inTransition && outTransition && ctx.root.visible.val}
 	{@const { config: inConf, transition: inFn } = inTransition}
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
@@ -25,7 +25,7 @@
 	>
 		{@render children({})}
 	</div>
-{:else if ctx.Visible}
+{:else if ctx.root.visible.val}
 	<div
 		bind:this={self}
 		use:useTrap={{ allowOutsideClick: true }}

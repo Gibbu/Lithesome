@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createAccordionItemContext } from './main.svelte.js';
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 
 	import type { AccordionItemProps } from './types.js';
 
@@ -14,14 +14,7 @@
 	}: AccordionItemProps = $props();
 
 	const ctx = createAccordionItemContext({
-		disabled,
-		onContextChange(props) {
-			disabled = props.disabled;
-		}
-	});
-
-	$effect(() => {
-		ctx.onComponentChange({ disabled });
+		disabled: stateValue(() => disabled)
 	});
 </script>
 

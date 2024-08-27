@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { RadioGroupProps } from './types.js';
 
@@ -8,23 +8,18 @@
 		use = [],
 		class: klass,
 		self = $bindable(),
-		value = $bindable(null),
+		value = $bindable(''),
 		required = false,
 		onChange,
 		...props
 	}: RadioGroupProps = $props();
 
 	const ctx = createRootContext({
-		value,
-		required,
-		onContextChange(props) {
-			value = props.value;
-			required = props.required;
-		}
-	});
-
-	$effect(() => {
-		ctx.onComponentChange({ required, value });
+		value: stateValue(
+			() => value,
+			(v) => (value = v)
+		),
+		required: stateValue(() => required)
 	});
 </script>
 
