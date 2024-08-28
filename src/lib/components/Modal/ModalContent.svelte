@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useActions, getTransition, classProp } from '$internal';
-	import { useTrap } from '$lib/index.js';
+	import { usePortal, useTrap } from '$lib/index.js';
 	import { useModalContent } from './main.svelte.js';
 	import type { ModalContentProps } from './types.js';
 
@@ -16,9 +16,10 @@
 	<div
 		bind:this={self}
 		use:useTrap={{ allowOutsideClick: true }}
+		use:usePortal={ctx.root.portalTarget.val}
 		use:useActions={use}
-		in:inFn|global={inConf}
-		out:outFn|global={outConf}
+		in:inFn={inConf}
+		out:outFn={outConf}
 		class={classProp(klass)}
 		{...props}
 		{...ctx.attrs}

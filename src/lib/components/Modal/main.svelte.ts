@@ -5,26 +5,29 @@ import { buildContext, createUID, disableScroll, KEYS, type StateValues } from '
 //
 type ModalRootProps = StateValues<{
 	visible: boolean;
+	portalTarget: HTMLElement | string;
 }>;
 class ModalRoot {
 	uid = createUID('modal').uid;
 	visible: ModalRootProps['visible'];
+	portalTarget: ModalRootProps['portalTarget'];
 
 	constructor(props: ModalRootProps) {
 		this.visible = props.visible;
+		this.portalTarget = props.portalTarget;
 
 		$effect(() => {
-			disableScroll(this.visible && !document.body.style.overflow);
+			disableScroll(this.visible.val && !document.body.style.overflow);
 		});
 		$effect(() => {
-			window.addEventListener('keydown', this.#handleKeys);
+			window.addEventListener('keydown', this.#handleKeydown);
 			return () => {
-				window.removeEventListener('keydown', this.#handleKeys);
+				window.removeEventListener('keydown', this.#handleKeydown);
 			};
 		});
 	}
 
-	#handleKeys = (e: KeyboardEvent) => {
+	#handleKeydown = (e: KeyboardEvent) => {
 		if (e.key === KEYS.escape) this.visible.val = false;
 	};
 

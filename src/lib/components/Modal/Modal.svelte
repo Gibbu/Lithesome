@@ -14,23 +14,13 @@
 		...props
 	}: ModalProps = $props();
 
-	const ctx = createRootContext({
+	createRootContext({
 		visible: stateValue(
 			() => visible,
 			(v) => (visible = v)
-		)
+		),
+		portalTarget: stateValue(() => portalTarget)
 	});
 </script>
 
-{#if ctx.visible.val}
-	<div
-		bind:this={self}
-		use:usePortal={portalTarget}
-		use:useActions={use}
-		class={classProp(klass)}
-		{...ctx.attrs}
-		{...props}
-	>
-		{@render children({})}
-	</div>
-{/if}
+{@render children({})}
