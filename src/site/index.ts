@@ -1,5 +1,6 @@
 export * from './utils.js';
 export * from './types.js';
+export * from './highlighter.js';
 
 export { default as Button } from './components/Button.svelte';
 export { default as Preview } from './components/Preview.svelte';

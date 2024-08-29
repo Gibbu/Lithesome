@@ -7,7 +7,9 @@
 	let target = $state(preview);
 </script>
 
-<Button variant="primary" onclick={() => (target = target === 'body' ? preview : 'body')}>Portal content</Button>
+<Button variant="primary" onclick={() => (target = target === 'main header' ? preview : 'main header')}>
+	Portal content
+</Button>
 
 <div
 	use:usePortal={target}

@@ -176,9 +176,9 @@ class TabsContent {
 				'aria-hidden': !this.IsActive,
 				'data-tabscontent': '',
 				'data-state': this.IsActive ? 'active' : 'inactive',
-				'data-value': this.value,
+				'data-value': this.value.val,
 				'data-hidden': !this.IsActive,
-				'data-orientation': this.root.orientation,
+				'data-orientation': this.root.orientation.val,
 				style: styleObjToString({
 					display: this.IsActive ? undefined : 'none'
 				})

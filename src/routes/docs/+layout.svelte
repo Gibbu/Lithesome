@@ -51,8 +51,8 @@
 		class={cn(
 			'flex items-center rounded-md px-3.5 py-2 text-sm',
 			active(route.path)
-				? 'bg-neutral-100 font-semibold text-black dark:bg-neutral-900 dark:text-white dark:shadow-none'
-				: 'hover:bg-neutral-50 dark:hover:bg-white/5'
+				? 'bg-neutral-200 font-semibold text-black dark:bg-neutral-900 dark:text-white dark:shadow-none'
+				: 'hover:bg-neutral-100 dark:hover:bg-white/5'
 		)}
 	>
 		<span class="flex-1">{route.title}</span>
@@ -78,7 +78,7 @@
 		'dark:border-b-neutral-900 dark:bg-neutral-950/80'
 	)}
 >
-	<div class="wrap flex items-center justify-between">
+	<div class="wrap flex h-full items-center justify-between px-2">
 		<div class="flex items-center">
 			{#if isMobile}
 				<Button variant="text" onclick={() => (mobileSidebar = !mobileSidebar)}>
@@ -117,8 +117,8 @@
 	</div>
 </nav>
 
-<div class="wrap grid items-start pt-[var(--nav-height)] md:grid-cols-[250px,1fr]">
-	<aside class="sticky top-[var(--nav-height)] h-[calc(100vh-var(--nav-height))] gap-4 overflow-y-auto py-4 pr-4">
+<div class="wrap grid items-start px-0 pt-[var(--nav-height)] md:grid-cols-[250px,1fr]">
+	<aside class="sticky top-[var(--nav-height)] h-[calc(100vh-var(--nav-height))] gap-4 overflow-y-auto p-2">
 		<ul class="flex h-full flex-col gap-2">
 			{#each data.routes as route}
 				{#if route.title}
@@ -140,9 +140,7 @@
 			{/each}
 		</ul>
 	</aside>
-	<main
-		class="min-h-[calc(100vh-var(--nav-height))] min-w-0 border-l border-neutral-200 p-12 pr-0 dark:border-neutral-900"
-	>
+	<main class="min-h-[calc(100vh-var(--nav-height))] min-w-0 border-l border-neutral-200 p-8 dark:border-neutral-900">
 		{#if !hideEarlyDev}
 			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>
 				This package and docs are still under very early development. Expect things to be broken.
