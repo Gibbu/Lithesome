@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { cn } from '../utils.js';
-	import { getSingletonHighlighter } from 'shiki';
 	import { Tabs, TabsList, TabsButton, TabsContent } from '$lib/index.js';
 	import { EyeIcon, CodeIcon } from 'lucide-svelte';
 	import { highlighter } from '$site/index.js';

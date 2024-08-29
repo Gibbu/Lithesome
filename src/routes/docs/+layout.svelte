@@ -62,7 +62,7 @@
 					'rounded-xl px-2.5 py-0.5 text-xs capitalize',
 					route.badge === 'soon' ? 'bg-gray-500/20 text-gray-400' : '',
 					route.badge === 'updated' ? 'bg-blue-500/20 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300' : '',
-					route.badge === 'new' ? 'bg-emerald-500/20 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-300' : ''
+					route.badge === 'new' ? 'bg-neutral-500/20 text-neutral-500 dark:bg-neutral-500/20 dark:text-neutral-300' : ''
 				)}
 			>
 				{route.badge}
@@ -78,7 +78,7 @@
 		'dark:border-b-neutral-900 dark:bg-neutral-950/80'
 	)}
 >
-	<div class="wrap flex h-full items-center justify-between px-2">
+	<div class="wrap flex h-full items-center justify-between px-4">
 		<div class="flex items-center">
 			{#if isMobile}
 				<Button variant="text" onclick={() => (mobileSidebar = !mobileSidebar)}>
@@ -87,7 +87,7 @@
 			{/if}
 			<a
 				href="/"
-				class="pl-3.5 text-xl font-semibold tracking-widest text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white"
+				class="text-xl font-semibold tracking-widest text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white"
 			>
 				<span class="font-black text-black dark:text-white">L</span>ithesome
 			</a>
