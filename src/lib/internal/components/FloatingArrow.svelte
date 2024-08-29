@@ -6,19 +6,10 @@
 
 	interface ComponentProps extends PropsNoChildren<HTMLDivElement> {
 		component: string;
-		ctx: T;
-		state?: Record<string, any>;
+		ctx: Omit<T, 'state'>;
 	}
 
-	let {
-		class: klass,
-		use = [],
-		self = $bindable(),
-		state = $bindable(),
-		ctx,
-		component,
-		...props
-	}: ComponentProps = $props();
+	let { class: klass, use = [], self = $bindable(), ctx, component, ...props }: ComponentProps = $props();
 
 	const attrs = $derived.by(() => ({
 		id: ctx.root.uid('arrow'),
@@ -32,4 +23,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, state)} {...attrs} {...props}></div>
+<div bind:this={self} use:useActions={use} class={classProp(klass)} {...attrs} {...props}></div>

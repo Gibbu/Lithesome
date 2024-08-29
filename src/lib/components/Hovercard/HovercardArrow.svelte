@@ -1,18 +1,11 @@
 <script lang="ts">
-	import { context } from './Hovercard.svelte';
 	import { FloatingArrow } from '$internal';
+	import { useHovercardArrow } from './main.svelte.js';
 	import type { HovercardArrowProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), ...props }: HovercardArrowProps = $props();
 
-	const ctx = context();
+	const ctx = useHovercardArrow();
 </script>
 
-<FloatingArrow
-	{ctx}
-	component="Hovercard"
-	state={{ visible: ctx.visible }}
-	class={klass}
-	id={ctx.uid('arrow')}
-	{...props}
-/>
+<FloatingArrow {ctx} component="Hovercard" class={klass} {...props} />

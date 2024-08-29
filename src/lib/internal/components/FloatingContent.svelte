@@ -6,7 +6,6 @@
 	interface ComponentProps extends Props<HTMLDivElement>, ContentProps {
 		componentName: string;
 		ctx: T;
-		state?: Record<string, any>;
 		visible: boolean;
 		outsideCallback: () => void;
 	}
@@ -17,7 +16,6 @@
 		use = [],
 		visible = $bindable(),
 		self = $bindable(),
-		state = $bindable(),
 		transition = $bindable(),
 		sameWidth = $bindable(),
 		constrainViewport = $bindable(),
@@ -33,7 +31,8 @@
 		[`data-${componentName.toLowerCase()}content`]: '',
 		id: ctx.root.uid('content'),
 		'aria-labelledby': ctx.root.uid('trigger'),
-		class: classProp(klass, state)
+		class: classProp(klass, ctx.state),
+		...ctx.attrs
 	}));
 	const { inTransition, outTransition } = getTransition(transition);
 

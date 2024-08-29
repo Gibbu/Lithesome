@@ -69,38 +69,40 @@ class PopoverTrigger {
 
 		$effect(() => {
 			if (this.root.trigger) {
-				setNodeProps(this.root.trigger, {
+				const child = this.root.trigger.children[0] as HTMLElement;
+
+				setNodeProps(child, {
 					id: this.root.uid('trigger'),
 					role: 'button',
 					'aria-haspopup': 'dialog',
 					'aria-expanded': 'false'
 				});
-				addEventListeners(this.root.trigger, {
+				addEventListeners(child, {
 					click: this.#handleClick,
 					keydown: this.#handleKeydown
 				});
 
 				$effect(() => {
-					if (!this.root.trigger) return;
+					if (!child) return;
 
 					if (this.root.visible.val) {
-						setNodeProps(this.root.trigger, {
+						setNodeProps(child, {
 							'aria-expanded': 'true',
 							'aria-controls': this.root.uid('content')
 						});
 					} else {
-						setNodeProps(this.root.trigger, { 'aria-expanded': 'false' });
-						removeNodeProps(this.root.trigger, 'aria-controls');
+						setNodeProps(child, { 'aria-expanded': 'false' });
+						removeNodeProps(child, 'aria-controls');
 					}
 				});
 			}
 		});
 	}
 
-	registerTrigger(trigger: HTMLElement) {
+	registerTrigger = (trigger: HTMLElement) => {
 		if (trigger.children.length > 1) log.error('<PopoverTrigger /> can only have 1 direct child node.');
 		this.root.trigger = trigger;
-	}
+	};
 
 	#handleKeydown = (e: KeyboardEvent) => {
 		const { key } = e;
