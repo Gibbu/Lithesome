@@ -28,7 +28,7 @@
 			class={cn(
 				'size-3 rotate-45 border-l border-t',
 				'border-neutral-300 bg-white',
-				'bg-neutral-900 dark:border-neutral-700'
+				'dark:border-neutral-700 dark:bg-neutral-900'
 			)}
 		/>
 		<header class="flex items-center gap-4">

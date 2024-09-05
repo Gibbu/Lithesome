@@ -25,7 +25,7 @@ export const buildContext = <RC>(rootClass: Class<RC>) => {
 			return getContext(uid()) as RC;
 		},
 		/**
-		 * Creates a new class with the "root" class already passed through.
+		 * Creates a new class with the "root" class as the first argument.
 		 * @param klass The class to apply for the context.
 		 * @param rest Any props to be passed down to the class.
 		 */

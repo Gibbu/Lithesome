@@ -1,4 +1,4 @@
-import { createHighlighter, type BundledLanguage } from 'shiki/bundle-web.mjs/';
+import { createHighlighter, type BundledLanguage } from 'shiki/bundle-web.mjs';
 
 const getHighlighter = await createHighlighter({
 	langs: ['html', 'svelte', 'js', 'ts', 'css'],

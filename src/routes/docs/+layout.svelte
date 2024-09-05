@@ -49,7 +49,7 @@
 	<a
 		href="/docs{route.path === '/' ? '' : '/' + route.path}"
 		class={cn(
-			'flex items-center rounded-md px-3.5 py-2 text-sm',
+			'flex items-center rounded-md px-4 py-3 text-sm',
 			active(route.path)
 				? 'bg-neutral-200 font-semibold text-black dark:bg-neutral-900 dark:text-white dark:shadow-none'
 				: 'hover:bg-neutral-100 dark:hover:bg-white/5'
@@ -118,7 +118,12 @@
 </nav>
 
 <div class="wrap grid items-start px-0 pt-[var(--nav-height)] md:grid-cols-[250px,1fr]">
-	<aside class="sticky top-[var(--nav-height)] h-[calc(100vh-var(--nav-height))] gap-4 overflow-y-auto p-2">
+	<aside
+		class={cn(
+			'sticky top-[var(--nav-height)] h-[calc(100vh-var(--nav-height))] gap-4 overflow-y-auto p-2',
+			mobileSidebar ? 'block' : 'hidden md:block'
+		)}
+	>
 		<ul class="flex h-full flex-col gap-2">
 			{#each data.routes as route}
 				{#if route.title}
@@ -126,7 +131,7 @@
 				{/if}
 
 				{#if route.folder}
-					<h3 class="ml-3.5 mt-6 text-xs font-bold uppercase text-neutral-400 dark:text-neutral-500">
+					<h3 class="ml-4 mt-6 text-xs font-bold uppercase text-neutral-400 dark:text-neutral-500">
 						{route.folder}
 					</h3>
 					<ul class="mt-1">

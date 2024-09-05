@@ -6,7 +6,7 @@ export type Orientation = 'horizontal' | 'vertical';
 
 export type JsonObject = { [key: string]: JsonValue };
 
-export type JsonValue = null | boolean | number | string | JsonValue[] | JsonObject;
+export type JsonValue = undefined | null | boolean | number | string | JsonValue[] | JsonObject;
 
 export type ClassProp<C extends Record<string, any>> = ((props: C) => string) | string | undefined | null;
 

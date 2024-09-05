@@ -12,10 +12,10 @@
 		class?: string;
 	}
 
-	let { component, props, code, class: klass }: Props = $props();
+	let { component: Component, props, code, class: klass }: Props = $props();
 </script>
 
-{#snippet tabBtn(icon: any, value: string)}
+{#snippet tabBtn(Icon: any, value: string)}
 	<TabsButton
 		value={value.toLowerCase()}
 		class={({ active }) =>
@@ -26,7 +26,7 @@
 					: 'hover:bg-neutral-100 dark:hover:bg-neutral-920'
 			)}
 	>
-		<svelte:component this={icon} class="size-4" />
+		<Icon class="size-4" />
 		{value}
 	</TabsButton>
 {/snippet}
@@ -45,7 +45,7 @@
 	</TabsList>
 	<div class="flex max-h-[450px] min-h-[450px] w-full flex-1 flex-col">
 		<TabsContent value="preview" class="flex-centre w-full flex-1 p-8">
-			<svelte:component this={component} {...props} />
+			<Component {...props} />
 		</TabsContent>
 		<TabsContent value="code" class="preview-codeblock w-full">
 			{#if code}

@@ -8,6 +8,6 @@ export interface FloatingContext {
 		trigger: HTMLElement | null;
 	};
 
-	state: Record<string, any>;
-	attrs: Record<string, any>;
+	state?: Record<string, any>;
+	attrs?: Record<string, any>;
 }

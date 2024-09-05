@@ -4,10 +4,11 @@ interface SelectState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface SelectProps<T> extends Props<HTMLDivElement, SelectState> {
+export interface SelectProps extends Props<HTMLDivElement, SelectState> {
 	/** The value of select. */
-	value: T;
-	onChange?: (value: T) => void;
+	value: JsonValue;
+	visible?: boolean;
+	onChange?: (value: JsonValue) => void;
 }
 
 export interface SelectArrowProps extends PropsNoChildren<HTMLDivElement, SelectState> {}
