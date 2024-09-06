@@ -148,8 +148,9 @@ class SelectTrigger {
 				setNodeProps(child, {
 					id: this.root.uid('trigger'),
 					role: 'button',
-					'aria-haspopup': 'dialog',
-					'aria-expanded': 'false'
+					'aria-haspopup': 'listbox',
+					'aria-expanded': 'false',
+					'aria-autocomplete': 'list'
 				});
 				addEventListeners(child, {
 					click: this.#handleClick,
@@ -164,6 +165,7 @@ class SelectTrigger {
 							'aria-expanded': 'true',
 							'aria-controls': this.root.uid('content')
 						});
+						if (this.root.HoveredOption) setNodeProps(child, { 'aria-activedescendant': this.root.HoveredOption.id });
 					} else {
 						setNodeProps(child, { 'aria-expanded': 'false' });
 						removeNodeProps(child, 'aria-activedescendant', 'aria-controls');

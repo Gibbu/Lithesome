@@ -51,7 +51,7 @@ class Toaster {
 }
 
 //
-// ToastRoot
+// Root
 //
 class ToastRoot {
 	uid = createUID('toast').uid;
@@ -70,7 +70,7 @@ class ToastRoot {
 }
 
 //
-// ToastTitle
+// Title
 //
 class ToastTitle {
 	root: ToastRoot;
@@ -89,7 +89,7 @@ class ToastTitle {
 }
 
 //
-// ToastDescription
+// Description
 //
 class ToastDescription {
 	root: ToastRoot;

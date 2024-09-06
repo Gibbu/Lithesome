@@ -1,18 +1,11 @@
 <script lang="ts">
-	import { context } from './Combobox.svelte';
 	import { FloatingArrow } from '$internal';
+	import { useComboboxArrow } from './main.svelte.js';
 	import type { ComboboxArrowProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), ...props }: ComboboxArrowProps = $props();
 
-	const ctx = context();
+	const ctx = useComboboxArrow();
 </script>
 
-<FloatingArrow
-	{ctx}
-	component="Combobox"
-	state={{ visible: ctx.visible }}
-	class={klass}
-	id={ctx.uid('arrow')}
-	{...props}
-/>
+<FloatingArrow {ctx} component="Combobox" class={klass} {...props} />
