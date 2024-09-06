@@ -61,10 +61,6 @@ class ComboboxRoot extends Floating {
 		});
 
 		$effect(() => {
-			console.log(this.options);
-		});
-
-		$effect(() => {
 			disableScroll(this.$visible.val && !document.body.style.overflow);
 		});
 		$effect(() => {
