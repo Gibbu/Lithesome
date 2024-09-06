@@ -4,7 +4,7 @@ import { onDestroy, getContext, setContext, hasContext } from 'svelte';
 
 import type { Class } from '../types.js';
 
-const componentName = (name: string) => `<${name.replace('State', '')} />`;
+const componentName = (name: string) => `<${name.replace('Root', '')} />`;
 
 /**
  * Setup and control context of components.

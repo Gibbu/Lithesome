@@ -25,10 +25,6 @@ class AccordionRoot {
 		this.single = props.single;
 		this.value = props.value;
 	}
-	onComponentChange = (props: AccordionRootProps) => {
-		this.single = props.single;
-		this.value = props.value;
-	};
 
 	toggleActiveItem = (itemId: string) => {
 		if (this.single) {

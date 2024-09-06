@@ -1,20 +1,13 @@
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
-	import { context } from './Toast.svelte';
+	import { useToastDescription } from './main.svelte.js';
 	import type { ToastMessageProps } from './types.js';
 
 	let { children, use = [], class: klass, self = $bindable(), ...props }: ToastMessageProps = $props();
 
-	const ctx = context();
+	const ctx = useToastDescription();
 </script>
 
-<p
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid('description')}
-	class={classProp(klass)}
-	data-toastdescription=""
-	{...props}
->
+<p bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
 	{@render children({})}
 </p>
