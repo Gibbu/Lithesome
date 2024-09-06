@@ -26,8 +26,8 @@ type RadioGroupRootProps = StateValues<{
 class RadioGroupRoot {
 	uid: UID = createUID('radiogroup').uid;
 
-	value: RadioGroupRootProps['value'];
-	required: RadioGroupRootProps['required'];
+	$value: RadioGroupRootProps['value'];
+	$required: RadioGroupRootProps['required'];
 
 	items = $state<string[]>([]);
 	index = $state<number>(-1);
@@ -41,12 +41,12 @@ class RadioGroupRoot {
 	});
 
 	constructor(props: RadioGroupRootProps) {
-		this.value = props.value;
-		this.required = props.required;
+		this.$value = props.value;
+		this.$required = props.required;
 
-		if (this.value.val) {
+		if (this.$value.val) {
 			tick().then(() => {
-				this.index = this.items.findIndex((el) => el === this.value.val);
+				this.index = this.items.findIndex((el) => el === this.$value.val);
 			});
 		}
 	}
@@ -63,7 +63,7 @@ class RadioGroupRoot {
 		const element = elements[this.index];
 		if (!element) return;
 
-		this.value.val = element.dataset.value!;
+		this.$value.val = element.dataset.value!;
 		this.SelectedItem?.focus();
 	};
 	setSelected = (item: Item) => {
@@ -73,7 +73,7 @@ class RadioGroupRoot {
 		if (!elements) return;
 
 		this.index = elements.findIndex((el) => el.dataset.value === item.value);
-		this.value.val = item.value;
+		this.$value.val = item.value;
 	};
 
 	attrs = $derived.by(
@@ -81,9 +81,9 @@ class RadioGroupRoot {
 			({
 				id: this.uid(),
 				role: 'radiogroup',
-				'aria-required': this.required.val,
+				'aria-required': this.$required.val,
 				'data-radiogroup': '',
-				'data-value': this.value.val
+				'data-value': this.$value.val
 			}) as const
 	);
 }
@@ -99,25 +99,26 @@ class RadioGroupItem {
 	root: RadioGroupRoot;
 	uid: UID = createUID('radioitem').uid;
 
-	value: RadioGroupItemProps['value'];
-	disabled: RadioGroupItemProps['disabled'];
+	$value: RadioGroupItemProps['value'];
+	$disabled: RadioGroupItemProps['disabled'];
 
 	Checked = $derived.by(() => this.root.SelectedItem?.id === this.uid());
 
 	constructor(root: RadioGroupRoot, props: RadioGroupItemProps) {
 		this.root = root;
-		this.value = props.value;
-		this.disabled = props.disabled;
 
-		this.root.items.push(this.value.val);
+		this.$value = props.value;
+		this.$disabled = props.disabled;
+
+		this.root.items.push(this.$value.val);
 	}
 	#handleClick = () => {
-		if (this.disabled.val) return;
+		if (this.$disabled.val) return;
 
 		this.root.setSelected({
 			id: this.uid(),
-			value: this.value.val,
-			disabled: this.disabled.val
+			value: this.$value.val,
+			disabled: this.$disabled.val
 		});
 	};
 	#handleKeydown = (e: KeyboardEvent) => {
@@ -136,11 +137,11 @@ class RadioGroupItem {
 				id: this.uid(),
 				type: 'button',
 				role: 'radio',
-				disabled: this.disabled.val,
+				disabled: this.$disabled.val,
 				'aria-checked': this.Checked,
 				tabindex: !this.root.SelectedItem && this.root.items[0] ? 0 : this.Checked ? 0 : -1,
 				'data-radiogroupitem': '',
-				'data-value': this.value.val,
+				'data-value': this.$value.val,
 				'data-checked': this.Checked || undefined,
 				onclick: this.#handleClick,
 				onkeydown: this.#handleKeydown

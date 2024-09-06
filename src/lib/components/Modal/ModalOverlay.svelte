@@ -10,19 +10,19 @@
 	const { inTransition, outTransition } = getTransition(transition);
 </script>
 
-{#if inTransition && outTransition && ctx.root.visible.val}
+{#if inTransition && outTransition && ctx.root.$visible.val}
 	{@const { config: inConf, transition: inFn } = inTransition}
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
 		use:useActions={use}
-		use:usePortal={ctx.root.portalTarget.val}
+		use:usePortal={ctx.root.$portalTarget.val}
 		in:inFn={inConf}
 		out:outFn={outConf}
 		{...props}
 		{...ctx.attrs}
 		class={classProp(klass)}
 	></div>
-{:else if ctx.root.visible.val}
+{:else if ctx.root.$visible.val}
 	<div bind:this={self} use:useActions={use} {...props} {...ctx.attrs} class={classProp(klass)}></div>
 {/if}

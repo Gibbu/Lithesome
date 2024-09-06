@@ -20,8 +20,8 @@ type HovercardRootProps = StateValues<{
 class HovercardRoot extends Floating {
 	uid = createUID('hovercard').uid;
 
-	visible: HovercardRootProps['visible'];
-	delays: HovercardRootProps['delays'];
+	$visible: HovercardRootProps['visible'];
+	$delays: HovercardRootProps['delays'];
 
 	timeout = $state<number | null>(null);
 	hovered = $state<boolean>(false);
@@ -29,8 +29,8 @@ class HovercardRoot extends Floating {
 	constructor(props: HovercardRootProps) {
 		super();
 
-		this.visible = props.visible;
-		this.delays = props.delays;
+		this.$visible = props.visible;
+		this.$delays = props.delays;
 	}
 
 	open = () => {
@@ -40,8 +40,8 @@ class HovercardRoot extends Floating {
 		}
 
 		this.timeout = setTimeout(() => {
-			this.visible.val = true;
-		}, this.delays.val.in);
+			this.$visible.val = true;
+		}, this.$delays.val.in);
 	};
 	close = () => {
 		if (this.timeout) {
@@ -50,11 +50,11 @@ class HovercardRoot extends Floating {
 		}
 
 		this.timeout = setTimeout(() => {
-			if (!this.hovered) this.visible.val = false;
-		}, this.delays.val.out);
+			if (!this.hovered) this.$visible.val = false;
+		}, this.$delays.val.out);
 	};
 	forceClose = () => {
-		this.visible.val = false;
+		this.$visible.val = false;
 		this.timeout = null;
 	};
 
@@ -63,11 +63,11 @@ class HovercardRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-hovercard': '',
-				'data-state': this.visible.val ? 'opened' : 'closed'
+				'data-state': this.$visible.val ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.visible.val
+		visible: this.$visible.val
 	}));
 }
 
@@ -99,7 +99,7 @@ class HovercardTrigger {
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.visible.val) {
+					if (this.root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
 							'aria-controls': this.root.uid('content')
@@ -126,7 +126,7 @@ class HovercardTrigger {
 		'data-hovercardtrigger': ''
 	};
 	state = $derived.by(() => ({
-		visible: this.root.visible.val
+		visible: this.root.$visible.val
 	}));
 }
 
@@ -169,7 +169,7 @@ class HovercardContent {
 		onmouseleave: this.#handleMouseleave
 	}));
 	state = $derived.by(() => ({
-		visible: this.root.visible.val
+		visible: this.root.$visible.val
 	}));
 }
 

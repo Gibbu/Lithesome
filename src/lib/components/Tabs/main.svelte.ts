@@ -22,30 +22,30 @@ type TabsRootProps = StateValues<{
 class TabsRoot {
 	uid = createUID('tabs').uid;
 
-	value: TabsRootProps['value'];
-	orientation: TabsRootProps['orientation'];
+	$value: TabsRootProps['value'];
+	$orientation: TabsRootProps['orientation'];
 
-	#tabs = $state<string[]>([]);
-	#index = $state<number>(0);
+	tabs = $state<string[]>([]);
+	index = $state<number>(0);
 
-	ActiveTab = $derived.by(() => this.#tabs[this.#index] || this.#tabs[0]);
+	ActiveTab = $derived.by(() => this.tabs[this.index] || this.tabs[0]);
 
 	constructor(props: TabsRootProps) {
-		this.value = props.value;
-		this.orientation = props.orientation;
+		this.$value = props.value;
+		this.$orientation = props.orientation;
 	}
 
 	register(tab: string) {
-		this.#tabs.push(tab);
+		this.tabs.push(tab);
 	}
 	setActive = (btnValue: string) => {
-		if (!this.#tabs.find((el) => el === btnValue))
+		if (!this.tabs.find((el) => el === btnValue))
 			log.error('There are no matching vales between the <TabsButton /> and <TabsContent /> components.');
 
-		this.#index = this.#tabs.findIndex((el) => el === btnValue);
+		this.index = this.tabs.findIndex((el) => el === btnValue);
 	};
 	navigate = (action: CalcIndexAction) => {
-		this.#index = calculateIndex(action, this.#tabs, this.#index);
+		this.index = calculateIndex(action, this.tabs, this.index);
 		(document.querySelector(`[data-tabsbutton][data-value="${this.ActiveTab}"]`) as HTMLButtonElement)?.focus();
 	};
 
@@ -54,7 +54,7 @@ class TabsRoot {
 			({
 				id: this.uid(),
 				'data-tabs': '',
-				'data-orientation': this.orientation,
+				'data-orientation': this.$orientation.val,
 				'data-active': this.ActiveTab
 			}) as const
 	);
@@ -77,9 +77,9 @@ class TabsList {
 		() =>
 			({
 				role: 'tablist',
-				'aria-orientation': this.root.orientation.val,
+				'aria-orientation': this.root.$orientation.val,
 				'data-tabslist': '',
-				'data-orientation': this.root.orientation.val
+				'data-orientation': this.root.$orientation.val
 			}) as const
 	);
 }
@@ -94,26 +94,27 @@ type TabsButtonProps = StateValues<{
 class TabsButton {
 	root: TabsRoot;
 
-	disabled: TabsButtonProps['disabled'];
-	value: TabsButtonProps['value'];
+	$disabled: TabsButtonProps['disabled'];
+	$value: TabsButtonProps['value'];
 
-	IsActive = $derived.by(() => this.root.ActiveTab === this.value.val);
+	IsActive = $derived.by(() => this.root.ActiveTab === this.$value.val);
 
 	constructor(root: TabsRoot, props: TabsButtonProps) {
 		this.root = root;
-		this.value = props.value;
-		this.disabled = props.disabled;
+
+		this.$value = props.value;
+		this.$disabled = props.disabled;
 
 		this.root.register(props.value.val);
 	}
 
 	#handleClick = () => {
-		if (this.disabled.val) return;
+		if (this.$disabled.val) return;
 
-		this.root.setActive(this.value.val);
+		this.root.setActive(this.$value.val);
 	};
 	#handleKeydown = (e: KeyboardEvent) => {
-		if (this.disabled.val) return;
+		if (this.$disabled.val) return;
 
 		const { key } = e;
 
@@ -122,13 +123,13 @@ class TabsButton {
 		if (key === KEYS.home) this.root.navigate('first');
 		if (key === KEYS.end) this.root.navigate('last');
 		if (
-			(key === KEYS.arrowUp && this.root.orientation.val === 'vertical') ||
-			(key === KEYS.arrowLeft && this.root.orientation.val === 'horizontal')
+			(key === KEYS.arrowUp && this.root.$orientation.val === 'vertical') ||
+			(key === KEYS.arrowLeft && this.root.$orientation.val === 'horizontal')
 		)
 			this.root.navigate('prev');
 		if (
-			(key === KEYS.arrowDown && this.root.orientation.val === 'vertical') ||
-			(key === KEYS.arrowRight && this.root.orientation.val === 'horizontal')
+			(key === KEYS.arrowDown && this.root.$orientation.val === 'vertical') ||
+			(key === KEYS.arrowRight && this.root.$orientation.val === 'horizontal')
 		)
 			this.root.navigate('next');
 	};
@@ -141,7 +142,7 @@ class TabsButton {
 				tabindex: this.IsActive ? 0 : -1,
 				'data-tabsbutton': '',
 				'data-state': this.IsActive ? 'active' : 'inactive',
-				'data-value': this.value.val,
+				'data-value': this.$value.val,
 				onclick: this.#handleClick,
 				onkeydown: this.#handleKeydown
 			}) as const
@@ -178,7 +179,7 @@ class TabsContent {
 				'data-state': this.IsActive ? 'active' : 'inactive',
 				'data-value': this.value.val,
 				'data-hidden': !this.IsActive,
-				'data-orientation': this.root.orientation.val,
+				'data-orientation': this.root.$orientation.val,
 				style: styleObjToString({
 					display: this.IsActive ? undefined : 'none'
 				})

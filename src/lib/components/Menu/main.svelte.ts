@@ -14,7 +14,7 @@ import {
 	type Handler,
 	type StateValues
 } from '$internal';
-import { onDestroy, onMount } from 'svelte';
+import { onMount } from 'svelte';
 
 //
 // Root
@@ -25,45 +25,45 @@ type MenuRootProps = StateValues<{
 class MenuRoot extends Floating {
 	uid = createUID('menu').uid;
 
-	visible: MenuRootProps['visible'];
+	$visible: MenuRootProps['visible'];
 
-	#hoveredIndex = $state<number>(-1);
-	#items = $state<string[]>([]);
+	hoveredIndex = $state<number>(-1);
+	items = $state<string[]>([]);
 
-	HoveredItem = $derived(this.#items[this.#hoveredIndex]);
+	HoveredItem = $derived(this.items[this.hoveredIndex]);
 
 	constructor(props: MenuRootProps) {
 		super();
-		this.visible = props.visible;
+		this.$visible = props.visible;
 
 		$effect(() => {
-			disableScroll(this.visible.val && !document.body.style.overflow);
+			disableScroll(this.$visible.val && !document.body.style.overflow);
 		});
 		$effect(() => {
-			if (!this.visible.val) this.#hoveredIndex = -1;
+			if (!this.$visible.val) this.hoveredIndex = -1;
 		});
 	}
 
 	open = () => {
-		this.visible.val = true;
+		this.$visible.val = true;
 	};
 	close = () => {
-		this.visible.val = false;
+		this.$visible.val = false;
 	};
 	toggle = () => {
-		this.visible.val = !this.visible.val;
+		this.$visible.val = !this.$visible.val;
 	};
 	navigate = (action: CalcIndexAction) => {
-		this.#hoveredIndex = calculateIndex(action, this.#items, this.#hoveredIndex);
+		this.hoveredIndex = calculateIndex(action, this.items, this.hoveredIndex);
 	};
 	register = (itemId: string) => {
-		this.#items.push(itemId);
+		this.items.push(itemId);
 	};
 	unregister = (itemId: string) => {
-		this.#items = this.#items.filter((el) => el !== itemId);
+		this.items = this.items.filter((el) => el !== itemId);
 	};
 	setHovered = (itemId: string) => {
-		this.#hoveredIndex = this.#items.findIndex((el) => el === itemId);
+		this.hoveredIndex = this.items.findIndex((el) => el === itemId);
 	};
 
 	attrs = $derived.by(
@@ -71,11 +71,11 @@ class MenuRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-menu': '',
-				'data-state': this.visible.val ? 'opened' : 'closed'
+				'data-state': this.$visible.val ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.visible.val
+		visible: this.$visible.val
 	}));
 }
 
@@ -106,7 +106,7 @@ class MenuTrigger {
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.visible.val) {
+					if (this.root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
 							'aria-controls': this.root.uid('content')
@@ -136,7 +136,7 @@ class MenuTrigger {
 		if (key === KEYS.escape) this.root.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (this.root.HoveredItem && this.root.visible.val) {
+			if (this.root.HoveredItem && this.root.$visible.val) {
 				(document.querySelector(`#${this.root.HoveredItem}`) as HTMLButtonElement).click();
 				this.root.close();
 			} else {
@@ -153,7 +153,7 @@ class MenuTrigger {
 		'data-menutrigger': ''
 	};
 	state = $derived.by(() => ({
-		visible: this.root.visible.val
+		visible: this.root.$visible.val
 	}));
 }
 
@@ -183,7 +183,7 @@ class MenuContent {
 	}
 
 	state = $derived.by(() => ({
-		visible: this.root.visible.val
+		visible: this.root.$visible.val
 	}));
 }
 
@@ -194,31 +194,33 @@ type MenuItemProps = StateValues<{
 	disabled: boolean;
 }>;
 class MenuItem {
-	root: MenuRoot;
 	uid = createUID('item').uid;
 
-	disabled: MenuItemProps['disabled'];
+	root: MenuRoot;
+
+	$disabled: MenuItemProps['disabled'];
 
 	Hovered = $derived.by(() => this.root.HoveredItem === this.uid());
 
 	constructor(root: MenuRoot, props: MenuItemProps) {
 		this.root = root;
-		this.disabled = props.disabled;
+		this.$disabled = props.disabled;
 
 		onMount(() => {
-			if (!this.disabled.val) this.root.register(this.uid());
-		});
-		onDestroy(() => {
-			this.root.unregister(this.uid());
+			if (!this.$disabled.val) this.root.register(this.uid());
+
+			return () => {
+				this.root.unregister(this.uid());
+			};
 		});
 	}
 
 	#handleClick = () => {
-		if (this.disabled.val) return;
+		if (this.$disabled.val) return;
 		this.root.close();
 	};
 	#handleMouseover = () => {
-		if (this.disabled.val) return;
+		if (this.$disabled.val) return;
 		this.root.setHovered(this.uid());
 	};
 
@@ -226,7 +228,7 @@ class MenuItem {
 		() =>
 			({
 				id: this.uid(),
-				disabled: this.disabled.val || undefined,
+				disabled: this.$disabled.val || undefined,
 				role: 'menuitem',
 				tabindex: 0,
 				'data-hovered': this.Hovered ? '' : undefined,

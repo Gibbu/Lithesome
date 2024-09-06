@@ -8,7 +8,7 @@
 		use = [],
 		class: klass,
 		value = $bindable(),
-		visible = $bindable(),
+		visible = $bindable(true),
 		self = $bindable(),
 		onChange,
 		...props
@@ -16,6 +16,10 @@
 
 	const multiple = Array.isArray(value);
 	const ctx = createRootContext({
+		visible: stateValue(
+			() => visible,
+			(v) => (visible = v)
+		),
 		value: stateValue(
 			() => value,
 			(v) => {

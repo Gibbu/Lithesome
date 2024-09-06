@@ -21,15 +21,16 @@ import { onMount, tick } from 'svelte';
 //
 type SelectRootProps = StateValues<{
 	multiple: boolean;
+	visible: boolean;
 	value: JsonValue;
 }>;
 class SelectRoot extends Floating {
 	uid = createUID('select').uid;
 
-	multiple: SelectRootProps['multiple'];
-	value: SelectRootProps['value'];
+	$multiple: SelectRootProps['multiple'];
+	$value: SelectRootProps['value'];
+	$visible: SelectRootProps['visible'];
 
-	visible = $state<boolean>(true);
 	hoveredIndex = $state<number>(-1);
 	options = $state<HTMLElement[]>([]);
 	selectedOptions = $state<HTMLElement[]>([]);
@@ -40,24 +41,23 @@ class SelectRoot extends Floating {
 	constructor(props: SelectRootProps) {
 		super();
 
-		this.value = props.value;
-		this.multiple = props.multiple;
+		this.$value = props.value;
+		this.$multiple = props.multiple;
+		this.$visible = props.visible;
 
 		onMount(async () => {
 			await tick();
-			this.setInitialSelected(this.value.val);
-			this.visible = false;
-			this.mounted = true;
+			this.setInitialSelected(this.$value.val);
 		});
 
 		$effect(() => {
-			disableScroll(this.visible && !document.body.style.overflow);
+			disableScroll(this.$visible.val && !document.body.style.overflow);
 		});
 		$effect(() => {
-			if (!this.visible || !this.options || this.hoveredIndex > this.options.length - 1) this.hoveredIndex = -1;
+			if (!this.$visible.val || !this.options || this.hoveredIndex > this.options.length - 1) this.hoveredIndex = -1;
 		});
 		$effect(() => {
-			if (this.visible) {
+			if (this.$visible.val) {
 				tick().then(() => {
 					this.hoveredIndex = this.options.findIndex((option) => option.ariaSelected === 'true');
 				});
@@ -68,13 +68,13 @@ class SelectRoot extends Floating {
 	}
 
 	open = () => {
-		this.visible = true;
+		this.$visible.val = true;
 	};
 	close = () => {
-		this.visible = false;
+		this.$visible.val = false;
 	};
 	toggle = () => {
-		this.visible = !this.visible;
+		this.$visible.val = !this.$visible.val;
 	};
 	queryElements = () => {
 		const elements = removeDisabledElements(`#${this.uid('content')} [data-selectoption]`);
@@ -94,7 +94,7 @@ class SelectRoot extends Floating {
 	setSelected = () => {
 		if (!this.HoveredOption) return;
 
-		if (this.multiple.val) {
+		if (this.$multiple.val) {
 			if (this.selectedOptions.find((el) => el.dataset.value === this.HoveredOption?.dataset.value)) {
 				this.selectedOptions = this.selectedOptions.filter(
 					(el) => el.dataset.value !== this.HoveredOption?.dataset.value
@@ -106,9 +106,9 @@ class SelectRoot extends Floating {
 			this.selectedOptions[0] = this.HoveredOption;
 		}
 
-		if (!this.multiple.val) this.visible = false;
+		if (!this.$multiple.val) this.$visible.val = false;
 
-		this.value.val = this.multiple.val
+		this.$value.val = this.$multiple.val
 			? this.selectedOptions.map((el) => el.dataset.value)
 			: this.selectedOptions[0].dataset.value;
 	};
@@ -117,6 +117,8 @@ class SelectRoot extends Floating {
 			if (!Array.isArray(value) && el.dataset.value === value) return el;
 			else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
 		});
+		this.$visible.val = false;
+		this.mounted = true;
 	};
 
 	attrs = $derived.by(
@@ -124,11 +126,11 @@ class SelectRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-select': '',
-				'data-state': this.visible && this.mounted ? 'opened' : 'closed'
+				'data-state': this.$visible.val && this.mounted ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.visible && this.mounted
+		visible: this.$visible.val && this.mounted
 	}));
 }
 
@@ -160,7 +162,7 @@ class SelectTrigger {
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.visible) {
+					if (this.root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
 							'aria-controls': this.root.uid('content')
@@ -191,9 +193,9 @@ class SelectTrigger {
 		if (key === KEYS.escape) this.root.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (this.root.HoveredOption && this.root.visible) {
+			if (this.root.HoveredOption && this.root.$visible.val) {
 				(document.querySelector(`#${this.root.HoveredOption.id}`) as HTMLButtonElement).click();
-				if (!this.root.multiple) this.root.close();
+				if (!this.root.$multiple) this.root.close();
 			} else {
 				this.root.open();
 			}
@@ -208,7 +210,7 @@ class SelectTrigger {
 		'data-selecttrigger': ''
 	};
 	state = $derived.by(() => ({
-		visible: this.root.visible
+		visible: this.root.$visible.val
 	}));
 }
 
@@ -241,7 +243,7 @@ class SelectContent {
 		hidden: !this.root.mounted || undefined
 	}));
 	state = $derived.by(() => ({
-		visible: this.root.visible
+		visible: this.root.$visible.val
 	}));
 }
 
@@ -258,25 +260,25 @@ class SelectOption {
 
 	root: SelectRoot;
 
-	value: SelectOptionProps['value'];
-	disabled: SelectOptionProps['disabled'];
-	label: SelectOptionProps['label'];
+	$value: SelectOptionProps['value'];
+	$disabled: SelectOptionProps['disabled'];
+	$label: SelectOptionProps['label'];
 
 	Hovered = $derived.by(() => this.root.HoveredOption?.id === this.uid());
-	Selected = $derived.by(() => !!this.root.selectedOptions.find((el) => el.dataset.value === this.value.val));
+	Selected = $derived.by(() => !!this.root.selectedOptions.find((el) => el.dataset.value === this.$value.val));
 
 	constructor(root: SelectRoot, props: SelectOptionProps) {
 		this.root = root;
 
-		this.value = props.value;
-		this.disabled = props.disabled;
-		this.label = props.label;
+		this.$value = props.value;
+		this.$disabled = props.disabled;
+		this.$label = props.label;
 
 		onMount(() => {
 			this.root.queryElements();
 
 			return async () => {
-				if (!this.root.visible || this.root.options === this.root.options) return;
+				if (!this.root.$visible.val || this.root.options === this.root.options) return;
 				await tick();
 				this.root.queryElements();
 			};
@@ -284,11 +286,11 @@ class SelectOption {
 	}
 
 	#handleMouseover = () => {
-		if (this.disabled.val) return;
+		if (this.$disabled.val) return;
 		this.root.setHovered(this.uid());
 	};
 	#handleClick = () => {
-		if (this.disabled.val) return;
+		if (this.$disabled.val) return;
 		this.root.setSelected();
 	};
 
@@ -297,15 +299,15 @@ class SelectOption {
 			({
 				id: this.uid(),
 				type: 'button',
-				disabled: this.disabled.val,
+				disabled: this.$disabled.val,
 				role: 'option',
 				tabindex: 0,
 				'aria-selected': this.Selected,
 				'data-selected': this.Selected,
 				'data-hovered': this.Hovered,
 				'data-selectoption': '',
-				'data-value': this.value.val,
-				'data-label': this.label.val,
+				'data-value': this.$value.val,
+				'data-label': this.$label.val,
 				onmouseover: this.#handleMouseover,
 				onclick: this.#handleClick
 			}) as const

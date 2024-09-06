@@ -19,14 +19,14 @@ type PopoverRootProps = StateValues<{
 class PopoverRoot extends Floating {
 	uid = createUID('popover').uid;
 
-	visible: PopoverRootProps['visible'];
+	$visible: PopoverRootProps['visible'];
 
 	constructor(props: PopoverRootProps) {
 		super();
-		this.visible = props.visible;
+		this.$visible = props.visible;
 
 		$effect(() => {
-			if (this.visible.val) {
+			if (this.$visible.val) {
 				window.addEventListener('keydown', this.#handleKeydown);
 			} else {
 				window.removeEventListener('keydown', this.#handleKeydown);
@@ -35,14 +35,14 @@ class PopoverRoot extends Floating {
 	}
 
 	close = () => {
-		this.visible.val = false;
+		this.$visible.val = false;
 	};
 	toggle = () => {
-		this.visible.val = !this.visible.val;
+		this.$visible.val = !this.$visible.val;
 	};
 
 	#handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === KEYS.escape) this.visible.val = false;
+		if (e.key === KEYS.escape) this.$visible.val = false;
 	};
 
 	attrs = $derived.by(
@@ -50,11 +50,11 @@ class PopoverRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-popover': '',
-				'data-state': this.visible.val ? 'opened' : 'closed'
+				'data-state': this.$visible.val ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.visible.val
+		visible: this.$visible.val
 	}));
 }
 
@@ -85,7 +85,7 @@ class PopoverTrigger {
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.visible.val) {
+					if (this.root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
 							'aria-controls': this.root.uid('content')
@@ -116,7 +116,7 @@ class PopoverTrigger {
 		'data-popovertrigger': ''
 	};
 	state = $derived.by(() => ({
-		visible: this.root.visible.val
+		visible: this.root.$visible.val
 	}));
 }
 
@@ -146,7 +146,7 @@ class PopoverContent {
 	}
 
 	state = $derived.by(() => ({
-		visible: this.root.visible.val
+		visible: this.root.$visible.val
 	}));
 }
 

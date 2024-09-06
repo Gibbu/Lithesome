@@ -9,15 +9,16 @@ type ModalRootProps = StateValues<{
 }>;
 class ModalRoot {
 	uid = createUID('modal').uid;
-	visible: ModalRootProps['visible'];
-	portalTarget: ModalRootProps['portalTarget'];
+
+	$visible: ModalRootProps['visible'];
+	$portalTarget: ModalRootProps['portalTarget'];
 
 	constructor(props: ModalRootProps) {
-		this.visible = props.visible;
-		this.portalTarget = props.portalTarget;
+		this.$visible = props.visible;
+		this.$portalTarget = props.portalTarget;
 
 		$effect(() => {
-			disableScroll(this.visible.val && !document.body.style.overflow);
+			disableScroll(this.$visible.val && !document.body.style.overflow);
 		});
 		$effect(() => {
 			window.addEventListener('keydown', this.#handleKeydown);
@@ -28,7 +29,7 @@ class ModalRoot {
 	}
 
 	#handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === KEYS.escape) this.visible.val = false;
+		if (e.key === KEYS.escape) this.$visible.val = false;
 	};
 
 	attrs = $derived.by(
@@ -46,7 +47,7 @@ class ModalRoot {
 class ModalOverlay {
 	root: ModalRoot;
 
-	Visible = $derived.by(() => this.root.visible);
+	Visible = $derived.by(() => this.root.$visible.val);
 
 	constructor(root: ModalRoot) {
 		this.root = root;
@@ -65,7 +66,7 @@ class ModalOverlay {
 class ModalContent {
 	root: ModalRoot;
 
-	Visible = $derived.by(() => this.root.visible);
+	Visible = $derived.by(() => this.root.$visible.val);
 
 	constructor(root: ModalRoot) {
 		this.root = root;

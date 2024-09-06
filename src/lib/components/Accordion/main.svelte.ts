@@ -15,19 +15,19 @@ type AccordionRootProps = StateValues<{
 class AccordionRoot {
 	uid = createUID('accordion').uid;
 
-	value: AccordionRootProps['value'];
-	single: AccordionRootProps['single'];
+	$value: AccordionRootProps['value'];
+	$single: AccordionRootProps['single'];
 
 	items = $state<Item[]>([]);
 	activeItems = $state<string[]>([]);
 
 	constructor(props: AccordionRootProps) {
-		this.single = props.single;
-		this.value = props.value;
+		this.$single = props.single;
+		this.$value = props.value;
 	}
 
 	toggleActiveItem = (itemId: string) => {
-		if (this.single) {
+		if (this.$single.val) {
 			this.activeItems = this.activeItems[0] === itemId ? [] : [itemId];
 		} else {
 			if (this.activeItems.includes(itemId)) this.activeItems = this.activeItems.filter((el) => el !== itemId);
@@ -51,29 +51,30 @@ type AccordionItemProps = StateValues<{
 	disabled: boolean;
 }>;
 class AccordionItem {
+	uid = createUID('item').uid;
+
 	root: AccordionRoot;
 
-	uid = createUID('item').uid;
-	disabled: AccordionItemProps['disabled'];
+	$disabled: AccordionItemProps['disabled'];
 
 	Active = $derived.by(() => this.root.activeItems.includes(this.uid()) || false);
 
 	constructor(root: AccordionRoot, props: AccordionItemProps) {
 		this.root = root;
-		this.disabled = props.disabled;
+		this.$disabled = props.disabled;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
 				'data-accordionitem': '',
-				'data-disabled': this.disabled.val,
+				'data-disabled': this.$disabled.val,
 				'data-state': this.Active ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
 		active: this.Active,
-		disabled: this.disabled.val
+		disabled: this.$disabled.val
 	}));
 }
 
@@ -112,7 +113,7 @@ class AccordionButton {
 	}
 
 	#handleClick = () => {
-		if (this.item.disabled.val) return;
+		if (this.item.$disabled.val) return;
 
 		this.root.toggleActiveItem(this.item.uid());
 	};
@@ -121,9 +122,9 @@ class AccordionButton {
 		() =>
 			({
 				'aria-expanded': this.item.Active,
-				'aria-disabled': this.item.disabled.val,
+				'aria-disabled': this.item.$disabled.val,
 				'aria-controls': this.item.Active ? this.root.uid('content') : undefined,
-				tabindex: this.item.disabled.val ? -1 : 0,
+				tabindex: this.item.$disabled.val ? -1 : 0,
 				'data-accordionbutton': '',
 				'data-active': this.item.Active || undefined,
 				onclick: this.#handleClick
@@ -131,7 +132,7 @@ class AccordionButton {
 	);
 	state = $derived.by(() => ({
 		active: this.item.Active,
-		disabled: this.item.disabled.val as boolean
+		disabled: this.item.$disabled.val as boolean
 	}));
 }
 
