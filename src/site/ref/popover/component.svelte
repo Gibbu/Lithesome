@@ -39,16 +39,16 @@
 		{#each items as { name, children }}
 			<div class="mb-4 border-b border-neutral-200 pb-4 last:mb-0 last:border-b-0 last:pb-0 dark:border-white/10">
 				<h4 class="mb-2 text-xs font-semibold uppercase text-neutral-500">{name}</h4>
-				{#each children as tool}
+				{#each children as { icon: Icon, text, title }}
 					<button
 						type="button"
 						class="focusOutline flex w-full items-center gap-4 rounded-md p-4 text-left hover:bg-black/[0.035] dark:hover:bg-white/5"
 						onclick={() => (visible = false)}
 					>
-						<svelte:component this={tool.icon} class="h-8 w-8" />
+						<Icon class="h-8 w-8" />
 						<div>
-							<p class="font-semibold text-neutral-800 dark:text-white">{tool.title}</p>
-							<p class="text-sm text-neutral-500 dark:text-neutral-400">{tool.text}</p>
+							<p class="font-semibold text-neutral-800 dark:text-white">{title}</p>
+							<p class="text-sm text-neutral-500 dark:text-neutral-400">{text}</p>
 						</div>
 					</button>
 				{/each}

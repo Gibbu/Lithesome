@@ -23,7 +23,7 @@
 <FloatingContent
 	{children}
 	componentName="Popover"
-	visible={ctx.root.visible.val}
+	visible={ctx.root.$visible.val}
 	{ctx}
 	{transition}
 	use={[
@@ -32,7 +32,7 @@
 			{
 				allowOutsideClick: true,
 				onDeactivate: () => {
-					ctx.root.visible.val = false;
+					ctx.root.$visible.val = false;
 				}
 			}
 		],

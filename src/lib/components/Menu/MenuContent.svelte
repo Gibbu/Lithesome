@@ -22,7 +22,7 @@
 <FloatingContent
 	{children}
 	componentName="Menu"
-	visible={ctx.root.visible.val}
+	visible={ctx.root.$visible.val}
 	state={ctx.state}
 	{ctx}
 	{transition}

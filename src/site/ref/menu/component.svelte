@@ -25,7 +25,7 @@
 		)}
 		constrainViewport
 	>
-		{#each menuitems as { label, icon, danger, disabled }}
+		{#each menuitems as { label, icon: Icon, danger, disabled }}
 			<MenuItem
 				{disabled}
 				class={({ hovered }) =>
@@ -37,7 +37,7 @@
 						'flex w-full items-center gap-2 rounded-md px-3.5 py-2.5 text-sm font-semibold'
 					)}
 			>
-				<svelte:component this={icon} class="size-4" />
+				<Icon class="size-4" />
 				{label}
 				{#if disabled}
 					<span

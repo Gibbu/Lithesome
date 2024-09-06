@@ -20,7 +20,7 @@
 		...props
 	}: ComponentProps = $props();
 
-	const icon = { info: Info, warning: AlertOctagon }[type];
+	const Icon = { info: Info, warning: AlertOctagon }[type];
 </script>
 
 <div
@@ -38,7 +38,7 @@
 	)}
 	{...props}
 >
-	<svelte:component this={icon} class="size-6" />
+	<Icon class="size-6" />
 	<div class="flex-1">
 		{@render children({})}
 	</div>

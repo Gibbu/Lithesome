@@ -73,7 +73,7 @@
 <Toaster class="pointer-events-none fixed inset-0 z-10 flex flex-col items-end justify-end gap-2 p-6">
 	{#snippet children(toasts)}
 		{#each toasts as toast (toast.id)}
-			{@const { icon, colour } = getType(toast.type)}
+			{@const { icon: Icon, colour } = getType(toast.type)}
 			<div
 				in:scale={{ start: 0.75, opacity: 0, duration: 150 }}
 				out:scale={{ duration: 150 }}
@@ -83,7 +83,7 @@
 				<Toast
 					class="dark:highlight group pointer-events-auto relative flex items-center gap-4 rounded-md bg-white px-5 py-4 shadow-lg dark:bg-neutral-900"
 				>
-					<svelte:component this={icon} class="size-6 {colour}" />
+					<Icon class="size-6 {colour}" />
 					<div>
 						<ToastTitle class="font-semibold text-black dark:text-white">{toast.config.title}</ToastTitle>
 						<ToastMessage class="mt-2 text-sm">{toast.config.message}</ToastMessage>

@@ -16,7 +16,11 @@
 	>
 		{#snippet children({ checked })}
 			{#if checked}
-				<svelte:component this={checked === 'mixed' ? MinusIcon : CheckIcon} />
+				{#if checked === 'mixed'}
+					<MinusIcon />
+				{:else}
+					<CheckIcon />
+				{/if}
 			{/if}
 		{/snippet}
 	</Checkbox>

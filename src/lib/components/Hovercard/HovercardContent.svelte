@@ -22,7 +22,7 @@
 <FloatingContent
 	{children}
 	componentName="Hovercard"
-	visible={ctx.root.visible.val}
+	visible={ctx.root.$visible.val}
 	bind:self
 	bind:sameWidth
 	bind:transition

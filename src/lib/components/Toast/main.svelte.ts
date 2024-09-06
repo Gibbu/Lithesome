@@ -6,7 +6,7 @@ export const toasts = $state<Toast[]>([]);
 //
 // Toaster
 //
-class Toaster {
+export class Toaster {
 	#timeouts = new Map();
 
 	add(type: ToastType, config: ToastConfig) {
@@ -123,8 +123,3 @@ export const useToastTitle = () => {
 export const useToastDescription = () => {
 	return rootContext.register(ToastDescription);
 };
-
-//
-// Functions
-//
-export const toaster = new Toaster();

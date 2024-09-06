@@ -4,8 +4,8 @@
 
 	let { data } = $props();
 
-	type Component = $$Generic<typeof SvelteComponent<any, any, any>>;
-	const component = $derived(data.component) as unknown as Component;
+	type ComponentType = $$Generic<typeof SvelteComponent<any, any, any>>;
+	const Component = $derived(data.component) as unknown as ComponentType;
 </script>
 
 <Meta />
@@ -24,5 +24,5 @@
 		'prose-teal'
 	)}
 >
-	<svelte:component this={component} />
+	<Component />
 </article>

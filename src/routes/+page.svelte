@@ -10,6 +10,8 @@
 			copied = false;
 		}, 2000);
 	};
+
+	const Icon = $derived(copied ? CheckIcon : CopyIcon);
 </script>
 
 <div class="relative flex h-[500px] flex-col items-center justify-center text-center">
@@ -30,7 +32,7 @@
 		<Button variant="primary" size="lg" href="/docs" class="w-full md:w-auto">Get Started</Button>
 		<Button variant="secondary" size="lg" use={[[copy, { on: 'click', onSuccess: copySuccess }]]}>
 			npm install -D lithesome
-			<svelte:component this={copied ? CheckIcon : CopyIcon} />
+			<Icon />
 		</Button>
 	</div>
 </div>

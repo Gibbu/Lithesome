@@ -18,7 +18,9 @@ const config = {
 		version: {
 			name: pkg.version
 		},
-		adapter: adapter(),
+		adapter: adapter({
+			runtime: 'nodejs22.x'
+		}),
 		alias: {
 			$internal: './src/lib/internal/index.js',
 			$site: './src/site',
