@@ -1,13 +1,6 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { SelectContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<SelectContext>();
-</script>
-
-<script lang="ts" generics="ValueType">
-	import { useActions, classProp } from '$internal';
-	import { setContext, onMount, tick } from 'svelte';
+<script lang="ts">
+	import { useActions, classProp, stateValue } from '$internal';
+	import { createRootContext } from './main.svelte.js';
 	import type { SelectProps } from './types.js';
 
 	let {
@@ -15,39 +8,29 @@
 		use = [],
 		class: klass,
 		value = $bindable(),
+		visible = $bindable(true),
 		self = $bindable(),
 		onChange,
 		...props
-	}: SelectProps<ValueType> = $props();
+	}: SelectProps = $props();
 
 	const multiple = Array.isArray(value);
-	const ctx = new SelectContext<ValueType>(
-		{ multiple },
-		{
-			onChange(val) {
-				value = val;
-				onChange?.(val);
+	const ctx = createRootContext({
+		visible: stateValue(
+			() => visible,
+			(v) => (visible = v)
+		),
+		value: stateValue(
+			() => value,
+			(v) => {
+				value = v;
+				onChange?.(v);
 			}
-		}
-	);
-	setContext(contextName, ctx);
-
-	onMount(async () => {
-		await tick();
-		ctx.setInitialSelected(value);
-		ctx.close();
-		ctx.mounted = true;
+		),
+		multiple: stateValue(() => multiple)
 	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid()}
-	class={classProp(klass, { visible: ctx.visible && ctx.mounted })}
-	data-select=""
-	data-state={ctx.visible && ctx.mounted ? 'opened' : 'closed'}
-	{...props}
->
-	{@render children({ visible: ctx.visible && ctx.mounted })}
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children(ctx.state)}
 </div>

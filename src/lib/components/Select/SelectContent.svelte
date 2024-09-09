@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { context } from './Select.svelte';
 	import { FloatingContent } from '$internal';
+	import { useSelectContent } from './main.svelte.js';
 	import type { SelectContentProps } from './types.js';
 
 	let {
@@ -16,15 +16,13 @@
 		...props
 	}: SelectContentProps = $props();
 
-	const ctx = context();
-	const state = $derived({ visible: ctx.visible });
+	const ctx = useSelectContent();
 </script>
 
 <FloatingContent
 	{children}
 	componentName="Select"
-	visible={ctx.visible}
-	{state}
+	visible={ctx.root.$visible.val}
 	{ctx}
 	{transition}
 	{use}
@@ -32,9 +30,8 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
-	outsideCallback={() => ctx.close()}
+	outsideCallback={() => ctx.root.close()}
 	role="listbox"
 	class={klass}
-	hidden={!ctx.mounted || undefined}
 	{...props}
 />

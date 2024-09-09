@@ -1,22 +1,13 @@
 <script lang="ts">
-	import { context } from './Tabs.svelte';
 	import { useActions, classProp } from '$internal';
+	import { useTabsList } from './main.svelte.js';
 	import type { TabsListProps } from './types.js';
 
-	let { children, class: klass, use = [], self, ...props }: TabsListProps = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: TabsListProps = $props();
 
-	const ctx = context();
+	const ctx = useTabsList();
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	class={classProp(klass)}
-	role="tablist"
-	aria-orientation={ctx.orientation}
-	data-tabslist=""
-	data-orientation={ctx.orientation}
-	{...props}
->
+<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
 	{@render children({})}
 </div>

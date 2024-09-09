@@ -1,13 +1,6 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { RadiogroupContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<RadiogroupContext>();
-</script>
-
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
-	import { setContext } from 'svelte';
+	import { useActions, classProp, stateValue } from '$internal';
+	import { createRootContext } from './main.svelte.js';
 	import type { RadioGroupProps } from './types.js';
 
 	let {
@@ -15,34 +8,21 @@
 		use = [],
 		class: klass,
 		self = $bindable(),
-		value = $bindable(),
-		required = $bindable(false),
+		value = $bindable(''),
+		required = false,
 		onChange,
 		...props
 	}: RadioGroupProps = $props();
 
-	const ctx = new RadiogroupContext(
-		{ value },
-		{
-			onChange(val) {
-				value = val;
-				onChange?.(val);
-			}
-		}
-	);
-
-	setContext(contextName, ctx);
+	const ctx = createRootContext({
+		value: stateValue(
+			() => value,
+			(v) => (value = v)
+		),
+		required: stateValue(() => required)
+	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid()}
-	class={classProp(klass)}
-	role="radiogroup"
-	aria-required={required}
-	data-radiogroup=""
-	{...props}
->
+<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
 	{@render children({})}
 </div>

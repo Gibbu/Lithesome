@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Combobox, ComboboxContent, ComboboxInput, ComboboxOption } from '$lib/index.js';
 	import { cn } from '$site/utils.js';
-	import { Check, ChevronDown } from '@steeze-ui/lucide-icons';
-	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CheckIcon, ChevronDownIcon } from 'lucide-svelte';
 	import { scale } from 'svelte/transition';
 
 	const options = [
@@ -50,7 +49,7 @@
 					'focusOutline'
 				)}
 			/>
-			<Icon src={ChevronDown} class={cn('absolute right-4 h-4 w-4', visible ? 'rotate-180' : '')} />
+			<ChevronDownIcon class={cn('absolute right-4 size-4', visible ? 'rotate-180' : '')} />
 		</div>
 
 		<ComboboxContent
@@ -77,7 +76,7 @@
 					{#snippet children({ selected })}
 						<div class="flex-1 text-left">{label}</div>
 						{#if selected}
-							<Icon src={Check} class="h-4 w-4" />
+							<CheckIcon class="size-4" />
 						{/if}
 					{/snippet}
 				</ComboboxOption>

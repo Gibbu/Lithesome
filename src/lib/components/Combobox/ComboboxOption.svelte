@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { context } from './Combobox.svelte';
-	import { useActions, classProp, isBrowser } from '$internal';
-	import { createUID } from '$internal';
-	import { onMount, tick } from 'svelte';
+	import { useActions, classProp, stateValue } from '$internal';
+	import { useComboboxOption } from './main.svelte.js';
 	import type { ComboboxElement, ComboboxOptionProps } from './types.js';
 
 	let {
@@ -10,7 +8,7 @@
 		class: klass,
 		use = [],
 		value,
-		label: labelProp,
+		label,
 		self = $bindable(),
 		disabled = $bindable(false),
 		onClick,
@@ -20,34 +18,10 @@
 	}: ComboboxOptionProps = $props();
 	let optionEl: ComboboxElement;
 
-	const ctx = context();
-	const { uid } = createUID('item');
-	const hovered = $derived(ctx.hoveredOption?.id === uid());
-	const selected = $derived(!!ctx.selectedOptions.find((el) => el.dataset.value === value));
-	const label = $derived(labelProp || (isBrowser && self) ? self?.textContent?.trim() : '');
-
-	const handleClick: typeof onClick = (e) => {
-		onClick?.(e);
-		if (!disabled) {
-			ctx.setSelected();
-		}
-	};
-	const handleFocus: typeof onFocus = (e) => {
-		onFocus?.(e);
-	};
-	const handleMouseover: typeof onMouseover = (e) => {
-		onMouseover?.(e);
-		if (!disabled) ctx.setHovered(uid());
-	};
-
-	onMount(() => {
-		ctx.queryElements();
-
-		return async () => {
-			if (!ctx.visible) return;
-			await tick();
-			ctx.queryElements();
-		};
+	const ctx = useComboboxOption({
+		disabled: stateValue(() => disabled),
+		value: stateValue(() => value),
+		label: stateValue(() => label || self?.textContent?.trim() || '')
 	});
 </script>
 
@@ -55,22 +29,9 @@
 	bind:this={self}
 	bind:this={optionEl}
 	use:useActions={use}
-	id={uid()}
-	class={classProp(klass, { hovered, selected })}
-	type="button"
-	{disabled}
-	role="option"
-	tabindex="0"
-	aria-selected={selected}
-	data-hovered={hovered ? '' : undefined}
-	data-selected={selected ? '' : undefined}
-	data-comboboxoption=""
-	data-value={value}
-	data-label={label}
-	onmouseover={handleMouseover}
-	onfocus={handleFocus}
-	onclick={handleClick}
+	class={classProp(klass, ctx.state)}
+	{...ctx.attrs}
 	{...props}
 >
-	{@render children({ hovered, selected })}
+	{@render children(ctx.state)}
 </button>

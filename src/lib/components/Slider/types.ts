@@ -21,14 +21,9 @@ export interface SliderProps extends Props<HTMLDivElement, SliderState> {
 	reverse?: boolean;
 	/** Disables the slider. */
 	disabled?: boolean;
-	onMousedown?: Handler<MouseEvent, HTMLDivElement>;
-	onClick?: Handler<MouseEvent, HTMLDivElement>;
 }
 
-export interface SliderThumbProps extends PropsNoChildren<HTMLDivElement, SliderState> {
-	onMousedown?: Handler<MouseEvent, HTMLDivElement>;
-	onKeydown?: Handler<KeyboardEvent, HTMLDivElement>;
-}
+export interface SliderThumbProps extends PropsNoChildren<HTMLDivElement, SliderState> {}
 
 export interface SliderRangeProps extends PropsNoChildren<HTMLDivElement, SliderState> {}
 

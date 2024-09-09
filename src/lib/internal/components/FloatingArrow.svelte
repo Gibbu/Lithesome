@@ -1,32 +1,26 @@
-<script lang="ts">
+<script lang="ts" generics="T extends FloatingContext">
 	import { onMount } from 'svelte';
-	import { useActions, classProp, log, FloatingContext, type PropsNoChildren } from '$internal';
+	import { useActions, classProp, log, type PropsNoChildren } from '$internal';
+
+	import type { FloatingContext } from './types.js';
 
 	interface ComponentProps extends PropsNoChildren<HTMLDivElement> {
 		component: string;
-		ctx: FloatingContext;
-		state?: Record<string, any>;
+		ctx: Omit<T, 'state'>;
 	}
 
-	let {
-		class: klass,
-		use = [],
-		self = $bindable(),
-		state = $bindable(),
-		ctx,
-		component,
-		...props
-	}: ComponentProps = $props();
+	let { class: klass, use = [], self = $bindable(), ctx, component, ...props }: ComponentProps = $props();
 
-	const dataProps = {
+	const attrs = $derived.by(() => ({
+		id: ctx.root.uid('arrow'),
 		[`data-${component.toLowerCase()}arrow`]: ''
-	};
+	}));
 
 	onMount(() => {
 		if (!ctx) throw log.error(`<${component}Arrow /> must be a child of <${component}Content />`);
 		if (!self) throw log.error(`Cannot initialize arrow node of <${component}Arrow />.`);
-		ctx.arrow = self;
+		ctx.root.arrow = self;
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, state)} {...dataProps} {...props}></div>
+<div bind:this={self} use:useActions={use} class={classProp(klass)} {...attrs} {...props}></div>

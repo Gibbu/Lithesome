@@ -1,13 +1,6 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { ComboboxContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<ComboboxContext>();
-</script>
-
-<script lang="ts" generics="ValueType">
-	import { useActions, classProp } from '$internal';
-	import { setContext, onMount, tick } from 'svelte';
+<script lang="ts">
+	import { useActions, classProp, stateValue } from '$internal';
+	import { createRootContext } from './main.svelte.js';
 	import type { ComboboxProps } from './types.js';
 
 	let {
@@ -16,47 +9,43 @@
 		class: klass,
 		value = $bindable(),
 		label = $bindable(),
-		touched = $bindable(),
+		touched = $bindable(false),
+		disabled = $bindable(false),
+		visible = $bindable(true),
 		self = $bindable(),
 		onChange,
 		...props
-	}: ComboboxProps<ValueType> = $props();
+	}: ComboboxProps = $props();
 
 	const multiple = Array.isArray(value);
-	const ctx = new ComboboxContext<ValueType>(
-		{ multiple },
-		{
-			onChange({ newValue, newTouched, newLabel }) {
-				if (newValue) {
-					value = newValue;
-					onChange?.({ value: newValue });
-				}
-				if (newLabel && !multiple) {
-					label = newLabel;
-					onChange?.({ label: newLabel });
-				}
-				if (typeof newTouched === 'boolean') touched = newTouched;
+	const ctx = createRootContext({
+		value: stateValue(
+			() => value,
+			(v) => {
+				value = v;
+				onChange?.({ value: v });
 			}
-		}
-	);
-	setContext(contextName, ctx);
-
-	onMount(async () => {
-		await tick();
-		ctx.setInitialSelected(value);
-		ctx.close();
-		ctx.mounted = true;
+		),
+		disabled: stateValue(() => disabled),
+		label: stateValue(
+			() => label || self?.textContent?.trim() || '',
+			(v) => {
+				label = v;
+				onChange?.({ label: v });
+			}
+		),
+		multiple: stateValue(() => multiple),
+		touched: stateValue(
+			() => touched,
+			(v) => (touched = v)
+		),
+		visible: stateValue(
+			() => visible,
+			(v) => (visible = v)
+		)
 	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid()}
-	class={classProp(klass, { visible: ctx.visible && ctx.mounted })}
-	data-select=""
-	data-state={ctx.visible && ctx.mounted ? 'opened' : 'closed'}
-	{...props}
->
-	{@render children({ visible: ctx.visible && ctx.mounted })}
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children(ctx.state)}
 </div>

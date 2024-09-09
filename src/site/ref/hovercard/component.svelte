@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Hovercard, HovercardTrigger, HovercardContent, HovercardArrow } from '$lib/index.js';
 	import { cn } from '$site/utils.js';
-	import { Book, Star } from '@steeze-ui/lucide-icons';
-	import { Icon } from '@steeze-ui/svelte-icon';
+	import { BookIcon, StarIcon } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
 </script>
 
@@ -29,7 +28,7 @@
 			class={cn(
 				'size-3 rotate-45 border-l border-t',
 				'border-neutral-300 bg-white',
-				'bg-neutral-900 dark:border-neutral-700'
+				'dark:border-neutral-700 dark:bg-neutral-900'
 			)}
 		/>
 		<header class="flex items-center gap-4">
@@ -41,12 +40,12 @@
 		</header>
 		<footer class="mt-4 flex items-center gap-4">
 			<div class="flex items-center gap-2 text-sm">
-				<Icon src={Book} class="size-4" />
+				<BookIcon class="size-4" />
 				18 Repositories
 			</div>
 			<div class="flex items-center gap-2 text-sm">
-				<Icon src={Star} class="size-4" />
-				57 Stars
+				<StarIcon class="size-4" />
+				66 Stars
 			</div>
 		</footer>
 	</HovercardContent>

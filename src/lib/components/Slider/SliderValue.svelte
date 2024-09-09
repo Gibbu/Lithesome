@@ -1,26 +1,19 @@
 <script lang="ts">
 	import { classProp, useActions } from '$internal';
-	import { context } from './Slider.svelte';
+	import { useSliderValue } from './main.svelte.js';
 
 	import type { SliderValueProps } from './types.js';
 
 	let { use = [], class: klass, self = $bindable(), ...props }: SliderValueProps = $props();
 
-	const ctx = context();
+	const ctx = useSliderValue();
 </script>
 
 <input
 	type="range"
 	bind:this={self}
 	use:useActions={use}
-	id={ctx.uid('value')}
-	class={classProp(klass, { value: ctx.value, percentage: ctx.Percentage })}
-	min={ctx.min}
-	max={ctx.max}
-	step={ctx.step}
-	bind:value={ctx.value}
-	aria-hidden="false"
-	data-slidervalue=""
-	style="display: none"
+	class={classProp(klass, ctx.state)}
+	{...ctx.attrs}
 	{...props}
 />

@@ -1,32 +1,29 @@
-<script lang="ts" context="module">
-	import { setupContext } from '$internal';
-	import { HovercardContext } from './context.svelte.js';
-
-	export const { context, contextName } = setupContext<HovercardContext>();
-</script>
-
 <script lang="ts">
-	import { useActions, classProp, parseDelay } from '$internal';
-	import { setContext } from 'svelte';
+	import { useActions, classProp, parseDelay, stateValue } from '$internal';
+	import { createRootContext } from './main.svelte.js';
 	import type { HovercardProps } from './types.js';
 
-	let { children, use = [], class: klass, self = $bindable(), delay = 700, ...props }: HovercardProps = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		visible = $bindable(false),
+		self = $bindable(),
+		delay = 700,
+		...props
+	}: HovercardProps = $props();
 
 	const delays = parseDelay(delay);
 
-	const ctx = new HovercardContext({ delays });
-
-	setContext(contextName, ctx);
+	const ctx = createRootContext({
+		delays: stateValue(() => delays),
+		visible: stateValue(
+			() => visible,
+			(v) => (visible = v)
+		)
+	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid()}
-	class={classProp(klass, { visible: ctx.visible })}
-	data-hovercard=""
-	data-state={ctx.visible ? 'opened' : 'closed'}
-	{...props}
->
-	{@render children({ visible: ctx.visible })}
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children(ctx.state)}
 </div>

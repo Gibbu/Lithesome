@@ -8,7 +8,7 @@
 		{ value: 'toph', label: 'Greatest Earthbender Alive' }
 	];
 
-	let value = $state('');
+	let value = $state('zuko');
 </script>
 
 <RadioGroup bind:value class="flex w-[70%] flex-col gap-2">
@@ -18,7 +18,7 @@
 			class={({ checked }) =>
 				cn(
 					'flex w-full items-center gap-4 rounded-md border p-4 backdrop-blur',
-					'border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-800',
+					'border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-900',
 					checked ? 'bg-black text-white dark:bg-white dark:text-black' : ''
 				)}
 		>

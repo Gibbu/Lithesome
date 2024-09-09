@@ -22,7 +22,7 @@
 
 @layer utilities {
 	.wrap {
-		@apply mx-auto w-full max-w-screen-xl px-6;
+		@apply mx-auto w-full max-w-screen-xl border-x border-neutral-200 dark:border-neutral-900;
 	}
 	.flex-centre {
 		@apply flex items-center justify-center;
@@ -39,7 +39,7 @@
 }
 
 .preview-codeblock pre {
-	@apply highlight max-h-[450px] min-h-[450px] overflow-y-auto border-none !bg-neutral-100 px-6 pb-4 pt-12 dark:!bg-neutral-900;
+	@apply max-h-[450px] min-h-[450px] overflow-y-auto !border-none p-6 dark:!bg-transparent;
 }
 pre {
 	@apply relative overflow-x-auto !rounded-md border !bg-neutral-100 !text-sm !leading-relaxed dark:border-neutral-800 dark:!bg-neutral-900/50;

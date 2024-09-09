@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { context } from './Tabs.svelte';
-	import { useActions, KEYS, PREVENT_KEYS, classProp } from '$internal';
-	import { onMount } from 'svelte';
+	import { useActions, classProp, stateValue } from '$internal';
+	import { useTabsButton } from './main.svelte.js';
 	import type { TabsButtonProps } from './types.js';
 
 	let {
@@ -9,60 +8,17 @@
 		class: klass,
 		use = [],
 		self = $bindable(),
-		disabled = false,
+		disabled = $bindable(false),
 		value,
-		onClick,
-		onKeydown,
 		...props
 	}: TabsButtonProps = $props();
 
-	const ctx = context();
-	const active = $derived(ctx.activeTab === value);
-
-	const handleClick: typeof onClick = (e) => {
-		onClick?.(e);
-		if (disabled) return;
-		ctx.setActive(value);
-	};
-	const handleKeydown: typeof onKeydown = (e) => {
-		onKeydown?.(e);
-		if (disabled) return;
-		const { key } = e;
-
-		if (PREVENT_KEYS.includes(key)) e.preventDefault();
-
-		if (key === KEYS.home) ctx.navigate('first');
-		if (key === KEYS.end) ctx.navigate('last');
-		if (
-			(key === KEYS.arrowUp && ctx.orientation === 'vertical') ||
-			(key === KEYS.arrowLeft && ctx.orientation === 'horizontal')
-		)
-			ctx.navigate('prev');
-		if (
-			(key === KEYS.arrowDown && ctx.orientation === 'vertical') ||
-			(key === KEYS.arrowRight && ctx.orientation === 'horizontal')
-		)
-			ctx.navigate('next');
-	};
-
-	onMount(() => {
-		if (!disabled) ctx.register(value);
+	const ctx = useTabsButton({
+		value: stateValue(() => value),
+		disabled: stateValue(() => disabled)
 	});
 </script>
 
-<button
-	bind:this={self}
-	use:useActions={use}
-	class={classProp(klass, { active })}
-	type="button"
-	role="tab"
-	tabindex={active ? 0 : -1}
-	data-tabsbutton=""
-	data-state={active ? 'active' : 'inactive'}
-	data-value={value}
-	onclick={handleClick}
-	onkeydown={handleKeydown}
-	{...props}
->
-	{@render children({ active })}
+<button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children(ctx.state)}
 </button>

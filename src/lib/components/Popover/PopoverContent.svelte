@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { context } from './Popover.svelte';
+	import { usePopoverContent } from './main.svelte.js';
 	import { FloatingContent } from '$internal';
 	import { useTrap } from '$lib/index.js';
 	import type { PopoverContentProps } from './types.js';
@@ -17,15 +17,13 @@
 		...props
 	}: PopoverContentProps = $props();
 
-	const ctx = context();
-	const state = $derived({ visible: ctx.visible });
+	const ctx = usePopoverContent();
 </script>
 
 <FloatingContent
 	{children}
 	componentName="Popover"
-	visible={ctx.visible}
-	{state}
+	visible={ctx.root.$visible.val}
 	{ctx}
 	{transition}
 	use={[
@@ -34,7 +32,7 @@
 			{
 				allowOutsideClick: true,
 				onDeactivate: () => {
-					ctx.visible = false;
+					ctx.root.$visible.val = false;
 				}
 			}
 		],
@@ -44,8 +42,8 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
-	outsideCallback={() => ctx.close()}
-	role="listbox"
+	outsideCallback={() => ctx.root.close()}
+	role="dialog"
 	class={klass}
 	{...props}
 />

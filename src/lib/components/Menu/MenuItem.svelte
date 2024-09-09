@@ -1,15 +1,13 @@
 <script lang="ts">
-	import { context } from './Menu.svelte';
-	import { useActions, classProp } from '$internal';
-	import { createUID } from '$internal';
-	import { onMount } from 'svelte';
+	import { useActions, classProp, stateValue } from '$internal';
 	import type { MenuItemProps } from './types.js';
+	import { useMenuItem } from './main.svelte.js';
 
 	let {
 		children,
 		class: klass,
 		use = [],
-		disabled,
+		disabled = $bindable(false),
 		self = $bindable(),
 		href,
 		onClick,
@@ -18,50 +16,18 @@
 		...props
 	}: MenuItemProps = $props();
 
-	const ctx = context();
-	const { uid } = createUID('item');
-
-	const hovered = $derived(ctx.hoveredItem === uid());
-
-	onMount(() => {
-		if (!ctx.items.includes(uid()) && !disabled) ctx.register(uid());
-
-		return () => {
-			ctx.unregister(uid());
-		};
+	const ctx = useMenuItem({
+		disabled: stateValue(() => disabled)
 	});
-
-	const handleClick: typeof onClick = (e) => {
-		if (!disabled) {
-			ctx.close();
-			onClick?.(e);
-		}
-	};
-	const handleMouseover: typeof onMouseover = (e) => {
-		ctx.setHovered(uid());
-		onMouseover?.(e);
-	};
-	const handleFocus: typeof onFocus = (e) => {
-		onFocus?.(e);
-	};
 </script>
 
 <svelte:element
 	this={href ? 'a' : 'button'}
 	bind:this={self}
 	use:useActions={use}
-	id={uid()}
-	class={classProp(klass, { hovered })}
-	href={href || undefined}
-	disabled={disabled || undefined}
-	role="menuitem"
-	tabindex="0"
-	data-hovered={hovered ? '' : undefined}
-	data-menuitem=""
-	onmouseover={handleMouseover}
-	onfocus={handleFocus}
-	onclick={handleClick}
+	class={classProp(klass, ctx.state)}
+	{...ctx.attrs}
 	{...props}
 >
-	{@render children({ hovered })}
+	{@render children(ctx.state)}
 </svelte:element>

@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { User, Cog, LogOut, CreditCard } from '@steeze-ui/lucide-icons';
+	import { UserIcon, CogIcon, LogOutIcon, CreditCardIcon } from 'lucide-svelte';
 	import { Menu, MenuContent, MenuItem, MenuTrigger } from '$lib/index.js';
 	import { Button, cn } from '$site/index.js';
 	import { scale } from 'svelte/transition';
 
 	const menuitems = [
-		{ label: 'My Profile', icon: User },
-		{ label: 'Account Settings', icon: Cog },
-		{ label: 'Payments', icon: CreditCard, disabled: true },
-		{ label: 'Logout', icon: LogOut, danger: true }
+		{ label: 'My Profile', icon: UserIcon },
+		{ label: 'Account Settings', icon: CogIcon },
+		{ label: 'Payments', icon: CreditCardIcon, disabled: true },
+		{ label: 'Logout', icon: LogOutIcon, danger: true }
 	];
 </script>
 
@@ -26,7 +25,7 @@
 		)}
 		constrainViewport
 	>
-		{#each menuitems as { label, icon, danger, disabled }}
+		{#each menuitems as { label, icon: Icon, danger, disabled }}
 			<MenuItem
 				{disabled}
 				class={({ hovered }) =>
@@ -38,7 +37,7 @@
 						'flex w-full items-center gap-2 rounded-md px-3.5 py-2.5 text-sm font-semibold'
 					)}
 			>
-				<Icon src={icon} class="h-4 w-4" />
+				<Icon class="size-4" />
 				{label}
 				{#if disabled}
 					<span

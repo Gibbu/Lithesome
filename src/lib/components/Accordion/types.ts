@@ -1,19 +1,13 @@
 import type { Props, Handler, Transition } from '$internal';
 
-interface AccordionState {
-	/** True if any item is opened. */
-	active: boolean;
-}
-export interface AccordionProps extends Props<HTMLDivElement, AccordionState> {
+export interface AccordionProps extends Props<HTMLDivElement> {
+	/** The value of the active item. */
+	value?: string;
 	/** Allow only a singluar `AccordionItem` to be opened at once. */
 	single?: boolean;
 }
 
-interface AccordionContentState {
-	/** True if any item is opened. */
-	active: boolean;
-}
-export interface AccordionContentProps extends Props<HTMLDivElement, AccordionContentState> {
+export interface AccordionContentProps extends Props<HTMLDivElement> {
 	/**
 	 * The `svelte/transtion` you wish to use.
 	 *
@@ -33,9 +27,7 @@ interface AccordionButtonState {
 	/** True if the item is disabled. */
 	disabled: boolean;
 }
-export interface AccordionButtonProps extends Props<HTMLButtonElement, AccordionButtonState> {
-	onClick?: Handler<MouseEvent, HTMLButtonElement>;
-}
+export interface AccordionButtonProps extends Props<HTMLButtonElement, AccordionButtonState> {}
 
 interface AccordionItemState {
 	/** True if the item is opened. */

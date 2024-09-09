@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { type SvelteComponent } from 'svelte';
 	import { cn } from '../utils.js';
-	import { getHighlighter } from 'shiki';
 	import { Tabs, TabsList, TabsButton, TabsContent } from '$lib/index.js';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Eye, Code } from '@steeze-ui/lucide-icons';
+	import { EyeIcon, CodeIcon } from 'lucide-svelte';
+	import { highlighter } from '$site/index.js';
+	import type { SvelteComponent } from 'svelte';
 
 	interface Props {
 		component: typeof SvelteComponent<any, any, any>;
@@ -13,62 +12,45 @@
 		class?: string;
 	}
 
-	let { component, props, code, class: klass }: Props = $props();
-
-	const getHighlight = getHighlighter({
-		themes: ['github-dark', 'github-light'],
-		langs: ['javascript', 'typescript', 'svelte', 'css', 'text']
-	});
+	let { component: Component, props, code, class: klass }: Props = $props();
 </script>
 
-{#snippet pill()}
-	<div class="absolute bottom-1 size-1 rounded-full bg-teal-500 dark:bg-teal-400"></div>
+{#snippet tabBtn(Icon: any, value: string)}
+	<TabsButton
+		value={value.toLowerCase()}
+		class={({ active }) =>
+			cn(
+				'flex-centre relative flex-1 gap-2 rounded-md py-3 text-sm font-medium',
+				active
+					? 'bg-neutral-200 text-black dark:bg-neutral-900 dark:text-white'
+					: 'hover:bg-neutral-100 dark:hover:bg-neutral-920'
+			)}
+	>
+		<Icon class="size-4" />
+		{value}
+	</TabsButton>
 {/snippet}
-
 <Tabs
 	value="preview"
 	class={cn(
-		'not-prose flex-centre highlight relative min-h-[450px] flex-col rounded-xl bg-neutral-100 dark:bg-neutral-900',
+		'not-prose flex-centre relative -mx-8 -mt-2 flex-col border-y border-neutral-200 dark:border-neutral-900',
 		klass
 	)}
 >
 	<TabsList
-		class="absolute right-4 top-4 z-10 flex overflow-hidden rounded-md bg-white shadow-md backdrop-blur dark:bg-neutral-700/50"
+		class="z-10 flex w-full gap-4 overflow-hidden border-b border-e-neutral-200 p-3 backdrop-blur dark:border-neutral-900"
 	>
-		<TabsButton
-			value="preview"
-			class={({ active }) => cn('flex-centre relative p-2', active ? 'text-black dark:text-white' : '')}
-		>
-			{#snippet children({ active })}
-				<Icon src={Eye} class="size-6" />
-				{#if active}
-					{@render pill()}
-				{/if}
-			{/snippet}
-		</TabsButton>
-		<TabsButton
-			value="code"
-			class={({ active }) => cn('flex-centre relative p-2', active ? 'text-black dark:text-white' : '')}
-		>
-			{#snippet children({ active })}
-				<Icon src={Code} class="size-6" />
-				{#if active}
-					{@render pill()}
-				{/if}
-			{/snippet}
-		</TabsButton>
+		{@render tabBtn(EyeIcon, 'Preview')}
+		{@render tabBtn(CodeIcon, 'Code')}
 	</TabsList>
-	<TabsContent value="preview" class="flex-centre w-full p-8">
-		<svelte:component this={component} {...props} />
-	</TabsContent>
-	<TabsContent value="code" class="preview-codeblock w-full">
-		{#if code}
-			{#await getHighlight then highlight}
-				{@html highlight.codeToHtml(code.replaceAll('$lib/index.js', 'lithesome'), {
-					lang: 'svelte',
-					themes: { light: 'github-light', dark: 'github-dark' }
-				})}
-			{/await}
-		{/if}
-	</TabsContent>
+	<div class="flex max-h-[450px] min-h-[450px] w-full flex-1 flex-col">
+		<TabsContent value="preview" class="flex-centre w-full flex-1 p-8">
+			<Component {...props} />
+		</TabsContent>
+		<TabsContent value="code" class="preview-codeblock w-full">
+			{#if code}
+				{@html highlighter(code.replaceAll('$lib/index.js', 'lithesome'))}
+			{/if}
+		</TabsContent>
+	</div>
 </Tabs>

@@ -6,14 +6,18 @@ interface ComboboxState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface ComboboxProps<T> extends Props<HTMLDivElement, ComboboxState> {
-	/** The value of the combobox. */
-	value: T;
-	/** The label of the selected item. */
+export interface ComboboxProps extends Props<HTMLDivElement, ComboboxState> {
+	/** The current selected value(s) of the combobox. */
+	value: JsonValue;
+	/** The current selected label(s) of the combobox. */
 	label?: string;
+	/** Disables the entire combobox component. */
+	disabled?: boolean;
+	/** Control the visibility of the content list. */
+	visible?: boolean;
 	/** If the user has modified the selected value in anyway. */
 	touched?: boolean;
-	onChange?: (payload?: { value?: T; label?: string }) => void;
+	onChange?: (payload?: { value?: JsonValue; label?: string }) => void;
 }
 
 export interface ComboboxArrowProps extends PropsNoChildren<HTMLDivElement, ComboboxState> {}
@@ -23,11 +27,6 @@ export interface ComboboxContentProps extends Props<HTMLDivElement, ComboboxStat
 export interface ComboboxInputProps extends PropsNoChildren<HTMLInputElement, ComboboxState> {
 	/** Bind the value of the input value. */
 	value: string;
-	/** Disables the input. */
-	disabled?: boolean;
-	onClick?: Handler<MouseEvent, HTMLInputElement>;
-	onFocus?: Handler<FocusEvent, HTMLInputElement>;
-	onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
 }
 
 interface ComboboxOptionState {
@@ -47,7 +46,4 @@ export interface ComboboxOptionProps extends Props<ComboboxElement, ComboboxOpti
 	 * If this prop is not provided, the text content will be used.
 	 */
 	label?: string;
-	onClick?: Handler<MouseEvent, ComboboxElement>;
-	onFocus?: Handler<FocusEvent, ComboboxElement>;
-	onMouseover?: Handler<MouseEvent, ComboboxElement>;
 }

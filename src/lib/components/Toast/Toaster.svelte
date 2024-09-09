@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
 	import { usePortal } from '$lib/index.js';
-	import { toasts } from './context.svelte.js';
+	import { toasts } from './main.svelte.js';
 	import type { ToasterProps } from './types.js';
 
 	let {

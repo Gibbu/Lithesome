@@ -1,29 +1,20 @@
 <script lang="ts">
-	import { context } from './Pin.svelte';
-	import { log, useActions, classProp } from '$internal';
-	import { onMount } from 'svelte';
+	import { useActions, classProp } from '$internal';
+	import { usePinValue } from './main.svelte.js';
 	import type { PinValueProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), name, ...props }: PinValueProps = $props();
 
-	const ctx = context();
-
-	onMount(() => {
-		if (!ctx) log.error('<AccordionItem /> must be a direct child of <Accordion />');
-	});
+	const ctx = usePinValue();
 </script>
 
 <input
 	bind:this={self}
-	bind:value={ctx.transformedValue}
+	value={ctx.root.TransformedValue}
 	use:useActions={use}
-	id={ctx.uid('value')}
 	class={classProp(klass)}
-	aria-hidden="true"
-	tabindex="-1"
-	hidden
 	{name}
-	data-pininput=""
+	{...ctx.attrs}
 	{...props}
 	style="opacity: 0; pointer-events: none; user-select: none; scale: 0;"
 />

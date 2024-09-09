@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Checkbox } from '$lib/index.js';
 	import { cn } from '$site/index.js';
-	import { Check, Minus } from '@steeze-ui/lucide-icons';
-	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CheckIcon, MinusIcon } from 'lucide-svelte';
 </script>
 
 <div class="flex items-center gap-4">
@@ -17,7 +16,11 @@
 	>
 		{#snippet children({ checked })}
 			{#if checked}
-				<Icon src={checked === 'mixed' ? Minus : Check} class="m-auto h-6 w-6" />
+				{#if checked === 'mixed'}
+					<MinusIcon />
+				{:else}
+					<CheckIcon />
+				{/if}
 			{/if}
 		{/snippet}
 	</Checkbox>

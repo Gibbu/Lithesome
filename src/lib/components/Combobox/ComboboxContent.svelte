@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { context } from './Combobox.svelte';
-	import { classProp, FloatingContent } from '$internal';
+	import { FloatingContent } from '$internal';
+	import { useComboboxContent } from './main.svelte.js';
 	import type { ComboboxContentProps } from './types.js';
 
 	let {
@@ -16,16 +16,13 @@
 		...props
 	}: ComboboxContentProps = $props();
 
-	const ctx = context();
-	const state = $derived({ visible: ctx.visible });
+	const ctx = useComboboxContent();
 </script>
 
 <FloatingContent
 	{children}
-	componentName="Select"
-	visible={ctx.visible}
-	bind:self
-	{state}
+	componentName="Combobox"
+	visible={ctx.root.$visible.val}
 	{ctx}
 	{transition}
 	{use}
@@ -33,9 +30,8 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
-	outsideCallback={() => ctx.close()}
+	outsideCallback={() => ctx.root.close()}
 	role="listbox"
-	class={classProp(klass, state)}
-	hidden={!ctx.mounted || undefined}
+	class={klass}
 	{...props}
 />

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { useActions, type Props } from '$internal';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Info, AlertOctagon, X } from '@steeze-ui/lucide-icons';
+	import { Info, AlertOctagon, XIcon } from 'lucide-svelte';
 	import { cn } from '../utils.js';
 
 	interface ComponentProps extends Props<HTMLElement> {
@@ -21,7 +20,7 @@
 		...props
 	}: ComponentProps = $props();
 
-	const icon = { info: Info, warning: AlertOctagon }[type];
+	const Icon = { info: Info, warning: AlertOctagon }[type];
 </script>
 
 <div
@@ -39,13 +38,13 @@
 	)}
 	{...props}
 >
-	<Icon src={icon} class="h-6 w-6" />
+	<Icon class="size-6" />
 	<div class="flex-1">
 		{@render children({})}
 	</div>
 	{#if dismissable}
 		<button type="button" class="rounded-md p-1 hover:bg-white/10" onclick={() => onClick?.()}>
-			<Icon src={X} class="h-4 w-4" />
+			<XIcon class="h-4 w-4" />
 		</button>
 	{/if}
 </div>

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Accordion, AccordionButton, AccordionContent, AccordionHeading, AccordionItem } from '$lib/index.js';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ChevronRight } from '@steeze-ui/lucide-icons';
+	import { ChevronRightIcon } from 'lucide-svelte';
 	import { cn } from '$site/index.js';
 	import { slide } from 'svelte/transition';
 
@@ -25,7 +24,7 @@
 				>
 					{#snippet children({ active })}
 						{title}
-						<Icon src={ChevronRight} class={cn('h-6 w-6 transition-transform', active ? 'rotate-90' : '')} />
+						<ChevronRightIcon class={cn('h-6 w-6 transition-transform', active ? 'rotate-90' : '')} />
 					{/snippet}
 				</AccordionButton>
 			</AccordionHeading>
