@@ -63,7 +63,7 @@ class HovercardRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-hovercard': '',
-				'data-state': this.$visible.val ? 'opened' : 'closed'
+				'data-state': this.$visible.val === true ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({

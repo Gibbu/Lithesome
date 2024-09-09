@@ -24,14 +24,6 @@
 	});
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	id={ctx.uid()}
-	class={classProp(klass, ctx.state)}
-	data-hovercard=""
-	data-state={ctx.visible ? 'opened' : 'closed'}
-	{...props}
->
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
 	{@render children(ctx.state)}
 </div>

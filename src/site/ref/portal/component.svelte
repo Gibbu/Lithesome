@@ -4,10 +4,12 @@
 
 	const preview = 'article [id^="tabs-"]';
 
-	let target = $state(preview);
+	let target = $state<HTMLElement | string>(preview);
 </script>
 
-<Button variant="primary" onclick={() => (target = target === 'body' ? preview : 'body')}>Portal content</Button>
+<Button variant="primary" onclick={() => (target = target === 'main header' ? preview : 'main header')}>
+	Portal content
+</Button>
 
 <Portal
 	bind:target
