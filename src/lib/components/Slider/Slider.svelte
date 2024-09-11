@@ -20,22 +20,28 @@
 		...props
 	}: SliderProps = $props();
 
-	const ctx = createRootContext({
-		value: stateValue(
-			() => value,
-			(v) => (value = v)
-		),
-		min: stateValue(() => min),
-		max: stateValue(() => max),
-		disabled: stateValue(
-			() => disabled,
-			(v) => (disabled = v)
-		),
-		orientation: stateValue(() => orientation),
-		reverse: stateValue(() => reverse),
-		step: stateValue(() => step),
-		trackElement: stateValue(() => self)
-	});
+	const ctx = createRootContext(
+		{
+			value: stateValue(
+				() => value,
+				(v) => (value = v)
+			),
+			min: stateValue(() => min),
+			max: stateValue(() => max),
+			disabled: stateValue(
+				() => disabled,
+				(v) => (disabled = v)
+			),
+			orientation: stateValue(() => orientation),
+			reverse: stateValue(() => reverse),
+			step: stateValue(() => step),
+			trackElement: stateValue(() => self)
+		},
+		{
+			onClick,
+			onMousedown
+		}
+	);
 </script>
 
 <div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>

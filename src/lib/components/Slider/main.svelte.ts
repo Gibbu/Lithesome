@@ -287,8 +287,8 @@ class SliderValue {
 //
 const builder = buildContext(SliderRoot);
 
-export const createRootContext = (props: SliderRootProps) => {
-	return builder.createContext(props);
+export const createRootContext = (props: SliderRootProps, events: SliderEvents) => {
+	return builder.createContext(props, events);
 };
 export const useSliderRange = () => {
 	return builder.register(SliderRange);

@@ -12,16 +12,21 @@
 		self = $bindable(),
 		disabled = $bindable(false),
 		onClick,
-		onFocus,
 		onMouseover,
 		...props
 	}: SelectOptionProps = $props();
 
-	const ctx = useSelectOption({
-		disabled: stateValue(() => disabled),
-		value: stateValue(() => value),
-		label: stateValue(() => label || self?.textContent?.trim() || '')
-	});
+	const ctx = useSelectOption(
+		{
+			disabled: stateValue(() => disabled),
+			value: stateValue(() => value),
+			label: stateValue(() => label || self?.textContent?.trim() || '')
+		},
+		{
+			onClick,
+			onMouseover
+		}
+	);
 </script>
 
 <button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>

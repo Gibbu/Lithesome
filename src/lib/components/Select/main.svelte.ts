@@ -381,8 +381,8 @@ export const useSelectArrow = () => {
 	return rootContext.register(SelectArrow);
 };
 
-export const useSelectOption = (props: SelectOptionProps) => {
-	return rootContext.register(SelectOption, props);
+export const useSelectOption = (props: SelectOptionProps, events: SelectOptionEvents) => {
+	return rootContext.register(SelectOption, props, events);
 };
 
 export const useSelectValue = (props: SelectValueProps) => {
