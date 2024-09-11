@@ -8,7 +8,7 @@ type ModalRootProps = StateValues<{
 	portalTarget: HTMLElement | string;
 }>;
 class ModalRoot {
-	uid = createUID('modal').uid;
+	uid = createUID('modal');
 
 	$visible: ModalRootProps['visible'];
 	$portalTarget: ModalRootProps['portalTarget'];

@@ -39,11 +39,9 @@ export const createUID = (namespace: string) => {
 		uid += UID_SET.charAt(Math.floor(UID_SET.length * Math.random()));
 	}
 
-	return {
-		uid: (component?: string) => {
-			const id = `${namespace}-${uid}`;
-			return component ? `${id}-${component}` : id;
-		}
+	return (component?: string) => {
+		const id = `${namespace}-${uid}`;
+		return component ? `${id}-${component}` : id;
 	};
 };
 

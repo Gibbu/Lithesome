@@ -27,7 +27,16 @@ interface AccordionButtonState {
 	/** True if the item is disabled. */
 	disabled: boolean;
 }
-export interface AccordionButtonProps extends Props<HTMLButtonElement, AccordionButtonState> {}
+export interface AccordionButtonEvents {
+	/**
+	 * Add your own custom logic to the click event.\
+	 * Using the regular `onclick` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onClick?: Handler<MouseEvent, HTMLButtonElement>;
+}
+export interface AccordionButtonProps extends Props<HTMLButtonElement, AccordionButtonState>, AccordionButtonEvents {}
 
 interface AccordionItemState {
 	/** True if the item is opened. */

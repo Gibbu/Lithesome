@@ -10,6 +10,7 @@ import {
 	type Orientation,
 	type StateValues
 } from '$internal';
+import type { TabsButtonEvents } from './types.js';
 
 //
 // Root
@@ -20,7 +21,7 @@ type TabsRootProps = StateValues<{
 }>;
 
 class TabsRoot {
-	uid = createUID('tabs').uid;
+	uid = createUID('tabs');
 
 	$value: TabsRootProps['value'];
 	$orientation: TabsRootProps['orientation'];
@@ -93,14 +94,16 @@ type TabsButtonProps = StateValues<{
 }>;
 class TabsButton {
 	root: TabsRoot;
+	#events: TabsButtonEvents;
 
 	$disabled: TabsButtonProps['disabled'];
 	$value: TabsButtonProps['value'];
 
 	IsActive = $derived.by(() => this.root.ActiveTab === this.$value.val);
 
-	constructor(root: TabsRoot, props: TabsButtonProps) {
+	constructor(root: TabsRoot, props: TabsButtonProps, events: TabsButtonEvents) {
 		this.root = root;
+		this.#events = events;
 
 		this.$value = props.value;
 		this.$disabled = props.disabled;
@@ -108,13 +111,15 @@ class TabsButton {
 		this.root.register(props.value.val);
 	}
 
-	#handleClick = () => {
+	#handleClick: TabsButtonEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onClick?.(e);
 
 		this.root.setActive(this.$value.val);
 	};
-	#handleKeydown = (e: KeyboardEvent) => {
+	#handleKeydown: TabsButtonEvents['onKeydown'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onKeydown?.(e);
 
 		const { key } = e;
 
@@ -201,8 +206,8 @@ export const createRootContext = (props: TabsRootProps) => {
 export const useTabsList = () => {
 	return rootContext.register(TabsList);
 };
-export const useTabsButton = (props: TabsButtonProps) => {
-	return rootContext.register(TabsButton, props);
+export const useTabsButton = (props: TabsButtonProps, events: TabsButtonEvents) => {
+	return rootContext.register(TabsButton, props, events);
 };
 export const useTabsContent = (props: TabsContentProps) => {
 	return rootContext.register(TabsContent, props);

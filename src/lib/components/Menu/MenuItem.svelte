@@ -12,13 +12,18 @@
 		href,
 		onClick,
 		onMouseover,
-		onFocus,
 		...props
 	}: MenuItemProps = $props();
 
-	const ctx = useMenuItem({
-		disabled: stateValue(() => disabled)
-	});
+	const ctx = useMenuItem(
+		{
+			disabled: stateValue(() => disabled)
+		},
+		{
+			onClick,
+			onMouseover
+		}
+	);
 </script>
 
 <svelte:element

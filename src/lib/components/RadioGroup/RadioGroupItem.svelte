@@ -15,10 +15,16 @@
 		...props
 	}: RadioGroupItemProps = $props();
 
-	const ctx = useRadioItem({
-		value: stateValue(() => value),
-		disabled: stateValue(() => disabled)
-	});
+	const ctx = useRadioItem(
+		{
+			value: stateValue(() => value),
+			disabled: stateValue(() => disabled)
+		},
+		{
+			onClick,
+			onKeydown
+		}
+	);
 </script>
 
 <button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>

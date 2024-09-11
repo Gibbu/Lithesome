@@ -18,7 +18,7 @@ type HovercardRootProps = StateValues<{
 	delays: { in: number; out: number };
 }>;
 class HovercardRoot extends Floating {
-	uid = createUID('hovercard').uid;
+	uid = createUID('hovercard');
 
 	$visible: HovercardRootProps['visible'];
 	$delays: HovercardRootProps['delays'];
@@ -92,9 +92,9 @@ class HovercardTrigger {
 				});
 				addEventListeners(child, {
 					mouseenter: () => this.root.open(),
-					mouseleave: () => this.root.close(),
-					keydown: this.#handleKeydown
+					mouseleave: () => this.root.close()
 				});
+				document.addEventListener('keydown', this.#handleKeydown);
 
 				$effect(() => {
 					if (!child) return;
@@ -110,6 +110,10 @@ class HovercardTrigger {
 					}
 				});
 			}
+
+			return () => {
+				document.removeEventListener('keydown', this.#handleKeydown);
+			};
 		});
 	}
 
@@ -119,7 +123,7 @@ class HovercardTrigger {
 	};
 
 	#handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === KEYS.escape || e.key === KEYS.tab) this.root.close();
+		if (e.key === KEYS.escape || e.key === KEYS.tab) this.root.forceClose();
 	};
 
 	attrs = {

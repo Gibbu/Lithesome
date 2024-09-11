@@ -10,13 +10,21 @@
 		self = $bindable(),
 		disabled = $bindable(false),
 		value,
+		onClick,
+		onKeydown,
 		...props
 	}: TabsButtonProps = $props();
 
-	const ctx = useTabsButton({
-		value: stateValue(() => value),
-		disabled: stateValue(() => disabled)
-	});
+	const ctx = useTabsButton(
+		{
+			value: stateValue(() => value),
+			disabled: stateValue(() => disabled)
+		},
+		{
+			onClick,
+			onKeydown
+		}
+	);
 </script>
 
 <button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>

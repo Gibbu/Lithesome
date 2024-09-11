@@ -1,4 +1,4 @@
-import type { Props, Orientation } from '$internal';
+import type { Props, Orientation, Handler } from '$internal';
 
 interface TabsState {
 	/** The current active tab. */
@@ -19,7 +19,23 @@ interface TabsButtonState {
 	/** True if the button value is selected. */
 	active: boolean;
 }
-export interface TabsButtonProps extends Props<HTMLButtonElement, TabsButtonState> {
+export interface TabsButtonEvents {
+	/**
+	 * Add your own custom logic to the click event.\
+	 * Using the regular `onclick` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onClick?: Handler<MouseEvent, HTMLButtonElement>;
+	/**
+	 * Add your own custom logic to the keydown event.\
+	 * Using the regular `onkeydown` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onKeydown?: Handler<KeyboardEvent, HTMLButtonElement>;
+}
+export interface TabsButtonProps extends Props<HTMLButtonElement, TabsButtonState>, TabsButtonEvents {
 	/**
 	 * The unique value of the button.
 	 *

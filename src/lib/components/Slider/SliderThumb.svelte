@@ -6,7 +6,10 @@
 
 	let { use = [], class: klass, self = $bindable(), onMousedown, onKeydown, ...props }: SliderThumbProps = $props();
 
-	const ctx = useSliderThumb(self);
+	const ctx = useSliderThumb(self, {
+		onKeydown,
+		onMousedown
+	});
 </script>
 
 <div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}></div>

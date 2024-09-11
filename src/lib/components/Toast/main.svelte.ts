@@ -13,7 +13,7 @@ export class Toaster {
 		if (!config.title || !config.message) log.error('`title` and `message` must be provided.');
 
 		const duration = parseDuration(config.duration || '5s');
-		const { uid } = createUID('toast');
+		const uid = createUID('toast');
 
 		const toast: Toast = {
 			id: uid(),
@@ -54,7 +54,7 @@ export class Toaster {
 // Root
 //
 class ToastRoot {
-	uid = createUID('toast').uid;
+	uid = createUID('toast');
 
 	attrs = $derived.by(
 		() =>

@@ -11,7 +11,7 @@ const componentName = (name: string) => `<${name.replace('Root', '')} />`;
  * @param rootClass The "root" class of the context.
  */
 export const buildContext = <RC>(rootClass: Class<RC>) => {
-	const { uid } = createUID('context');
+	const uid = createUID('context');
 
 	return {
 		/** Create the root context. */

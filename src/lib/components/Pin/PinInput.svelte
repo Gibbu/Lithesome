@@ -15,7 +15,13 @@
 		...props
 	}: PinInputProps = $props();
 
-	const ctx = usePinInput();
+	const ctx = usePinInput({
+		onKeydown,
+		onInput,
+		onBlur,
+		onFocus,
+		onPaste
+	});
 </script>
 
 <input bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props} />

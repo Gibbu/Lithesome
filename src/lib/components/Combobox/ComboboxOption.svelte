@@ -12,17 +12,22 @@
 		self = $bindable(),
 		disabled = $bindable(false),
 		onClick,
-		onFocus,
 		onMouseover,
 		...props
 	}: ComboboxOptionProps = $props();
 	let optionEl: ComboboxElement;
 
-	const ctx = useComboboxOption({
-		disabled: stateValue(() => disabled),
-		value: stateValue(() => value),
-		label: stateValue(() => label || self?.textContent?.trim() || '')
-	});
+	const ctx = useComboboxOption(
+		{
+			disabled: stateValue(() => disabled),
+			value: stateValue(() => value),
+			label: stateValue(() => label || self?.textContent?.trim() || '')
+		},
+		{
+			onClick,
+			onMouseover
+		}
+	);
 </script>
 
 <button

@@ -1,4 +1,5 @@
 import { ALL_ARROW_KEYS, buildContext, clamp, createUID, KEYS, type Orientation, type StateValues } from '$internal';
+import type { SliderEvents, SliderThumbEvents } from './types.js';
 
 //
 // Root
@@ -14,7 +15,9 @@ type SliderRootProps = StateValues<{
 	trackElement: HTMLDivElement | undefined;
 }>;
 class SliderRoot {
-	uid = createUID('slider').uid;
+	uid = createUID('slider');
+
+	#events: SliderEvents;
 
 	$min: SliderRootProps['min'];
 	$max: SliderRootProps['max'];
@@ -32,7 +35,9 @@ class SliderRoot {
 		Math.round(((this.$value.val - this.$min.val) / (this.$max.val - this.$min.val)) * 100)
 	);
 
-	constructor(props: SliderRootProps) {
+	constructor(props: SliderRootProps, events: SliderEvents) {
+		this.#events = events;
+
 		this.$min = props.min;
 		this.$max = props.max;
 		this.$step = props.step;
@@ -91,12 +96,16 @@ class SliderRoot {
 		);
 	};
 
-	#handleMousedown = () => {
+	#handleMousedown: SliderEvents['onMousedown'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onMousedown?.(e);
+
 		this.dragging = true;
 	};
-	#handleClick = (e: MouseEvent) => {
+	#handleClick: SliderEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onClick?.(e);
+
 		e.preventDefault();
 		this.dragging = true;
 		this.calculateValue(e);
@@ -173,18 +182,24 @@ class SliderRange {
 //
 class SliderThumb {
 	root: SliderRoot;
+	#events: SliderThumbEvents;
 
-	constructor(root: SliderRoot, thumbElement: HTMLDivElement | undefined) {
+	constructor(root: SliderRoot, thumbElement: HTMLDivElement | undefined, events: SliderThumbEvents) {
 		this.root = root;
+		this.#events = events;
+
 		this.root.thumbElement = thumbElement;
 	}
 
-	#handleMousedown = (e: MouseEvent) => {
+	#handleMousedown: SliderThumbEvents['onMousedown'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onMousedown?.(e);
+
 		e.preventDefault();
 	};
-	#handleKeydown = (e: KeyboardEvent) => {
+	#handleKeydown: SliderThumbEvents['onKeydown'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onKeydown?.(e);
 
 		const { key } = e;
 		if (ALL_ARROW_KEYS.includes(key)) e.preventDefault();
@@ -278,8 +293,8 @@ export const createRootContext = (props: SliderRootProps) => {
 export const useSliderRange = () => {
 	return builder.register(SliderRange);
 };
-export const useSliderThumb = (thumbElement: HTMLDivElement | undefined) => {
-	return builder.register(SliderThumb, thumbElement);
+export const useSliderThumb = (thumbElement: HTMLDivElement | undefined, events: SliderThumbEvents) => {
+	return builder.register(SliderThumb, thumbElement, events);
 };
 export const useSliderValue = () => {
 	return builder.register(SliderValue);

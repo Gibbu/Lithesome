@@ -17,7 +17,7 @@ type PopoverRootProps = StateValues<{
 	visible: boolean;
 }>;
 class PopoverRoot extends Floating {
-	uid = createUID('popover').uid;
+	uid = createUID('popover');
 
 	$visible: PopoverRootProps['visible'];
 

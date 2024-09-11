@@ -15,6 +15,7 @@ import {
 	type StateValues
 } from '$internal';
 import { onMount, tick } from 'svelte';
+import type { SelectOptionEvents } from './types.js';
 
 //
 // Root
@@ -25,7 +26,7 @@ type SelectRootProps = StateValues<{
 	value: JsonValue;
 }>;
 class SelectRoot extends Floating {
-	uid = createUID('select').uid;
+	uid = createUID('select');
 
 	$multiple: SelectRootProps['multiple'];
 	$value: SelectRootProps['value'];
@@ -256,9 +257,10 @@ type SelectOptionProps = StateValues<{
 	label: string;
 }>;
 class SelectOption {
-	uid = createUID('option').uid;
+	uid = createUID('option');
 
 	root: SelectRoot;
+	#events: SelectOptionEvents;
 
 	$value: SelectOptionProps['value'];
 	$disabled: SelectOptionProps['disabled'];
@@ -267,8 +269,9 @@ class SelectOption {
 	Hovered = $derived.by(() => this.root.HoveredOption?.id === this.uid());
 	Selected = $derived.by(() => !!this.root.selectedOptions.find((el) => el.dataset.value === this.$value.val));
 
-	constructor(root: SelectRoot, props: SelectOptionProps) {
+	constructor(root: SelectRoot, props: SelectOptionProps, events: SelectOptionEvents) {
 		this.root = root;
+		this.#events = events;
 
 		this.$value = props.value;
 		this.$disabled = props.disabled;
@@ -285,12 +288,16 @@ class SelectOption {
 		});
 	}
 
-	#handleMouseover = () => {
+	#handleMouseover: SelectOptionEvents['onMouseover'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onMouseover?.(e);
+
 		this.root.setHovered(this.uid());
 	};
-	#handleClick = () => {
+	#handleClick: SelectOptionEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onClick?.(e);
+
 		this.root.setSelected();
 	};
 

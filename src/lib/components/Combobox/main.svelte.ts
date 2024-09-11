@@ -1,21 +1,19 @@
 import {
-	addEventListeners,
 	buildContext,
 	calculateIndex,
 	createUID,
 	disableScroll,
 	Floating,
 	KEYS,
-	log,
 	PREVENT_KEYS,
 	removeDisabledElements,
-	removeNodeProps,
-	setNodeProps,
 	type CalcIndexAction,
 	type JsonValue,
 	type StateValues
 } from '$internal';
 import { onMount, tick } from 'svelte';
+
+import type { ComboboxInputEvents, ComboboxOptionEvents } from './types.js';
 
 //
 // Root
@@ -29,7 +27,7 @@ type ComboboxRootProps = StateValues<{
 	disabled: boolean;
 }>;
 class ComboboxRoot extends Floating {
-	uid = createUID('combobox').uid;
+	uid = createUID('combobox');
 
 	$visible: ComboboxRootProps['visible'];
 	$value: ComboboxRootProps['value'];
@@ -151,22 +149,26 @@ class ComboboxRoot extends Floating {
 //
 class ComboboxInput {
 	root: ComboboxRoot;
+	#events: ComboboxInputEvents;
 
-	constructor(root: ComboboxRoot) {
+	constructor(root: ComboboxRoot, events: ComboboxInputEvents) {
 		this.root = root;
+		this.#events = events;
 	}
 
 	registerTrigger = (trigger: HTMLInputElement) => {
 		this.root.trigger = trigger;
 	};
 
-	#handleCick = () => {
+	#handleCick: ComboboxInputEvents['onClick'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onClick?.(e);
 
 		this.root.toggle();
 	};
-	#handleKeydown = (e: KeyboardEvent) => {
+	#handleKeydown: ComboboxInputEvents['onKeydown'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onKeydown?.(e);
 
 		const { key } = e;
 
@@ -259,9 +261,10 @@ type ComboboxOptionProps = StateValues<{
 	disabled: boolean;
 }>;
 class ComboboxOption {
-	uid = createUID('option').uid;
+	uid = createUID('option');
 
 	root: ComboboxRoot;
+	#events: ComboboxOptionEvents;
 
 	$value: ComboboxOptionProps['value'];
 	$label: ComboboxOptionProps['label'];
@@ -270,8 +273,9 @@ class ComboboxOption {
 	Hovered = $derived.by(() => this.root.HoveredOption?.id === this.uid());
 	Selected = $derived.by(() => !!this.root.selectedOptions.find((el) => el.dataset.value === this.$value.val));
 
-	constructor(root: ComboboxRoot, props: ComboboxOptionProps) {
+	constructor(root: ComboboxRoot, props: ComboboxOptionProps, events: ComboboxOptionEvents) {
 		this.root = root;
+		this.#events = events;
 
 		this.$value = props.value;
 		this.$disabled = props.disabled;
@@ -289,13 +293,15 @@ class ComboboxOption {
 		});
 	}
 
-	#handleClick = () => {
+	#handleClick: ComboboxOptionEvents['onClick'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onClick?.(e);
 
 		this.root.setSelected();
 	};
-	#handleMouseover = () => {
+	#handleMouseover: ComboboxOptionEvents['onMouseover'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onMouseover?.(e);
 
 		this.root.setHovered(this.uid());
 	};
@@ -333,8 +339,8 @@ export const createRootContext = (props: ComboboxRootProps) => {
 	return rootContext.createContext(props);
 };
 
-export const useComboboxInput = () => {
-	return rootContext.register(ComboboxInput);
+export const useComboboxInput = (events: ComboboxInputEvents) => {
+	return rootContext.register(ComboboxInput, events);
 };
 
 export const useComboboxContent = () => {
@@ -345,6 +351,6 @@ export const useComboboxArrow = () => {
 	return rootContext.register(ComboboxArrow);
 };
 
-export const useComboboxOption = (props: ComboboxOptionProps) => {
-	return rootContext.register(ComboboxOption, props);
+export const useComboboxOption = (props: ComboboxOptionProps, events: ComboboxOptionEvents) => {
+	return rootContext.register(ComboboxOption, props, events);
 };

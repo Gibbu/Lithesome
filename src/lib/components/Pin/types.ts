@@ -27,7 +27,44 @@ interface PinInputState extends PinState {
 	/** If the input is disabled by the `Pin` parent component. */
 	disabled: boolean;
 }
-export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState> {}
+export interface PinInputEvents {
+	/**
+	 * Add your own custom logic to the input event.\
+	 * Using the regular `oninput` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onInput?: Handler<Event, HTMLInputElement>;
+	/**
+	 * Add your own custom logic to the keydown event.\
+	 * Using the regular `onkeydown` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
+	/**
+	 * Add your own custom logic to the focus event.\
+	 * Using the regular `onfocus` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onFocus?: Handler<FocusEvent, HTMLInputElement>;
+	/**
+	 * Add your own custom logic to the blur event.\
+	 * Using the regular `onblur` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onBlur?: Handler<FocusEvent, HTMLInputElement>;
+	/**
+	 * Add your own custom logic to the paste event.\
+	 * Using the regular `onpaste` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
+}
+export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState>, PinInputEvents {}
 
 export interface PinValueProps extends PropsNoChildren<HTMLInputElement> {
 	/**

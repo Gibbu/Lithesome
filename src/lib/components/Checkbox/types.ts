@@ -13,5 +13,11 @@ export interface CheckboxProps extends PropsMaybeChildren<HTMLButtonElement, Che
 	required?: boolean;
 	/** Disabled the checkbox, disallowing the internal events. */
 	disabled?: boolean;
+	/**
+	 * Add your own custom logic to the click event.\
+	 * Using the regular `onclick` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
 	onClick?: Handler<MouseEvent, HTMLButtonElement>;
 }

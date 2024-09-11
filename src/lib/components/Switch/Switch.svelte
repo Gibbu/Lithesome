@@ -15,8 +15,8 @@
 	}: SwitchProps = $props();
 
 	const handleClick: typeof onClick = (e) => {
-		onClick?.(e);
 		if (disabled) return;
+		onClick?.(e);
 
 		checked = !checked;
 	};

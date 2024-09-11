@@ -3,9 +3,17 @@
 	import { useComboboxInput } from './main.svelte.js';
 	import type { ComboboxInputProps } from './types.js';
 
-	let { class: klass, use = [], value = $bindable(), self = $bindable(), ...props }: ComboboxInputProps = $props();
+	let {
+		class: klass,
+		use = [],
+		value = $bindable(),
+		self = $bindable(),
+		onClick,
+		onKeydown,
+		...props
+	}: ComboboxInputProps = $props();
 
-	const ctx = useComboboxInput();
+	const ctx = useComboboxInput({ onClick, onKeydown });
 
 	$effect(() => {
 		if (self) ctx.registerTrigger(self);

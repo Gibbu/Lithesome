@@ -15,6 +15,7 @@ import {
 	type StateValues
 } from '$internal';
 import { onMount } from 'svelte';
+import type { MenuItemEvents } from './types.js';
 
 //
 // Root
@@ -23,7 +24,7 @@ type MenuRootProps = StateValues<{
 	visible: boolean;
 }>;
 class MenuRoot extends Floating {
-	uid = createUID('menu').uid;
+	uid = createUID('menu');
 
 	$visible: MenuRootProps['visible'];
 
@@ -194,16 +195,19 @@ type MenuItemProps = StateValues<{
 	disabled: boolean;
 }>;
 class MenuItem {
-	uid = createUID('item').uid;
+	uid = createUID('item');
 
 	root: MenuRoot;
+	#events: MenuItemEvents;
 
 	$disabled: MenuItemProps['disabled'];
 
 	Hovered = $derived.by(() => this.root.HoveredItem === this.uid());
 
-	constructor(root: MenuRoot, props: MenuItemProps) {
+	constructor(root: MenuRoot, props: MenuItemProps, events: MenuItemEvents) {
 		this.root = root;
+		this.#events = events;
+
 		this.$disabled = props.disabled;
 
 		onMount(() => {
@@ -215,12 +219,16 @@ class MenuItem {
 		});
 	}
 
-	#handleClick = () => {
+	#handleClick: MenuItemEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onClick?.(e);
+
 		this.root.close();
 	};
-	#handleMouseover = () => {
+	#handleMouseover: MenuItemEvents['onMouseover'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onMouseover?.(e);
+
 		this.root.setHovered(this.uid());
 	};
 
@@ -259,6 +267,6 @@ export const useMenuArrow = () => {
 export const useMenuContent = () => {
 	return rootContext.register(MenuContent);
 };
-export const useMenuItem = (props: MenuItemProps) => {
-	return rootContext.register(MenuItem, props);
+export const useMenuItem = (props: MenuItemProps, events: MenuItemEvents) => {
+	return rootContext.register(MenuItem, props, events);
 };

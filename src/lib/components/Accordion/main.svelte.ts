@@ -1,4 +1,5 @@
-import { buildContext, createUID, type StateValues } from '$internal';
+import { buildContext, createUID, type Handler, type StateValues } from '$internal';
+import type { AccordionButtonEvents } from './types.js';
 
 interface Item {
 	id: string;
@@ -13,7 +14,7 @@ type AccordionRootProps = StateValues<{
 	value?: string;
 }>;
 class AccordionRoot {
-	uid = createUID('accordion').uid;
+	uid = createUID('accordion');
 
 	$value: AccordionRootProps['value'];
 	$single: AccordionRootProps['single'];
@@ -51,7 +52,7 @@ type AccordionItemProps = StateValues<{
 	disabled: boolean;
 }>;
 class AccordionItem {
-	uid = createUID('item').uid;
+	uid = createUID('item');
 
 	root: AccordionRoot;
 
@@ -106,14 +107,18 @@ class AccordionHeading {
 class AccordionButton {
 	root: AccordionRoot;
 	item: AccordionItem;
+	#events: AccordionButtonEvents;
 
-	constructor(item: AccordionItem, root: AccordionRoot) {
+	constructor(item: AccordionItem, root: AccordionRoot, events: AccordionButtonEvents) {
 		this.root = root;
 		this.item = item;
+		this.#events = events;
 	}
 
-	#handleClick = () => {
+	#handleClick: AccordionButtonEvents['onClick'] = (e) => {
 		if (this.item.$disabled.val) return;
+
+		this.#events.onClick?.(e);
 
 		this.root.toggleActiveItem(this.item.uid());
 	};
@@ -174,8 +179,8 @@ export const createAccordionItemContext = (props: AccordionItemProps) => {
 export const useAccordionHeading = (props: AccordionHeadingProps) => {
 	return rootContext.register(AccordionHeading, props);
 };
-export const useAccordionButton = () => {
-	return itemContext.register(AccordionButton, rootContext.getContext());
+export const useAccordionButton = (events: AccordionButtonEvents) => {
+	return itemContext.register(AccordionButton, rootContext.getContext(), events);
 };
 export const useAccordionContent = () => {
 	return itemContext.register(AccordionContent, rootContext.getContext());

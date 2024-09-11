@@ -1,6 +1,6 @@
 import { buildContext, createUID, KEYS, type StateValues, type Handler } from '$internal';
 import { tick } from 'svelte';
-import type { PinType } from './types.js';
+import type { PinInputEvents, PinType } from './types.js';
 
 //
 // Root
@@ -12,7 +12,7 @@ type PinRootProps = StateValues<{
 	placeholder: string;
 }>;
 class PinRoot {
-	uid = createUID('pin').uid;
+	uid = createUID('pin');
 
 	$value: PinRootProps['value'];
 	$disabled: PinRootProps['disabled'];
@@ -56,16 +56,18 @@ class PinRoot {
 // Input
 //
 class PinInput {
-	uid = createUID('input').uid;
+	uid = createUID('input');
 
 	root: PinRoot;
+	#events: PinInputEvents;
 
 	focused = $state<boolean>(false);
 	index = $derived.by<number>(() => this.root.inputs.indexOf(this.uid()));
 	value = $derived.by<string>(() => this.root.$value.val[this.index] || '');
 
-	constructor(root: PinRoot) {
+	constructor(root: PinRoot, events: PinInputEvents) {
 		this.root = root;
+		this.#events = events;
 
 		this.root.inputs.push(this.uid());
 	}
@@ -81,8 +83,10 @@ class PinInput {
 		if (target) (document.querySelector(`#${target}`) as HTMLInputElement)?.focus();
 	};
 
-	#handleInput = async (event: Event) => {
+	#handleInput: PinInputEvents['onInput'] = async (event) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onInput?.(event);
+
 		const e = event as unknown as InputEvent & { target: HTMLInputElement };
 
 		if (e.inputType !== 'insertText' && e.inputType !== 'deleteContentBackward') return;
@@ -96,8 +100,10 @@ class PinInput {
 			return;
 		}
 	};
-	#handleKeydown: Handler<KeyboardEvent, HTMLInputElement> = async (e) => {
+	#handleKeydown: PinInputEvents['onKeydown'] = async (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onKeydown?.(e);
+
 		const { key } = e;
 
 		if (key === KEYS.delete) {
@@ -128,16 +134,22 @@ class PinInput {
 			return;
 		}
 	};
-	#handleFocus = () => {
+	#handleFocus: PinInputEvents['onFocus'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onFocus?.(e);
+
 		this.focused = true;
 	};
-	#handleBlur = () => {
+	#handleBlur: PinInputEvents['onBlur'] = (e) => {
 		if (this.root.$disabled.val) return;
+		this.#events.onBlur?.(e);
+
 		this.focused = false;
 	};
-	#handlePaste: Handler<ClipboardEvent, HTMLInputElement> = (e) => {
+	#handlePaste: PinInputEvents['onPaste'] = (e) => {
 		if (!e.clipboardData) return;
+		this.#events.onPaste?.(e);
+
 		e.preventDefault();
 
 		const data = e.clipboardData.getData('text');
@@ -206,8 +218,8 @@ const rootContext = buildContext(PinRoot);
 export const createRootContext = (props: PinRootProps) => {
 	return rootContext.createContext(props);
 };
-export const usePinInput = () => {
-	return rootContext.register(PinInput);
+export const usePinInput = (events: PinInputEvents) => {
+	return rootContext.register(PinInput, events);
 };
 export const usePinValue = () => {
 	return rootContext.register(PinValue);

@@ -3,9 +3,11 @@
 	import { useActions, classProp } from '$internal';
 	import type { AccordionButtonProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: AccordionButtonProps = $props();
+	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: AccordionButtonProps = $props();
 
-	const ctx = useAccordionButton();
+	const ctx = useAccordionButton({
+		onClick
+	});
 </script>
 
 <button

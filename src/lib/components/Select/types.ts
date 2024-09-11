@@ -21,7 +21,24 @@ interface SelectOptionState {
 	/** If the option is selected. */
 	selected: boolean;
 }
-export interface SelectOptionProps extends Props<HTMLButtonElement, SelectOptionState> {
+export interface SelectOptionEvents {
+	/**
+	 * Add your own custom logic to the click event.\
+	 * Using the regular `onclick` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onClick?: Handler<MouseEvent, HTMLButtonElement>;
+
+	/**
+	 * Add your own custom logic to the mouseover event.\
+	 * Using the regular `onmouseover` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onMouseover?: Handler<MouseEvent, HTMLButtonElement>;
+}
+export interface SelectOptionProps extends Props<HTMLButtonElement, SelectOptionState>, SelectOptionEvents {
 	/** The value of the option. */
 	value: JsonValue;
 	/** Disables the option. */
@@ -32,9 +49,6 @@ export interface SelectOptionProps extends Props<HTMLButtonElement, SelectOption
 	 * If this prop is not provided, the text content will be used.
 	 */
 	label?: string;
-	onClick?: Handler<MouseEvent, HTMLButtonElement>;
-	onFocus?: Handler<FocusEvent, HTMLButtonElement>;
-	onMouseover?: Handler<MouseEvent, HTMLButtonElement>;
 }
 
 export interface SelectTriggerProps extends Props<HTMLDivElement, SelectState> {}

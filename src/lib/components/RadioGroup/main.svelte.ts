@@ -9,6 +9,7 @@ import {
 	type UID
 } from '$internal';
 import { tick } from 'svelte';
+import type { RadioGroupItemEvents } from './types.js';
 
 interface Item {
 	id: string;
@@ -24,7 +25,7 @@ type RadioGroupRootProps = StateValues<{
 	required: boolean;
 }>;
 class RadioGroupRoot {
-	uid: UID = createUID('radiogroup').uid;
+	uid: UID = createUID('radiogroup');
 
 	$value: RadioGroupRootProps['value'];
 	$required: RadioGroupRootProps['required'];
@@ -96,24 +97,28 @@ type RadioGroupItemProps = StateValues<{
 	disabled: boolean;
 }>;
 class RadioGroupItem {
+	uid = createUID('radioitem');
+
 	root: RadioGroupRoot;
-	uid: UID = createUID('radioitem').uid;
+	#events: RadioGroupItemEvents;
 
 	$value: RadioGroupItemProps['value'];
 	$disabled: RadioGroupItemProps['disabled'];
 
 	Checked = $derived.by(() => this.root.SelectedItem?.id === this.uid());
 
-	constructor(root: RadioGroupRoot, props: RadioGroupItemProps) {
+	constructor(root: RadioGroupRoot, props: RadioGroupItemProps, events: RadioGroupItemEvents) {
 		this.root = root;
+		this.#events = events;
 
 		this.$value = props.value;
 		this.$disabled = props.disabled;
 
 		this.root.items.push(this.$value.val);
 	}
-	#handleClick = () => {
+	#handleClick: RadioGroupItemEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
+		this.#events.onClick?.(e);
 
 		this.root.setSelected({
 			id: this.uid(),
@@ -121,7 +126,10 @@ class RadioGroupItem {
 			disabled: this.$disabled.val
 		});
 	};
-	#handleKeydown = (e: KeyboardEvent) => {
+	#handleKeydown: RadioGroupItemEvents['onKeydown'] = (e) => {
+		if (this.$disabled.val) return;
+		this.#events.onKeydown?.(e);
+
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
@@ -160,6 +168,6 @@ const rootContext = buildContext(RadioGroupRoot);
 export const createRootContext = (props: RadioGroupRootProps) => {
 	return rootContext.createContext(props);
 };
-export const useRadioItem = (props: RadioGroupItemProps) => {
-	return rootContext.register(RadioGroupItem, props);
+export const useRadioItem = (props: RadioGroupItemProps, events: RadioGroupItemEvents) => {
+	return rootContext.register(RadioGroupItem, props, events);
 };
