@@ -9,5 +9,5 @@
 </script>
 
 <p bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
-	{@render children({})}
+	{@render children?.({})}
 </p>

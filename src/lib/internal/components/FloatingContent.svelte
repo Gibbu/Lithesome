@@ -58,7 +58,7 @@
 		{...attrs}
 		{...props}
 	>
-		{@render children({ visible: visible })}
+		{@render children?.({ visible: visible })}
 	</div>
 {:else if visible}
 	<div
@@ -70,6 +70,6 @@
 		{...attrs}
 		{...props}
 	>
-		{@render children({ visible: visible })}
+		{@render children?.({ visible: visible })}
 	</div>
 {/if}

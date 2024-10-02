@@ -9,5 +9,5 @@
 </script>
 
 <h2 bind:this={self} use:useActions={use} class={classProp(klass)} {...props} {...ctx.attrs}>
-	{@render children({})}
+	{@render children?.({})}
 </h2>

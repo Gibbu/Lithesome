@@ -1,4 +1,4 @@
-import type { Handler, PropsMaybeChildren } from '$internal';
+import type { Handler, Props } from '$internal';
 
 export type Checked = boolean | 'mixed';
 
@@ -6,7 +6,7 @@ interface CheckboxState {
 	/** If the checkbox is checked or not. */
 	checked: Checked;
 }
-export interface CheckboxProps extends PropsMaybeChildren<HTMLButtonElement, CheckboxState> {
+export interface CheckboxProps extends Props<HTMLButtonElement, CheckboxState> {
 	/** If the checkbox is checked or not. */
 	checked?: Checked;
 	/** Adds aria attributes. */

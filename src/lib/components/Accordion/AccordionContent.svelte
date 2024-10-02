@@ -18,10 +18,10 @@
 	{@const { config: inConf, transition: inFn } = inTransition}
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div bind:this={self} use:useActions={use} in:inFn={inConf} out:outFn={outConf} {...attrs} {...props}>
-		{@render children({})}
+		{@render children?.({})}
 	</div>
 {:else if ctx.item.Active}
 	<div bind:this={self} use:useActions={use} {...attrs} {...props}>
-		{@render children({})}
+		{@render children?.({})}
 	</div>
 {/if}

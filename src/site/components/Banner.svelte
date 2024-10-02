@@ -40,7 +40,7 @@
 >
 	<Icon class="size-6" />
 	<div class="flex-1">
-		{@render children({})}
+		{@render children?.({})}
 	</div>
 	{#if dismissable}
 		<button type="button" class="rounded-md p-1 hover:bg-white/10" onclick={() => onClick?.()}>

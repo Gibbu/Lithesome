@@ -22,7 +22,7 @@
 <FloatingContent
 	{children}
 	componentName="Combobox"
-	visible={ctx.root.$visible.val}
+	visible={ctx.root.SuperVisible}
 	{ctx}
 	{transition}
 	{use}

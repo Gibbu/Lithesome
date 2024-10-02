@@ -51,5 +51,5 @@
 	)}
 	{...props}
 >
-	{@render children({})}
+	{@render children?.({})}
 </svelte:element>

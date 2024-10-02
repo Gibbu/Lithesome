@@ -22,5 +22,5 @@
 	data-toaster=""
 	{...props}
 >
-	{@render children(toasts)}
+	{@render children?.(toasts)}
 </div>

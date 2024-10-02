@@ -24,7 +24,7 @@
 		{...props}
 		{...ctx.attrs}
 	>
-		{@render children({})}
+		{@render children?.({})}
 	</div>
 {:else if ctx.root.$visible.val}
 	<div
@@ -35,6 +35,6 @@
 		{...props}
 		{...ctx.attrs}
 	>
-		{@render children({})}
+		{@render children?.({})}
 	</div>
 {/if}

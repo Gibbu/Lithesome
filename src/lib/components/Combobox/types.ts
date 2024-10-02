@@ -17,6 +17,8 @@ export interface ComboboxProps extends Props<HTMLDivElement, ComboboxState> {
 	visible?: boolean;
 	/** If the user has modified the selected value in anyway. */
 	touched?: boolean;
+	/** Allows for the combobox content to be visible only when this condition is met. */
+	controlled?: boolean;
 	onChange?: (payload?: { value?: JsonValue; label?: string }) => void;
 }
 

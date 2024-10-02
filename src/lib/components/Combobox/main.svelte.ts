@@ -25,6 +25,7 @@ type ComboboxRootProps = StateValues<{
 	label: string;
 	multiple: boolean;
 	disabled: boolean;
+	controlled: boolean | undefined;
 }>;
 class ComboboxRoot extends Floating {
 	uid = createUID('combobox');
@@ -35,6 +36,7 @@ class ComboboxRoot extends Floating {
 	$label: ComboboxRootProps['label'];
 	$multiple: ComboboxRootProps['multiple'];
 	$disabled: ComboboxRootProps['disabled'];
+	$controlled: ComboboxRootProps['controlled'];
 
 	options = $state<HTMLElement[]>([]);
 	selectedOptions = $state<HTMLElement[]>([]);
@@ -42,6 +44,9 @@ class ComboboxRoot extends Floating {
 	hoveredIndex = $state<number>(-1);
 
 	HoveredOption = $derived.by<HTMLElement | undefined>(() => this.options[this.hoveredIndex]);
+	SuperVisible = $derived.by(() =>
+		typeof this.$controlled.val === 'boolean' ? this.$controlled.val && this.$visible.val : this.$visible.val
+	);
 
 	constructor(props: ComboboxRootProps) {
 		super();
@@ -52,6 +57,7 @@ class ComboboxRoot extends Floating {
 		this.$label = props.label;
 		this.$multiple = props.multiple;
 		this.$disabled = props.disabled;
+		this.$controlled = props.controlled;
 
 		onMount(async () => {
 			await tick();
@@ -59,13 +65,13 @@ class ComboboxRoot extends Floating {
 		});
 
 		$effect(() => {
-			disableScroll(this.$visible.val && !document.body.style.overflow);
+			disableScroll(this.SuperVisible && !document.body.style.overflow);
 		});
 		$effect(() => {
-			if (!this.$visible.val || !this.options || this.hoveredIndex > this.options.length - 1) this.hoveredIndex = -1;
+			if (!this.SuperVisible || !this.options || this.hoveredIndex > this.options.length - 1) this.hoveredIndex = -1;
 		});
 		$effect(() => {
-			if (this.$visible.val) {
+			if (this.SuperVisible) {
 				tick().then(() => {
 					const index = this.options.findIndex((option) => option.ariaSelected === 'true');
 					this.hoveredIndex = index ?? 0;
@@ -136,11 +142,11 @@ class ComboboxRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-combobox': '',
-				'data-state': this.$visible.val && this.mounted ? 'opened' : 'closed'
+				'data-state': this.SuperVisible && this.mounted ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.$visible.val && this.mounted
+		visible: this.SuperVisible && this.mounted
 	}));
 }
 
@@ -174,12 +180,12 @@ class ComboboxInput {
 
 		if (!PREVENT_KEYS.includes(key)) {
 			this.root.$touched.val = true;
-			if (!this.root.$visible.val) this.root.open();
+			if (!this.root.SuperVisible) this.root.open();
 		}
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) {
 			e.preventDefault();
-			if (!this.root.$visible.val) this.root.open();
+			if (!this.root.SuperVisible) this.root.open();
 		}
 		if (key === KEYS.home) this.root.navigate('first');
 		if (key === KEYS.end) this.root.navigate('last');
@@ -188,7 +194,7 @@ class ComboboxInput {
 		if (key === KEYS.escape) this.root.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (this.root.HoveredOption && this.root.$visible.val) {
+			if (this.root.HoveredOption && this.root.SuperVisible) {
 				this.root.HoveredOption.click();
 				if (!this.root.$multiple.val) this.root.close();
 			} else {
@@ -206,8 +212,8 @@ class ComboboxInput {
 				role: 'combobox',
 				'aria-autocomplete': 'list',
 				'aria-haspopup': 'listbox',
-				'aria-controls': this.root.$visible.val ? this.root.uid('content') : undefined,
-				'aria-expanded': this.root.$visible.val,
+				'aria-controls': this.root.SuperVisible ? this.root.uid('content') : undefined,
+				'aria-expanded': this.root.SuperVisible,
 				'aria-activedescendant': this.root.HoveredOption?.id || undefined,
 				autocomplete: 'off',
 				onclick: this.#handleCick,
@@ -215,7 +221,7 @@ class ComboboxInput {
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.root.$visible.val
+		visible: this.root.SuperVisible
 	}));
 }
 
@@ -248,7 +254,7 @@ class ComboboxContent {
 		hidden: !this.root.mounted || undefined
 	}));
 	state = $derived.by(() => ({
-		visible: this.root.$visible.val
+		visible: this.root.SuperVisible
 	}));
 }
 
@@ -285,7 +291,7 @@ class ComboboxOption {
 			this.root.queryElements();
 
 			return async () => {
-				if (!this.root.$visible.val) return;
+				if (!this.root.SuperVisible) return;
 
 				await tick();
 				this.root.queryElements();

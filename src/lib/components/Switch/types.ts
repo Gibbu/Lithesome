@@ -1,4 +1,4 @@
-import type { Handler, PropsMaybeChildren } from '$internal';
+import type { Handler, Props } from '$internal';
 
 interface SwitchState {
 	/** If the Switch is checked or not. */
@@ -6,7 +6,7 @@ interface SwitchState {
 	/** If the Switch is disabled or not. */
 	disabled: boolean;
 }
-export interface SwitchProps extends PropsMaybeChildren<HTMLButtonElement, SwitchState> {
+export interface SwitchProps extends Props<HTMLButtonElement, SwitchState> {
 	/** If the switch is checked or not. */
 	checked?: boolean;
 	/** Adds aria attributes. */

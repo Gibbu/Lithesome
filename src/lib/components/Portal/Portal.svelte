@@ -14,5 +14,5 @@
 </script>
 
 <div bind:this={self} use:useActions={use} use:usePortal={target} class={classProp(klass)} data-portal="" {...props}>
-	{@render children({})}
+	{@render children?.({})}
 </div>

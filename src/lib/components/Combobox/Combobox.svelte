@@ -12,12 +12,12 @@
 		touched = $bindable(false),
 		disabled = $bindable(false),
 		visible = $bindable(true),
+		controlled,
 		self = $bindable(),
 		onChange,
 		...props
 	}: ComboboxProps = $props();
 
-	const multiple = Array.isArray(value);
 	const ctx = createRootContext({
 		value: stateValue(
 			() => value,
@@ -34,7 +34,7 @@
 				onChange?.({ label: v });
 			}
 		),
-		multiple: stateValue(() => multiple),
+		multiple: stateValue(() => Array.isArray(value)),
 		touched: stateValue(
 			() => touched,
 			(v) => (touched = v)
@@ -42,10 +42,11 @@
 		visible: stateValue(
 			() => visible,
 			(v) => (visible = v)
-		)
+		),
+		controlled: stateValue(() => controlled)
 	});
 </script>
 
 <div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children(ctx.state)}
+	{@render children?.(ctx.state)}
 </div>

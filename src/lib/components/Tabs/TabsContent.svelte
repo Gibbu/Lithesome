@@ -11,5 +11,5 @@
 </script>
 
 <div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children(ctx.state)}
+	{@render children?.(ctx.state)}
 </div>
