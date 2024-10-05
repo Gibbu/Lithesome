@@ -30,6 +30,7 @@
 	<div
 		bind:this={self}
 		use:useTrap={{ allowOutsideClick: true }}
+		use:usePortal={ctx.root.$portalTarget.val}
 		use:useActions={use}
 		class={classProp(klass)}
 		{...props}
