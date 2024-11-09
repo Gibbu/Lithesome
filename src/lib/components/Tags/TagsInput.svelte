@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { classProp, useActions } from '$internal';
+	import { classProp, stateValue, useActions } from '$internal';
 	import { useTagsInput } from './main.svelte.js';
 	import type { TagsInputProps } from './types.js';
 
-	let { use, class: klass, self, onKeydown, onPaste, ...props }: TagsInputProps = $props();
+	let { onKeydown, use = [], class: klass, self = $bindable(), ...props }: TagsInputProps = $props();
 
-	const ctx = useTagsInput({
-		onKeydown,
-		onPaste
-	});
+	const ctx = useTagsInput(
+		{
+			input: stateValue(() => self)
+		},
+		{
+			onKeydown
+		}
+	);
 </script>
 
-<input bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props} />
+<input bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props} />

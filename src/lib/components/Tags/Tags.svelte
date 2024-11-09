@@ -1,38 +1,43 @@
 <script lang="ts">
 	import { classProp, stateValue, useActions } from '$internal';
-	import { createRootContext } from './main.svelte.js';
+	import { createTagsRootContext } from './main.svelte.js';
+
 	import type { TagsProps } from './types.js';
 
 	let {
 		children,
-		use = [],
 		class: klass,
+		use = [],
 		self = $bindable(),
 		value = $bindable([]),
+		max = 0,
 		disabled = $bindable(false),
 		blacklist = [],
-		max = 0,
-		unique = false,
 		whitelist = [],
-		onChange,
-		...props
+		editable = false,
+		onClick
 	}: TagsProps = $props();
 
-	const ctx = createRootContext({
-		value: stateValue(
-			() => value,
-			(v) => {
-				value = v;
-				onChange?.(v);
-			}
-		),
-		disabled: stateValue(() => disabled),
-		max: stateValue(() => max),
-		whitelist: stateValue(() => whitelist),
-		blacklist: stateValue(() => blacklist)
-	});
+	const ctx = createTagsRootContext(
+		{
+			value: stateValue(
+				() => value,
+				(v) => {
+					value = v;
+				}
+			),
+			max: stateValue(() => max),
+			disabled: stateValue(() => disabled),
+			blacklist: stateValue(() => blacklist),
+			whitelist: stateValue(() => whitelist),
+			editable: stateValue(() => editable)
+		},
+		{
+			onClick
+		}
+	);
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
+<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs}>
+	{@render children?.({})}
 </div>

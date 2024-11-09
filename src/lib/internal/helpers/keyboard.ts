@@ -15,7 +15,8 @@ export const KEYS = {
 	shift: 'Shift',
 	space: ' ',
 	tab: 'Tab',
-	backspace: 'Backspace'
+	backspace: 'Backspace',
+	alt: 'Alt'
 };
 
 export const ALL_KEYS = Object.values(KEYS);
@@ -35,5 +36,6 @@ export const PREVENT_KEYS = [
 	KEYS.backspace,
 	KEYS.control,
 	KEYS.meta,
-	KEYS.enter
+	KEYS.enter,
+	KEYS.alt
 ];

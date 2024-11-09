@@ -62,7 +62,7 @@
 					'rounded-xl px-2.5 py-0.5 text-xs capitalize',
 					route.badge === 'soon' ? 'bg-gray-500/20 text-gray-400' : '',
 					route.badge === 'updated' ? 'bg-blue-500/20 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300' : '',
-					route.badge === 'new' ? 'bg-neutral-500/20 text-neutral-500 dark:bg-neutral-500/20 dark:text-neutral-300' : ''
+					route.badge === 'new' ? 'bg-green-500/20 text-green-500 dark:bg-green-500/20 dark:text-green-300' : ''
 				)}
 			>
 				{route.badge}

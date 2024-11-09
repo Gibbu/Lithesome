@@ -6,7 +6,7 @@ order: 2
 
 ## Installation
 
-Install using your package manager of your choice.
+Install using your package manager of choice.
 
 ```
 npm install -D lithesome
@@ -18,6 +18,10 @@ pnpm add -D lithesome
 
 ```
 yarn add -D lithesome
+```
+
+```
+bun add -D lithesome
 ```
 
 ## Usage

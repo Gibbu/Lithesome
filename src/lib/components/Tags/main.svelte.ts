@@ -1,36 +1,51 @@
-import { buildContext, createUID, KEYS, type StateValues } from '$internal';
-
-import type { TagsDeleteEvents, TagsInputEvents, TagsRootInternalProps } from './types.js';
+import { buildContext, createUID, KEYS, PREVENT_KEYS, type StateValue, type StateValues } from '$internal';
+import type { TagsDeleteEvents, TagsInputEvents, TagsItemEvents, TagsRootEvents } from './types.js';
 
 //
 // Root
 //
-type TagsRootProps = StateValues<TagsRootInternalProps>;
+type TagsRootProps = StateValues<{
+	value: string[];
+	disabled: boolean;
+	max: number;
+	whitelist: string[];
+	blacklist: string[];
+	editable: boolean;
+}>;
 class TagsRoot {
 	uid = createUID('tags');
+	#events: TagsRootEvents;
 
 	$value: TagsRootProps['value'];
 	$disabled: TagsRootProps['disabled'];
 	$max: TagsRootProps['max'];
 	$whitelist: TagsRootProps['whitelist'];
 	$blacklist: TagsRootProps['blacklist'];
+	$editable: TagsRootProps['editable'];
 
 	invalid = $state<boolean>(false);
+	input: StateValue<HTMLInputElement | undefined> = { val: undefined };
 
-	constructor(props: TagsRootProps) {
+	index = $state<number>(-1);
+
+	SelectedTag = $derived.by(() => (this.index !== -1 ? this.$value.val[this.index] : null));
+
+	constructor(props: TagsRootProps, events: TagsRootEvents) {
+		this.#events = events;
+
 		this.$value = props.value;
 		this.$disabled = props.disabled;
 		this.$max = props.max;
 		this.$whitelist = props.whitelist;
 		this.$blacklist = props.blacklist;
+		this.$editable = props.editable;
 	}
 
 	#allowedTag = (tag: string) => {
-		return this.$value.val.includes(tag) ||
-			(this.$whitelist.val.length > 0 && !this.$whitelist.val.includes(tag)) ||
-			(this.$blacklist.val.length > 0 && this.$blacklist.val.includes(tag))
-			? false
-			: true;
+		if (this.$value.val.includes(tag)) return false;
+		else if (this.$blacklist.val.length && this.$blacklist.val.includes(tag)) return false;
+		else if (this.$whitelist.val.length && !this.$whitelist.val.includes(tag)) return false;
+		else return true;
 	};
 
 	addTag = (tag: string) => {
@@ -49,49 +64,73 @@ class TagsRoot {
 	removeTag = (tag: string) => {
 		if (this.$disabled.val) return;
 
-		if (this.$value.val.includes(tag)) this.$value.val = this.$value.val.filter((el) => el !== tag);
+		if (this.$value.val.includes(tag)) {
+			this.$value.val = this.$value.val.filter((el) => el !== tag);
+		}
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-tags': '',
-				'data-disabled': this.$disabled.val
-			}) as const
-	);
-	state = $derived.by(() => ({
-		disabled: this.$disabled.val
+	#handleClick: TagsRootEvents['onClick'] = (e) => {
+		if (this.$disabled.val) return;
+		this.#events.onClick?.(e);
+
+		if (e.currentTarget.id === this.uid() && e.currentTarget.tagName === 'DIV') {
+			this.input?.val?.focus();
+		}
+	};
+
+	attrs = $derived.by(() => ({
+		id: this.uid(),
+		'data-tags': '',
+		onclick: this.#handleClick
 	}));
 }
 
 //
 // Input
 //
+type TagsInputProps = StateValues<{
+	input: HTMLInputElement | undefined;
+}>;
 class TagsInput {
 	root: TagsRoot;
 	#events: TagsInputEvents;
 
-	constructor(root: TagsRoot, events: TagsInputEvents) {
+	constructor(root: TagsRoot, props: TagsInputProps, events: TagsInputEvents) {
 		this.root = root;
 		this.#events = events;
+
+		this.root.input = props.input;
 	}
 
-	#handleKeydown: TagsInputEvents['onKeydown'] = async (e) => {
+	#handleKeydown: TagsInputEvents['onKeydown'] = (e) => {
 		if (this.root.$disabled.val) return;
 		this.#events.onKeydown?.(e);
+		const cursor = e.currentTarget.selectionStart || 0;
 
 		const { key } = e;
 
-		if (
-			key === KEYS.enter &&
-			e.currentTarget.value.trim().length > 0 &&
-			this.root.addTag(e.currentTarget.value.trim())
-		) {
-			e.currentTarget.value = '';
-		}
+		if (!PREVENT_KEYS.includes(key)) this.root.invalid = false;
+		if (key === KEYS.enter && this.root.addTag(e.currentTarget.value)) e.currentTarget.value = '';
 
-		// TODO: add keyboard navigation
+		if (!PREVENT_KEYS.includes(key) && this.root.index !== -1) this.root.index = -1;
+
+		if ((key === KEYS.arrowLeft && cursor === 0) || (key === KEYS.arrowRight && this.root.SelectedTag))
+			e.preventDefault();
+
+		if (key === KEYS.arrowLeft && cursor === 0) {
+			if (this.root.index === -1) this.root.index = this.root.$value.val.length - 1;
+			else if (this.root.index !== 0) this.root.index -= 1;
+		} else if (key === KEYS.arrowRight && cursor === 0 && this.root.$value.val.length !== this.root.index) {
+			this.root.index += 1;
+		}
+	};
+	#handleInput: TagsInputEvents['onInput'] = (e) => {
+		if (this.root.$disabled.val) return;
+		this.#events.onInput?.(e);
+
+		const target = e.target as HTMLInputElement;
+
+		if (target.value.trim().length === 0) this.root.invalid = false;
 	};
 
 	attrs = $derived.by(
@@ -99,35 +138,103 @@ class TagsInput {
 			({
 				id: this.root.uid('input'),
 				type: 'text',
-				onkeydown: this.#handleKeydown
+				'data-invalid': this.root.invalid || undefined,
+				'data-tagsinput': '',
+				onkeydown: this.#handleKeydown,
+				oninput: this.#handleInput
 			}) as const
 	);
+
+	state = $derived.by(() => ({
+		invalid: this.root.invalid
+	}));
+}
+
+//
+// Item
+//
+type TagsItemProps = StateValues<{
+	value: string;
+}>;
+class TagsItem {
+	uid = createUID('item');
+	root: TagsRoot;
+	#events: TagsItemEvents;
+
+	$value: TagsItemProps['value'];
+
+	Active = $derived.by(() => this.root.SelectedTag === this.$value.val);
+
+	editing = $state<boolean>(false);
+
+	constructor(root: TagsRoot, props: TagsItemProps, events: TagsItemEvents) {
+		this.root = root;
+		this.#events = events;
+
+		this.$value = props.value;
+	}
+
+	#handleClick = () => {};
+
+	#handleBlur: TagsItemEvents['onBlur'] = (e) => {
+		if (this.root.$disabled.val) return;
+		this.#events.onBlur?.(e);
+
+		this.editing = false;
+	};
+
+	#handleDblclick: TagsItemEvents['onDblclick'] = async (e) => {
+		if (this.root.$disabled.val) return;
+		this.#events.onDblclick?.(e);
+
+		this.editing = true;
+	};
+
+	#handleKeydown: TagsItemEvents['onKeydown'] = (e) => {
+		if (this.root.$disabled.val) return;
+		this.#events.onKeydown?.(e);
+	};
+
+	attrs = $derived.by(
+		() =>
+			({
+				id: this.uid(),
+				'data-tagsitem': '',
+				contenteditable: this.root.$editable.val && this.editing ? true : undefined,
+				onkeydown: this.#handleKeydown,
+				ondblclick: this.#handleDblclick,
+				onblur: this.#handleBlur
+			}) as const
+	);
+	state = $derived.by(() => ({
+		active: this.Active
+	}));
 }
 
 //
 // Delete
 //
 type TagsDeleteProps = StateValues<{
-	tag: string;
+	value: string;
 }>;
 class TagsDelete {
 	root: TagsRoot;
 	#events: TagsDeleteEvents;
 
-	$tag: TagsDeleteProps['tag'];
+	$value: TagsDeleteProps['value'];
 
 	constructor(root: TagsRoot, props: TagsDeleteProps, events: TagsDeleteEvents) {
 		this.root = root;
 		this.#events = events;
 
-		this.$tag = props.tag;
+		this.$value = props.value;
 	}
 
 	#handleClick: TagsDeleteEvents['onClick'] = (e) => {
 		if (this.root.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.removeTag(this.$tag.val);
+		this.root.removeTag(this.$value.val);
 	};
 
 	attrs = $derived.by(
@@ -144,12 +251,16 @@ class TagsDelete {
 //
 const rootContext = buildContext(TagsRoot);
 
-export const createRootContext = (props: TagsRootProps) => {
-	return rootContext.createContext(props);
+export const createTagsRootContext = (props: TagsRootProps, events: TagsRootEvents) => {
+	return rootContext.createContext(props, events);
 };
 
-export const useTagsInput = (events: TagsInputEvents) => {
-	return rootContext.register(TagsInput, events);
+export const useTagsInput = (props: TagsInputProps, events: TagsInputEvents) => {
+	return rootContext.register(TagsInput, props, events);
+};
+
+export const useTagsItem = (props: TagsItemProps, events: TagsItemEvents) => {
+	return rootContext.register(TagsItem, props, events);
 };
 
 export const useTagsDelete = (props: TagsDeleteProps, events: TagsDeleteEvents) => {

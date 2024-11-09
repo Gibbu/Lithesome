@@ -1,35 +1,34 @@
-import type { Handler, Props, PropsNoChildren } from '$internal';
+import { type Handler, type Props, type PropsNoChildren } from '$internal';
 
-interface TagsState {
-	/** If the whole tags input is disabled. */
-	disabled: boolean;
+export interface TagsRootEvents {
+	/**
+	 * Add your own custom logic to the click event.\
+	 * Using the regular `onclick` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onClick?: Handler<MouseEvent, HTMLElement>;
 }
-
-export interface TagsRootInternalProps {
-	/** The current value of the tags. */
+export interface TagsProps extends Props<HTMLElement>, TagsRootEvents {
+	/** The current value of the tag input */
 	value: string[];
-	/** Disable the whole tags component. */
-	disabled: boolean;
-	/** The max number of tags allowed in the input. */
-	max: number;
+	disabled?: boolean;
+	/** The max amount of tags allows at once. */
+	max?: number;
 	/**
-	 * The "allowed" list of words.\
-	 * Users trying to add words that aren't on this list will be ignored.
+	 * Only allow a set of words.\
+	 * This will also allow the use of `TagsList` which will display the full set of words.
 	 */
-	whitelist: string[];
-	/**
-	 * The denied words that cannot be added to the tags.
-	 */
-	blacklist: string[];
-}
-export interface TagsProps extends Props<HTMLDivElement, TagsState>, Partial<TagsRootInternalProps> {
-	/**
-	 * Lifecycle that fires whenever the `value` is changed.
-	 * @param value The value at that current time.
-	 */
-	onChange?: (value: string[]) => void;
+	whitelist?: string[];
+	/** Disallow a set of words. */
+	blacklist?: string[];
+	/** Allows the edits of already submitted tags. */
+	editable?: boolean;
 }
 
+interface TagsInputState {
+	invalid: boolean;
+}
 export interface TagsInputEvents {
 	/**
 	 * Add your own custom logic to the keydown event.\
@@ -39,14 +38,44 @@ export interface TagsInputEvents {
 	 */
 	onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
 	/**
-	 * Add your own custom logic to the paste event.\
-	 * Using the regular `onpaste` event will overwrite the event used and cause the component to fail.
+	 * Add your own custom logic to the input event.\
+	 * Using the regular `oninput` event will overwrite the event used and cause the component to fail.
 	 *
 	 * Event will **NOT** be fired if the component is disabled.
 	 */
-	onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
+	onInput?: Handler<Event, HTMLInputElement>;
 }
-export interface TagsInputProps extends PropsNoChildren<HTMLInputElement, TagsState>, TagsInputEvents {}
+export interface TagsInputProps extends PropsNoChildren<HTMLInputElement, TagsInputState>, TagsInputEvents {}
+
+interface TagsItemState {
+	active: boolean;
+}
+export interface TagsItemEvents {
+	/**
+	 * Add your own custom logic to the ondblclick event.\
+	 * Using the regular `onondblclick` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onDblclick?: Handler<MouseEvent, HTMLElement>;
+	/**
+	 * Add your own custom logic to the keydown event.\
+	 * Using the regular `onkeydown` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onKeydown?: Handler<KeyboardEvent, HTMLElement>;
+	/**
+	 * Add your own custom logic to the blur event.\
+	 * Using the regular `onblur` event will overwrite the event used and cause the component to fail.
+	 *
+	 * Event will **NOT** be fired if the component is disabled.
+	 */
+	onBlur?: Handler<FocusEvent, HTMLElement>;
+}
+export interface TagsItemProps extends Props<HTMLElement, TagsItemState>, TagsItemEvents {
+	value: string;
+}
 
 export interface TagsDeleteEvents {
 	/**
@@ -57,7 +86,6 @@ export interface TagsDeleteEvents {
 	 */
 	onClick?: Handler<MouseEvent, HTMLButtonElement>;
 }
-export interface TagsDeleteProps extends Props<HTMLButtonElement, TagsState>, TagsDeleteEvents {
-	/** The value of the tag that will be removed when pressed. */
-	tag: string;
+export interface TagsDeleteProps extends Props<HTMLButtonElement>, TagsDeleteEvents {
+	value: string;
 }

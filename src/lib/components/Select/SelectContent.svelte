@@ -22,7 +22,7 @@
 <FloatingContent
 	{children}
 	componentName="Select"
-	visible={ctx.root.$visible.val}
+	visible={ctx.root.SuperVisible}
 	{ctx}
 	{transition}
 	{use}
