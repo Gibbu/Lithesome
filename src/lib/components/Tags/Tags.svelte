@@ -14,7 +14,6 @@
 		disabled = $bindable(false),
 		blacklist = [],
 		whitelist = [],
-		editable = false,
 		onClick
 	}: TagsProps = $props();
 
@@ -29,8 +28,7 @@
 			max: stateValue(() => max),
 			disabled: stateValue(() => disabled),
 			blacklist: stateValue(() => blacklist),
-			whitelist: stateValue(() => whitelist),
-			editable: stateValue(() => editable)
+			whitelist: stateValue(() => whitelist)
 		},
 		{
 			onClick

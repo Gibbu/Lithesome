@@ -12,18 +12,14 @@ export interface TagsRootEvents {
 export interface TagsProps extends Props<HTMLElement>, TagsRootEvents {
 	/** The current value of the tag input */
 	value: string[];
+	/** Disables the whole tags component(s). */
 	disabled?: boolean;
 	/** The max amount of tags allows at once. */
 	max?: number;
-	/**
-	 * Only allow a set of words.\
-	 * This will also allow the use of `TagsList` which will display the full set of words.
-	 */
+	/** Only allow a set of words. */
 	whitelist?: string[];
 	/** Disallow a set of words. */
 	blacklist?: string[];
-	/** Allows the edits of already submitted tags. */
-	editable?: boolean;
 }
 
 interface TagsInputState {
@@ -44,36 +40,20 @@ export interface TagsInputEvents {
 	 * Event will **NOT** be fired if the component is disabled.
 	 */
 	onInput?: Handler<Event, HTMLInputElement>;
-}
-export interface TagsInputProps extends PropsNoChildren<HTMLInputElement, TagsInputState>, TagsInputEvents {}
-
-interface TagsItemState {
-	active: boolean;
-}
-export interface TagsItemEvents {
-	/**
-	 * Add your own custom logic to the ondblclick event.\
-	 * Using the regular `onondblclick` event will overwrite the event used and cause the component to fail.
-	 *
-	 * Event will **NOT** be fired if the component is disabled.
-	 */
-	onDblclick?: Handler<MouseEvent, HTMLElement>;
-	/**
-	 * Add your own custom logic to the keydown event.\
-	 * Using the regular `onkeydown` event will overwrite the event used and cause the component to fail.
-	 *
-	 * Event will **NOT** be fired if the component is disabled.
-	 */
-	onKeydown?: Handler<KeyboardEvent, HTMLElement>;
 	/**
 	 * Add your own custom logic to the blur event.\
 	 * Using the regular `onblur` event will overwrite the event used and cause the component to fail.
 	 *
 	 * Event will **NOT** be fired if the component is disabled.
 	 */
-	onBlur?: Handler<FocusEvent, HTMLElement>;
+	onBlur?: Handler<FocusEvent, HTMLInputElement>;
 }
-export interface TagsItemProps extends Props<HTMLElement, TagsItemState>, TagsItemEvents {
+export interface TagsInputProps extends PropsNoChildren<HTMLInputElement, TagsInputState>, TagsInputEvents {}
+
+interface TagsItemState {
+	active: boolean;
+}
+export interface TagsItemProps extends Props<HTMLElement, TagsItemState> {
 	value: string;
 }
 

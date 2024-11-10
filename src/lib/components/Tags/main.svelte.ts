@@ -1,5 +1,5 @@
-import { buildContext, createUID, KEYS, PREVENT_KEYS, type StateValue, type StateValues } from '$internal';
-import type { TagsDeleteEvents, TagsInputEvents, TagsItemEvents, TagsRootEvents } from './types.js';
+import { buildContext, createUID, KEYS, PREVENT_KEYS, useEffects, type StateValue, type StateValues } from '$internal';
+import type { TagsDeleteEvents, TagsInputEvents, TagsRootEvents } from './types.js';
 
 //
 // Root
@@ -10,7 +10,6 @@ type TagsRootProps = StateValues<{
 	max: number;
 	whitelist: string[];
 	blacklist: string[];
-	editable: boolean;
 }>;
 class TagsRoot {
 	uid = createUID('tags');
@@ -21,7 +20,6 @@ class TagsRoot {
 	$max: TagsRootProps['max'];
 	$whitelist: TagsRootProps['whitelist'];
 	$blacklist: TagsRootProps['blacklist'];
-	$editable: TagsRootProps['editable'];
 
 	invalid = $state<boolean>(false);
 	input: StateValue<HTMLInputElement | undefined> = { val: undefined };
@@ -38,11 +36,19 @@ class TagsRoot {
 		this.$max = props.max;
 		this.$whitelist = props.whitelist;
 		this.$blacklist = props.blacklist;
-		this.$editable = props.editable;
+
+		useEffects(() => {
+			$effect(() => {
+				console.log(this.index);
+				if (this.index > this.$value.val.length - 1) this.index = -1;
+			});
+		});
 	}
 
 	#allowedTag = (tag: string) => {
-		if (this.$value.val.includes(tag)) return false;
+		if (tag.trim().length === 0) return false;
+		else if (this.$max.val !== 0 && this.$value.val.length >= this.$max.val) return false;
+		else if (this.$value.val.includes(tag)) return false;
 		else if (this.$blacklist.val.length && this.$blacklist.val.includes(tag)) return false;
 		else if (this.$whitelist.val.length && !this.$whitelist.val.includes(tag)) return false;
 		else return true;
@@ -56,7 +62,7 @@ class TagsRoot {
 			return false;
 		}
 
-		this.$value.val = [...this.$value.val, tag];
+		this.$value.val = [...this.$value.val, tag.trim()];
 
 		return true;
 	};
@@ -73,8 +79,8 @@ class TagsRoot {
 		if (this.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		if (e.currentTarget.id === this.uid() && e.currentTarget.tagName === 'DIV') {
-			this.input?.val?.focus();
+		if (e.target === e.currentTarget) {
+			this.input.val?.focus();
 		}
 	};
 
@@ -117,11 +123,24 @@ class TagsInput {
 		if ((key === KEYS.arrowLeft && cursor === 0) || (key === KEYS.arrowRight && this.root.SelectedTag))
 			e.preventDefault();
 
-		if (key === KEYS.arrowLeft && cursor === 0) {
-			if (this.root.index === -1) this.root.index = this.root.$value.val.length - 1;
-			else if (this.root.index !== 0) this.root.index -= 1;
-		} else if (key === KEYS.arrowRight && cursor === 0 && this.root.$value.val.length !== this.root.index) {
-			this.root.index += 1;
+		if (cursor === 0) {
+			if (key === KEYS.arrowLeft) {
+				if (this.root.index === -1) this.root.index = this.root.$value.val.length - 1;
+				else if (this.root.index !== 0) this.root.index -= 1;
+			}
+			if (key === KEYS.arrowRight && this.root.index !== -1) {
+				this.root.index += 1;
+			}
+
+			if (key === KEYS.backspace) {
+				if (this.root.index === -1) this.root.index = this.root.$value.val.length - 1;
+				else if (this.root.index !== -1 && this.root.SelectedTag) {
+					this.root.removeTag(this.root.SelectedTag);
+					if (this.root.index !== 0) this.root.index -= 1;
+				}
+			}
+
+			if (key === KEYS.delete && this.root.SelectedTag) this.root.removeTag(this.root.SelectedTag);
 		}
 	};
 	#handleInput: TagsInputEvents['onInput'] = (e) => {
@@ -132,6 +151,13 @@ class TagsInput {
 
 		if (target.value.trim().length === 0) this.root.invalid = false;
 	};
+	#handleBlur: TagsInputEvents['onBlur'] = (e) => {
+		if (this.root.$disabled.val) return;
+		this.#events.onBlur?.(e);
+
+		this.root.index = -1;
+		this.root.invalid = false;
+	};
 
 	attrs = $derived.by(
 		() =>
@@ -140,6 +166,7 @@ class TagsInput {
 				type: 'text',
 				'data-invalid': this.root.invalid || undefined,
 				'data-tagsinput': '',
+				onblur: this.#handleBlur,
 				onkeydown: this.#handleKeydown,
 				oninput: this.#handleInput
 			}) as const
@@ -159,7 +186,6 @@ type TagsItemProps = StateValues<{
 class TagsItem {
 	uid = createUID('item');
 	root: TagsRoot;
-	#events: TagsItemEvents;
 
 	$value: TagsItemProps['value'];
 
@@ -167,43 +193,17 @@ class TagsItem {
 
 	editing = $state<boolean>(false);
 
-	constructor(root: TagsRoot, props: TagsItemProps, events: TagsItemEvents) {
+	constructor(root: TagsRoot, props: TagsItemProps) {
 		this.root = root;
-		this.#events = events;
 
 		this.$value = props.value;
 	}
-
-	#handleClick = () => {};
-
-	#handleBlur: TagsItemEvents['onBlur'] = (e) => {
-		if (this.root.$disabled.val) return;
-		this.#events.onBlur?.(e);
-
-		this.editing = false;
-	};
-
-	#handleDblclick: TagsItemEvents['onDblclick'] = async (e) => {
-		if (this.root.$disabled.val) return;
-		this.#events.onDblclick?.(e);
-
-		this.editing = true;
-	};
-
-	#handleKeydown: TagsItemEvents['onKeydown'] = (e) => {
-		if (this.root.$disabled.val) return;
-		this.#events.onKeydown?.(e);
-	};
 
 	attrs = $derived.by(
 		() =>
 			({
 				id: this.uid(),
-				'data-tagsitem': '',
-				contenteditable: this.root.$editable.val && this.editing ? true : undefined,
-				onkeydown: this.#handleKeydown,
-				ondblclick: this.#handleDblclick,
-				onblur: this.#handleBlur
+				'data-tagsitem': ''
 			}) as const
 	);
 	state = $derived.by(() => ({
@@ -241,6 +241,7 @@ class TagsDelete {
 		() =>
 			({
 				type: 'button',
+				tabindex: -1,
 				onclick: this.#handleClick
 			}) as const
 	);
@@ -259,8 +260,8 @@ export const useTagsInput = (props: TagsInputProps, events: TagsInputEvents) => 
 	return rootContext.register(TagsInput, props, events);
 };
 
-export const useTagsItem = (props: TagsItemProps, events: TagsItemEvents) => {
-	return rootContext.register(TagsItem, props, events);
+export const useTagsItem = (props: TagsItemProps) => {
+	return rootContext.register(TagsItem, props);
 };
 
 export const useTagsDelete = (props: TagsDeleteProps, events: TagsDeleteEvents) => {

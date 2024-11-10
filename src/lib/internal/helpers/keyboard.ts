@@ -37,5 +37,6 @@ export const PREVENT_KEYS = [
 	KEYS.control,
 	KEYS.meta,
 	KEYS.enter,
-	KEYS.alt
+	KEYS.alt,
+	KEYS.delete
 ];

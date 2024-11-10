@@ -3,27 +3,11 @@
 	import { useTagsItem } from './main.svelte.js';
 	import type { TagsItemProps } from './types.js';
 
-	let {
-		children,
-		value,
-		class: klass,
-		self = $bindable(),
-		use = [],
-		onDblclick,
-		onKeydown,
-		onBlur
-	}: TagsItemProps = $props();
+	let { children, value, class: klass, self = $bindable(), use = [] }: TagsItemProps = $props();
 
-	const ctx = useTagsItem(
-		{
-			value: stateValue(() => value)
-		},
-		{
-			onDblclick,
-			onKeydown,
-			onBlur
-		}
-	);
+	const ctx = useTagsItem({
+		value: stateValue(() => value)
+	});
 </script>
 
 <div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs}>
