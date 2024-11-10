@@ -11,6 +11,7 @@
 		visible = $bindable(true),
 		self = $bindable(),
 		onChange,
+		controlled = false,
 		...props
 	}: SelectProps = $props();
 
@@ -27,7 +28,8 @@
 				onChange?.(v);
 			}
 		),
-		multiple: stateValue(() => multiple)
+		multiple: stateValue(() => multiple),
+		controlled: stateValue(() => controlled)
 	});
 </script>
 

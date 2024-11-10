@@ -1,6 +1,6 @@
 {
 	"name": "lithesome",
-	"version": "0.14.3",
+	"version": "0.15.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -34,44 +34,46 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "5.0.0-next.243"
+		"svelte": "^5.0.0"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-vercel": "^5.4.3",
-		"@sveltejs/kit": "^2.5.26",
-		"@sveltejs/package": "^2.3.4",
-		"@sveltejs/vite-plugin-svelte": "4.0.0-next.6",
+		"@proplens/svelte": "^0.0.3",
+		"@sveltejs/adapter-vercel": "5.4.7",
+		"@sveltejs/kit": "^2.8.0",
+		"@sveltejs/package": "^2.3.7",
+		"@sveltejs/vite-plugin-svelte": "4.0.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@types/nprogress": "^0.2.3",
 		"autoprefixer": "^10.4.20",
 		"clsx": "^2.1.1",
 		"fenceparser": "^2.2.0",
-		"lucide-svelte": "^0.438.0",
+		"lucide-svelte": "^0.456.0",
 		"mdsvex": "^0.12.3",
 		"nprogress": "^0.2.0",
-		"postcss": "^8.4.45",
+		"postcss": "^8.4.47",
 		"postcss-load-config": "^6.0.1",
 		"prettier": "^3.3.3",
-		"prettier-plugin-svelte": "^3.2.6",
-		"prettier-plugin-tailwindcss": "^0.6.6",
+		"prettier-plugin-svelte": "^3.2.7",
+		"prettier-plugin-tailwindcss": "^0.6.8",
 		"prismjs": "^1.29.0",
-		"publint": "^0.2.10",
+		"publint": "^0.2.12",
 		"rehype-slug": "^6.0.0",
-		"remark-external-links": "^9.0.1",
-		"shiki": "^1.16.2",
-		"svelte": "5.0.0-next.243",
-		"svelte-check": "^4.0.1",
-		"tailwind-merge": "^2.5.2",
-		"tailwindcss": "^3.4.10",
-		"tslib": "^2.7.0",
-		"typescript": "^5.5.4",
-		"vite": "^5.4.3"
+		"remark-external-links": "9.0.1",
+		"shiki": "^1.22.2",
+		"svelte": "^5.1.13",
+		"svelte-check": "^4.0.6",
+		"tailwind-merge": "^2.5.4",
+		"tailwindcss": "^3.4.14",
+		"tslib": "^2.8.1",
+		"typescript": "^5.6.3",
+		"vite": "^5.4.10",
+		"zimmerframe": "^1.1.2"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"@floating-ui/dom": "^1.6.10",
-		"focus-trap": "^7.5.4"
+		"@floating-ui/dom": "^1.6.12",
+		"focus-trap": "^7.6.0"
 	}
 }

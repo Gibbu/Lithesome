@@ -4,9 +4,15 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.15.0
+
+<small>10 November, 2024</small>
+
+- Added [Tags](/docs/components/tags) components.
+
 ### v0.14.1
 
-<small>11th September, 2024</small>
+<small>10 November, 2024</small>
 
 - Brought back event props.
   > This will allow users to use the already claimed events used by Lithesome.

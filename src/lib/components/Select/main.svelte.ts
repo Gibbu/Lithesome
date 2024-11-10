@@ -24,6 +24,7 @@ type SelectRootProps = StateValues<{
 	multiple: boolean;
 	visible: boolean;
 	value: JsonValue;
+	controlled: boolean;
 }>;
 class SelectRoot extends Floating {
 	uid = createUID('select');
@@ -31,6 +32,7 @@ class SelectRoot extends Floating {
 	$multiple: SelectRootProps['multiple'];
 	$value: SelectRootProps['value'];
 	$visible: SelectRootProps['visible'];
+	$controlled: SelectRootProps['controlled'];
 
 	hoveredIndex = $state<number>(-1);
 	options = $state<HTMLElement[]>([]);
@@ -38,6 +40,9 @@ class SelectRoot extends Floating {
 	mounted = $state<boolean>(false);
 
 	HoveredOption = $derived<HTMLElement | undefined>(this.options[this.hoveredIndex] || undefined);
+	SuperVisible = $derived.by(() =>
+		typeof this.$controlled.val === 'boolean' ? this.$controlled.val && this.$visible.val : this.$visible.val
+	);
 
 	constructor(props: SelectRootProps) {
 		super();
@@ -45,6 +50,7 @@ class SelectRoot extends Floating {
 		this.$value = props.value;
 		this.$multiple = props.multiple;
 		this.$visible = props.visible;
+		this.$controlled = props.controlled;
 
 		onMount(async () => {
 			await tick();
@@ -52,13 +58,13 @@ class SelectRoot extends Floating {
 		});
 
 		$effect(() => {
-			disableScroll(this.$visible.val && !document.body.style.overflow);
+			disableScroll(this.SuperVisible && !document.body.style.overflow);
 		});
 		$effect(() => {
-			if (!this.$visible.val || !this.options || this.hoveredIndex > this.options.length - 1) this.hoveredIndex = -1;
+			if (!this.SuperVisible || !this.options || this.hoveredIndex > this.options.length - 1) this.hoveredIndex = -1;
 		});
 		$effect(() => {
-			if (this.$visible.val) {
+			if (this.SuperVisible) {
 				tick().then(() => {
 					this.hoveredIndex = this.options.findIndex((option) => option.ariaSelected === 'true');
 				});
@@ -127,11 +133,11 @@ class SelectRoot extends Floating {
 			({
 				id: this.uid(),
 				'data-select': '',
-				'data-state': this.$visible.val && this.mounted ? 'opened' : 'closed'
+				'data-state': this.SuperVisible && this.mounted ? 'opened' : 'closed'
 			}) as const
 	);
 	state = $derived.by(() => ({
-		visible: this.$visible.val && this.mounted
+		visible: this.SuperVisible && this.mounted
 	}));
 }
 

@@ -16,8 +16,7 @@ export type Handler<E, T extends HTMLElement> = (e: HandlerParam<E, T>) => void;
 
 export type Class<T> = new (...args: any[]) => T;
 
-export interface Props<T extends HTMLElement, C extends Record<string, any> = any> {
-	children?: Snippet<[C]>;
+export interface PropsNoChildren<T extends HTMLElement, C extends Record<string, any> = any> {
 	/**
 	 * Any svelte actions you wish to pass to the underlying HTML element.
 	 *
@@ -38,12 +37,9 @@ export interface Props<T extends HTMLElement, C extends Record<string, any> = an
 	[key: string]: any;
 }
 
-export type PropsNoChildren<T extends HTMLElement, C extends Record<string, any> = any> = Omit<Props<T, C>, 'children'>;
-
-export type PropsMaybeChildren<T extends HTMLElement, C extends Record<string, any> = any> = Optional<
-	Props<T, C>,
-	'children'
->;
+export interface Props<T extends HTMLElement, C extends Record<string, any> = any> extends PropsNoChildren<T, C> {
+	children?: Snippet<[C]>;
+}
 
 export interface ContentProps {
 	/**
@@ -63,3 +59,4 @@ export interface ContentProps {
 }
 
 export type StateValues<T extends Record<string, any>> = { [K in keyof T]: { val: T[K] } };
+export type StateValue<T> = { val: T };

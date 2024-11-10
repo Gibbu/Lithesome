@@ -8,6 +8,8 @@ export interface SelectProps extends Props<HTMLDivElement, SelectState> {
 	/** The value of select. */
 	value: JsonValue;
 	visible?: boolean;
+	/** Allows for the combobox content to be visible only when this condition is met. */
+	controlled?: boolean;
 	onChange?: (value: JsonValue) => void;
 }
 

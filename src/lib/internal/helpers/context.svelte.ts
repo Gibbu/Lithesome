@@ -1,6 +1,6 @@
 import { log } from './log.js';
 import { createUID, type UID } from './utils.svelte.js';
-import { onDestroy, getContext, setContext, hasContext } from 'svelte';
+import { onDestroy, getContext, setContext, hasContext, onMount } from 'svelte';
 
 import type { Class } from '../types.js';
 
@@ -64,4 +64,28 @@ export const stateValue = <T>(value: () => T, updater?: (newValue: T) => void) =
 			updater?.(v);
 		}
 	};
+};
+
+/**
+ * Auto cleanup of `$effect.root`
+ */
+export const useEffects = (fn: () => void) => {
+	let cleanup: VoidFunction | null = null;
+
+	onMount(() => {
+		cleanup = $effect.root(fn);
+	});
+
+	const destroy = () => {
+		if (cleanup === null) return;
+
+		cleanup();
+		cleanup = null;
+	};
+
+	try {
+		onDestroy(destroy);
+	} catch (_) {}
+
+	return destroy;
 };
