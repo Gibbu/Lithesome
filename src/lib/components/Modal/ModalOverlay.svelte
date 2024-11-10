@@ -24,5 +24,12 @@
 		class={classProp(klass)}
 	></div>
 {:else if ctx.root.$visible.val}
-	<div bind:this={self} use:useActions={use} {...props} {...ctx.attrs} class={classProp(klass)}></div>
+	<div
+		bind:this={self}
+		use:useActions={use}
+		use:usePortal={ctx.root.$portalTarget.val}
+		{...props}
+		{...ctx.attrs}
+		class={classProp(klass)}
+	></div>
 {/if}
