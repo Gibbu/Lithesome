@@ -38,7 +38,7 @@
 	},
 	"devDependencies": {
 		"@proplens/svelte": "^0.0.3",
-		"@sveltejs/adapter-vercel": "^5.4.6",
+		"@sveltejs/adapter-vercel": "5.4.7",
 		"@sveltejs/kit": "^2.7.7",
 		"@sveltejs/package": "^2.3.7",
 		"@sveltejs/vite-plugin-svelte": "4.0.0",
