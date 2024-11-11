@@ -1,6 +1,6 @@
-import { use, self, transition, arrow, type APIReference } from '$site/index.js';
+import { use, self, transition, arrow, type ComponentReference } from '$site/index.js';
 
-const combobox: APIReference = {
+const combobox: ComponentReference = {
 	name: 'Combobox',
 	props: [
 		{
@@ -49,7 +49,7 @@ const combobox: APIReference = {
 	]
 };
 
-const input: APIReference = {
+const input: ComponentReference = {
 	name: 'ComboboxInput',
 	childOf: combobox.name,
 	props: [
@@ -88,7 +88,7 @@ const input: APIReference = {
 	]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'ConboboxContent',
 	childOf: combobox.name,
 	props: [
@@ -129,7 +129,7 @@ const content: APIReference = {
 	]
 };
 
-const option: APIReference = {
+const option: ComponentReference = {
 	name: 'ComboboxOption',
 	childOf: content.name,
 	props: [

@@ -12,7 +12,7 @@
 		touched = $bindable(false),
 		disabled = $bindable(false),
 		visible = $bindable(true),
-		controlled = false,
+		controlled,
 		self = $bindable(),
 		onChange,
 		...props

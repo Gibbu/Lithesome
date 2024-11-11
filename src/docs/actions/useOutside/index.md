@@ -4,14 +4,14 @@ description: 'Run a callback when an event has triggered outside the node.'
 ---
 
 <script>
-	import {Preview, ActionAPI, Banner} from '$site/index.ts';
+	import {DocsPage, Banner} from '$site/index.ts';
 
-	import api from './api';
+	import actionAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {actionAPI}>
 
 ```svelte
 <script>
@@ -82,4 +82,4 @@ The default event to run the callback is `click`. But you can change this by pas
 </div>
 ```
 
-<ActionAPI data={api} />
+</DocsPage>

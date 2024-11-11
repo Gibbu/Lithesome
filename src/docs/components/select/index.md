@@ -4,14 +4,14 @@ description: 'Allow users to chooe from a list of options.'
 ---
 
 <script>
-	import {ComponentAPI, Preview} from '$site/index.ts';
+	import {DocsPage} from '$site/index.ts';
 
-	import api from './api';
+	import componentAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
 
@@ -56,4 +56,4 @@ The component will then detect the array and append the selected options.
 </Select>
 ```
 
-<ComponentAPI data={api} />
+</DocsPage>

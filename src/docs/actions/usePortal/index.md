@@ -4,14 +4,14 @@ description: 'Mount elements to different parts of the DOM.'
 ---
 
 <script>
-	import {ComponentAPI, Preview, ActionAPI} from '$site/index.ts';
+	import {DocsPage, Banner} from '$site/index.ts';
 
-	import api from './api';
+	import actionAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {actionAPI}>
 
 ## Basic Example
 
@@ -25,4 +25,4 @@ description: 'Mount elements to different parts of the DOM.'
 </div>
 ```
 
-<ActionAPI data={api} />
+</DocsPage>

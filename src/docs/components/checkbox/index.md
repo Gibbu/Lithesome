@@ -4,14 +4,14 @@ description: 'Allow users to check and uncheck things.'
 ---
 
 <script>
-	import {ComponentAPI, Preview} from '$site/index.ts';
+	import {DocsPage} from '$site/index.ts';
 
-	import api from './api';
+	import componentAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
 
@@ -45,4 +45,4 @@ If you want to use a native `<input />` checkbox for forms, simply bind the chec
 </form>
 ```
 
-<ComponentAPI data={api} />
+</DocsPage>

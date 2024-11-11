@@ -1,6 +1,6 @@
-import { use, self, type APIReference } from '$site/index.js';
+import { use, self, type ComponentReference } from '$site/index.js';
 
-const checkbox: APIReference = {
+const checkbox: ComponentReference = {
 	name: 'Checkbox',
 	props: [
 		{

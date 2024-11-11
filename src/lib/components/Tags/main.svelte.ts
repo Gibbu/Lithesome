@@ -1,4 +1,4 @@
-import { buildContext, createUID, KEYS, PREVENT_KEYS, useEffects, type StateValue, type StateValues } from '$internal';
+import { buildContext, createUID, KEYS, PREVENT_KEYS, type StateValue, type StateValues } from '$internal';
 import type { TagsDeleteEvents, TagsInputEvents, TagsRootEvents } from './types.js';
 
 //
@@ -37,11 +37,8 @@ class TagsRoot {
 		this.$whitelist = props.whitelist;
 		this.$blacklist = props.blacklist;
 
-		useEffects(() => {
-			$effect(() => {
-				console.log(this.index);
-				if (this.index > this.$value.val.length - 1) this.index = -1;
-			});
+		$effect(() => {
+			if (this.index > this.$value.val.length - 1) this.index = -1;
 		});
 	}
 

@@ -34,6 +34,10 @@ class TabsRoot {
 	constructor(props: TabsRootProps) {
 		this.$value = props.value;
 		this.$orientation = props.orientation;
+
+		$effect(() => {
+			this.$value.val = this.tabs[this.index];
+		});
 	}
 
 	register(tab: string) {

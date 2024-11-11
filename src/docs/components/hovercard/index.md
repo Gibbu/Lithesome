@@ -4,14 +4,14 @@ description: 'Display a summary/preview of a link.'
 ---
 
 <script>
-	import {ComponentAPI, Preview} from '$site/index.ts';
+	import {DocsPage} from '$site/index.ts';
 
-	import api from './api';
+	import componentAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
 
@@ -45,4 +45,4 @@ Passing a number will set both in and out delays. Passing an array of 2 indexes 
 </Hovercard>
 ```
 
-<ComponentAPI data={api} />
+</DocsPage>

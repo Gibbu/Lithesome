@@ -34,5 +34,5 @@
 	{...ctx.attrs}
 	{...props}
 >
-	{@render children(ctx.state)}
+	{@render children?.(ctx.state)}
 </svelte:element>

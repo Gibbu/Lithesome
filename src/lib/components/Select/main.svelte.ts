@@ -24,7 +24,7 @@ type SelectRootProps = StateValues<{
 	multiple: boolean;
 	visible: boolean;
 	value: JsonValue;
-	controlled: boolean;
+	controlled: boolean | undefined;
 }>;
 class SelectRoot extends Floating {
 	uid = createUID('select');

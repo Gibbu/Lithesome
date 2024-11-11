@@ -1,6 +1,6 @@
-import { use, self, transition, type APIReference } from '$site/index.js';
+import { use, self, transition, type ComponentReference } from '$site/index.js';
 
-const accordion: APIReference = {
+const accordion: ComponentReference = {
 	name: 'Accordion',
 	description: 'The base component that manages and controls state.',
 	props: [
@@ -22,7 +22,7 @@ const accordion: APIReference = {
 	]
 };
 
-const item: APIReference = {
+const item: ComponentReference = {
 	name: 'AccordionItem',
 	childOf: accordion.name,
 	props: [
@@ -51,7 +51,7 @@ const item: APIReference = {
 	]
 };
 
-const heading: APIReference = {
+const heading: ComponentReference = {
 	name: 'AccordionHeading',
 	childOf: item.name,
 	props: [
@@ -66,7 +66,7 @@ const heading: APIReference = {
 	]
 };
 
-const button: APIReference = {
+const button: ComponentReference = {
 	name: 'AccordionButton',
 	childOf: heading.name,
 	props: [use, self('Div')],
@@ -98,7 +98,7 @@ const button: APIReference = {
 	]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'AccordionContent',
 	childOf: accordion.name,
 	props: [use, self('Div'), transition],

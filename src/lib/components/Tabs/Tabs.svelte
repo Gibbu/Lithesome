@@ -14,7 +14,10 @@
 	}: TabsProps = $props();
 
 	const ctx = createRootContext({
-		value: stateValue(() => value),
+		value: stateValue(
+			() => value,
+			(v) => (value = v)
+		),
 		orientation: stateValue(() => orientation)
 	});
 </script>

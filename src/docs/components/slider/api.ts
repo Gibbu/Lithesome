@@ -1,6 +1,6 @@
-import { use, self, type APIReference } from '$site/index.js';
+import { use, self, type ComponentReference } from '$site/index.js';
 
-const slider: APIReference = {
+const slider: ComponentReference = {
 	name: 'Slider',
 	props: [
 		{
@@ -92,7 +92,7 @@ const slider: APIReference = {
 	]
 };
 
-const thumb: APIReference = {
+const thumb: ComponentReference = {
 	name: 'SliderThumb',
 	childOf: slider.name,
 	events: [
@@ -109,7 +109,7 @@ const thumb: APIReference = {
 	]
 };
 
-const range: APIReference = {
+const range: ComponentReference = {
 	name: 'SliderRange',
 	childOf: slider.name,
 	dataAttrs: [
@@ -133,7 +133,7 @@ const range: APIReference = {
 	]
 };
 
-const value: APIReference = {
+const value: ComponentReference = {
 	name: 'SliderValue',
 	childOf: slider.name,
 	description: 'A hidden value for form submissions.'

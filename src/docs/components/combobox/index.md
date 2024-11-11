@@ -4,14 +4,14 @@ description: 'Allow users to choose from a list of options with search filtering
 ---
 
 <script>
-	import {ComponentAPI, Preview} from '$site/index.ts';
+	import {DocsPage} from '$site/index.ts';
 
-	import api from './api';
+	import componentAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
 
@@ -51,4 +51,4 @@ The component will then detect the array and append the selected options.
 </Combobox>
 ```
 
-<ComponentAPI data={api} />
+</DocsPage>

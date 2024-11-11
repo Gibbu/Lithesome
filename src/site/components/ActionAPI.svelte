@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ActionReference } from '$site/index.js';
-	import type { Props } from '$internal';
 
 	interface ComponentProps {
 		data: ActionReference;

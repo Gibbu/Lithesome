@@ -22,7 +22,7 @@ export interface ChildrenProps {
 	description?: string;
 }
 
-export interface APIReference {
+export interface ComponentReference {
 	name: string;
 	description?: string;
 	childOf?: string;

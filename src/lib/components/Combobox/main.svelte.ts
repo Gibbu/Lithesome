@@ -25,7 +25,7 @@ type ComboboxRootProps = StateValues<{
 	label: string;
 	multiple: boolean;
 	disabled: boolean;
-	controlled: boolean;
+	controlled: boolean | undefined;
 }>;
 class ComboboxRoot extends Floating {
 	uid = createUID('combobox');

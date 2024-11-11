@@ -1,6 +1,6 @@
-import { use, self, type APIReference } from '$site/index.js';
+import { use, self, type ComponentReference } from '$site/index.js';
 
-const tabs: APIReference = {
+const tabs: ComponentReference = {
 	name: 'Tabs',
 	props: [
 		{
@@ -34,7 +34,7 @@ const tabs: APIReference = {
 	]
 };
 
-const list: APIReference = {
+const list: ComponentReference = {
 	name: 'TabsList',
 	childOf: tabs.name,
 	props: [use, self('Div')],
@@ -47,7 +47,7 @@ const list: APIReference = {
 	]
 };
 
-const button: APIReference = {
+const button: ComponentReference = {
 	name: 'TabsButton',
 	childOf: list.name,
 	props: [
@@ -87,7 +87,7 @@ const button: APIReference = {
 	]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'TabsContent',
 	childOf: tabs.name,
 	props: [
