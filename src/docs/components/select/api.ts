@@ -1,6 +1,6 @@
-import { use, self, transition, arrow, type APIReference } from '$site/index.js';
+import { use, self, transition, arrow, type ComponentReference } from '$site/index.js';
 
-const select: APIReference = {
+const select: ComponentReference = {
 	name: 'Select',
 	props: [
 		{
@@ -37,7 +37,7 @@ const select: APIReference = {
 	]
 };
 
-const trigger: APIReference = {
+const trigger: ComponentReference = {
 	name: 'SelectTrigger',
 	childOf: select.name,
 	props: [use, self('Div')],
@@ -50,7 +50,7 @@ const trigger: APIReference = {
 	]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'SelectContent',
 	childOf: select.name,
 	props: [
@@ -91,7 +91,7 @@ const content: APIReference = {
 	]
 };
 
-const option: APIReference = {
+const option: ComponentReference = {
 	name: 'SelectOption',
 	childOf: content.name,
 	props: [
@@ -158,7 +158,7 @@ const option: APIReference = {
 	]
 };
 
-const value: APIReference = {
+const value: ComponentReference = {
 	name: 'SelectValue',
 	childOf: select.name,
 	description: `Displays the selected value's label, or the placeholder if none is found.`,

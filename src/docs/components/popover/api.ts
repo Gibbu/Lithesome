@@ -1,6 +1,6 @@
-import { self, use, transition, arrow, type APIReference } from '$site/index.js';
+import { self, use, transition, arrow, type ComponentReference } from '$site/index.js';
 
-const popover: APIReference = {
+const popover: ComponentReference = {
 	name: 'Popover',
 	props: [
 		{
@@ -27,7 +27,7 @@ const popover: APIReference = {
 	]
 };
 
-const trigger: APIReference = {
+const trigger: ComponentReference = {
 	name: 'PopoverTrigger',
 	childOf: popover.name,
 	childrenProps: [
@@ -51,7 +51,7 @@ const trigger: APIReference = {
 	]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'PopoverContent',
 	childOf: popover.name,
 	props: [

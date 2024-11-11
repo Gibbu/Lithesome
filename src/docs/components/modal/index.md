@@ -4,14 +4,14 @@ description: 'An overlaying window to take focus away from the current context.'
 ---
 
 <script>
-	import {ComponentAPI, Preview} from '$site/index.ts';
+	import {DocsPage} from '$site/index.ts';
 
-	import api from './api';
+	import componentAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
 
@@ -29,4 +29,4 @@ description: 'An overlaying window to take focus away from the current context.'
 </Modal>
 ```
 
-<ComponentAPI data={api} />
+</DocsPage>

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { APIReference } from '$site/types.js';
+	import type { ComponentReference } from '$site/types.js';
 
 	interface Props {
-		data: APIReference[];
+		data: ComponentReference[];
 	}
 
 	let { data }: Props = $props();

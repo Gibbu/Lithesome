@@ -1,6 +1,6 @@
-import { transition, use, self, type APIReference } from '$site/index.js';
+import { transition, use, self, type ComponentReference } from '$site/index.js';
 
-const modal: APIReference = {
+const modal: ComponentReference = {
 	name: 'Modal',
 	props: [
 		{
@@ -21,25 +21,25 @@ const modal: APIReference = {
 	]
 };
 
-const overlay: APIReference = {
+const overlay: ComponentReference = {
 	name: 'ModalOverlay',
 	childOf: modal.name,
 	props: [transition, use, self('Div')]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'ModalContent',
 	childOf: modal.name,
 	props: [transition, use, self('Div')]
 };
 
-const title: APIReference = {
+const title: ComponentReference = {
 	name: 'ModalTitle',
 	childOf: content.name,
 	props: [use, self('Heading')]
 };
 
-const description: APIReference = {
+const description: ComponentReference = {
 	name: 'ModalDescription',
 	childOf: content.name,
 	props: [use, self('Paragraph')]

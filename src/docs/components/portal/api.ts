@@ -1,6 +1,6 @@
-import { self, use, type APIReference } from '$site/index.js';
+import { self, use, type ComponentReference } from '$site/index.js';
 
-const portal: APIReference = {
+const portal: ComponentReference = {
 	name: 'Portal',
 	props: [
 		{

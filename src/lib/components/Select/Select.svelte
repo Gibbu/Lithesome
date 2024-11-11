@@ -11,7 +11,7 @@
 		visible = $bindable(true),
 		self = $bindable(),
 		onChange,
-		controlled = false,
+		controlled,
 		...props
 	}: SelectProps = $props();
 

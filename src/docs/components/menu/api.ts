@@ -1,6 +1,6 @@
-import { self, use, transition, arrow, type APIReference } from '$site/index.js';
+import { self, use, transition, arrow, type ComponentReference } from '$site/index.js';
 
-const menu: APIReference = {
+const menu: ComponentReference = {
 	name: 'Menu',
 	description: 'The base component that manages and controls state.',
 	props: [use, self('Div')],
@@ -20,7 +20,7 @@ const menu: APIReference = {
 	]
 };
 
-const trigger: APIReference = {
+const trigger: ComponentReference = {
 	name: 'MenuTrigger',
 	childOf: menu.name,
 	description: 'The component wrapper for the menu trigger.',
@@ -41,7 +41,7 @@ const trigger: APIReference = {
 	]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'MenuContent',
 	childOf: menu.name,
 	childrenProps: [
@@ -94,7 +94,7 @@ const content: APIReference = {
 	]
 };
 
-const item: APIReference = {
+const item: ComponentReference = {
 	name: 'MenuItem',
 	childOf: content.name,
 	childrenProps: [

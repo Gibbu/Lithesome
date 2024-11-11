@@ -4,14 +4,14 @@ description: 'A component or action to mount content from one part of the dom to
 ---
 
 <script>
-	import {ComponentAPI, Preview} from '$site/index.ts';
+	import {DocsPage} from '$site/index.ts';
 
-	import api from './api';
+	import componentAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
 
@@ -41,4 +41,4 @@ View the [usePortal](/docs/actions/usePortal) page for more info.
 </div>
 ```
 
-<ComponentAPI data={api} />
+</DocsPage>

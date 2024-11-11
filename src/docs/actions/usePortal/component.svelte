@@ -2,7 +2,7 @@
 	import { usePortal } from '$lib/index.js';
 	import { Button, cn } from '$site/index.js';
 
-	const preview = 'article [id^="tabs-"]';
+	const preview = '#tabs-preview';
 
 	let target = $state(preview);
 </script>

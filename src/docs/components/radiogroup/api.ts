@@ -1,6 +1,6 @@
-import { use, self, type APIReference } from '$site/index.js';
+import { use, self, type ComponentReference } from '$site/index.js';
 
-const radiogroup: APIReference = {
+const radiogroup: ComponentReference = {
 	name: 'RadioGroup',
 	props: [
 		{
@@ -21,7 +21,7 @@ const radiogroup: APIReference = {
 	]
 };
 
-const item: APIReference = {
+const item: ComponentReference = {
 	name: 'RadioGroupItem',
 	childOf: radiogroup.name,
 	props: [

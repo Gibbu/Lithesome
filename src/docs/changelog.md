@@ -4,6 +4,14 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.15.1
+
+<small>11 November, 2024</small>
+
+- Fixed `Select` and `Combobox` content components not displaying.
+- Fixed `Tabs` component not updating `value` prop on update.
+- Removed redundant `state` attributes applied on `MenuContent` component.
+
 ### v0.15.0
 
 <small>10 November, 2024</small>

@@ -1,6 +1,6 @@
-import { use, self, transition, arrow, type APIReference } from '$site/index.js';
+import { use, self, transition, arrow, type ComponentReference } from '$site/index.js';
 
-const hovercard: APIReference = {
+const hovercard: ComponentReference = {
 	name: 'Hovercard',
 	props: [
 		{
@@ -28,7 +28,7 @@ const hovercard: APIReference = {
 	]
 };
 
-const trigger: APIReference = {
+const trigger: ComponentReference = {
 	name: 'HovercardTrigger',
 	childOf: hovercard.name,
 	props: [self('Div'), use],
@@ -41,7 +41,7 @@ const trigger: APIReference = {
 	]
 };
 
-const content: APIReference = {
+const content: ComponentReference = {
 	name: 'HovercardContent',
 	childOf: hovercard.name,
 	props: [

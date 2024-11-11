@@ -1,6 +1,6 @@
-import { use, self, type APIReference } from '$site/index.js';
+import { use, self, type ComponentReference } from '$site/index.js';
 
-const toaster: APIReference = {
+const toaster: ComponentReference = {
 	name: 'Toaster',
 	props: [use, self('Div')],
 	childrenProps: [
@@ -12,25 +12,25 @@ const toaster: APIReference = {
 	]
 };
 
-const toast: APIReference = {
+const toast: ComponentReference = {
 	name: 'Toast',
 	props: [use, self('Div')],
 	childOf: toaster.name
 };
 
-const title: APIReference = {
+const title: ComponentReference = {
 	name: 'ToastTitle',
 	props: [use, self('Heading')],
 	childOf: toast.name
 };
 
-const message: APIReference = {
+const message: ComponentReference = {
 	name: 'ToastMessage',
 	props: [use, self('Paragraph')],
 	childOf: toast.name
 };
 
-const toasterFn: APIReference = {
+const toasterFn: ComponentReference = {
 	name: 'toaster',
 	description: 'The methods to add/remove toasts from the toaster.',
 	function: true,

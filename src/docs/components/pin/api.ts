@@ -1,6 +1,6 @@
-import { use, self, type APIReference } from '$site/index.js';
+import { use, self, type ComponentReference } from '$site/index.js';
 
-const pin: APIReference = {
+const pin: ComponentReference = {
 	name: 'Pin',
 	props: [
 		{
@@ -65,7 +65,7 @@ const pin: APIReference = {
 	]
 };
 
-const input: APIReference = {
+const input: ComponentReference = {
 	name: 'PinInput',
 	childOf: pin.name,
 	props: [use, self('Input')],
@@ -117,7 +117,7 @@ const input: APIReference = {
 	]
 };
 
-const value: APIReference = {
+const value: ComponentReference = {
 	name: 'PinValue',
 	childOf: pin.name,
 	props: [

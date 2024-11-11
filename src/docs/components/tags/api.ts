@@ -1,6 +1,6 @@
-import { use, self, type APIReference } from '$site/index.js';
+import { use, self, type ComponentReference } from '$site/index.js';
 
-export const tags: APIReference = {
+export const tags: ComponentReference = {
 	name: 'Tags',
 	props: [
 		{
@@ -46,7 +46,7 @@ export const tags: APIReference = {
 	]
 };
 
-export const input: APIReference = {
+export const input: ComponentReference = {
 	childOf: tags.name,
 	name: 'TagsInput',
 	events: [
@@ -68,7 +68,7 @@ export const input: APIReference = {
 	]
 };
 
-export const item: APIReference = {
+export const item: ComponentReference = {
 	childOf: tags.name,
 	name: 'TagsItem',
 	props: [
@@ -82,7 +82,7 @@ export const item: APIReference = {
 	]
 };
 
-export const del: APIReference = {
+export const del: ComponentReference = {
 	childOf: item.name,
 	name: 'TagsDelete',
 	props: [

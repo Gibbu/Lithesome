@@ -4,14 +4,14 @@ description: 'A menu of items that is hidden until triggered.'
 ---
 
 <script>
-	import {ComponentAPI, Preview} from '$site/index.ts';
+	import {DocsPage} from '$site/index.ts';
 
-	import api from './api';
+	import componentAPI from './api';
 	import {default as component} from './component.svelte';
 	import {default as code} from './component.svelte?raw';
 </script>
 
-<Preview {component} {code} />
+<DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
 
@@ -51,4 +51,4 @@ If you need to navigate to another page via the Content items. Simply pass the l
 </MenuItem>
 ```
 
-<ComponentAPI data={api} />
+</DocsPage>
