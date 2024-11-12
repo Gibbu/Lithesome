@@ -1,4 +1,4 @@
-import { buildContext, createUID, type Handler, type StateValues } from '$internal';
+import { buildContext, createUID, type StateValues } from '$internal';
 import type { AccordionButtonEvents } from './types.js';
 
 interface Item {
@@ -11,7 +11,7 @@ interface Item {
 //
 type AccordionRootProps = StateValues<{
 	single: boolean;
-	value?: string;
+	value: string[];
 }>;
 class AccordionRoot {
 	uid = createUID('accordion');
@@ -25,21 +25,33 @@ class AccordionRoot {
 	constructor(props: AccordionRootProps) {
 		this.$single = props.single;
 		this.$value = props.value;
+
+		if (this.$value.val.length > 0) this.activeItems = this.$value.val;
+
+		$effect(() => {
+			if (this.$value.val.length) {
+				this.activeItems = this.$value.val;
+			}
+		});
 	}
 
-	toggleActiveItem = (itemId: string) => {
+	toggleActiveItem = (itemValueOrId: string) => {
 		if (this.$single.val) {
-			this.activeItems = this.activeItems[0] === itemId ? [] : [itemId];
+			this.activeItems = this.activeItems[0] === itemValueOrId ? [] : [itemValueOrId];
 		} else {
-			if (this.activeItems.includes(itemId)) this.activeItems = this.activeItems.filter((el) => el !== itemId);
-			else this.activeItems.push(itemId);
+			if (this.activeItems.includes(itemValueOrId))
+				this.activeItems = this.activeItems.filter((el) => el !== itemValueOrId);
+			else this.activeItems.push(itemValueOrId);
 		}
+
+		this.$value.val = this.activeItems;
 	};
 
 	attrs = $derived.by(
 		() =>
 			({
 				id: this.uid(),
+				'data-value': this.$value.val.length > 0 ? this.$value.val : undefined,
 				'data-accordion': ''
 			}) as const
 	);
@@ -50,6 +62,7 @@ class AccordionRoot {
 //
 type AccordionItemProps = StateValues<{
 	disabled: boolean;
+	value?: string;
 }>;
 class AccordionItem {
 	uid = createUID('item');
@@ -57,20 +70,24 @@ class AccordionItem {
 	root: AccordionRoot;
 
 	$disabled: AccordionItemProps['disabled'];
+	$value: AccordionItemProps['value'];
 
-	Active = $derived.by(() => this.root.activeItems.includes(this.uid()) || false);
+	Active = $derived.by(() => this.root.activeItems.includes(this.$value?.val || this.uid()) || false);
 
 	constructor(root: AccordionRoot, props: AccordionItemProps) {
 		this.root = root;
 		this.$disabled = props.disabled;
+		this.$value = props.value;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
+				id: this.uid(),
 				'data-accordionitem': '',
 				'data-disabled': this.$disabled.val,
-				'data-state': this.Active ? 'opened' : 'closed'
+				'data-state': this.Active ? 'opened' : 'closed',
+				'data-value': this.$value?.val || undefined
 			}) as const
 	);
 	state = $derived.by(() => ({
@@ -120,7 +137,7 @@ class AccordionButton {
 
 		this.#events.onClick?.(e);
 
-		this.root.toggleActiveItem(this.item.uid());
+		this.root.toggleActiveItem(this.item.$value?.val || this.item.uid());
 	};
 
 	attrs = $derived.by(
@@ -128,7 +145,7 @@ class AccordionButton {
 			({
 				'aria-expanded': this.item.Active,
 				'aria-disabled': this.item.$disabled.val,
-				'aria-controls': this.item.Active ? this.root.uid('content') : undefined,
+				'aria-controls': this.item.Active ? this.item.uid('content') : undefined,
 				tabindex: this.item.$disabled.val ? -1 : 0,
 				'data-accordionbutton': '',
 				'data-active': this.item.Active || undefined,
@@ -156,7 +173,7 @@ class AccordionContent {
 	attrs = $derived.by(() =>
 		this.item && this.root
 			? {
-					id: this.root.uid('content'),
+					id: this.item.uid('content'),
 					'data-accordioncontent': '',
 					'data-active': this.item.Active
 				}

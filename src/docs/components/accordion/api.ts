@@ -5,6 +5,13 @@ const accordion: ComponentReference = {
 	description: 'The base component that manages and controls state.',
 	props: [
 		{
+			name: 'value',
+			default: '[]',
+			type: 'string[]',
+			description:
+				'Get the currently opened items or set them programmatically. If items have no value set, the unique ID will be used.'
+		},
+		{
 			name: 'single',
 			default: 'false',
 			type: 'boolean',
@@ -26,6 +33,12 @@ const item: ComponentReference = {
 	name: 'AccordionItem',
 	childOf: accordion.name,
 	props: [
+		{
+			name: 'value',
+			type: 'string',
+			default: '——',
+			description: 'The value of the item. If no value is set, unique ID is used.'
+		},
 		{
 			name: 'disabled',
 			type: 'boolean',

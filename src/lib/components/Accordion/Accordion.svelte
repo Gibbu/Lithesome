@@ -7,15 +7,22 @@
 		children,
 		use = [],
 		class: klass,
-		value = $bindable(),
+		value = $bindable([]),
 		self = $bindable(),
 		single = $bindable(false),
+		onChange,
 		...props
 	}: AccordionProps = $props();
 
 	const ctx = createAccordionRootContext({
 		single: stateValue(() => single),
-		value: stateValue(() => value)
+		value: stateValue(
+			() => value,
+			(v) => {
+				value = v;
+				onChange?.(v);
+			}
+		)
 	});
 </script>
 

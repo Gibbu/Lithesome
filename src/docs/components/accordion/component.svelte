@@ -8,16 +8,19 @@
 		{
 			title: 'What is Lithesome?',
 			content:
-				'Lithesome is a collection of unstyled Svelte 5 components that take care of all the functionality, leaving the visual design to you.'
+				'Lithesome is a collection of unstyled Svelte 5 components that take care of all the functionality, leaving the visual design to you.',
+			value: 'what-is-lithesome'
 		},
-		{ title: 'Is it good?', content: 'Well... Maybe... Idk...' },
-		{ title: 'Is Svelte 5 good?', content: 'YES!' }
+		{ title: 'Is it good?', content: 'Well... Maybe... Idk...', value: 'is-it-good' },
+		{ title: 'Is Svelte 5 good?', content: 'YES!', value: 'is-svelte5-good' }
 	];
+
+	let value = $state<string[]>(['what-is-lithesome']);
 </script>
 
-<Accordion single class="w-full max-w-[70%]">
-	{#each items as { title, content }}
-		<AccordionItem class="border-b border-neutral-300 last:border-none dark:border-white/10">
+<Accordion single class="w-full max-w-[70%]" bind:value>
+	{#each items as { title, content, value }}
+		<AccordionItem {value} class="border-b border-neutral-300 last:border-none dark:border-white/10">
 			<AccordionHeading>
 				<AccordionButton
 					class="flex w-full items-center justify-between gap-4 p-4 hover:text-black dark:hover:text-white"

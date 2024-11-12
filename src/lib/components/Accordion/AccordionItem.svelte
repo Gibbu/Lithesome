@@ -10,10 +10,12 @@
 		use = [],
 		self = $bindable(),
 		disabled = $bindable(false),
+		value,
 		...props
 	}: AccordionItemProps = $props();
 
 	const ctx = createAccordionItemContext({
+		value: stateValue(() => value),
 		disabled: stateValue(() => disabled)
 	});
 </script>

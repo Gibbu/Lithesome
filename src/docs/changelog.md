@@ -4,6 +4,14 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.15.2
+
+<small>12 November, 2024</small>
+
+- Fixed `Accordion` component not updating value prop on update.
+- Added value prop to `AccordionItem` to allow for easier default setting of accordion items.
+- Fixed `AccordionContent` aria-controls using the wrong IDs.
+
 ### v0.15.1
 
 <small>11 November, 2024</small>
