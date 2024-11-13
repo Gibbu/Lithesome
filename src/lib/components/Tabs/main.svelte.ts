@@ -10,7 +10,7 @@ import {
 	type Orientation,
 	type StateValues
 } from '$internal';
-import type { TabsButtonEvents } from './types.js';
+import type { TabsButtonEvents, TabsButtonState, TabsContentState, TabsState } from './types.js';
 
 //
 // Root
@@ -19,7 +19,6 @@ type TabsRootProps = StateValues<{
 	value: string;
 	orientation: Orientation;
 }>;
-
 class TabsRoot {
 	uid = createUID('tabs');
 
@@ -54,16 +53,13 @@ class TabsRoot {
 		(document.querySelector(`[data-tabsbutton][data-value="${this.ActiveTab}"]`) as HTMLButtonElement)?.focus();
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-tabs': '',
-				'data-orientation': this.$orientation.val,
-				'data-active': this.ActiveTab
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.uid(),
+		'data-tabs': '',
+		'data-orientation': this.$orientation.val,
+		'data-active': this.ActiveTab
+	}));
+	state = $derived.by<TabsState>(() => ({
 		tab: this.ActiveTab
 	}));
 }
@@ -78,15 +74,16 @@ class TabsList {
 		this.root = root;
 	}
 
-	attrs = $derived.by(
-		() =>
-			({
-				role: 'tablist',
-				'aria-orientation': this.root.$orientation.val,
-				'data-tabslist': '',
-				'data-orientation': this.root.$orientation.val
-			}) as const
-	);
+	attrs = $derived.by(() => ({
+		role: 'tablist',
+		'aria-orientation': this.root.$orientation.val,
+		'data-tabslist': '',
+		'data-orientation': this.root.$orientation.val
+	}));
+
+	state = $derived.by<TabsState>(() => ({
+		tab: this.root.ActiveTab
+	}));
 }
 
 //
@@ -156,7 +153,7 @@ class TabsButton {
 				onkeydown: this.#handleKeydown
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<TabsButtonState>(() => ({
 		active: this.IsActive
 	}));
 }
@@ -179,22 +176,19 @@ class TabsContent {
 		this.value = props.value;
 	}
 
-	attrs = $derived.by(
-		() =>
-			({
-				role: 'tabpanel',
-				'aria-hidden': !this.IsActive,
-				'data-tabscontent': '',
-				'data-state': this.IsActive ? 'active' : 'inactive',
-				'data-value': this.value.val,
-				'data-hidden': !this.IsActive,
-				'data-orientation': this.root.$orientation.val,
-				style: styleObjToString({
-					display: this.IsActive ? undefined : 'none'
-				})
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		role: 'tabpanel',
+		'aria-hidden': !this.IsActive,
+		'data-tabscontent': '',
+		'data-state': this.IsActive ? 'active' : 'inactive',
+		'data-value': this.value.val,
+		'data-hidden': !this.IsActive,
+		'data-orientation': this.root.$orientation.val,
+		style: styleObjToString({
+			display: this.IsActive ? undefined : 'none'
+		})
+	}));
+	state = $derived.by<TabsContentState>(() => ({
 		active: this.IsActive
 	}));
 }

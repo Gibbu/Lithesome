@@ -1,6 +1,10 @@
 import type { Props, PropsNoChildren, ContentProps, Handler } from '$internal';
 
-interface HovercardState {
+/**
+ * The state that is exposed from the `Hovercard` components.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface HovercardState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }

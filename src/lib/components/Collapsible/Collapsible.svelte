@@ -1,28 +1,28 @@
 <script lang="ts">
 	import { useActions, classProp, stateValue } from '$internal';
-	import { createAccordionRootContext } from './main.svelte.js';
-	import type { AccordionProps } from './types.js';
+	import { createCollapsibleRootContext } from './main.svelte.js';
+	import type { CollapsibleProps } from './types.js';
 
 	let {
 		children,
 		use = [],
 		class: klass,
-		value = $bindable([]),
+		visible = $bindable(false),
 		self = $bindable(),
-		single = $bindable(false),
+		disabled = $bindable(false),
 		onChange,
 		...props
-	}: AccordionProps = $props();
+	}: CollapsibleProps = $props();
 
-	const ctx = createAccordionRootContext({
-		single: stateValue(() => single),
-		value: stateValue(
-			() => value,
+	const ctx = createCollapsibleRootContext({
+		visible: stateValue(
+			() => visible,
 			(v) => {
-				value = v;
+				visible = v;
 				onChange?.(v);
 			}
-		)
+		),
+		disabled: stateValue(() => disabled)
 	});
 </script>
 

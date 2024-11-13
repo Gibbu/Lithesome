@@ -36,6 +36,6 @@
 	);
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs}>
-	{@render children?.({})}
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs}>
+	{@render children?.(ctx.state)}
 </div>

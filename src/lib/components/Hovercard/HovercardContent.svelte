@@ -24,15 +24,15 @@
 	componentName="Hovercard"
 	visible={ctx.root.$visible.val}
 	bind:self
-	bind:sameWidth
-	bind:transition
-	bind:constrainViewport
-	bind:placement
-	bind:portalTarget
+	{sameWidth}
+	{transition}
+	{constrainViewport}
+	{placement}
+	{portalTarget}
 	{ctx}
 	{use}
 	outsideCallback={() => ctx.root.forceClose()}
 	role="listbox"
-	class={classProp(klass, ctx.state)}
+	class={klass}
 	{...props}
 />

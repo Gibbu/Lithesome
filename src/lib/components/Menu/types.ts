@@ -2,7 +2,11 @@ import type { Props, PropsNoChildren, ContentProps, Handler } from '$internal';
 
 type MenuItemElement = HTMLButtonElement | HTMLAnchorElement;
 
-interface MenuState {
+/**
+ * The state that is exposed from the `Menu` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface MenuState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
@@ -17,11 +21,31 @@ export interface MenuProps extends Props<HTMLDivElement, MenuState> {
 	delay?: number | [number, number];
 }
 
-export interface MenuArrowProps extends PropsNoChildren<HTMLDivElement, MenuState> {}
+/**
+ * The state that is exposed from the `MenuArrow` component.\
+ * Which can be used via the `class` prop.
+ */
+export interface MenuArrowState {
+	/** Whether or not the content is opened or not. */
+	visible: boolean;
+}
+export interface MenuArrowProps extends PropsNoChildren<HTMLDivElement, MenuArrowState> {}
 
-export interface MenuContentProps extends Props<HTMLDivElement, MenuState>, ContentProps {}
+/**
+ * The state that is exposed from the `MenuContent` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface MenuContentState {
+	/** Whether or not the content is opened or not. */
+	visible: boolean;
+}
+export interface MenuContentProps extends Props<HTMLDivElement, MenuContentState>, ContentProps {}
 
-interface MenuItemState {
+/**
+ * The state that is exposed from the `MenuItem` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface MenuItemState {
 	/** True if the option is hovered, via mouse or keyboard navigation. */
 	hovered: boolean;
 }
@@ -48,4 +72,12 @@ export interface MenuItemProps extends Props<MenuItemElement, MenuItemState>, Me
 	disabled?: boolean;
 }
 
+/**
+ * The state that is exposed from the `MenuTrigger` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface MenuTriggerState {
+	/** Whether or not the content is opened or not. */
+	visible: boolean;
+}
 export interface MenuTriggerProps extends Props<HTMLDivElement, MenuState> {}

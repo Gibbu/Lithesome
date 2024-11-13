@@ -9,6 +9,7 @@ import {
 	setNodeProps,
 	type StateValues
 } from '$internal';
+import type { HovercardState } from './types.js';
 
 //
 // Root
@@ -66,7 +67,7 @@ class HovercardRoot extends Floating {
 				'data-state': this.$visible.val === true ? 'opened' : 'closed'
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<HovercardState>(() => ({
 		visible: this.$visible.val
 	}));
 }
@@ -129,7 +130,7 @@ class HovercardTrigger {
 	attrs = {
 		'data-hovercardtrigger': ''
 	};
-	state = $derived.by(() => ({
+	state = $derived.by<HovercardState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }
@@ -172,7 +173,7 @@ class HovercardContent {
 		onmouseenter: this.#handleMouseenter,
 		onmouseleave: this.#handleMouseleave
 	}));
-	state = $derived.by(() => ({
+	state = $derived.by<HovercardState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }

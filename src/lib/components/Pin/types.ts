@@ -2,7 +2,11 @@ import type { Props, PropsNoChildren, Handler } from '$internal';
 
 export type PinType = 'text' | 'password';
 
-interface PinState {
+/**
+ * The state that is exposed from the `Pin` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface PinState {
 	/** True if all inputs are filled out. */
 	filled: boolean;
 }
@@ -23,7 +27,11 @@ export interface PinProps extends Props<HTMLDivElement, PinState> {
 	onFilled?: (value: string) => void;
 }
 
-interface PinInputState extends PinState {
+/**
+ * The state that is exposed from the `PinInput` component.\
+ * Which can be used via the `class` prop function.
+ */
+export interface PinInputState extends PinState {
 	/** If the input is disabled by the `Pin` parent component. */
 	disabled: boolean;
 }

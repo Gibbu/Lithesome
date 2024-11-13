@@ -1,5 +1,13 @@
 import type { Handler, Props } from '$internal';
 
+/**
+ * The state that is exposed from the `RadioGroup` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface RadioGroupState {
+	/** The current selected value. */
+	value: string;
+}
 export interface RadioGroupProps extends Props<HTMLDivElement> {
 	/** The value of the radiogroup. */
 	value?: string;
@@ -8,7 +16,11 @@ export interface RadioGroupProps extends Props<HTMLDivElement> {
 	onChange?: (value: string) => void;
 }
 
-interface RadioGroupItemState {
+/**
+ * The state that is exposed from the `RadioGroupItem` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface RadioGroupItemState {
 	/** True if the item is selected. */
 	checked: boolean;
 }

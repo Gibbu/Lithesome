@@ -1,6 +1,10 @@
 import type { Handler, Props } from '$internal';
 
-interface SwitchState {
+/**
+ * The state that is exposed from the `Switch` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface SwitchState {
 	/** If the Switch is checked or not. */
 	checked: boolean;
 	/** If the Switch is disabled or not. */

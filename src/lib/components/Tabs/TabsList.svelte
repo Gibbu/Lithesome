@@ -8,6 +8,6 @@
 	const ctx = useTabsList();
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
-	{@render children?.({})}
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children?.(ctx.state)}
 </div>

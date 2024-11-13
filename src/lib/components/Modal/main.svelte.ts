@@ -31,14 +31,6 @@ class ModalRoot {
 	#handleKeydown = (e: KeyboardEvent) => {
 		if (e.key === KEYS.escape) this.$visible.val = false;
 	};
-
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-modal': ''
-			}) as const
-	);
 }
 
 //
@@ -96,13 +88,10 @@ class ModalTitle {
 		this.root = root;
 	}
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.root.uid('title'),
-				'data-modaltitle': ''
-			}) as const
-	);
+	attrs = $derived.by(() => ({
+		id: this.root.uid('title'),
+		'data-modaltitle': ''
+	}));
 }
 
 //
@@ -115,13 +104,10 @@ class ModalDescription {
 		this.root = root;
 	}
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.root.uid('description'),
-				'data-modaldescription': ''
-			}) as const
-	);
+	attrs = $derived.by(() => ({
+		id: this.root.uid('description'),
+		'data-modaldescription': ''
+	}));
 }
 
 //

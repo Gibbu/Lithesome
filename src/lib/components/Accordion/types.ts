@@ -1,5 +1,12 @@
 import type { Props, Handler, Transition } from '$internal';
 
+/**
+ * The state that is exposed from the `Accordion` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface AccordionState {
+	value: string[];
+}
 export interface AccordionProps extends Props<HTMLDivElement> {
 	/**
 	 * The value of the active item.\
@@ -16,6 +23,13 @@ export interface AccordionProps extends Props<HTMLDivElement> {
 	onChange?: (values: string[]) => void;
 }
 
+/**
+ * The state that is exposed from the `AccordionContent` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface AccordionContentState {
+	active: boolean;
+}
 export interface AccordionContentProps extends Props<HTMLDivElement> {
 	/**
 	 * The `svelte/transtion` you wish to use.
@@ -30,7 +44,11 @@ export interface AccordionHeadingProps extends Props<HTMLDivElement> {
 	level?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-interface AccordionButtonState {
+/**
+ * The state that is exposed from the `AccordionButton` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface AccordionButtonState {
 	/** True if the item is opened. */
 	active: boolean;
 	/** True if the item is disabled. */
@@ -47,7 +65,11 @@ export interface AccordionButtonEvents {
 }
 export interface AccordionButtonProps extends Props<HTMLButtonElement, AccordionButtonState>, AccordionButtonEvents {}
 
-interface AccordionItemState {
+/**
+ * The state that is exposed from the `AccordionItem` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface AccordionItemState {
 	/** True if the item is opened. */
 	active: boolean;
 	/** True if the item is disabled. */

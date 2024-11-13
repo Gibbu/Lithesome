@@ -1,5 +1,13 @@
 import { type Handler, type Props, type PropsNoChildren } from '$internal';
 
+/**
+ * The state that is exposed from the `Tags` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface TagsState {
+	/** The currently selected tag used via keyboard navigation. */
+	activeTag: boolean | undefined;
+}
 export interface TagsRootEvents {
 	/**
 	 * Add your own custom logic to the click event.\
@@ -9,7 +17,7 @@ export interface TagsRootEvents {
 	 */
 	onClick?: Handler<MouseEvent, HTMLElement>;
 }
-export interface TagsProps extends Props<HTMLElement>, TagsRootEvents {
+export interface TagsProps extends Props<HTMLElement, TagsState>, TagsRootEvents {
 	/** The current value of the tag input */
 	value: string[];
 	/** Disables the whole tags component(s). */
@@ -22,7 +30,11 @@ export interface TagsProps extends Props<HTMLElement>, TagsRootEvents {
 	blacklist?: string[];
 }
 
-interface TagsInputState {
+/**
+ * The state that is exposed from the `TagsInput` component.\
+ * Which can be used via the `class` prop function.
+ */
+export interface TagsInputState {
 	invalid: boolean;
 }
 export interface TagsInputEvents {
@@ -50,7 +62,11 @@ export interface TagsInputEvents {
 }
 export interface TagsInputProps extends PropsNoChildren<HTMLInputElement, TagsInputState>, TagsInputEvents {}
 
-interface TagsItemState {
+/**
+ * The state that is exposed from the `TagsItem` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface TagsItemState {
 	active: boolean;
 }
 export interface TagsItemProps extends Props<HTMLElement, TagsItemState> {

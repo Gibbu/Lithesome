@@ -1,5 +1,5 @@
 import { ALL_ARROW_KEYS, buildContext, clamp, createUID, KEYS, type Orientation, type StateValues } from '$internal';
-import type { SliderEvents, SliderThumbEvents } from './types.js';
+import type { SliderEvents, SliderState, SliderThumbEvents } from './types.js';
 
 //
 // Root
@@ -112,22 +112,19 @@ class SliderRoot {
 		this.dragging = false;
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				tabindex: -1,
-				role: 'none',
-				'data-slider': '',
-				'data-value': this.$value.val,
-				'data-percentage': this.Percentage,
-				'data-reversed': this.$reverse.val || undefined,
-				'data-orientation': this.$orientation.val,
-				onmousedown: this.#handleMousedown,
-				onclick: this.#handleClick
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.uid(),
+		tabindex: -1,
+		role: 'none',
+		'data-slider': '',
+		'data-value': this.$value.val,
+		'data-percentage': this.Percentage,
+		'data-reversed': this.$reverse.val || undefined,
+		'data-orientation': this.$orientation.val,
+		onmousedown: this.#handleMousedown,
+		onclick: this.#handleClick
+	}));
+	state = $derived.by<SliderState>(() => ({
 		value: this.$value.val,
 		percentage: this.Percentage
 	}));
@@ -157,21 +154,18 @@ class SliderRange {
 			.map(([k, v]) => `${k}:${v}`)
 			.join(';');
 	});
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.root.uid('range'),
-				tabindex: -1,
-				role: 'none',
-				'data-slider': '',
-				'data-value': this.root.$value.val,
-				'data-percentage': this.root.Percentage,
-				'data-reversed': this.root.$reverse.val || undefined,
-				'data-orientation': this.root.$orientation.val,
-				style: `position: absolute; ${this.styles}`
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.root.uid('range'),
+		tabindex: -1,
+		role: 'none',
+		'data-slider': '',
+		'data-value': this.root.$value.val,
+		'data-percentage': this.root.Percentage,
+		'data-reversed': this.root.$reverse.val || undefined,
+		'data-orientation': this.root.$orientation.val,
+		style: `position: absolute; ${this.styles}`
+	}));
+	state = $derived.by<SliderState>(() => ({
 		value: this.root.$value.val,
 		percentage: this.root.Percentage
 	}));
@@ -232,29 +226,26 @@ class SliderThumb {
 			.map(([k, v]) => `${k}:${v}`)
 			.join(';');
 	});
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.root.uid('slider'),
-				role: 'slider',
-				tabindex: 0,
-				'aria-valuenow': this.root.$value.val,
-				'aria-valuemin': this.root.$min.val,
-				'aria-valuemax': this.root.$max.val,
-				'data-sliderthumb': '',
-				onmousedown: this.#handleMousedown,
-				onkeydown: this.#handleKeydown,
-				style: `position: absolute; ${this.styles}`
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.root.uid('slider'),
+		role: 'slider',
+		tabindex: 0,
+		'aria-valuenow': this.root.$value.val,
+		'aria-valuemin': this.root.$min.val,
+		'aria-valuemax': this.root.$max.val,
+		'data-sliderthumb': '',
+		onmousedown: this.#handleMousedown,
+		onkeydown: this.#handleKeydown,
+		style: `position: absolute; ${this.styles}`
+	}));
+	state = $derived.by<SliderState>(() => ({
 		value: this.root.$value.val,
 		percentage: this.root.Percentage
 	}));
 }
 
 //
-// Builders
+// Value
 //
 class SliderValue {
 	root: SliderRoot;
@@ -276,7 +267,7 @@ class SliderValue {
 				style: 'display: none;'
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<SliderState>(() => ({
 		value: this.root.$value.val,
 		percentage: this.root.Percentage
 	}));

@@ -2,7 +2,11 @@ import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$
 
 export type ComboboxElement = HTMLAnchorElement | HTMLButtonElement;
 
-interface ComboboxState {
+/**
+ * The state that is exposed from the `Combobox` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface ComboboxState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
@@ -24,8 +28,24 @@ export interface ComboboxProps extends Props<HTMLDivElement, ComboboxState> {
 
 export interface ComboboxArrowProps extends PropsNoChildren<HTMLDivElement, ComboboxState> {}
 
+/**
+ * The state that is exposed from the `ComboboxContent` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface ComboboxContentState {
+	/** Whether or not the content is opened or not. */
+	visible: boolean;
+}
 export interface ComboboxContentProps extends Props<HTMLDivElement, ComboboxState>, ContentProps {}
 
+/**
+ * The state that is exposed from the `ComboboxInput` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface ComboboxInputState {
+	/** Whether or not the content is opened or not. */
+	visible: boolean;
+}
 export interface ComboboxInputEvents {
 	/**
 	 * Add your own custom logic to the click event.\
@@ -42,12 +62,16 @@ export interface ComboboxInputEvents {
 	 */
 	onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
 }
-export interface ComboboxInputProps extends PropsNoChildren<HTMLInputElement, ComboboxState>, ComboboxInputEvents {
+export interface ComboboxInputProps extends PropsNoChildren<HTMLInputElement, ComboboxInputState>, ComboboxInputEvents {
 	/** Bind the value of the input value. */
 	value: string;
 }
 
-interface ComboboxOptionState {
+/**
+ * The state that is exposed from the `ComboboxOption` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface ComboboxOptionState {
 	/** If the option is hovered, either via mouse or keyboard. */
 	hovered: boolean;
 	/** If the option is selected. */

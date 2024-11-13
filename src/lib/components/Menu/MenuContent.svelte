@@ -23,6 +23,7 @@
 	{children}
 	componentName="Menu"
 	visible={ctx.root.$visible.val}
+	bind:self
 	{ctx}
 	{transition}
 	{use}

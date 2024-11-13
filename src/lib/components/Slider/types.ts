@@ -1,6 +1,10 @@
 import type { Handler, Props, PropsNoChildren } from '$internal';
 
-interface SliderState {
+/**
+ * The state that is exposed from the `Slider` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface SliderState {
 	/** The current percentage of the slider, from 0-100. */
 	percentage: number;
 	/** The current value of the slider. */

@@ -6,7 +6,7 @@
 
 	interface ComponentProps extends PropsNoChildren<HTMLDivElement> {
 		component: string;
-		ctx: Omit<T, 'state'>;
+		ctx: T;
 	}
 
 	let { class: klass, use = [], self = $bindable(), ctx, component, ...props }: ComponentProps = $props();
@@ -23,4 +23,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass)} {...attrs} {...props}></div>
+<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...attrs} {...props}></div>
