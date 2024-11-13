@@ -4,6 +4,12 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.16.0
+
+<small>13 November, 2024</small>
+
+- Added [Collapsible](/docs/components/collapsible) component.
+
 ### v0.15.2
 
 <small>12 November, 2024</small>

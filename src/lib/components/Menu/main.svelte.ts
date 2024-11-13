@@ -15,7 +15,7 @@ import {
 	type StateValues
 } from '$internal';
 import { onMount } from 'svelte';
-import type { MenuItemEvents } from './types.js';
+import type { MenuContentState, MenuItemEvents, MenuItemState, MenuState, MenuTriggerState } from './types.js';
 
 //
 // Root
@@ -75,7 +75,7 @@ class MenuRoot extends Floating {
 				'data-state': this.$visible.val ? 'opened' : 'closed'
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<MenuState>(() => ({
 		visible: this.$visible.val
 	}));
 }
@@ -153,7 +153,7 @@ class MenuTrigger {
 	attrs = {
 		'data-menutrigger': ''
 	};
-	state = $derived.by(() => ({
+	state = $derived.by<MenuTriggerState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }
@@ -183,7 +183,7 @@ class MenuContent {
 		this.root = root;
 	}
 
-	state = $derived.by(() => ({
+	state = $derived.by<MenuContentState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }
@@ -245,7 +245,7 @@ class MenuItem {
 				onclick: this.#handleClick
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<MenuItemState>(() => ({
 		hovered: this.Hovered
 	}));
 }

@@ -1,6 +1,10 @@
 import type { Props, Orientation, Handler } from '$internal';
 
-interface TabsState {
+/**
+ * The state that is exposed from the `Tabs` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface TabsState {
 	/** The current active tab. */
 	tab: string;
 }
@@ -15,7 +19,11 @@ export interface TabsProps extends Props<HTMLDivElement, TabsState> {
 	value?: string;
 }
 
-interface TabsButtonState {
+/**
+ * The state that is exposed from the `TabsButton` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface TabsButtonState {
 	/** True if the button value is selected. */
 	active: boolean;
 }
@@ -46,6 +54,14 @@ export interface TabsButtonProps extends Props<HTMLButtonElement, TabsButtonStat
 	disabled?: boolean;
 }
 
+/**
+ * The state that is exposed from the `TabsContent` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface TabsContentState {
+	/** True if the button value is selected. */
+	active: boolean;
+}
 export interface TabsContentProps extends Props<HTMLDivElement, TabsButtonState> {
 	/**
 	 * The unique value of the content.

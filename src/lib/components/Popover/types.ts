@@ -1,6 +1,10 @@
 import type { Props, PropsNoChildren, ContentProps } from '$internal';
 
-interface PopoverState {
+/**
+ * The state that is exposed from the `Popover` components.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface PopoverState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }

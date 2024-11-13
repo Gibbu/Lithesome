@@ -1,6 +1,6 @@
 import { buildContext, createUID, KEYS, type StateValues, type Handler } from '$internal';
 import { tick } from 'svelte';
-import type { PinInputEvents, PinType } from './types.js';
+import type { PinInputEvents, PinInputState, PinState, PinType } from './types.js';
 
 //
 // Root
@@ -37,17 +37,14 @@ class PinRoot {
 		this.$value.val[index] = value;
 	}
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'aria-disabled': this.$disabled.val || undefined,
-				'data-pin': '',
-				'data-filled': this.Filled,
-				'data-disabled': this.$disabled.val || undefined
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.uid(),
+		'aria-disabled': this.$disabled.val || undefined,
+		'data-pin': '',
+		'data-filled': this.Filled,
+		'data-disabled': this.$disabled.val || undefined
+	}));
+	state = $derived.by<PinState>(() => ({
 		filled: this.Filled
 	}));
 }
@@ -167,22 +164,19 @@ class PinInput {
 		this.#moveFocus('last');
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				disabled: this.root.$disabled.val,
-				placeholder: this.focused ? '' : this.root.$placeholder.val,
-				'data-pininput': '',
-				'data-filled': this.root.Filled,
-				oninput: this.#handleInput,
-				onkeydown: this.#handleKeydown,
-				onfocus: this.#handleFocus,
-				onblur: this.#handleBlur,
-				onpaste: this.#handlePaste
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.uid(),
+		disabled: this.root.$disabled.val,
+		placeholder: this.focused ? '' : this.root.$placeholder.val,
+		'data-pininput': '',
+		'data-filled': this.root.Filled,
+		oninput: this.#handleInput,
+		onkeydown: this.#handleKeydown,
+		onfocus: this.#handleFocus,
+		onblur: this.#handleBlur,
+		onpaste: this.#handlePaste
+	}));
+	state = $derived.by<PinInputState>(() => ({
 		filled: this.root.Filled,
 		disabled: this.root.$disabled.val
 	}));

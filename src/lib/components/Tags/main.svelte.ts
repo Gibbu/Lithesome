@@ -1,5 +1,12 @@
 import { buildContext, createUID, KEYS, PREVENT_KEYS, type StateValue, type StateValues } from '$internal';
-import type { TagsDeleteEvents, TagsInputEvents, TagsRootEvents } from './types.js';
+import type {
+	TagsDeleteEvents,
+	TagsInputEvents,
+	TagsInputState,
+	TagsItemState,
+	TagsRootEvents,
+	TagsState
+} from './types.js';
 
 //
 // Root
@@ -84,7 +91,12 @@ class TagsRoot {
 	attrs = $derived.by(() => ({
 		id: this.uid(),
 		'data-tags': '',
+		'data-activetag': this.SelectedTag || undefined,
 		onclick: this.#handleClick
+	}));
+
+	state = $derived.by<TagsState>(() => ({
+		activeTag: !!this.SelectedTag || undefined
 	}));
 }
 
@@ -169,7 +181,7 @@ class TagsInput {
 			}) as const
 	);
 
-	state = $derived.by(() => ({
+	state = $derived.by<TagsInputState>(() => ({
 		invalid: this.root.invalid
 	}));
 }
@@ -203,7 +215,7 @@ class TagsItem {
 				'data-tagsitem': ''
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<TagsItemState>(() => ({
 		active: this.Active
 	}));
 }

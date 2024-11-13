@@ -15,7 +15,7 @@ import {
 	type StateValues
 } from '$internal';
 import { onMount, tick } from 'svelte';
-import type { SelectOptionEvents } from './types.js';
+import type { SelectOptionEvents, SelectOptionState, SelectState, SelectValueState } from './types.js';
 
 //
 // Root
@@ -128,15 +128,12 @@ class SelectRoot extends Floating {
 		this.mounted = true;
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-select': '',
-				'data-state': this.SuperVisible && this.mounted ? 'opened' : 'closed'
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.uid(),
+		'data-select': '',
+		'data-state': this.SuperVisible && this.mounted ? 'opened' : 'closed'
+	}));
+	state = $derived.by<SelectState>(() => ({
 		visible: this.SuperVisible && this.mounted
 	}));
 }
@@ -216,7 +213,7 @@ class SelectTrigger {
 	attrs = {
 		'data-selecttrigger': ''
 	};
-	state = $derived.by(() => ({
+	state = $derived.by<SelectState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }
@@ -234,6 +231,10 @@ class SelectArrow {
 	attrs = $derived.by(() => ({
 		id: this.root.uid('arrow')
 	}));
+
+	state = $derived.by<SelectState>(() => ({
+		visible: this.root.$visible.val
+	}));
 }
 
 //
@@ -249,7 +250,7 @@ class SelectContent {
 	attrs = $derived.by(() => ({
 		hidden: !this.root.mounted || undefined
 	}));
-	state = $derived.by(() => ({
+	state = $derived.by<SelectState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }
@@ -325,7 +326,7 @@ class SelectOption {
 				onclick: this.#handleClick
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<SelectOptionState>(() => ({
 		hovered: this.Hovered,
 		selected: this.Selected
 	}));
@@ -353,15 +354,12 @@ class SelectValue {
 	label = $derived.by(() =>
 		this.PlaceholderVisible ? this.placeholder.val : this.root.selectedOptions.map((el) => el.dataset.label).join(',')
 	);
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.root.uid('value'),
-				'data-selectvalue': '',
-				'data-placeholder': this.PlaceholderVisible || undefined
-			}) as const
-	);
-	state = $derived.by(() => ({
+	attrs = $derived.by(() => ({
+		id: this.root.uid('value'),
+		'data-selectvalue': '',
+		'data-placeholder': this.PlaceholderVisible || undefined
+	}));
+	state = $derived.by<SelectValueState>(() => ({
 		placeholderVisible: this.PlaceholderVisible
 	}));
 }

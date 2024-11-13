@@ -9,6 +9,7 @@ import {
 	setNodeProps,
 	type StateValues
 } from '$internal';
+import type { PopoverState } from './types.js';
 
 //
 // Root
@@ -53,7 +54,7 @@ class PopoverRoot extends Floating {
 				'data-state': this.$visible.val ? 'opened' : 'closed'
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<PopoverState>(() => ({
 		visible: this.$visible.val
 	}));
 }
@@ -115,7 +116,7 @@ class PopoverTrigger {
 	attrs = {
 		'data-popovertrigger': ''
 	};
-	state = $derived.by(() => ({
+	state = $derived.by<PopoverState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }
@@ -133,6 +134,10 @@ class PopoverArrow {
 	attrs = $derived.by(() => ({
 		id: this.root.uid('arrow')
 	}));
+
+	state = $derived.by<PopoverState>(() => ({
+		visible: this.root.$visible.val
+	}));
 }
 
 //
@@ -145,7 +150,7 @@ class PopoverContent {
 		this.root = root;
 	}
 
-	state = $derived.by(() => ({
+	state = $derived.by<PopoverState>(() => ({
 		visible: this.root.$visible.val
 	}));
 }

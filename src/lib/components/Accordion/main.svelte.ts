@@ -1,5 +1,11 @@
 import { buildContext, createUID, type StateValues } from '$internal';
-import type { AccordionButtonEvents } from './types.js';
+import type {
+	AccordionButtonEvents,
+	AccordionButtonState,
+	AccordionContentState,
+	AccordionItemState,
+	AccordionState
+} from './types.js';
 
 interface Item {
 	id: string;
@@ -55,6 +61,10 @@ class AccordionRoot {
 				'data-accordion': ''
 			}) as const
 	);
+
+	state = $derived.by<AccordionState>(() => ({
+		value: this.$value.val
+	}));
 }
 
 //
@@ -90,7 +100,7 @@ class AccordionItem {
 				'data-value': this.$value?.val || undefined
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<AccordionItemState>(() => ({
 		active: this.Active,
 		disabled: this.$disabled.val
 	}));
@@ -152,7 +162,7 @@ class AccordionButton {
 				onclick: this.#handleClick
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<AccordionButtonState>(() => ({
 		active: this.item.Active,
 		disabled: this.item.$disabled.val as boolean
 	}));
@@ -179,6 +189,10 @@ class AccordionContent {
 				}
 			: {}
 	);
+
+	state = $derived.by<AccordionContentState>(() => ({
+		active: this.item.Active
+	}));
 }
 
 //

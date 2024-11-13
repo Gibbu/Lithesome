@@ -2,7 +2,11 @@ import type { Handler, Props } from '$internal';
 
 export type Checked = boolean | 'mixed';
 
-interface CheckboxState {
+/**
+ * The state that is exposed from the `CheckboxState` component.\
+ * Which can be used via the `class` prop function or `children` snippet block.
+ */
+export interface CheckboxState {
 	/** If the checkbox is checked or not. */
 	checked: Checked;
 }

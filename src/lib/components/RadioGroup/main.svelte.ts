@@ -9,7 +9,7 @@ import {
 	type UID
 } from '$internal';
 import { tick } from 'svelte';
-import type { RadioGroupItemEvents } from './types.js';
+import type { RadioGroupItemEvents, RadioGroupState } from './types.js';
 
 interface Item {
 	id: string;
@@ -77,16 +77,17 @@ class RadioGroupRoot {
 		this.$value.val = item.value;
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				role: 'radiogroup',
-				'aria-required': this.$required.val,
-				'data-radiogroup': '',
-				'data-value': this.$value.val
-			}) as const
-	);
+	attrs = $derived.by(() => ({
+		id: this.uid(),
+		role: 'radiogroup',
+		'aria-required': this.$required.val,
+		'data-radiogroup': '',
+		'data-value': this.$value.val
+	}));
+
+	state = $derived.by<RadioGroupState>(() => ({
+		value: this.$value.val
+	}));
 }
 
 //

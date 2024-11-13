@@ -23,6 +23,7 @@
 	{children}
 	componentName="Combobox"
 	visible={ctx.root.SuperVisible}
+	bind:self
 	{ctx}
 	{transition}
 	{use}

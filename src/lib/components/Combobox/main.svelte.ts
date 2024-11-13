@@ -13,7 +13,14 @@ import {
 } from '$internal';
 import { onMount, tick } from 'svelte';
 
-import type { ComboboxInputEvents, ComboboxOptionEvents } from './types.js';
+import type {
+	ComboboxContentState,
+	ComboboxInputEvents,
+	ComboboxInputState,
+	ComboboxOptionEvents,
+	ComboboxOptionState,
+	ComboboxState
+} from './types.js';
 
 //
 // Root
@@ -145,7 +152,7 @@ class ComboboxRoot extends Floating {
 				'data-state': this.SuperVisible && this.mounted ? 'opened' : 'closed'
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<ComboboxState>(() => ({
 		visible: this.SuperVisible && this.mounted
 	}));
 }
@@ -220,7 +227,7 @@ class ComboboxInput {
 				onkeydown: this.#handleKeydown
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<ComboboxInputState>(() => ({
 		visible: this.root.SuperVisible
 	}));
 }
@@ -253,7 +260,7 @@ class ComboboxContent {
 	attrs = $derived.by(() => ({
 		hidden: !this.root.mounted || undefined
 	}));
-	state = $derived.by(() => ({
+	state = $derived.by<ComboboxContentState>(() => ({
 		visible: this.root.SuperVisible
 	}));
 }
@@ -330,7 +337,7 @@ class ComboboxOption {
 				onclick: this.#handleClick
 			}) as const
 	);
-	state = $derived.by(() => ({
+	state = $derived.by<ComboboxOptionState>(() => ({
 		hovered: this.Hovered,
 		selected: this.Selected
 	}));
