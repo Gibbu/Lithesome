@@ -17,7 +17,10 @@
 	const ctx = createRootContext({
 		value: stateValue(
 			() => value,
-			(v) => (value = v)
+			(v) => {
+				value = v;
+				onChange?.(v);
+			}
 		),
 		required: stateValue(() => required)
 	});
