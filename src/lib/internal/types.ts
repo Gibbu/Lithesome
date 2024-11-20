@@ -16,6 +16,10 @@ export type Handler<E, T extends HTMLElement> = (e: HandlerParam<E, T>) => void;
 
 export type Class<T> = new (...args: any[]) => T;
 
+export interface PropsNoElement<C extends Record<string, any>> {
+	children?: Snippet<[C]>;
+}
+
 export interface PropsNoChildren<T extends HTMLElement, C extends Record<string, any> = any> {
 	/**
 	 * Any svelte actions you wish to pass to the underlying HTML element.

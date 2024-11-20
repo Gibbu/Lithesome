@@ -28,7 +28,7 @@ class HovercardRoot extends Floating {
 	hovered = $state<boolean>(false);
 
 	constructor(props: HovercardRootProps) {
-		super();
+		super('Hovercard');
 
 		this.$visible = props.visible;
 		this.$delays = props.delays;
@@ -59,14 +59,6 @@ class HovercardRoot extends Floating {
 		this.timeout = null;
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-hovercard': '',
-				'data-state': this.$visible.val === true ? 'opened' : 'closed'
-			}) as const
-	);
 	state = $derived.by<HovercardState>(() => ({
 		visible: this.$visible.val
 	}));
@@ -117,11 +109,6 @@ class HovercardTrigger {
 			};
 		});
 	}
-
-	registerTrigger = (trigger: HTMLElement) => {
-		if (trigger.children.length > 1) log.error('<HovercardTrigger /> can only have 1 direct child node.');
-		this.root.trigger = trigger;
-	};
 
 	#handleKeydown = (e: KeyboardEvent) => {
 		if (e.key === KEYS.escape || e.key === KEYS.tab) this.root.forceClose();

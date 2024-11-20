@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
-	import { usePopoverTrigger } from './main.svelte.js';
-	import type { PopoverTriggerProps } from './types.js';
+	import { useTooltipTrigger } from './main.svelte.js';
+	import type { TooltipTriggerProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: PopoverTriggerProps = $props();
+	let { children, class: klass, use = [], self = $bindable(), ...props }: TooltipTriggerProps = $props();
 
-	const ctx = usePopoverTrigger();
+	const ctx = useTooltipTrigger();
 
 	$effect(() => {
 		if (self) ctx.root.registerTrigger(self);

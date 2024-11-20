@@ -32,7 +32,6 @@
 	{ctx}
 	{use}
 	outsideCallback={() => ctx.root.forceClose()}
-	role="listbox"
 	class={klass}
 	{...props}
 />

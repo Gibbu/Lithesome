@@ -45,7 +45,7 @@ class SelectRoot extends Floating {
 	);
 
 	constructor(props: SelectRootProps) {
-		super();
+		super('Select');
 
 		this.$value = props.value;
 		this.$multiple = props.multiple;
@@ -128,11 +128,6 @@ class SelectRoot extends Floating {
 		this.mounted = true;
 	};
 
-	attrs = $derived.by(() => ({
-		id: this.uid(),
-		'data-select': '',
-		'data-state': this.SuperVisible && this.mounted ? 'opened' : 'closed'
-	}));
 	state = $derived.by<SelectState>(() => ({
 		visible: this.SuperVisible && this.mounted
 	}));
@@ -180,11 +175,6 @@ class SelectTrigger {
 			}
 		});
 	}
-
-	registerTrigger = (trigger: HTMLElement) => {
-		if (trigger.children.length > 1) log.error('<SelectTrigger /> can only have 1 direct child node.');
-		this.root.trigger = trigger;
-	};
 
 	#handleKeydown = (e: KeyboardEvent) => {
 		const { key } = e;

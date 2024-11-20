@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$internal';
+import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue, PropsNoElement } from '$internal';
 
 /**
  * The state that is exposed from the `Select` components.\
@@ -8,7 +8,7 @@ export interface SelectState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface SelectProps extends Props<HTMLDivElement, SelectState> {
+export interface SelectProps extends PropsNoElement<SelectState> {
 	/** The value of select. */
 	value: JsonValue;
 	visible?: boolean;

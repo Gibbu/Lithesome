@@ -34,7 +34,7 @@ class MenuRoot extends Floating {
 	HoveredItem = $derived(this.items[this.hoveredIndex]);
 
 	constructor(props: MenuRootProps) {
-		super();
+		super('Menu');
 		this.$visible = props.visible;
 
 		$effect(() => {
@@ -67,14 +67,6 @@ class MenuRoot extends Floating {
 		this.hoveredIndex = this.items.findIndex((el) => el === itemId);
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-menu': '',
-				'data-state': this.$visible.val ? 'opened' : 'closed'
-			}) as const
-	);
 	state = $derived.by<MenuState>(() => ({
 		visible: this.$visible.val
 	}));
@@ -120,11 +112,6 @@ class MenuTrigger {
 			}
 		});
 	}
-
-	registerTrigger = (trigger: HTMLElement) => {
-		if (trigger.children.length > 1) log.error('<MenuTrigger /> can only have 1 direct child node.');
-		this.root.trigger = trigger;
-	};
 
 	#handleKeydown: Handler<KeyboardEvent, HTMLDivElement> = (e) => {
 		const { key } = e;

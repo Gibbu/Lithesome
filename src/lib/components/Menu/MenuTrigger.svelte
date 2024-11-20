@@ -8,7 +8,7 @@
 	const ctx = useMenuTrigger();
 
 	$effect(() => {
-		if (self) ctx.registerTrigger(self);
+		if (self) ctx.root.registerTrigger(self);
 	});
 </script>
 

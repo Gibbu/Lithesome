@@ -23,7 +23,7 @@ class PopoverRoot extends Floating {
 	$visible: PopoverRootProps['visible'];
 
 	constructor(props: PopoverRootProps) {
-		super();
+		super('Popover');
 		this.$visible = props.visible;
 
 		$effect(() => {
@@ -46,14 +46,6 @@ class PopoverRoot extends Floating {
 		if (e.key === KEYS.escape) this.$visible.val = false;
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-popover': '',
-				'data-state': this.$visible.val ? 'opened' : 'closed'
-			}) as const
-	);
 	state = $derived.by<PopoverState>(() => ({
 		visible: this.$visible.val
 	}));
@@ -99,11 +91,6 @@ class PopoverTrigger {
 			}
 		});
 	}
-
-	registerTrigger = (trigger: HTMLElement) => {
-		if (trigger.children.length > 1) log.error('<PopoverTrigger /> can only have 1 direct child node.');
-		this.root.trigger = trigger;
-	};
 
 	#handleKeydown = (e: KeyboardEvent) => {
 		const { key } = e;

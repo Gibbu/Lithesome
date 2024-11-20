@@ -1,21 +1,10 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { SelectProps } from './types.js';
 
-	let {
-		children,
-		use = [],
-		class: klass,
-		value = $bindable(),
-		visible = $bindable(true),
-		self = $bindable(),
-		onChange,
-		controlled,
-		...props
-	}: SelectProps = $props();
+	let { children, value = $bindable(), visible = $bindable(true), onChange, controlled }: SelectProps = $props();
 
-	const multiple = Array.isArray(value);
 	const ctx = createRootContext({
 		visible: stateValue(
 			() => visible,
@@ -28,11 +17,9 @@
 				onChange?.(v);
 			}
 		),
-		multiple: stateValue(() => multiple),
+		multiple: stateValue(() => Array.isArray(value)),
 		controlled: stateValue(() => controlled)
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+{@render children?.(ctx.state)}

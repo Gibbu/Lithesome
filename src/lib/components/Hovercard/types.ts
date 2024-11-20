@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler } from '$internal';
+import type { Props, PropsNoChildren, ContentProps, PropsNoElement } from '$internal';
 
 /**
  * The state that is exposed from the `Hovercard` components.\
@@ -8,7 +8,7 @@ export interface HovercardState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface HovercardProps extends Props<HTMLDivElement, HovercardState> {
+export interface HovercardProps extends PropsNoElement<HovercardState> {
 	/** Control the visiblity of the hovercard. */
 	visible?: boolean;
 	/**

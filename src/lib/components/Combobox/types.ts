@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue } from '$internal';
+import type { Props, PropsNoChildren, ContentProps, Handler, JsonValue, PropsNoElement } from '$internal';
 
 export type ComboboxElement = HTMLAnchorElement | HTMLButtonElement;
 
@@ -10,7 +10,7 @@ export interface ComboboxState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface ComboboxProps extends Props<HTMLDivElement, ComboboxState> {
+export interface ComboboxProps extends PropsNoElement<ComboboxState> {
 	/** The current selected value(s) of the combobox. */
 	value: JsonValue;
 	/** The current selected label(s) of the combobox. */
