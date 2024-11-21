@@ -31,6 +31,7 @@
 	bind:this={self}
 	use:useActions={use}
 	class={classProp(klass, ctx.state)}
+	{href}
 	{...ctx.attrs}
 	{...props}
 >
