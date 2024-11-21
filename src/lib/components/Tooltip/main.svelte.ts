@@ -5,6 +5,7 @@ import {
 	Floating,
 	removeNodeProps,
 	setNodeProps,
+	trackTimeout,
 	type StateValues
 } from '$internal';
 import type { TooltipState } from './types.js';
@@ -24,7 +25,7 @@ class TooltipRoot extends Floating {
 	$disabled: TooltipRootProps['disabled'];
 	$delay: TooltipRootProps['delay'];
 
-	#timeout = $state<number | null>(null);
+	timeout = trackTimeout();
 
 	constructor(props: TooltipRootProps) {
 		super('Tooltip');
@@ -33,25 +34,16 @@ class TooltipRoot extends Floating {
 		this.$delay = props.delay;
 	}
 
-	open() {
-		if (this.#timeout) {
-			clearTimeout(this.#timeout);
-			this.#timeout = null;
-		}
-
-		this.#timeout = setTimeout(() => {
+	open = () => {
+		this.timeout.set(() => {
 			this.$visible.val = true;
 		}, this.$delay.val.in);
-	}
-	close() {
-		if (this.#timeout) {
-			clearTimeout(this.#timeout);
-			this.#timeout = null;
-		}
-		this.#timeout = setTimeout(() => {
+	};
+	close = () => {
+		this.timeout.set(() => {
 			this.$visible.val = false;
 		}, this.$delay.val.out);
-	}
+	};
 
 	state = $derived.by<TooltipState>(() => ({
 		visible: this.$visible.val
@@ -72,25 +64,14 @@ class TooltipTrigger {
 				const child = this.root.trigger.children[0] as HTMLElement;
 
 				setNodeProps(child, {
-					id: this.root.uid('trigger')
+					id: this.root.uid('trigger'),
+					'aria-describedby': this.root.uid('content')
 				});
 				addEventListeners(child, {
 					mouseenter: () => this.root.open(),
 					mouseleave: () => this.root.close(),
 					focus: () => this.root.open(),
 					blur: () => this.root.close()
-				});
-
-				$effect(() => {
-					if (!child) return;
-
-					if (this.root.$visible.val) {
-						setNodeProps(child, {
-							'aria-describedby': this.root.uid('content')
-						});
-					} else {
-						removeNodeProps(child, 'aria-describedby');
-					}
 				});
 			}
 		});

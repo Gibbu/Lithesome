@@ -1,7 +1,6 @@
 ---
 title: 'Tags'
 description: 'Display submitted tags one by one.'
-badge: 'new'
 ---
 
 <script>

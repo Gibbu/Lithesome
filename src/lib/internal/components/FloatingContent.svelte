@@ -21,6 +21,7 @@
 		constrainViewport = $bindable(),
 		portalTarget = $bindable(),
 		placement = $bindable(),
+		offset = 0,
 		outsideCallback,
 		ctx,
 		componentName,
@@ -49,7 +50,14 @@
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
-		use:useFloating={{ anchor: ctx.root.trigger, arrow: ctx.root.arrow, sameWidth, constrainViewport, placement }}
+		use:useFloating={{
+			anchor: ctx.root.trigger,
+			arrow: ctx.root.arrow,
+			sameWidth,
+			constrainViewport,
+			placement,
+			offset
+		}}
 		use:useOutside={{ exclude: ctx.root.trigger, callback: () => outsideCallback() }}
 		use:usePortal={portalTarget}
 		use:useActions={use}
@@ -63,7 +71,14 @@
 {:else if visible}
 	<div
 		bind:this={self}
-		use:useFloating={{ anchor: ctx.root.trigger, arrow: ctx.root.arrow, sameWidth, constrainViewport, placement }}
+		use:useFloating={{
+			anchor: ctx.root.trigger,
+			arrow: ctx.root.arrow,
+			sameWidth,
+			constrainViewport,
+			placement,
+			offset
+		}}
 		use:useOutside={{ exclude: ctx.root.trigger, callback: () => outsideCallback() }}
 		use:usePortal={portalTarget}
 		use:useActions={use}

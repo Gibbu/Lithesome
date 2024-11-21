@@ -60,6 +60,8 @@ export interface ContentProps {
 	constrainViewport?: boolean;
 	/** Makes the content the same width as the trigger. */
 	sameWidth?: boolean;
+	/** The number in `px` to offset from the content. */
+	offset?: number;
 }
 
 export type StateValues<T extends Record<string, any>> = { [K in keyof T]: { val: T[K] } };

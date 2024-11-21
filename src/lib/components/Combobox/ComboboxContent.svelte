@@ -13,6 +13,7 @@
 		self = $bindable(),
 		placement = 'bottom',
 		constrainViewport = false,
+		offset = 0,
 		...props
 	}: ComboboxContentProps = $props();
 
@@ -31,6 +32,7 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
+	{offset}
 	outsideCallback={() => ctx.root.close()}
 	role="listbox"
 	class={klass}

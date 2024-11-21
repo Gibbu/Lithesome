@@ -7,6 +7,7 @@ import {
 	log,
 	removeNodeProps,
 	setNodeProps,
+	trackTimeout,
 	type StateValues
 } from '$internal';
 import type { HovercardState } from './types.js';
@@ -24,7 +25,7 @@ class HovercardRoot extends Floating {
 	$visible: HovercardRootProps['visible'];
 	$delays: HovercardRootProps['delays'];
 
-	timeout = $state<number | null>(null);
+	timeout = trackTimeout();
 	hovered = $state<boolean>(false);
 
 	constructor(props: HovercardRootProps) {
@@ -35,28 +36,18 @@ class HovercardRoot extends Floating {
 	}
 
 	open = () => {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-
-		this.timeout = setTimeout(() => {
+		this.timeout.set(() => {
 			this.$visible.val = true;
 		}, this.$delays.val.in);
 	};
 	close = () => {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-
-		this.timeout = setTimeout(() => {
+		this.timeout.set(() => {
 			if (!this.hovered) this.$visible.val = false;
 		}, this.$delays.val.out);
 	};
 	forceClose = () => {
 		this.$visible.val = false;
-		this.timeout = null;
+		this.timeout.clear();
 	};
 
 	state = $derived.by<HovercardState>(() => ({
@@ -149,7 +140,7 @@ class HovercardContent {
 
 	#handleMouseenter = () => {
 		this.root.hovered = true;
-		this.root.timeout = null;
+		this.root.timeout.clear();
 	};
 	#handleMouseleave = () => {
 		this.root.hovered = false;

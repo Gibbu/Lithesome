@@ -12,6 +12,7 @@
 		class: klass,
 		self = $bindable(),
 		placement = 'bottom',
+		offset = 0,
 		constrainViewport = false,
 		...props
 	}: SelectContentProps = $props();
@@ -27,6 +28,7 @@
 	{transition}
 	{use}
 	{sameWidth}
+	{offset}
 	{constrainViewport}
 	{placement}
 	{portalTarget}

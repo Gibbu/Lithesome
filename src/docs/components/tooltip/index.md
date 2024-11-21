@@ -1,6 +1,7 @@
 ---
 title: 'Tooltip'
-description: 'Display content over the window without taking away focus from the current context.'
+description: 'A popup that displays additonal information	when hovering or focusing an element.'
+badge: 'new'
 ---
 
 <script>
@@ -17,17 +18,24 @@ description: 'Display content over the window without taking away focus from the
 
 ```svelte
 <script>
-	import { Popover, PopoverTrigger, PopoverContent, PopoverArrow } from 'lithesome';
+	import { Tooltip, TooltipTrigger, TooltipContent, TooltipArrow } from 'lithesome';
 </script>
 
-<Popover>
-	<PopoverTrigger>
+<Tooltip>
+	<TooltipTrigger>
 		<button></button>
-	</PopoverTrigger>
-	<PopoverContent>
-		<PopoverArrow />
-	</PopoverContent>
-</Popover>
+	</TooltipTrigger>
+	<TooltipContent>
+		<TooltipArrow />
+	</TooltipContent>
+</Tooltip>
 ```
+
+## Hovering the tooltip
+
+Hovering the tooltip usually is almost never needed as it's main purpose is to display information and not intended to be intracted with.
+
+If hovering the tooltip is required, I suggest you view the [Hovercard](/docs/components/hovercard) component.  
+It'll allow for hovering the content without it disappearing upon hovering.
 
 </DocsPage>

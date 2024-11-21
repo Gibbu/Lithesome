@@ -13,6 +13,7 @@
 		self = $bindable(),
 		placement = 'bottom',
 		constrainViewport = false,
+		offset = 0,
 		...props
 	}: TooltipContentProps = $props();
 
@@ -29,8 +30,9 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
+	{offset}
 	outsideCallback={() => ctx.root.close()}
-	role="dialog"
+	role="tooltip"
 	class={klass}
 	style="pointer-events: none;"
 	{...props}

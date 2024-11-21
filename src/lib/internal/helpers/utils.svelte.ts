@@ -130,3 +130,32 @@ export const styleObjToString = (obj: Record<string, any>) => {
 
 	return css;
 };
+
+/**
+ * Dead simple function that clears already existing timeout if found and sets a new one.
+ */
+export const trackTimeout = () => {
+	let timeout = $state<number | null>(null);
+
+	const clear = () => {
+		if (timeout) {
+			clearTimeout(timeout);
+			timeout = null;
+		}
+	};
+
+	return {
+		/**
+		 * @param fn The function to run.
+		 * @param delay The number in seconds to run the timeout.
+		 */
+		set(fn: () => void, delay: number) {
+			clear();
+			timeout = setTimeout(fn, delay);
+		},
+		/**
+		 * Clear the current timeout Id.
+		 */
+		clear
+	};
+};

@@ -36,18 +36,6 @@ const trigger: ComponentReference = {
 			type: 'boolean',
 			description: 'Whether or not the popover content is visible or not.'
 		}
-	],
-	events: [
-		{
-			name: 'onClick',
-			params: ['e: MouseEvent'],
-			return: 'void'
-		},
-		{
-			name: 'onKeydown',
-			params: ['e: KeyboardEvent'],
-			return: 'void'
-		}
 	]
 };
 

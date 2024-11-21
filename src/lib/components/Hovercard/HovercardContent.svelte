@@ -13,6 +13,7 @@
 		placement = 'bottom',
 		constrainViewport,
 		sameWidth = false,
+		offset = 0,
 		...props
 	}: HovercardContentProps = $props();
 
@@ -29,6 +30,7 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
+	{offset}
 	{ctx}
 	{use}
 	outsideCallback={() => ctx.root.forceClose()}
