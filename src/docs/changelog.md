@@ -4,6 +4,15 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.17.0
+
+<small>22 November, 2024</small>
+
+- Added [Tooltip](/docs/components/tooltip) component.
+- Added FloatingUI `offset` middleware by default and exported a `offset` prop to the corresponding `Content` components.
+- Removed base elemenet to Floating root components.
+  > This means the `<Select />`, `<Hovercard />`, `<Combobox />`... components won't have a wrapper `div` element.
+
 ### v0.16.0
 
 <small>13 November, 2024</small>
