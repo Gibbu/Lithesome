@@ -29,6 +29,7 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	bind:this={self}
+	href={href || undefined}
 	use:useActions={use}
 	class={classProp(klass, ctx.state)}
 	{...ctx.attrs}
