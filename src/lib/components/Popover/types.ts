@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps } from '$internal';
+import type { Props, PropsNoChildren, ContentProps, PropsNoElement } from '$internal';
 
 /**
  * The state that is exposed from the `Popover` components.\
@@ -8,7 +8,7 @@ export interface PopoverState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface PopoverProps extends Props<HTMLDivElement, PopoverState> {
+export interface PopoverProps extends PropsNoElement<PopoverState> {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }

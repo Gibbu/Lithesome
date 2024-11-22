@@ -13,6 +13,7 @@
 		self = $bindable(),
 		placement = 'bottom',
 		constrainViewport = false,
+		offset = 0,
 		...props
 	}: MenuContentProps = $props();
 
@@ -28,6 +29,7 @@
 	{transition}
 	{use}
 	{sameWidth}
+	{offset}
 	{constrainViewport}
 	{placement}
 	{portalTarget}

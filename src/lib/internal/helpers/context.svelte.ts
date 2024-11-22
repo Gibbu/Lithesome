@@ -43,9 +43,20 @@ export const buildContext = <RC>(rootClass: Class<RC>) => {
 };
 
 export class Floating {
+	#name: string;
+
 	arrow = $state<HTMLElement | null>(null);
 	content = $state<HTMLElement | null>(null);
 	trigger = $state<HTMLElement | null>(null);
+
+	constructor(name: string) {
+		this.#name = name;
+	}
+
+	registerTrigger<T extends HTMLElement>(trigger: T) {
+		if (trigger.children.length > 1) log.error(`<${this.#name}Trigger /> can only have 1 direct child node.`);
+		this.trigger = trigger;
+	}
 }
 
 /**

@@ -1,21 +1,17 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { ComboboxProps } from './types.js';
 
 	let {
 		children,
-		use = [],
-		class: klass,
 		value = $bindable(),
 		label = $bindable(),
 		touched = $bindable(false),
 		disabled = $bindable(false),
 		visible = $bindable(true),
 		controlled,
-		self = $bindable(),
-		onChange,
-		...props
+		onChange
 	}: ComboboxProps = $props();
 
 	const ctx = createRootContext({
@@ -28,7 +24,7 @@
 		),
 		disabled: stateValue(() => disabled),
 		label: stateValue(
-			() => label || self?.textContent?.trim() || '',
+			() => label || '',
 			(v) => {
 				label = v;
 				onChange?.({ label: v });
@@ -47,6 +43,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+{@render children?.(ctx.state)}

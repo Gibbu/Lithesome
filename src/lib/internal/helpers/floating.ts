@@ -5,6 +5,7 @@ import {
 	autoUpdate,
 	size,
 	arrow as floatingArrow,
+	offset as floatingOffset,
 	type Placement
 } from '@floating-ui/dom';
 import { defaultConfig, setNodeStyles, setNodeProps } from '$internal';
@@ -17,15 +18,17 @@ interface FloatingConfig {
 	placement?: Placement;
 	constrainViewport?: boolean;
 	sameWidth?: boolean;
+	offset?: number;
 }
 
 export const useFloating = (node: HTMLElement, config: FloatingConfig) => {
-	const { anchor, arrow, placement, constrainViewport, sameWidth } = defaultConfig(config, {
+	const { anchor, arrow, placement, constrainViewport, sameWidth, offset } = defaultConfig(config, {
 		anchor: null,
 		arrow: null,
 		placement: 'bottom',
 		constrainViewport: false,
-		sameWidth: false
+		sameWidth: false,
+		offset: 0
 	});
 
 	if (!anchor) return;
@@ -36,6 +39,7 @@ export const useFloating = (node: HTMLElement, config: FloatingConfig) => {
 		computePosition(anchor, node, {
 			placement,
 			middleware: [
+				floatingOffset(offset),
 				arrow ? floatingArrow({ element: arrow }) : undefined,
 				flip(),
 				shift({

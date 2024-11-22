@@ -12,6 +12,7 @@
 		sameWidth = false,
 		class: klass,
 		self = $bindable(),
+		offset = 0,
 		placement = 'bottom',
 		constrainViewport = false,
 		...props
@@ -39,6 +40,7 @@
 		...use
 	]}
 	{sameWidth}
+	{offset}
 	{constrainViewport}
 	{placement}
 	{portalTarget}

@@ -56,7 +56,7 @@ class ComboboxRoot extends Floating {
 	);
 
 	constructor(props: ComboboxRootProps) {
-		super();
+		super('Combobox');
 
 		this.$visible = props.visible;
 		this.$value = props.value;

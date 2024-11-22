@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { useTooltipContent } from './main.svelte.js';
 	import { FloatingContent } from '$internal';
-	import { useComboboxContent } from './main.svelte.js';
-	import type { ComboboxContentProps } from './types.js';
+	import type { TooltipContentProps } from './types.js';
 
 	let {
 		children,
@@ -15,26 +15,25 @@
 		constrainViewport = false,
 		offset = 0,
 		...props
-	}: ComboboxContentProps = $props();
+	}: TooltipContentProps = $props();
 
-	const ctx = useComboboxContent();
+	const ctx = useTooltipContent();
 </script>
 
 <FloatingContent
 	{children}
-	componentName="Combobox"
-	visible={ctx.root.SuperVisible}
-	bind:self
+	componentName="Tooltip"
+	visible={ctx.root.$visible.val}
 	{ctx}
 	{transition}
-	{use}
 	{sameWidth}
 	{constrainViewport}
 	{placement}
 	{portalTarget}
 	{offset}
 	outsideCallback={() => ctx.root.close()}
-	role="listbox"
+	role="tooltip"
 	class={klass}
+	style="pointer-events: none;"
 	{...props}
 />

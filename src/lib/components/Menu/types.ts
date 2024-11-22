@@ -1,4 +1,4 @@
-import type { Props, PropsNoChildren, ContentProps, Handler } from '$internal';
+import type { Props, PropsNoChildren, ContentProps, Handler, PropsNoElement } from '$internal';
 
 type MenuItemElement = HTMLButtonElement | HTMLAnchorElement;
 
@@ -10,7 +10,7 @@ export interface MenuState {
 	/** Whether or not the content is opened or not. */
 	visible: boolean;
 }
-export interface MenuProps extends Props<HTMLDivElement, MenuState> {
+export interface MenuProps extends PropsNoElement<MenuState> {
 	/** Control the visibility of the menu */
 	visible?: boolean;
 	/**

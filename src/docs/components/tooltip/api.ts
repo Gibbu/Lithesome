@@ -1,13 +1,13 @@
 import { self, use, transition, arrow, type ComponentReference } from '$site/index.js';
 
-const popover: ComponentReference = {
+const tooltip: ComponentReference = {
 	name: 'Popover',
 	props: [
 		{
 			name: 'visible',
 			type: 'boolean',
 			default: 'false',
-			description: 'Controlled state of the popover content.'
+			description: 'Controlled state of the tooltip content.'
 		},
 		use,
 		self('Div')
@@ -16,7 +16,7 @@ const popover: ComponentReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether or not the popover content is visible or not.'
+			description: 'Whether or not the tooltip content is visible or not.'
 		}
 	],
 	dataAttrs: [
@@ -29,19 +29,19 @@ const popover: ComponentReference = {
 
 const trigger: ComponentReference = {
 	name: 'PopoverTrigger',
-	childOf: popover.name,
+	childOf: tooltip.name,
 	childrenProps: [
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether or not the popover content is visible or not.'
+			description: 'Whether or not the tooltip content is visible or not.'
 		}
 	]
 };
 
 const content: ComponentReference = {
 	name: 'PopoverContent',
-	childOf: popover.name,
+	childOf: tooltip.name,
 	props: [
 		{
 			name: 'placement',
@@ -75,9 +75,9 @@ const content: ComponentReference = {
 		{
 			name: 'visible',
 			type: 'boolean',
-			description: 'Whether or not the popover content is visible or not.'
+			description: 'Whether or not the tooltip content is visible or not.'
 		}
 	]
 };
 
-export default [popover, trigger, content, arrow(popover.name)];
+export default [tooltip, trigger, content, arrow(tooltip.name)];

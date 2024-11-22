@@ -7,6 +7,7 @@ import {
 	log,
 	removeNodeProps,
 	setNodeProps,
+	trackTimeout,
 	type StateValues
 } from '$internal';
 import type { HovercardState } from './types.js';
@@ -24,49 +25,31 @@ class HovercardRoot extends Floating {
 	$visible: HovercardRootProps['visible'];
 	$delays: HovercardRootProps['delays'];
 
-	timeout = $state<number | null>(null);
+	timeout = trackTimeout();
 	hovered = $state<boolean>(false);
 
 	constructor(props: HovercardRootProps) {
-		super();
+		super('Hovercard');
 
 		this.$visible = props.visible;
 		this.$delays = props.delays;
 	}
 
 	open = () => {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-
-		this.timeout = setTimeout(() => {
+		this.timeout.set(() => {
 			this.$visible.val = true;
 		}, this.$delays.val.in);
 	};
 	close = () => {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-
-		this.timeout = setTimeout(() => {
+		this.timeout.set(() => {
 			if (!this.hovered) this.$visible.val = false;
 		}, this.$delays.val.out);
 	};
 	forceClose = () => {
 		this.$visible.val = false;
-		this.timeout = null;
+		this.timeout.clear();
 	};
 
-	attrs = $derived.by(
-		() =>
-			({
-				id: this.uid(),
-				'data-hovercard': '',
-				'data-state': this.$visible.val === true ? 'opened' : 'closed'
-			}) as const
-	);
 	state = $derived.by<HovercardState>(() => ({
 		visible: this.$visible.val
 	}));
@@ -118,11 +101,6 @@ class HovercardTrigger {
 		});
 	}
 
-	registerTrigger = (trigger: HTMLElement) => {
-		if (trigger.children.length > 1) log.error('<HovercardTrigger /> can only have 1 direct child node.');
-		this.root.trigger = trigger;
-	};
-
 	#handleKeydown = (e: KeyboardEvent) => {
 		if (e.key === KEYS.escape || e.key === KEYS.tab) this.root.forceClose();
 	};
@@ -162,7 +140,7 @@ class HovercardContent {
 
 	#handleMouseenter = () => {
 		this.root.hovered = true;
-		this.root.timeout = null;
+		this.root.timeout.clear();
 	};
 	#handleMouseleave = () => {
 		this.root.hovered = false;
