@@ -11,18 +11,18 @@ const componentName = (name: string) => `<${name.replace('Root', '')} />`;
  * @param rootClass The "root" class of the context.
  */
 export const buildContext = <RC>(rootClass: Class<RC>) => {
-	const uid = createUID('context');
+	const key = Symbol('context');
 
 	return {
 		/** Create the root context. */
 		createContext(...rest: any[]) {
 			const root = new rootClass(...rest);
 
-			return setContext(uid(), root);
+			return setContext(key, root);
 		},
 		/** Get the current context. */
 		getContext() {
-			return getContext(uid()) as RC;
+			return getContext(key) as RC;
 		},
 		/**
 		 * Creates a new class with the "root" class as the first argument.
@@ -30,12 +30,12 @@ export const buildContext = <RC>(rootClass: Class<RC>) => {
 		 * @param rest Any props to be passed down to the class.
 		 */
 		register<C>(klass: Class<C>, ...rest: any[]) {
-			if (!hasContext(uid()))
+			if (!hasContext(key))
 				throw log.error(
 					`${componentName(klass.name)} is not placed inside the correct context of ${componentName(rootClass.name)}`
 				);
 
-			const root = getContext(uid()) as RC;
+			const root = getContext(key) as RC;
 
 			return new klass(root, ...rest);
 		}
