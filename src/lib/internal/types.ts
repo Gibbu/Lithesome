@@ -38,6 +38,10 @@ export interface PropsNoChildren<T extends HTMLElement, C extends Record<string,
 	 * Alias for `bind:this`, allowing for the binding of the element.
 	 */
 	self?: T;
+	/**
+	 * What underlying element to render the component as.
+	 */
+	as?: keyof HTMLElementTagNameMap;
 	[key: string]: any;
 }
 

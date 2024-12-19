@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { createAccordionRootContext } from './main.svelte.js';
+
 	import type { AccordionProps } from './types.js';
 
 	let {
@@ -11,6 +12,7 @@
 		self = $bindable(),
 		single = $bindable(false),
 		onChange,
+		as = 'div',
 		...props
 	}: AccordionProps = $props();
 
@@ -26,6 +28,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

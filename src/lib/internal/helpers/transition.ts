@@ -2,7 +2,10 @@ import type { TransitionConfig } from 'svelte/transition';
 
 export type TransitionPart = [(node: Element, config?: any) => TransitionConfig, Record<string, any>?];
 
-export type Transition = TransitionPart | { in: TransitionPart; out: TransitionPart };
+export type Transition =
+	| TransitionPart
+	| { in: TransitionPart; out?: TransitionPart }
+	| { in?: TransitionPart; out: TransitionPart };
 
 export const getTransition = (el: Transition | null | undefined) => {
 	const isBoth = Array.isArray(el);

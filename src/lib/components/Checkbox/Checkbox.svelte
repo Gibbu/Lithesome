@@ -1,40 +1,21 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { stateValue } from '$internal';
+	import { createCheckboxRootContext } from './main.svelte.js';
+
 	import type { CheckboxProps } from './types.js';
 
 	let {
 		children,
-		class: klass,
-		use = [],
-		self = $bindable(),
 		checked = $bindable(false),
-		required = false,
 		disabled = $bindable(false),
-		onClick,
-		...props
+		required = $bindable(false)
 	}: CheckboxProps = $props();
 
-	const handleClick: typeof onClick = (e) => {
-		if (disabled) return;
-		onClick?.(e);
-
-		checked = checked === 'mixed' ? true : !checked;
-	};
+	const ctx = createCheckboxRootContext({
+		checked: stateValue(() => checked),
+		disabled: stateValue(() => disabled),
+		required: stateValue(() => required)
+	});
 </script>
 
-<button
-	type="button"
-	bind:this={self}
-	use:useActions={use}
-	class={classProp(klass, { checked })}
-	role="checkbox"
-	aria-checked={checked}
-	aria-required={required}
-	disabled={disabled || undefined}
-	data-state={checked ? 'checked' : 'unchecked'}
-	data-checkbox=""
-	onclick={handleClick}
-	{...props}
->
-	{@render children?.({ checked })}
-</button>
+{@render children?.(ctx.state)}

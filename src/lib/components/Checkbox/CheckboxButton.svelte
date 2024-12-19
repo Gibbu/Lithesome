@@ -1,19 +1,20 @@
 <script lang="ts">
-	import { useAccordionButton } from './main.svelte.js';
 	import { Element } from '$internal';
-	import type { AccordionButtonProps } from './types.js';
+	import { useCheckboxButton } from './main.svelte.js';
+
+	import type { CheckboxButtonProps } from './types.js';
 
 	let {
 		children,
-		class: klass,
-		use = [],
-		self = $bindable(),
 		as = 'button',
+		class: klass,
+		self = $bindable(),
+		use = [],
 		onClick,
 		...props
-	}: AccordionButtonProps = $props();
+	}: CheckboxButtonProps = $props();
 
-	const ctx = useAccordionButton({
+	const ctx = useCheckboxButton({
 		onClick
 	});
 </script>
