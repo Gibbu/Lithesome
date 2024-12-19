@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { createCollapsibleRootContext } from './main.svelte.js';
+
 	import type { CollapsibleProps } from './types.js';
 
 	let {
@@ -10,6 +11,7 @@
 		visible = $bindable(false),
 		self = $bindable(),
 		disabled = $bindable(false),
+		as = 'div',
 		onChange,
 		...props
 	}: CollapsibleProps = $props();
@@ -26,6 +28,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
 	import { usePinValue } from './main.svelte.js';
+
 	import type { PinValueProps } from './types.js';
 
 	let { class: klass, use = [], self = $bindable(), name, ...props }: PinValueProps = $props();

@@ -52,6 +52,7 @@ class CollapsibleButton {
 
 	attrs = $derived.by(() => ({
 		id: this.root.uid('button'),
+		type: 'button',
 		'aria-expanded': this.root.$visible.val,
 		'data-collapsiblebutton': '',
 		'data-disabled': this.root.$disabled.val,

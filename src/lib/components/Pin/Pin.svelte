@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { createRootContext } from './main.svelte.js';
+
 	import type { PinProps } from './types.js';
 
 	let {
@@ -12,6 +13,7 @@
 		disabled = $bindable(false),
 		type = $bindable('text'),
 		placeholder = '○',
+		as = 'div',
 		onChange,
 		onFilled,
 		...props
@@ -29,6 +31,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { classProp, FloatingContent } from '$internal';
+	import { FloatingContent } from '$internal';
 	import { useHovercardContent } from './main.svelte.js';
+
 	import type { HovercardContentProps } from './types.js';
 
 	let {

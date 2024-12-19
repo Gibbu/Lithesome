@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
 	import { usePinInput } from './main.svelte.js';
+
 	import type { PinInputProps } from './types.js';
 
 	let {

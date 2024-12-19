@@ -6,13 +6,18 @@
 
 	let {
 		children,
-		checked = $bindable(false),
+		checked = $bindable('mixed'),
 		disabled = $bindable(false),
 		required = $bindable(false)
 	}: CheckboxProps = $props();
 
 	const ctx = createCheckboxRootContext({
-		checked: stateValue(() => checked),
+		checked: stateValue(
+			() => checked,
+			(v) => {
+				checked = v;
+			}
+		),
 		disabled: stateValue(() => disabled),
 		required: stateValue(() => required)
 	});

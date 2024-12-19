@@ -5,7 +5,8 @@ export type TransitionPart = [(node: Element, config?: any) => TransitionConfig,
 export type Transition =
 	| TransitionPart
 	| { in: TransitionPart; out?: TransitionPart }
-	| { in?: TransitionPart; out: TransitionPart };
+	| { in?: TransitionPart; out: TransitionPart }
+	| { in: TransitionPart; out: TransitionPart };
 
 export const getTransition = (el: Transition | null | undefined) => {
 	const isBoth = Array.isArray(el);

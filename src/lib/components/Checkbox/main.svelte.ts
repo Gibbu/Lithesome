@@ -83,7 +83,8 @@ class CheckboxButton {
 		if (this.root.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.$checked.val = true;
+		if (this.root.$checked.val === 'mixed') this.root.$checked.val = true;
+		else this.root.$checked.val = !this.root.$checked.val;
 	};
 
 	attrs = $derived.by(() => ({

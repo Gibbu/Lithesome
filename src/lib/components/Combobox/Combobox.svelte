@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
+
 	import type { ComboboxProps } from './types.js';
 
 	let {

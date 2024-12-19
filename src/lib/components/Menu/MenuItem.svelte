@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { useActions, classProp, stateValue } from '$internal';
-	import type { MenuItemProps } from './types.js';
 	import { useMenuItem } from './main.svelte.js';
+
+	import type { MenuItemProps } from './types.js';
 
 	let {
 		children,

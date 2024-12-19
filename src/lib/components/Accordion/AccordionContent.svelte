@@ -18,6 +18,8 @@
 </script>
 
 <Element
+	visible={ctx.item.Active}
+	toggleable
 	{as}
 	{klass}
 	bind:self
@@ -25,7 +27,6 @@
 	state={ctx.state}
 	{children}
 	{transition}
-	visible={ctx.item.Active}
 	{...ctx.attrs}
 	{...props}
 />

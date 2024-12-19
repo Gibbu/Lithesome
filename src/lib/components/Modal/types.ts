@@ -1,7 +1,7 @@
-import type { Transition } from '$internal';
+import type { PropsNoElement, Transition } from '$internal';
 import type { Props, PropsNoChildren } from '$internal';
 
-export interface ModalProps extends Props<HTMLDivElement> {
+export interface ModalProps extends PropsNoElement {
 	/** Control the visibility of the modal. */
 	visible: boolean;
 	/** The element to mount the modal to. */

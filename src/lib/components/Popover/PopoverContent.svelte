@@ -2,6 +2,7 @@
 	import { usePopoverContent } from './main.svelte.js';
 	import { FloatingContent } from '$internal';
 	import { useTrap } from '$lib/index.js';
+
 	import type { PopoverContentProps } from './types.js';
 
 	let {

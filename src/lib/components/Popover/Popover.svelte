@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { stateValue } from '$internal';
 	import { createRootContext } from './main.svelte.js';
+
 	import type { PopoverProps } from './types.js';
 
-	let { children, visible = $bindable(false), ...props }: PopoverProps = $props();
+	let { children, visible = $bindable(false) }: PopoverProps = $props();
 
 	const ctx = createRootContext({
 		visible: stateValue(

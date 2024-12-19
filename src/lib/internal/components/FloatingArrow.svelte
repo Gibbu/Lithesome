@@ -1,5 +1,4 @@
 <script lang="ts" generics="T extends FloatingContext">
-	import { onMount } from 'svelte';
 	import { useActions, classProp, log, type PropsNoChildren } from '$internal';
 
 	import type { FloatingContext } from './types.js';
@@ -16,7 +15,7 @@
 		[`data-${component.toLowerCase()}arrow`]: ''
 	}));
 
-	onMount(() => {
+	$effect(() => {
 		if (!ctx) throw log.error(`<${component}Arrow /> must be a child of <${component}Content />`);
 		if (!self) throw log.error(`Cannot initialize arrow node of <${component}Arrow />.`);
 		ctx.root.arrow = self;

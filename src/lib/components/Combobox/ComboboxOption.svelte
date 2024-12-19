@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { useComboboxOption } from './main.svelte.js';
-	import type { ComboboxElement, ComboboxOptionProps } from './types.js';
+
+	import type { ComboboxOptionProps } from './types.js';
 
 	let {
 		children,
@@ -11,11 +12,11 @@
 		label,
 		self = $bindable(),
 		disabled = $bindable(false),
+		as = 'button',
 		onClick,
 		onMouseover,
 		...props
 	}: ComboboxOptionProps = $props();
-	let optionEl: ComboboxElement;
 
 	const ctx = useComboboxOption(
 		{
@@ -30,13 +31,4 @@
 	);
 </script>
 
-<button
-	bind:this={self}
-	bind:this={optionEl}
-	use:useActions={use}
-	class={classProp(klass, ctx.state)}
-	{...ctx.attrs}
-	{...props}
->
-	{@render children?.(ctx.state)}
-</button>
+<Element {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

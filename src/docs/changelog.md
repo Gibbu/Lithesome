@@ -4,9 +4,18 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.18.0
+
+<small>20th November, 2024</small>
+
+- Small internet rewrite which now allows for the `as` prop on most Lithesome components.
+- Added `as` prop that renders that element as the underlying element.
+- Converted `<Checkbox />` and `<Switch />` to context component trees that has inbuilt labels and hidden inputs.
+- Fixed aria attributes for `<Combobox />`.
+
 ### v0.17.0
 
-<small>22 November, 2024</small>
+<small>22th November, 2024</small>
 
 - Added [Tooltip](/docs/components/tooltip) component.
 - Added FloatingUI `offset` middleware by default and exported a `offset` prop to the corresponding `Content` components.
@@ -15,13 +24,13 @@ hidden: true
 
 ### v0.16.0
 
-<small>13 November, 2024</small>
+<small>13th November, 2024</small>
 
 - Added [Collapsible](/docs/components/collapsible) component.
 
 ### v0.15.2
 
-<small>12 November, 2024</small>
+<small>12th November, 2024</small>
 
 - Fixed `Accordion` component not updating value prop on update.
 - Added value prop to `AccordionItem` to allow for easier default setting of accordion items.
@@ -29,7 +38,7 @@ hidden: true
 
 ### v0.15.1
 
-<small>11 November, 2024</small>
+<small>11th November, 2024</small>
 
 - Fixed `Select` and `Combobox` content components not displaying.
 - Fixed `Tabs` component not updating `value` prop on update.
@@ -37,13 +46,13 @@ hidden: true
 
 ### v0.15.0
 
-<small>10 November, 2024</small>
+<small>10th November, 2024</small>
 
 - Added [Tags](/docs/components/tags) components.
 
 ### v0.14.1
 
-<small>10 November, 2024</small>
+<small>10th November, 2024</small>
 
 - Brought back event props.
   > This will allow users to use the already claimed events used by Lithesome.

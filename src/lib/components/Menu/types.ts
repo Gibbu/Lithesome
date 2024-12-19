@@ -65,7 +65,7 @@ export interface MenuItemEvents {
 	 */
 	onMouseover?: Handler<MouseEvent, MenuItemElement>;
 }
-export interface MenuItemProps extends Props<MenuItemElement, MenuItemState>, MenuItemEvents {
+export interface MenuItemProps extends Omit<Props<MenuItemElement, MenuItemState>, 'as'>, MenuItemEvents {
 	/** Turns the button to an anchor, with the `href` passed. */
 	href?: string;
 	/** Disables the item, disallowing the clicking and keyboard navigation. */

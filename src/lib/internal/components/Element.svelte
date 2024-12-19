@@ -19,6 +19,7 @@
 		self?: T;
 		visible?: boolean;
 		transition?: Transition;
+		toggleable?: boolean;
 	}
 
 	let {
@@ -30,6 +31,7 @@
 		state,
 		visible = $bindable(),
 		transition,
+		toggleable = false,
 		...props
 	}: Props = $props();
 </script>
@@ -75,7 +77,11 @@
 			{@render children?.(state as S)}
 		</svelte:element>
 	{/if}
-{:else}
+{:else if toggleable && visible}
+	<svelte:element this={as} class={classProp(klass, state)} use:useActions={use} bind:this={self} {...props}>
+		{@render children?.(state as S)}
+	</svelte:element>
+{:else if !toggleable}
 	<svelte:element this={as} class={classProp(klass, state)} use:useActions={use} bind:this={self} {...props}>
 		{@render children?.(state as S)}
 	</svelte:element>

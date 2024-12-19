@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useActions, classProp } from '$internal';
 	import { useComboboxInput } from './main.svelte.js';
+
 	import type { ComboboxInputProps } from './types.js';
 
 	let {

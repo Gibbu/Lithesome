@@ -1,5 +1,14 @@
 <script lang="ts" generics="T extends FloatingContext">
-	import { useActions, classProp, log, useFloating, getTransition, type Props, type ContentProps } from '$internal';
+	import {
+		useActions,
+		classProp,
+		log,
+		useFloating,
+		getTransition,
+		type Props,
+		type ContentProps,
+		type HTMLActionArray
+	} from '$internal';
 	import { useOutside, usePortal } from '$lib/index.js';
 	import type { FloatingContext } from './types.js';
 
@@ -43,29 +52,39 @@
 		if (!self) throw log.error(`Cannot initialize content node of <${componentName}Content />.`);
 		ctx.root.content = self;
 	});
+
+	const actions = $derived<HTMLActionArray>([
+		[
+			useFloating,
+			{
+				anchor: ctx.root.trigger,
+				arrow: ctx.root.arrow,
+				sameWidth,
+				constrainViewport,
+				placement,
+				offset
+			}
+		],
+		[useOutside, { exclude: ctx.root.trigger, callback: () => outsideCallback() }],
+		[usePortal, portalTarget],
+		...use
+	]);
 </script>
 
-{#if inTransition && outTransition && visible}
+{#if visible && inTransition && outTransition}
 	{@const { config: inConf, transition: inFn } = inTransition}
 	{@const { config: outConf, transition: outFn } = outTransition}
-	<div
-		bind:this={self}
-		use:useFloating={{
-			anchor: ctx.root.trigger,
-			arrow: ctx.root.arrow,
-			sameWidth,
-			constrainViewport,
-			placement,
-			offset
-		}}
-		use:useOutside={{ exclude: ctx.root.trigger, callback: () => outsideCallback() }}
-		use:usePortal={portalTarget}
-		use:useActions={use}
-		in:inFn={inConf}
-		out:outFn={outConf}
-		{...attrs}
-		{...props}
-	>
+	<div bind:this={self} use:useActions={actions} in:inFn={inConf} out:outFn={outConf} {...attrs} {...props}>
+		{@render children?.({ visible: visible })}
+	</div>
+{:else if visible && inTransition && !outTransition}
+	{@const { config: inConf, transition: inFn } = inTransition}
+	<div bind:this={self} use:useActions={actions} in:inFn={inConf} {...attrs} {...props}>
+		{@render children?.({ visible: visible })}
+	</div>
+{:else if visible && outTransition && !inTransition}
+	{@const { config: outConf, transition: outFn } = outTransition}
+	<div bind:this={self} use:useActions={actions} out:outFn={outConf} {...attrs} {...props}>
 		{@render children?.({ visible: visible })}
 	</div>
 {:else if visible}
@@ -81,7 +100,7 @@
 		}}
 		use:useOutside={{ exclude: ctx.root.trigger, callback: () => outsideCallback() }}
 		use:usePortal={portalTarget}
-		use:useActions={use}
+		use:useActions={actions}
 		{...attrs}
 		{...props}
 	>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { FloatingContent } from '$internal';
 	import { useMenuContent } from './main.svelte.js';
+
 	import type { MenuContentProps } from './types.js';
 
 	let {

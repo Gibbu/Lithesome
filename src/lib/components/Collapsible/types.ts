@@ -27,7 +27,7 @@ export interface CollapsibleButtonEvents {
 	 */
 	onClick?: Handler<MouseEvent, HTMLButtonElement>;
 }
-export interface CollapsibleButtonProps extends Props<HTMLButtonElement, CollapsibleState> {}
+export interface CollapsibleButtonProps extends Props<HTMLButtonElement, CollapsibleState>, CollapsibleButtonEvents {}
 
 export interface CollapsibleContentProps extends Props<HTMLElement> {
 	/**

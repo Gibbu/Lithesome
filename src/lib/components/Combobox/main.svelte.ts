@@ -214,7 +214,7 @@ class ComboboxInput {
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('input'),
+				id: this.root.uid('trigger'),
 				type: 'text',
 				role: 'combobox',
 				'aria-autocomplete': 'list',
