@@ -1,5 +1,6 @@
-import { buildContext, createUID, log, type StateValues } from '$internal';
-import type { TreeButtonEvents } from './types.js';
+import { buildContext, createUID, KEYS, removeDisabledElements, singleTick, type StateValues } from '$internal';
+
+import type { TreeButtonEvents, TreeItemState, TreeState } from './types.js';
 
 //
 // Root
@@ -14,21 +15,29 @@ class TreeRoot {
 	$value: TreeRootProps['value'];
 	$forceVisible: TreeRootProps['forceVisible'];
 
-	selected = $state<string | undefined>();
+	hoveredIndex = $state<number>(-1);
+	items = $state<HTMLElement[]>([]);
+	groups = $state<{ id: string; active: boolean }[]>([]);
+	selectedItem = $state<string | null>(null);
+
+	HoveredItem = $derived.by(() => this.items[this.hoveredIndex]);
+	HoveredItemId = $derived.by(() => (this.items.length && this.HoveredItem ? this.HoveredItem.dataset.id : null));
+	SelectedId = $derived.by(() => this.items.find((el) => el.dataset.id === this.selectedItem)?.dataset.id);
 
 	constructor(props: TreeRootProps) {
 		this.$value = props.value;
 		this.$forceVisible = props.forceVisible;
+
+		$effect(() => {
+			if (this.HoveredItem) this.HoveredItem.focus();
+		});
 	}
 
-	setSelected = (itemId: string) => {
-		this.selected = itemId;
-	};
-	getItems = (): HTMLElement[] => {
-		const root = document.querySelector(`ul#${this.uid()}`);
+	queryItems = () => {
+		const root = document.querySelector(`#${this.uid()}`);
 		if (!root) return [];
 
-		return Array.from(root.querySelectorAll('[role="treeitem"]'));
+		this.items = removeDisabledElements('[data-treebutton][role="treeitem"]');
 	};
 
 	attrs = $derived.by(() => ({
@@ -36,8 +45,8 @@ class TreeRoot {
 		role: 'tree',
 		'data-tree': ''
 	}));
-	state = $derived.by(() => ({
-		selected: this.selected
+	state = $derived.by<TreeState>(() => ({
+		item: this.SelectedId
 	}));
 }
 
@@ -50,30 +59,29 @@ type TreeItemProps = StateValues<{
 }>;
 class TreeItem {
 	uid = createUID('item');
-	root: TreeRoot;
-
-	group = $state<boolean | null>(null);
+	_root: TreeRoot;
+	_group: TreeGroup | undefined;
 
 	$id: TreeItemProps['id'];
 	$disabled: TreeItemProps['disabled'];
 
-	constructor(root: TreeRoot, props: TreeItemProps) {
-		this.root = root;
+	Group = $derived.by(() => this._root.groups.find((el) => el.id === this.$id.val));
+
+	constructor(root: TreeRoot, group: TreeGroup, props: TreeItemProps) {
+		this._root = root;
+		this._group = group;
 
 		this.$id = props.id;
 		this.$disabled = props.disabled;
 	}
 
-	registerGroup = () => {
-		this.group = false;
-	};
-
 	attrs = $derived.by(() => ({
 		id: this.uid(),
 		'data-treeitem': ''
 	}));
-	state = $derived.by(() => ({
-		selected: this.root.selected === this.$id.val
+	state = $derived.by<TreeItemState>(() => ({
+		selected: this._root.SelectedId === this.$id.val,
+		hovered: this._root.HoveredItemId === this.$id.val
 	}));
 }
 
@@ -81,52 +89,101 @@ class TreeItem {
 // Button
 //
 class TreeButton {
-	item: TreeItem;
-	root: TreeRoot;
+	_item: TreeItem;
+	_root: TreeRoot;
+	_group: TreeGroup | undefined;
 	#events: TreeButtonEvents;
 
-	HasGroup = $derived.by(() => this.item.group !== null);
+	#treeElement = $state<HTMLElement | null>(null);
 
-	constructor(item: TreeItem, root: TreeRoot, events: TreeButtonEvents) {
-		this.root = root;
-		this.item = item;
+	constructor(item: TreeItem, root: TreeRoot, group: TreeGroup, events: TreeButtonEvents) {
+		this._root = root;
+		this._item = item;
+		this._group = group;
 		this.#events = events;
+
+		if (this._group && !this._group.children.includes(this._item.$id.val))
+			this._group.children.push(this._item.$id.val);
 	}
 
 	#handleClick: TreeButtonEvents['onClick'] = (e) => {
-		if (this.item.$disabled.val) return;
+		if (this._item.$disabled.val) return;
 		e.stopPropagation();
 		this.#events.onClick?.(e);
 
-		this.root.setSelected(this.item.$id.val);
+		this._root.queryItems();
+		this._root.selectedItem = this._item.$id.val;
+		this._root.hoveredIndex = this._root.items.findIndex((el) => el.dataset.id === e.currentTarget.dataset.id);
 
-		if (this.item.group !== null) {
-			this.item.group = !this.item.group;
+		const group = this._root.groups.find((el) => el.id === this._item.$id.val);
+		if (group) {
+			group.active = !group.active;
 		}
 	};
-	#handleKeydown: TreeButtonEvents['onKeydown'] = (e) => {
-		if (this.item.$disabled.val) return;
+	#handleKeydown: TreeButtonEvents['onKeydown'] = async (e) => {
+		if (this._item.$disabled.val) return;
 		this.#events.onKeydown?.(e);
+		e.preventDefault();
+
+		const { key } = e;
+
+		if (!this.#treeElement) this.#treeElement = document.querySelector(`#${this._root.uid()}`);
+
+		if (this.#treeElement) {
+			await singleTick();
+			this._root.queryItems();
+			this._root.hoveredIndex = this._root.items.findIndex((el) => el.dataset.id === this._root.HoveredItemId);
+
+			if (key === KEYS.arrowUp && this._root.hoveredIndex !== 0) {
+				this._root.hoveredIndex--;
+			} else if (key === KEYS.arrowDown && this._root.hoveredIndex !== this._root.items.length - 1) {
+				this._root.hoveredIndex++;
+			} else if (key === KEYS.enter && this._root.HoveredItemId) {
+				this._root.selectedItem = this._root.HoveredItemId;
+			} else if (key === KEYS.arrowLeft) {
+				console.log(this._group?._item.$id.val);
+				if (this._item.Group && this._item.Group.id === this._item.$id.val && this._item.Group.active) {
+					this._root.HoveredItem.click();
+				} else {
+					const currentIndex = this._root.items.indexOf(this._root.HoveredItem);
+					const parentGroup = this._root.items.findLast(
+						(el, i) =>
+							i < currentIndex &&
+							el.getAttribute('aria-expanded') === 'true' &&
+							el.dataset.id === this._group?._item.$id.val
+					);
+					if (parentGroup) this._root.hoveredIndex = this._root.items.indexOf(parentGroup);
+				}
+			} else if (key === KEYS.arrowRight) {
+				if (this._item.Group && !this._item.Group.active) this._root.HoveredItem.click();
+				await singleTick();
+				this._root.queryItems();
+				if (this._item.Group?.active) {
+					this._root.hoveredIndex = this._root.items.indexOf(this._root.HoveredItem) + 1;
+				}
+			}
+		}
 	};
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.item.uid('button'),
+				id: this._item.uid('button'),
 				role: 'treeitem',
-				tabindex: this.root.selected === this.item.$id.val ? 0 : -1,
-				'aria-selected': this.root.selected === this.item.$id.val,
-				'aria-expanded': this.HasGroup ? (this.item.group ? 'true' : 'false') : undefined,
+				tabindex: this._root.SelectedId === this._item.$id.val ? 0 : -1,
+				'aria-selected': this._root.SelectedId === this._item.$id.val,
+				'aria-expanded': this._item.Group ? (this._item.Group.active ? 'true' : 'false') : undefined,
 				type: 'button',
 				'data-treebutton': '',
-				'data-id': this.item.$id.val,
+				'data-id': this._item.$id.val,
 				onclick: this.#handleClick,
 				onkeydown: this.#handleKeydown
 			}) as const
 	);
 
-	state = $derived.by(() => ({
-		selected: this.root.selected === this.item.$id.val
+	state = $derived.by<TreeItemState>(() => ({
+		selected: this._root.SelectedId === this._item.$id.val,
+		hovered: this._root.HoveredItemId === this._item.$id.val
 	}));
 }
 
@@ -137,29 +194,39 @@ type TreeGroupProps = StateValues<{
 	active: boolean;
 }>;
 class TreeGroup {
-	root: TreeRoot;
-	item: TreeItem;
+	_root: TreeRoot;
+	_item: TreeItem;
+
+	children = $state<string[]>([]);
 
 	$active: TreeGroupProps['active'];
 
-	Visible = $derived.by(() => this.item.group === true || this.root.$forceVisible.val);
+	Visible = $derived.by(() => this.$active.val || this._root.$forceVisible.val);
 
-	constructor(item: TreeItem, root: TreeRoot, props: TreeGroupProps) {
-		this.root = root;
-		this.item = item;
+	constructor(root: TreeRoot, item: TreeItem, props: TreeGroupProps) {
+		this._root = root;
+		this._item = item;
 
 		this.$active = props.active;
 
-		this.item.registerGroup();
+		this._root.groups.push({
+			id: this._item.$id.val,
+			active: false
+		});
+
+		$effect(() => {
+			if (this._item.Group) this.$active.val = this._item.Group.active;
+		});
 	}
 
 	attrs = $derived.by(() => ({
 		role: 'group',
 		'data-treegroup': '',
-		'data-item': this.item.$id.val
+		'data-item': this._item.$id.val
 	}));
-	state = $derived.by(() => ({
-		visible: this.Visible
+	state = $derived.by<TreeItemState>(() => ({
+		selected: this._root.SelectedId === this._item.$id.val,
+		hovered: this._root.HoveredItemId === this._item.$id.val
 	}));
 }
 
@@ -168,16 +235,17 @@ class TreeGroup {
 //
 const rootCtx = buildContext(TreeRoot);
 const itemCtx = buildContext(TreeItem);
+const groupCtx = buildContext(TreeGroup);
 
 export const createTreeRootContext = (props: TreeRootProps) => {
 	return rootCtx.createContext(props);
 };
 export const createTreeItemContext = (props: TreeItemProps) => {
-	return itemCtx.createContext(rootCtx.getContext(), props);
+	return itemCtx.createContext(rootCtx.getContext(), groupCtx.getContext(), props);
 };
 export const useTreeButton = (events: TreeButtonEvents) => {
-	return itemCtx.register(TreeButton, rootCtx.getContext(), events);
+	return itemCtx.register(TreeButton, rootCtx.getContext(), groupCtx.getContext(), events);
 };
-export const useTreeGroup = (props: TreeGroupProps) => {
-	return itemCtx.register(TreeGroup, rootCtx.getContext(), props);
+export const createTreeGroupContext = (props: TreeGroupProps) => {
+	return groupCtx.createContext(rootCtx.getContext(), itemCtx.getContext(), props);
 };

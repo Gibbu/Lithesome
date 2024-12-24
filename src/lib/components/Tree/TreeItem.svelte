@@ -21,6 +21,6 @@
 	});
 </script>
 
-<li bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
-	{@render children?.({})}
+<li bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+	{@render children?.(ctx.state)}
 </li>

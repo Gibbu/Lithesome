@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Tree, TreeItem, TreeGroup, TreeButton } from '$lib/index.js';
 	import { cn } from '$site/utils.js';
+	import { DotIcon } from 'lucide-svelte';
 
 	interface TreeData {
 		id: string;
@@ -55,12 +56,22 @@
 	{#each items as { id, label, children }}
 		<TreeItem {id}>
 			<TreeButton
-				class={({ selected }) => cn('rounded-md px-3 py-1 text-sm', selected ? 'bg-teal-500/20 text-teal-300' : '')}
+				class={({ hovered }) =>
+					cn(
+						'relative flex items-center rounded-md px-3 py-1 text-sm',
+						'focus:outline focus:outline-offset-2 focus:outline-teal-500',
+						hovered ? 'bg-teal-500/20 text-teal-300' : ''
+					)}
 			>
-				{label}
+				{#snippet children({ selected })}
+					{label}
+					{#if selected}
+						<DotIcon class="absolute -left-6 size-10 text-teal-500" />
+					{/if}
+				{/snippet}
 			</TreeButton>
 			{#if children}
-				<TreeGroup class="border-l-2 border-teal-500/20 pl-2">
+				<TreeGroup class="pl-2">
 					{@render buildTree(children)}
 				</TreeGroup>
 			{/if}

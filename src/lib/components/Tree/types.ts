@@ -1,8 +1,8 @@
 import type { Handler, Props } from '$internal';
 
-interface TreeState {
+export interface TreeState {
 	/** The id of the currently selected item. */
-	item: string;
+	item: string | undefined;
 }
 
 export interface TreeProps extends Props<HTMLUListElement, TreeState> {
@@ -12,9 +12,11 @@ export interface TreeProps extends Props<HTMLUListElement, TreeState> {
 	forceVisible?: boolean;
 }
 
-interface TreeItemState {
+export interface TreeItemState {
 	/** Whether or not the item is selected or not. */
 	selected: boolean;
+	/** Whether or not the item is hovered, but not selected. */
+	hovered: boolean;
 }
 export interface TreeItemProps extends Props<HTMLLIElement, TreeItemState> {
 	/** The unique ID of the item. */
