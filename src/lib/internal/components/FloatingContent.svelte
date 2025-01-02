@@ -30,8 +30,8 @@
 
 	const attrs = $derived.by(() => ({
 		[`data-${componentName.toLowerCase()}content`]: '',
-		id: ctx.root.uid('content'),
-		'aria-labelledby': ctx.root.uid('trigger'),
+		id: ctx._root.uid('content'),
+		'aria-labelledby': ctx._root.uid('trigger'),
 		class: classProp(klass, ctx.state),
 		...ctx.attrs
 	}));
@@ -41,7 +41,7 @@
 		if (!visible) return;
 		if (!ctx) throw log.error(`<${componentName}Content /> must be a child of <${componentName} />`);
 		if (!self) throw log.error(`Cannot initialize content node of <${componentName}Content />.`);
-		ctx.root.content = self;
+		ctx._root.content = self;
 	});
 </script>
 
@@ -51,14 +51,14 @@
 	<div
 		bind:this={self}
 		use:useFloating={{
-			anchor: ctx.root.trigger,
-			arrow: ctx.root.arrow,
+			anchor: ctx._root.trigger,
+			arrow: ctx._root.arrow,
 			sameWidth,
 			constrainViewport,
 			placement,
 			offset
 		}}
-		use:useOutside={{ exclude: ctx.root.trigger, callback: () => outsideCallback() }}
+		use:useOutside={{ exclude: ctx._root.trigger, callback: () => outsideCallback() }}
 		use:usePortal={portalTarget}
 		use:useActions={use}
 		in:inFn={inConf}
@@ -72,14 +72,14 @@
 	<div
 		bind:this={self}
 		use:useFloating={{
-			anchor: ctx.root.trigger,
-			arrow: ctx.root.arrow,
+			anchor: ctx._root.trigger,
+			arrow: ctx._root.arrow,
 			sameWidth,
 			constrainViewport,
 			placement,
 			offset
 		}}
-		use:useOutside={{ exclude: ctx.root.trigger, callback: () => outsideCallback() }}
+		use:useOutside={{ exclude: ctx._root.trigger, callback: () => outsideCallback() }}
 		use:usePortal={portalTarget}
 		use:useActions={use}
 		{...attrs}

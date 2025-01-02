@@ -23,7 +23,7 @@
 <FloatingContent
 	{children}
 	componentName="Select"
-	visible={ctx.root.SuperVisible}
+	visible={ctx._root.SuperVisible}
 	{ctx}
 	{transition}
 	{use}
@@ -32,7 +32,7 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
-	outsideCallback={() => ctx.root.close()}
+	outsideCallback={() => ctx._root.close()}
 	role="listbox"
 	class={klass}
 	{...props}

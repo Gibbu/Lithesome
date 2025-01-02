@@ -8,7 +8,7 @@
 	const ctx = useTooltipTrigger();
 
 	$effect(() => {
-		if (self) ctx.root.registerTrigger(self);
+		if (self) ctx._root.registerTrigger(self);
 	});
 </script>
 

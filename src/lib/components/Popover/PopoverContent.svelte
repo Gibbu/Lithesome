@@ -24,7 +24,7 @@
 <FloatingContent
 	{children}
 	componentName="Popover"
-	visible={ctx.root.$visible.val}
+	visible={ctx._root.$visible.val}
 	{ctx}
 	{transition}
 	use={[
@@ -33,7 +33,7 @@
 			{
 				allowOutsideClick: true,
 				onDeactivate: () => {
-					ctx.root.$visible.val = false;
+					ctx._root.$visible.val = false;
 				}
 			}
 		],
@@ -44,7 +44,7 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
-	outsideCallback={() => ctx.root.close()}
+	outsideCallback={() => ctx._root.close()}
 	role="dialog"
 	class={klass}
 	{...props}

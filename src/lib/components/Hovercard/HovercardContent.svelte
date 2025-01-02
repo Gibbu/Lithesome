@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { classProp, FloatingContent } from '$internal';
+	import { FloatingContent } from '$internal';
 	import { useHovercardContent } from './main.svelte.js';
 	import type { HovercardContentProps } from './types.js';
 
@@ -23,7 +23,7 @@
 <FloatingContent
 	{children}
 	componentName="Hovercard"
-	visible={ctx.root.$visible.val}
+	visible={ctx._root.$visible.val}
 	bind:self
 	{sameWidth}
 	{transition}
@@ -33,7 +33,7 @@
 	{offset}
 	{ctx}
 	{use}
-	outsideCallback={() => ctx.root.forceClose()}
+	outsideCallback={() => ctx._root.forceClose()}
 	class={klass}
 	{...props}
 />

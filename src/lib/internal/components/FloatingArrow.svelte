@@ -12,14 +12,14 @@
 	let { class: klass, use = [], self = $bindable(), ctx, component, ...props }: ComponentProps = $props();
 
 	const attrs = $derived.by(() => ({
-		id: ctx.root.uid('arrow'),
+		id: ctx._root.uid('arrow'),
 		[`data-${component.toLowerCase()}arrow`]: ''
 	}));
 
 	onMount(() => {
 		if (!ctx) throw log.error(`<${component}Arrow /> must be a child of <${component}Content />`);
 		if (!self) throw log.error(`Cannot initialize arrow node of <${component}Arrow />.`);
-		ctx.root.arrow = self;
+		ctx._root.arrow = self;
 	});
 </script>
 

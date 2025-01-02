@@ -21,13 +21,13 @@
 	} as const);
 </script>
 
-{#if inTransition && outTransition && ctx.root.$visible.val}
+{#if inTransition && outTransition && ctx._root.$visible.val}
 	{@const { config: inConf, transition: inFn } = inTransition}
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div bind:this={self} use:useActions={use} in:inFn={inConf} out:outFn={outConf} {...attrs} {...props}>
 		{@render children?.(ctx.state)}
 	</div>
-{:else if ctx.root.$visible.val}
+{:else if ctx._root.$visible.val}
 	<div bind:this={self} use:useActions={use} {...attrs} {...props}>
 		{@render children?.(ctx.state)}
 	</div>

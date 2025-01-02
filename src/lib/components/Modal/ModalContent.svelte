@@ -10,13 +10,13 @@
 	const { inTransition, outTransition } = getTransition(transition);
 </script>
 
-{#if inTransition && outTransition && ctx.root.$visible.val}
+{#if inTransition && outTransition && ctx._root.$visible.val}
 	{@const { config: inConf, transition: inFn } = inTransition}
 	{@const { config: outConf, transition: outFn } = outTransition}
 	<div
 		bind:this={self}
 		use:useTrap={{ allowOutsideClick: true }}
-		use:usePortal={ctx.root.$portalTarget.val}
+		use:usePortal={ctx._root.$portalTarget.val}
 		use:useActions={use}
 		in:inFn={inConf}
 		out:outFn={outConf}
@@ -26,11 +26,11 @@
 	>
 		{@render children?.({})}
 	</div>
-{:else if ctx.root.$visible.val}
+{:else if ctx._root.$visible.val}
 	<div
 		bind:this={self}
 		use:useTrap={{ allowOutsideClick: true }}
-		use:usePortal={ctx.root.$portalTarget.val}
+		use:usePortal={ctx._root.$portalTarget.val}
 		use:useActions={use}
 		class={classProp(klass)}
 		{...props}

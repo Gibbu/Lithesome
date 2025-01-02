@@ -10,7 +10,7 @@
 
 <input
 	bind:this={self}
-	value={ctx.root.TransformedValue}
+	value={ctx._root.TransformedValue}
 	use:useActions={use}
 	class={classProp(klass)}
 	{name}
