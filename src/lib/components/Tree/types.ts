@@ -19,6 +19,8 @@ export interface TreeItemState {
 	hovered: boolean;
 	/** If group is visible or not. */
 	active: boolean;
+	/** Whether or not the item is disabled. */
+	disabled: boolean;
 }
 export interface TreeItemProps extends Props<HTMLLIElement, TreeItemState> {
 	/** The unique ID of the item. */

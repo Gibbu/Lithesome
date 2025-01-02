@@ -22,9 +22,11 @@ description: 'Organize content to sections.'
 
 <Tabs>
 	<TabsList>
-		<TabsButton />
+		<TabsButton value="1">Tab 1</TabsButton>
+		<TabsButton value="2">Tab 2</TabsButton>
 	</TabsList>
-	<TabsContent />
+	<TabsContent value="1">Tab content 1</TabsContent>
+	<TabsContent value="2">Tab content 2</TabsContent>
 </Tabs>
 ```
 

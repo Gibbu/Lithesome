@@ -17,14 +17,43 @@ description: 'Allow users to choose from a list of options with search filtering
 
 ```svelte
 <script>
-	import { Combobox, ComboboxInput, ComboboxContent, ComboboxOption, ComboboxArrow } from 'lithesome';
+	import { Combobox, ComboboxContent, ComboboxInput, ComboboxOption } from '$lib/index.js';
+
+	let query = $state('Option 1');
+	let value = $state('option-1');
+	let touched = $state(false);
+	let label = $state('');
+
+	const items = [
+		{ value: 'option-1', label: 'Option 1' },
+		{ value: 'option-2', label: 'Option 2' },
+		{ value: 'option-3', label: 'Option 3' }
+	];
+
+	const filteredItems = $derived(
+		touched
+			? items.filter(
+					(item) =>
+						item.value.toLowerCase().includes(query.toLowerCase()) ||
+						item.label.toLowerCase().includes(query.toLowerCase())
+				)
+			: items
+	);
 </script>
 
-<Combobox>
-	<ComboboxInput />
+<Combobox
+	bind:value
+	bind:touched
+	bind:label
+	onChange={(payload) => {
+		if (payload?.label) query = payload.label;
+	}}
+>
+	<ComboboxInput bind:value={query}></ComboboxInput>
 	<ComboboxContent>
-		<ComboboxArrow />
-		<ComboboxOption />
+		{#each filteredItems as { value, label } (value)}
+			<ComboboxOption {value}>{label}</ComboboxOption>
+		{/each}
 	</ComboboxContent>
 </Combobox>
 ```

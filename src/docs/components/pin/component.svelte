@@ -4,7 +4,7 @@
 </script>
 
 <Pin class="flex gap-2">
-	{#each [1, 2, 3, 4] as arr}
+	{#each { length: 4 }}
 		<PinInput
 			class={cn(
 				'focusOutline h-16 w-12 rounded-md border border-neutral-200 bg-white text-center text-xl shadow-md placeholder:text-neutral-300',

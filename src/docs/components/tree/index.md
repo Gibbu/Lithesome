@@ -1,6 +1,6 @@
 ---
 title: 'Tree'
-description: 'A popup that displays additonal information	when hovering or focusing an element.'
+description: 'A hierarchical list of infinitely nested items.'
 badge: 'new'
 ---
 
@@ -15,5 +15,31 @@ badge: 'new'
 <DocsPage {component} {code} {componentAPI}>
 
 ## Basic Example
+
+```svelte
+<script>
+	import { Tree, TreeItem, TreeButton, TreeGroup } from 'lithesome';
+</script>
+
+<Tree>
+	<TreeItem id="1">
+		<TreeButton>Item 1</TreeButton>
+	</TreeItem>
+	<TreeItem id="2">
+		<TreeButton>Item 2</TreeButton>
+		<TreeGroup>
+			<TreeItem id="2-1">
+				<TreeButton>Item 2-1<TreeButton>
+			</TreeItem>
+			<TreeItem id="2-2">
+				<TreeButton>Item 2-2<TreeButton>
+			</TreeItem>
+		</TreeGroup>
+	</TreeItem>
+	<TreeItem id="3">
+		<TreeButton>Item 3</TreeButton>
+	</TreeItem>
+</Tree>
+```
 
 </DocsPage>

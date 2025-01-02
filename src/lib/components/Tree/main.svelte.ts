@@ -106,7 +106,8 @@ class TreeItem {
 	state = $derived.by<TreeItemState>(() => ({
 		selected: this.root.SelectedId === this.$id.val,
 		hovered: this.root.HoveredElementId === this.$id.val,
-		active: this.Group?.active || false
+		active: this.Group?.active || false,
+		disabled: this.$disabled.val
 	}));
 }
 
@@ -223,7 +224,8 @@ class TreeButton {
 	state = $derived.by<TreeItemState>(() => ({
 		selected: this.root.SelectedId === this.item.$id.val,
 		hovered: this.root.HoveredElementId === this.item.$id.val,
-		active: this.item.Group?.active || false
+		active: this.item.Group?.active || false,
+		disabled: this.item.$disabled.val
 	}));
 }
 
@@ -293,7 +295,8 @@ class TreeGroup {
 	state = $derived.by<TreeItemState>(() => ({
 		selected: this.root.SelectedId === this.item.$id.val,
 		hovered: this.root.HoveredElementId === this.item.$id.val,
-		active: this.$active.val
+		active: this.$active.val,
+		disabled: this.item.$disabled.val
 	}));
 }
 

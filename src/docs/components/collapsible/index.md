@@ -21,8 +21,10 @@ description: 'Toggle content sections.'
 </script>
 
 <Collapsible>
-	<CollapsibleButton />
-	<CollapsibleContent />
+	<CollapsibleButton>Toggle Content</<CollapsibleButton>
+	<CollapsibleContent>
+		Content of the things
+	</CollapsibleContent>
 </Collapsible>
 ```
 

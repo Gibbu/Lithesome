@@ -18,9 +18,11 @@ description: 'A controlled element to represent "on" and "off" states.'
 ```svelte
 <script>
 	import { Switch } from 'lithesome';
+
+	let checked = $state(false);
 </script>
 
-<Switch />
+<Switch bind:checked />
 ```
 
 ## Native Input element

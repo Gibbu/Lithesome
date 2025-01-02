@@ -17,18 +17,20 @@ description: 'Allow users to chooe from a list of options.'
 
 ```svelte
 <script>
-	import { Select, SelectTrigger, SelectContent, SelectOption, SelectArrow } from 'lithesome';
+	import { Select, SelectTrigger, SelectContent, SelectOption, SelectValue } from '$lib/index.js';
+
+	let value = $state('');
 </script>
 
-<Select>
+<Select bind:value>
 	<SelectTrigger>
 		<button>
 			<SelectValue />
 		</button>
 	</SelectTrigger>
 	<SelectContent>
-		<SelectArrow />
-		<SelectOption />
+		<SelectOption value="option-1">Option 1</SelectOption>
+		<SelectOption value="option-2">Option 2</SelectOption>
 	</SelectContent>
 </Select>
 ```
