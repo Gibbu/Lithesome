@@ -2,7 +2,7 @@ import type { Handler, Props } from '$internal';
 
 export interface TreeState {
 	/** The id of the currently selected item. */
-	item: string | undefined;
+	item: string | undefined | null;
 }
 
 export interface TreeProps extends Props<HTMLUListElement, TreeState> {
@@ -17,6 +17,8 @@ export interface TreeItemState {
 	selected: boolean;
 	/** Whether or not the item is hovered, but not selected. */
 	hovered: boolean;
+	/** If group is visible or not. */
+	active: boolean;
 }
 export interface TreeItemProps extends Props<HTMLLIElement, TreeItemState> {
 	/** The unique ID of the item. */

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { classProp, stateValue, useActions } from '$internal';
-	import { createTreeGroupContext } from './main.svelte.js';
+	import { useTreeGroup } from './main.svelte.js';
 
 	import type { TreeGroupProps } from './types.js';
 
@@ -14,7 +14,7 @@
 		...props
 	}: TreeGroupProps = $props();
 
-	const ctx = createTreeGroupContext({
+	const ctx = useTreeGroup({
 		active: stateValue(
 			() => active,
 			(v) => (active = v)

@@ -1,84 +1,102 @@
 <script lang="ts">
 	import { Tree, TreeItem, TreeGroup, TreeButton } from '$lib/index.js';
 	import { cn } from '$site/utils.js';
-	import { DotIcon } from 'lucide-svelte';
+	import { DotIcon, Folder, FolderOpen, FileCode } from 'lucide-svelte';
 
 	interface TreeData {
 		id: string;
 		label: string;
-		children?: TreeData[];
+		items?: TreeData[];
 	}
 
 	const data: TreeData[] = [
 		{
-			id: 'src',
 			label: 'src',
-			children: [
+			id: 'src',
+			items: [
 				{
-					id: 'lib',
 					label: 'lib',
-					children: [
+					id: 'src/lib',
+					items: [
 						{
-							id: 'components',
 							label: 'components',
-							children: [
-								{ id: 'accordion', label: 'Accordion', children: [{ id: 'accordion-main', label: 'main.svelte.ts' }] }
+							id: 'src/lib/components',
+							items: [
+								{
+									id: 'src/lib/components/Accordion',
+									label: 'Accordion',
+									items: [
+										{ id: 'main.svelte.ts', label: 'main.svelte.ts' },
+										{ id: 'Accordion.svelte', label: 'Accordion.svelte' }
+									]
+								}
 							]
 						},
 						{
-							id: 'actions',
 							label: 'actions',
-							children: [
-								{ id: 'useoutside', label: 'useOutside.ts' },
-								{ id: 'useportal', label: 'usePortal.ts' },
-								{ id: 'usetrap', label: 'useTrap.ts' }
+							id: 'src/lib/actions',
+							items: [
+								{ id: 'useOutside.ts', label: 'useOutside.ts' },
+								{ id: 'usePortal.ts', label: 'usePortal.ts' },
+								{ id: 'useTrap.ts', label: 'useTrap.ts' }
 							]
 						}
 					]
 				},
 				{
-					id: 'routes',
 					label: 'routes',
-					children: [
-						{ id: 'page', label: '+page.svelte' },
-						{ id: 'layout', label: '+layout.svelte' },
-						{ id: 'page-server', label: '+page.server.ts' }
+					id: 'lib/routes',
+					items: [
+						{ id: '+page.svelte', label: '+page.svelte' },
+						{ id: '+layout.svelte', label: '+layout.svelte' },
+						{ id: '+page.server.ts', label: '+page.server.ts' }
 					]
 				}
 			]
 		},
-		{ id: 'vite', label: 'vite.config.js' },
-		{ id: 'svelte-config', label: 'svelte.config.js' }
+		{ id: 'vite.config.js', label: 'vite.config.js' },
+		{ id: 'svelte.config.js', label: 'svelte.config.js' }
 	];
+
+	let value = $state<string[]>([]);
 </script>
 
-{#snippet buildTree(items: TreeData[])}
-	{#each items as { id, label, children }}
+{#snippet buildTree(data: TreeData[])}
+	{#each data as { id, label, items }}
 		<TreeItem {id}>
 			<TreeButton
 				class={({ hovered }) =>
 					cn(
-						'relative flex items-center rounded-md px-3 py-1 text-sm',
-						'focus:outline focus:outline-offset-2 focus:outline-teal-500',
-						hovered ? 'bg-teal-500/20 text-teal-300' : ''
+						'relative flex items-center gap-2 rounded-md px-3 py-1 text-sm',
+						'focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-teal-500',
+						hovered ? 'bg-teal-600/20 text-teal-600 dark:bg-teal-500/20 dark:text-teal-300' : ''
 					)}
 			>
-				{#snippet children({ selected })}
+				{#snippet children({ selected, active })}
+					{#if items && active}
+						<FolderOpen class="size-4" />
+					{:else if items && !active}
+						<Folder class="size-4" />
+					{:else}
+						<FileCode class="size-4" />
+					{/if}
 					{label}
 					{#if selected}
 						<DotIcon class="absolute -left-6 size-10 text-teal-500" />
 					{/if}
 				{/snippet}
 			</TreeButton>
-			{#if children}
-				<TreeGroup class="pl-2">
-					{@render buildTree(children)}
+			{#if items}
+				<TreeGroup class="pl-6">
+					{@render buildTree(items)}
 				</TreeGroup>
 			{/if}
 		</TreeItem>
 	{/each}
 {/snippet}
 
-<Tree>
+<Tree bind:value>
 	{@render buildTree(data)}
 </Tree>
+
+<span class="absolute bottom-2 right-2">{value}</span>

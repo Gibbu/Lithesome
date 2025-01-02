@@ -191,9 +191,12 @@ export const deepFind = <T>(array: DeepFindElement<T>, predicate: (v: T) => bool
 /**
  * Awaits 1 svelte `tick` and then 0 `setTimeout` tick.
  */
-export const singleTick = async () => {
+export const singleTick = async (cb?: VoidFunction) => {
 	await tick();
 	return new Promise((resolve) => {
-		setTimeout(() => resolve(true), 0);
+		setTimeout(() => {
+			resolve(true);
+			cb?.();
+		}, 0);
 	});
 };

@@ -87,9 +87,13 @@ export const disableScroll = (state: boolean) => {
  * Filters out any disabled element.
  * @param elements The array of elements
  */
-export const removeDisabledElements = (query: string): HTMLElement[] => {
+export const removeDisabledElements = (query: string | HTMLElement[] | NodeListOf<Element>): HTMLElement[] => {
 	if (!query || !isBrowser) return [];
-	const elements = Array.from(document.querySelectorAll(query));
+	let elements: HTMLElement[] = [];
+
+	if (query instanceof NodeList) elements = Array.from(query) as HTMLElement[];
+	else if (typeof query === 'string') elements = Array.from(document.querySelectorAll(query));
+	else elements = query;
 
 	return elements.filter((element) => {
 		const ariaDisabled = element.getAttribute('aria-disabled');
