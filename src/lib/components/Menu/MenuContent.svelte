@@ -23,7 +23,7 @@
 <FloatingContent
 	{children}
 	componentName="Menu"
-	visible={ctx.root.$visible.val}
+	visible={ctx._root.$visible.val}
 	bind:self
 	{ctx}
 	{transition}
@@ -33,7 +33,7 @@
 	{constrainViewport}
 	{placement}
 	{portalTarget}
-	outsideCallback={() => ctx.root.close()}
+	outsideCallback={() => ctx._root.close()}
 	role="listbox"
 	class={klass}
 	{...props}

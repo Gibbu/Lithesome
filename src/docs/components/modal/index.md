@@ -18,13 +18,17 @@ description: 'An overlaying window to take focus away from the current context.'
 ```svelte
 <script>
 	import { Modal, ModalOverlay, ModalContent, ModalTitle, ModalDescription } from 'lithesome';
+
+	let visible = $state(false);
 </script>
 
-<Modal>
+<button onclick={() => (visible = !visible)}> Toggle modal </button>
+
+<Modal bind:visible>
 	<ModalOverlay />
 	<ModalContent>
-		<ModalTitle />
-		<ModalDescription />
+		<ModalTitle>Title</ModalTitle>
+		<ModalDescription>Modal content that could contain anything.</ModalDescription>
 	</ModalContent>
 </Modal>
 ```

@@ -33,7 +33,6 @@
 	bind:value
 	bind:touched
 	bind:label
-	class="w-[350px]"
 	onChange={(payload) => {
 		if (payload?.label) query = payload.label;
 	}}

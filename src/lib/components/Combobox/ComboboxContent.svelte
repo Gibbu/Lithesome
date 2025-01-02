@@ -23,7 +23,7 @@
 <FloatingContent
 	{children}
 	componentName="Combobox"
-	visible={ctx.root.SuperVisible}
+	visible={ctx._root.SuperVisible}
 	bind:self
 	{ctx}
 	{transition}
@@ -33,7 +33,7 @@
 	{placement}
 	{portalTarget}
 	{offset}
-	outsideCallback={() => ctx.root.close()}
+	outsideCallback={() => ctx._root.close()}
 	role="listbox"
 	class={klass}
 	{...props}

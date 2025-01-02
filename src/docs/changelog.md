@@ -4,6 +4,13 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.18.0
+
+<small>2n Janurary, 2025</small>
+
+- Added [Tree](/docs/components/tree) component.
+- Updated internal naming conventions.
+
 ### v0.17.0
 
 <small>22 November, 2024</small>

@@ -1,7 +1,6 @@
 ---
 title: 'Tooltip'
 description: 'A popup that displays additonal information	when hovering or focusing an element.'
-badge: 'new'
 ---
 
 <script>
@@ -23,10 +22,11 @@ badge: 'new'
 
 <Tooltip>
 	<TooltipTrigger>
-		<button></button>
+		<button>Info</button>
 	</TooltipTrigger>
 	<TooltipContent>
 		<TooltipArrow />
+		More info
 	</TooltipContent>
 </Tooltip>
 ```

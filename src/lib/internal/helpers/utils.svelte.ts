@@ -1,5 +1,6 @@
 import { log } from './log.js';
 import type { JsonValue, ClassProp } from '../types.js';
+import { tick } from 'svelte';
 
 export type CalcIndexAction = 'prev' | 'next' | 'first' | 'last';
 export type UID = (component?: string) => string;
@@ -158,4 +159,44 @@ export const trackTimeout = () => {
 		 */
 		clear
 	};
+};
+
+type DeepFindElement<T> = Record<string, any> | T[];
+
+export const deepFind = <T>(array: DeepFindElement<T>, predicate: (v: T) => boolean): T | null => {
+	let result: T | T[] | null = null;
+
+	const loop = (item: Record<string, any> | any[]) => {
+		if (result) return;
+		else if (Array.isArray(item)) {
+			for (let i = 0; i < item.length; i++) {
+				const element = item[i];
+				if (predicate(element)) result = element;
+				else loop(element);
+			}
+		} else if (typeof item === 'object') {
+			for (const key in item) {
+				const element = item[key];
+				if (predicate(element)) result = element;
+				else loop(element);
+			}
+		}
+	};
+
+	loop(array);
+
+	return result;
+};
+
+/**
+ * Awaits 1 svelte `tick` and then 0 `setTimeout` tick.
+ */
+export const singleTick = async (cb?: VoidFunction) => {
+	await tick();
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(true);
+			cb?.();
+		}, 0);
+	});
 };

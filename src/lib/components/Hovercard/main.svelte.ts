@@ -59,34 +59,34 @@ class HovercardRoot extends Floating {
 // Trigger
 //
 class HovercardTrigger {
-	root: HovercardRoot;
+	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot) {
-		this.root = root;
+		this._root = root;
 
 		$effect(() => {
-			if (this.root.trigger) {
-				const child = this.root.trigger.children[0] as HTMLElement;
+			if (this._root.trigger) {
+				const child = this._root.trigger.children[0] as HTMLElement;
 
 				setNodeProps(child, {
-					id: this.root.uid('trigger'),
+					id: this._root.uid('trigger'),
 					role: 'button',
 					'aria-haspopup': 'dialog',
 					'aria-expanded': 'false'
 				});
 				addEventListeners(child, {
-					mouseenter: () => this.root.open(),
-					mouseleave: () => this.root.close()
+					mouseenter: () => this._root.open(),
+					mouseleave: () => this._root.close()
 				});
 				document.addEventListener('keydown', this.#handleKeydown);
 
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.$visible.val) {
+					if (this._root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
-							'aria-controls': this.root.uid('content')
+							'aria-controls': this._root.uid('content')
 						});
 					} else {
 						setNodeProps(child, { 'aria-expanded': 'false' });
@@ -102,14 +102,14 @@ class HovercardTrigger {
 	}
 
 	#handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === KEYS.escape || e.key === KEYS.tab) this.root.forceClose();
+		if (e.key === KEYS.escape || e.key === KEYS.tab) this._root.forceClose();
 	};
 
 	attrs = {
 		'data-hovercardtrigger': ''
 	};
 	state = $derived.by<HovercardState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -117,14 +117,14 @@ class HovercardTrigger {
 // Arrow
 //
 class HovercardArrow {
-	root: HovercardRoot;
+	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot) {
-		this.root = root;
+		this._root = root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('arrow')
+		id: this._root.uid('arrow')
 	}));
 }
 
@@ -132,19 +132,19 @@ class HovercardArrow {
 // Content
 //
 class HovercardContent {
-	root: HovercardRoot;
+	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot) {
-		this.root = root;
+		this._root = root;
 	}
 
 	#handleMouseenter = () => {
-		this.root.hovered = true;
-		this.root.timeout.clear();
+		this._root.hovered = true;
+		this._root.timeout.clear();
 	};
 	#handleMouseleave = () => {
-		this.root.hovered = false;
-		this.root.close();
+		this._root.hovered = false;
+		this._root.close();
 	};
 
 	attrs = $derived.by(() => ({
@@ -152,7 +152,7 @@ class HovercardContent {
 		onmouseleave: this.#handleMouseleave
 	}));
 	state = $derived.by<HovercardState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 

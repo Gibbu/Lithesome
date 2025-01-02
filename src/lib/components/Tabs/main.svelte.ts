@@ -68,21 +68,21 @@ class TabsRoot {
 // List
 //
 class TabsList {
-	root: TabsRoot;
+	_root: TabsRoot;
 
-	constructor(root: TabsRoot) {
-		this.root = root;
+	constructor(_root: TabsRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
 		role: 'tablist',
-		'aria-orientation': this.root.$orientation.val,
+		'aria-orientation': this._root.$orientation.val,
 		'data-tabslist': '',
-		'data-orientation': this.root.$orientation.val
+		'data-orientation': this._root.$orientation.val
 	}));
 
 	state = $derived.by<TabsState>(() => ({
-		tab: this.root.ActiveTab
+		tab: this._root.ActiveTab
 	}));
 }
 
@@ -94,29 +94,29 @@ type TabsButtonProps = StateValues<{
 	disabled: boolean;
 }>;
 class TabsButton {
-	root: TabsRoot;
+	_root: TabsRoot;
 	#events: TabsButtonEvents;
 
 	$disabled: TabsButtonProps['disabled'];
 	$value: TabsButtonProps['value'];
 
-	IsActive = $derived.by(() => this.root.ActiveTab === this.$value.val);
+	IsActive = $derived.by(() => this._root.ActiveTab === this.$value.val);
 
-	constructor(root: TabsRoot, props: TabsButtonProps, events: TabsButtonEvents) {
-		this.root = root;
+	constructor(_root: TabsRoot, props: TabsButtonProps, events: TabsButtonEvents) {
+		this._root = _root;
 		this.#events = events;
 
 		this.$value = props.value;
 		this.$disabled = props.disabled;
 
-		this.root.register(props.value.val);
+		this._root.register(props.value.val);
 	}
 
 	#handleClick: TabsButtonEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.setActive(this.$value.val);
+		this._root.setActive(this.$value.val);
 	};
 	#handleKeydown: TabsButtonEvents['onKeydown'] = (e) => {
 		if (this.$disabled.val) return;
@@ -126,18 +126,18 @@ class TabsButton {
 
 		if (PREVENT_KEYS.includes(key)) e.preventDefault();
 
-		if (key === KEYS.home) this.root.navigate('first');
-		if (key === KEYS.end) this.root.navigate('last');
+		if (key === KEYS.home) this._root.navigate('first');
+		if (key === KEYS.end) this._root.navigate('last');
 		if (
-			(key === KEYS.arrowUp && this.root.$orientation.val === 'vertical') ||
-			(key === KEYS.arrowLeft && this.root.$orientation.val === 'horizontal')
+			(key === KEYS.arrowUp && this._root.$orientation.val === 'vertical') ||
+			(key === KEYS.arrowLeft && this._root.$orientation.val === 'horizontal')
 		)
-			this.root.navigate('prev');
+			this._root.navigate('prev');
 		if (
-			(key === KEYS.arrowDown && this.root.$orientation.val === 'vertical') ||
-			(key === KEYS.arrowRight && this.root.$orientation.val === 'horizontal')
+			(key === KEYS.arrowDown && this._root.$orientation.val === 'vertical') ||
+			(key === KEYS.arrowRight && this._root.$orientation.val === 'horizontal')
 		)
-			this.root.navigate('next');
+			this._root.navigate('next');
 	};
 
 	attrs = $derived.by(
@@ -165,15 +165,15 @@ type TabsContentProps = StateValues<{
 	value: string;
 }>;
 class TabsContent {
-	root: TabsRoot;
+	_root: TabsRoot;
 
-	value: TabsContentProps['value'];
+	$value: TabsContentProps['value'];
 
-	IsActive = $derived.by(() => this.root.ActiveTab === this.value.val);
+	IsActive = $derived.by(() => this._root.ActiveTab === this.$value.val);
 
-	constructor(root: TabsRoot, props: TabsContentProps) {
-		this.root = root;
-		this.value = props.value;
+	constructor(_root: TabsRoot, props: TabsContentProps) {
+		this._root = _root;
+		this.$value = props.value;
 	}
 
 	attrs = $derived.by(() => ({
@@ -181,9 +181,9 @@ class TabsContent {
 		'aria-hidden': !this.IsActive,
 		'data-tabscontent': '',
 		'data-state': this.IsActive ? 'active' : 'inactive',
-		'data-value': this.value.val,
+		'data-value': this.$value.val,
 		'data-hidden': !this.IsActive,
-		'data-orientation': this.root.$orientation.val,
+		'data-orientation': this._root.$orientation.val,
 		style: styleObjToString({
 			display: this.IsActive ? undefined : 'none'
 		})
@@ -196,17 +196,17 @@ class TabsContent {
 //
 // Builders
 //
-const rootContext = buildContext(TabsRoot);
+const _rootContext = buildContext(TabsRoot);
 
 export const createRootContext = (props: TabsRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 export const useTabsList = () => {
-	return rootContext.register(TabsList);
+	return _rootContext.register(TabsList);
 };
 export const useTabsButton = (props: TabsButtonProps, events: TabsButtonEvents) => {
-	return rootContext.register(TabsButton, props, events);
+	return _rootContext.register(TabsButton, props, events);
 };
 export const useTabsContent = (props: TabsContentProps) => {
-	return rootContext.register(TabsContent, props);
+	return _rootContext.register(TabsContent, props);
 };

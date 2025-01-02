@@ -18,10 +18,13 @@ description: 'Allow users to select a single choice from a list'
 ```svelte
 <script>
 	import { RadioGroup, RadioGroupItem } from 'lithesome';
+
+	let value = $state('dark');
 </script>
 
 <RadioGroup>
-	<RadioGroupItem />
+	<RadioGroupItem value="light">Light mode</RadioGroupItem>
+	<RadioGroupItem value="dark">Dark mode</RadioGroupItem>
 </RadioGroup>
 ```
 

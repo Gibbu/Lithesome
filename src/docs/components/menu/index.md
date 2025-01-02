@@ -17,16 +17,16 @@ description: 'A menu of items that is hidden until triggered.'
 
 ```svelte
 <script>
-	import { Menu, MenuTrigger, MenuContent, MenuItem, MenuArrow } from 'lithesome';
+	import { Menu, MenuTrigger, MenuContent, MenuItem } from 'lithesome';
 </script>
 
 <Menu>
 	<MenuTrigger>
-		<button></button>
+		<button>Options</button>
 	</MenuTrigger>
 	<MenuContent>
-		<MenuArrow />
-		<MenuItem />
+		<MenuItem>Edit</MenuItem>
+		<MenuItem>Delete</MenuItem>
 	</MenuContent>
 </Menu>
 ```

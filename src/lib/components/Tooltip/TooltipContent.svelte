@@ -23,7 +23,7 @@
 <FloatingContent
 	{children}
 	componentName="Tooltip"
-	visible={ctx.root.$visible.val}
+	visible={ctx._root.$visible.val}
 	{ctx}
 	{transition}
 	{sameWidth}
@@ -31,7 +31,7 @@
 	{placement}
 	{portalTarget}
 	{offset}
-	outsideCallback={() => ctx.root.close()}
+	outsideCallback={() => ctx._root.close()}
 	role="tooltip"
 	class={klass}
 	style="pointer-events: none;"

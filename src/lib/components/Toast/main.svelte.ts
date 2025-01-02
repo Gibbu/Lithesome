@@ -73,16 +73,16 @@ class ToastRoot {
 // Title
 //
 class ToastTitle {
-	root: ToastRoot;
+	_root: ToastRoot;
 
-	constructor(root: ToastRoot) {
-		this.root = root;
+	constructor(_root: ToastRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('title'),
+				id: this._root.uid('title'),
 				'data-toasttitle': ''
 			}) as const
 	);
@@ -92,16 +92,16 @@ class ToastTitle {
 // Description
 //
 class ToastDescription {
-	root: ToastRoot;
+	_root: ToastRoot;
 
-	constructor(root: ToastRoot) {
-		this.root = root;
+	constructor(_root: ToastRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('description'),
+				id: this._root.uid('description'),
 				'data-toastdescription': ''
 			}) as const
 	);
@@ -110,16 +110,16 @@ class ToastDescription {
 //
 // Builders
 //
-const rootContext = buildContext(ToastRoot);
+const _rootContext = buildContext(ToastRoot);
 
 export const createRootContext = () => {
-	return rootContext.createContext();
+	return _rootContext.createContext();
 };
 
 export const useToastTitle = () => {
-	return rootContext.register(ToastTitle);
+	return _rootContext.register(ToastTitle);
 };
 
 export const useToastDescription = () => {
-	return rootContext.register(ToastDescription);
+	return _rootContext.register(ToastDescription);
 };

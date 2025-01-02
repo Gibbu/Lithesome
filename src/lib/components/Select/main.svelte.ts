@@ -137,17 +137,17 @@ class SelectRoot extends Floating {
 // Trigger
 //
 class SelectTrigger {
-	root: SelectRoot;
+	_root: SelectRoot;
 
-	constructor(root: SelectRoot) {
-		this.root = root;
+	constructor(_root: SelectRoot) {
+		this._root = _root;
 
 		$effect(() => {
-			if (this.root.trigger) {
-				const child = this.root.trigger.children[0] as HTMLElement;
+			if (this._root.trigger) {
+				const child = this._root.trigger.children[0] as HTMLElement;
 
 				setNodeProps(child, {
-					id: this.root.uid('trigger'),
+					id: this._root.uid('trigger'),
 					role: 'button',
 					'aria-haspopup': 'listbox',
 					'aria-expanded': 'false',
@@ -161,12 +161,12 @@ class SelectTrigger {
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.$visible.val) {
+					if (this._root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
-							'aria-controls': this.root.uid('content')
+							'aria-controls': this._root.uid('content')
 						});
-						if (this.root.HoveredOption) setNodeProps(child, { 'aria-activedescendant': this.root.HoveredOption.id });
+						if (this._root.HoveredOption) setNodeProps(child, { 'aria-activedescendant': this._root.HoveredOption.id });
 					} else {
 						setNodeProps(child, { 'aria-expanded': 'false' });
 						removeNodeProps(child, 'aria-activedescendant', 'aria-controls');
@@ -180,31 +180,31 @@ class SelectTrigger {
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
-		if (key === KEYS.home) this.root.navigate('first');
-		if (key === KEYS.end) this.root.navigate('last');
-		if (key === KEYS.arrowUp) this.root.navigate('prev');
-		if (key === KEYS.arrowDown) this.root.navigate('next');
-		if (key === KEYS.escape) this.root.close();
+		if (key === KEYS.home) this._root.navigate('first');
+		if (key === KEYS.end) this._root.navigate('last');
+		if (key === KEYS.arrowUp) this._root.navigate('prev');
+		if (key === KEYS.arrowDown) this._root.navigate('next');
+		if (key === KEYS.escape) this._root.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (this.root.HoveredOption && this.root.$visible.val) {
-				(document.querySelector(`#${this.root.HoveredOption.id}`) as HTMLButtonElement).click();
-				if (!this.root.$multiple) this.root.close();
+			if (this._root.HoveredOption && this._root.$visible.val) {
+				(document.querySelector(`#${this._root.HoveredOption.id}`) as HTMLButtonElement).click();
+				if (!this._root.$multiple) this._root.close();
 			} else {
-				this.root.open();
+				this._root.open();
 			}
 		}
-		if (key === KEYS.tab) this.root.close();
+		if (key === KEYS.tab) this._root.close();
 	};
 	#handleClick = () => {
-		this.root.toggle();
+		this._root.toggle();
 	};
 
 	attrs = {
 		'data-selecttrigger': ''
 	};
 	state = $derived.by<SelectState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -212,18 +212,18 @@ class SelectTrigger {
 // Arrow
 //
 class SelectArrow {
-	root: SelectRoot;
+	_root: SelectRoot;
 
-	constructor(root: SelectRoot) {
-		this.root = root;
+	constructor(_root: SelectRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('arrow')
+		id: this._root.uid('arrow')
 	}));
 
 	state = $derived.by<SelectState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -231,17 +231,17 @@ class SelectArrow {
 // Content
 //
 class SelectContent {
-	root: SelectRoot;
+	_root: SelectRoot;
 
-	constructor(root: SelectRoot) {
-		this.root = root;
+	constructor(_root: SelectRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		hidden: !this.root.mounted || undefined
+		hidden: !this._root.mounted || undefined
 	}));
 	state = $derived.by<SelectState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -256,18 +256,18 @@ type SelectOptionProps = StateValues<{
 class SelectOption {
 	uid = createUID('option');
 
-	root: SelectRoot;
+	_root: SelectRoot;
 	#events: SelectOptionEvents;
 
 	$value: SelectOptionProps['value'];
 	$disabled: SelectOptionProps['disabled'];
 	$label: SelectOptionProps['label'];
 
-	Hovered = $derived.by(() => this.root.HoveredOption?.id === this.uid());
-	Selected = $derived.by(() => !!this.root.selectedOptions.find((el) => el.dataset.value === this.$value.val));
+	Hovered = $derived.by(() => this._root.HoveredOption?.id === this.uid());
+	Selected = $derived.by(() => !!this._root.selectedOptions.find((el) => el.dataset.value === this.$value.val));
 
-	constructor(root: SelectRoot, props: SelectOptionProps, events: SelectOptionEvents) {
-		this.root = root;
+	constructor(_root: SelectRoot, props: SelectOptionProps, events: SelectOptionEvents) {
+		this._root = _root;
 		this.#events = events;
 
 		this.$value = props.value;
@@ -275,12 +275,12 @@ class SelectOption {
 		this.$label = props.label;
 
 		onMount(() => {
-			this.root.queryElements();
+			this._root.queryElements();
 
 			return async () => {
-				if (!this.root.$visible.val || this.root.options === this.root.options) return;
+				if (!this._root.$visible.val || this._root.options === this._root.options) return;
 				await tick();
-				this.root.queryElements();
+				this._root.queryElements();
 			};
 		});
 	}
@@ -289,13 +289,13 @@ class SelectOption {
 		if (this.$disabled.val) return;
 		this.#events.onMouseover?.(e);
 
-		this.root.setHovered(this.uid());
+		this._root.setHovered(this.uid());
 	};
 	#handleClick: SelectOptionEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.setSelected();
+		this._root.setSelected();
 	};
 
 	attrs = $derived.by(
@@ -329,23 +329,23 @@ type SelectValueProps = StateValues<{
 	placeholder: string;
 }>;
 class SelectValue {
-	root: SelectRoot;
+	_root: SelectRoot;
 
 	placeholder: SelectValueProps['placeholder'];
 
-	PlaceholderVisible = $derived.by(() => this.root.selectedOptions.length === 0);
+	PlaceholderVisible = $derived.by(() => this._root.selectedOptions.length === 0);
 
-	constructor(root: SelectRoot, props: SelectValueProps) {
-		this.root = root;
+	constructor(_root: SelectRoot, props: SelectValueProps) {
+		this._root = _root;
 
 		this.placeholder = props.placeholder;
 	}
 
 	label = $derived.by(() =>
-		this.PlaceholderVisible ? this.placeholder.val : this.root.selectedOptions.map((el) => el.dataset.label).join(',')
+		this.PlaceholderVisible ? this.placeholder.val : this._root.selectedOptions.map((el) => el.dataset.label).join(',')
 	);
 	attrs = $derived.by(() => ({
-		id: this.root.uid('value'),
+		id: this._root.uid('value'),
 		'data-selectvalue': '',
 		'data-placeholder': this.PlaceholderVisible || undefined
 	}));
@@ -357,28 +357,28 @@ class SelectValue {
 //
 // Builders
 //
-const rootContext = buildContext(SelectRoot);
+const _rootContext = buildContext(SelectRoot);
 
 export const createRootContext = (props: SelectRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 
 export const useSelectTrigger = () => {
-	return rootContext.register(SelectTrigger);
+	return _rootContext.register(SelectTrigger);
 };
 
 export const useSelectContent = () => {
-	return rootContext.register(SelectContent);
+	return _rootContext.register(SelectContent);
 };
 
 export const useSelectArrow = () => {
-	return rootContext.register(SelectArrow);
+	return _rootContext.register(SelectArrow);
 };
 
 export const useSelectOption = (props: SelectOptionProps, events: SelectOptionEvents) => {
-	return rootContext.register(SelectOption, props, events);
+	return _rootContext.register(SelectOption, props, events);
 };
 
 export const useSelectValue = (props: SelectValueProps) => {
-	return rootContext.register(SelectValue, props);
+	return _rootContext.register(SelectValue, props);
 };

@@ -18,9 +18,11 @@ description: 'Allow users to check and uncheck things.'
 ```svelte
 <script>
 	import { Checkbox } from 'lithesome';
+
+	let checked = $state(false);
 </script>
 
-<Checkbox />
+<Checkbox bind:checked />
 ```
 
 ## Native Input element

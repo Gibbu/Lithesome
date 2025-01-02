@@ -55,17 +55,17 @@ class PopoverRoot extends Floating {
 // Trigger
 //
 class PopoverTrigger {
-	root: PopoverRoot;
+	_root: PopoverRoot;
 
-	constructor(root: PopoverRoot) {
-		this.root = root;
+	constructor(_root: PopoverRoot) {
+		this._root = _root;
 
 		$effect(() => {
-			if (this.root.trigger) {
-				const child = this.root.trigger.children[0] as HTMLElement;
+			if (this._root.trigger) {
+				const child = this._root.trigger.children[0] as HTMLElement;
 
 				setNodeProps(child, {
-					id: this.root.uid('trigger'),
+					id: this._root.uid('trigger'),
 					role: 'button',
 					'aria-haspopup': 'dialog',
 					'aria-expanded': 'false'
@@ -78,10 +78,10 @@ class PopoverTrigger {
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.$visible.val) {
+					if (this._root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
-							'aria-controls': this.root.uid('content')
+							'aria-controls': this._root.uid('content')
 						});
 					} else {
 						setNodeProps(child, { 'aria-expanded': 'false' });
@@ -94,17 +94,17 @@ class PopoverTrigger {
 
 	#handleKeydown = (e: KeyboardEvent) => {
 		const { key } = e;
-		if (key === KEYS.escape || key === KEYS.tab) this.root.close();
+		if (key === KEYS.escape || key === KEYS.tab) this._root.close();
 	};
 	#handleClick = () => {
-		this.root.toggle();
+		this._root.toggle();
 	};
 
 	attrs = {
 		'data-popovertrigger': ''
 	};
 	state = $derived.by<PopoverState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -112,18 +112,18 @@ class PopoverTrigger {
 // Arrow
 //
 class PopoverArrow {
-	root: PopoverRoot;
+	_root: PopoverRoot;
 
-	constructor(root: PopoverRoot) {
-		this.root = root;
+	constructor(_root: PopoverRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('arrow')
+		id: this._root.uid('arrow')
 	}));
 
 	state = $derived.by<PopoverState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -131,31 +131,31 @@ class PopoverArrow {
 // Content
 //
 class PopoverContent {
-	root: PopoverRoot;
+	_root: PopoverRoot;
 
-	constructor(root: PopoverRoot) {
-		this.root = root;
+	constructor(_root: PopoverRoot) {
+		this._root = _root;
 	}
 
 	state = $derived.by<PopoverState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
 //
 // Builder
 //
-const rootContext = buildContext(PopoverRoot);
+const _rootContext = buildContext(PopoverRoot);
 
 export const createRootContext = (props: PopoverRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 export const usePopoverTrigger = () => {
-	return rootContext.register(PopoverTrigger);
+	return _rootContext.register(PopoverTrigger);
 };
 export const usePopoverArrow = () => {
-	return rootContext.register(PopoverArrow);
+	return _rootContext.register(PopoverArrow);
 };
 export const usePopoverContent = () => {
-	return rootContext.register(PopoverContent);
+	return _rootContext.register(PopoverContent);
 };

@@ -1,5 +1,5 @@
 import { tick } from 'svelte';
-import { log } from '../internal/helpers/log.js';
+import { log } from '$internal';
 
 /**
  * A svelte action to portal content from one part of the dom to another.

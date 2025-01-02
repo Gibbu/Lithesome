@@ -76,17 +76,17 @@ class MenuRoot extends Floating {
 // Trigger
 //
 class MenuTrigger {
-	root: MenuRoot;
+	_root: MenuRoot;
 
-	constructor(root: MenuRoot) {
-		this.root = root;
+	constructor(_root: MenuRoot) {
+		this._root = _root;
 
 		$effect(() => {
-			if (this.root.trigger) {
-				const child = this.root.trigger.children[0] as HTMLElement;
+			if (this._root.trigger) {
+				const child = this._root.trigger.children[0] as HTMLElement;
 
 				setNodeProps(child, {
-					id: this.root.uid('trigger'),
+					id: this._root.uid('trigger'),
 					role: 'button',
 					'aria-haspopup': 'true',
 					'aria-expanded': 'false'
@@ -99,10 +99,10 @@ class MenuTrigger {
 				$effect(() => {
 					if (!child) return;
 
-					if (this.root.$visible.val) {
+					if (this._root.$visible.val) {
 						setNodeProps(child, {
 							'aria-expanded': 'true',
-							'aria-controls': this.root.uid('content')
+							'aria-controls': this._root.uid('content')
 						});
 					} else {
 						setNodeProps(child, { 'aria-expanded': 'false' });
@@ -117,31 +117,31 @@ class MenuTrigger {
 		const { key } = e;
 
 		if (PREVENT_KEYS.includes(key)) e.preventDefault();
-		if (key === KEYS.home) this.root.navigate('first');
-		if (key === KEYS.end) this.root.navigate('last');
-		if (key === KEYS.arrowUp) this.root.navigate('prev');
-		if (key === KEYS.arrowDown) this.root.navigate('next');
-		if (key === KEYS.escape) this.root.close();
+		if (key === KEYS.home) this._root.navigate('first');
+		if (key === KEYS.end) this._root.navigate('last');
+		if (key === KEYS.arrowUp) this._root.navigate('prev');
+		if (key === KEYS.arrowDown) this._root.navigate('next');
+		if (key === KEYS.escape) this._root.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (this.root.HoveredItem && this.root.$visible.val) {
-				(document.querySelector(`#${this.root.HoveredItem}`) as HTMLButtonElement).click();
-				this.root.close();
+			if (this._root.HoveredItem && this._root.$visible.val) {
+				(document.querySelector(`#${this._root.HoveredItem}`) as HTMLButtonElement).click();
+				this._root.close();
 			} else {
-				this.root.open();
+				this._root.open();
 			}
 		}
-		if (key === KEYS.tab) this.root.close();
+		if (key === KEYS.tab) this._root.close();
 	};
 	#handleClick = () => {
-		this.root.toggle();
+		this._root.toggle();
 	};
 
 	attrs = {
 		'data-menutrigger': ''
 	};
 	state = $derived.by<MenuTriggerState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -149,14 +149,14 @@ class MenuTrigger {
 // Arrow
 //
 class MenuArrow {
-	root: MenuRoot;
+	_root: MenuRoot;
 
-	constructor(root: MenuRoot) {
-		this.root = root;
+	constructor(_root: MenuRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('arrow')
+		id: this._root.uid('arrow')
 	}));
 }
 
@@ -164,14 +164,14 @@ class MenuArrow {
 // Content
 //
 class MenuContent {
-	root: MenuRoot;
+	_root: MenuRoot;
 
-	constructor(root: MenuRoot) {
-		this.root = root;
+	constructor(_root: MenuRoot) {
+		this._root = _root;
 	}
 
 	state = $derived.by<MenuContentState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -184,24 +184,24 @@ type MenuItemProps = StateValues<{
 class MenuItem {
 	uid = createUID('item');
 
-	root: MenuRoot;
+	_root: MenuRoot;
 	#events: MenuItemEvents;
 
 	$disabled: MenuItemProps['disabled'];
 
-	Hovered = $derived.by(() => this.root.HoveredItem === this.uid());
+	Hovered = $derived.by(() => this._root.HoveredItem === this.uid());
 
-	constructor(root: MenuRoot, props: MenuItemProps, events: MenuItemEvents) {
-		this.root = root;
+	constructor(_root: MenuRoot, props: MenuItemProps, events: MenuItemEvents) {
+		this._root = _root;
 		this.#events = events;
 
 		this.$disabled = props.disabled;
 
 		onMount(() => {
-			if (!this.$disabled.val) this.root.register(this.uid());
+			if (!this.$disabled.val) this._root.register(this.uid());
 
 			return () => {
-				this.root.unregister(this.uid());
+				this._root.unregister(this.uid());
 			};
 		});
 	}
@@ -210,13 +210,13 @@ class MenuItem {
 		if (this.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.close();
+		this._root.close();
 	};
 	#handleMouseover: MenuItemEvents['onMouseover'] = (e) => {
 		if (this.$disabled.val) return;
 		this.#events.onMouseover?.(e);
 
-		this.root.setHovered(this.uid());
+		this._root.setHovered(this.uid());
 	};
 
 	attrs = $derived.by(
@@ -240,20 +240,20 @@ class MenuItem {
 //
 // Builder
 //
-const rootContext = buildContext(MenuRoot);
+const _rootContext = buildContext(MenuRoot);
 
 export const createRootContext = (props: MenuRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 export const useMenuTrigger = () => {
-	return rootContext.register(MenuTrigger);
+	return _rootContext.register(MenuTrigger);
 };
 export const useMenuArrow = () => {
-	return rootContext.register(MenuArrow);
+	return _rootContext.register(MenuArrow);
 };
 export const useMenuContent = () => {
-	return rootContext.register(MenuContent);
+	return _rootContext.register(MenuContent);
 };
 export const useMenuItem = (props: MenuItemProps, events: MenuItemEvents) => {
-	return rootContext.register(MenuItem, props, events);
+	return _rootContext.register(MenuItem, props, events);
 };

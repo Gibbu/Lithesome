@@ -107,73 +107,73 @@ type TagsInputProps = StateValues<{
 	input: HTMLInputElement | undefined;
 }>;
 class TagsInput {
-	root: TagsRoot;
+	_root: TagsRoot;
 	#events: TagsInputEvents;
 
-	constructor(root: TagsRoot, props: TagsInputProps, events: TagsInputEvents) {
-		this.root = root;
+	constructor(_root: TagsRoot, props: TagsInputProps, events: TagsInputEvents) {
+		this._root = _root;
 		this.#events = events;
 
-		this.root.input = props.input;
+		this._root.input = props.input;
 	}
 
 	#handleKeydown: TagsInputEvents['onKeydown'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onKeydown?.(e);
 		const cursor = e.currentTarget.selectionStart || 0;
 
 		const { key } = e;
 
-		if (!PREVENT_KEYS.includes(key)) this.root.invalid = false;
-		if (key === KEYS.enter && this.root.addTag(e.currentTarget.value)) e.currentTarget.value = '';
+		if (!PREVENT_KEYS.includes(key)) this._root.invalid = false;
+		if (key === KEYS.enter && this._root.addTag(e.currentTarget.value)) e.currentTarget.value = '';
 
-		if (!PREVENT_KEYS.includes(key) && this.root.index !== -1) this.root.index = -1;
+		if (!PREVENT_KEYS.includes(key) && this._root.index !== -1) this._root.index = -1;
 
-		if ((key === KEYS.arrowLeft && cursor === 0) || (key === KEYS.arrowRight && this.root.SelectedTag))
+		if ((key === KEYS.arrowLeft && cursor === 0) || (key === KEYS.arrowRight && this._root.SelectedTag))
 			e.preventDefault();
 
 		if (cursor === 0) {
 			if (key === KEYS.arrowLeft) {
-				if (this.root.index === -1) this.root.index = this.root.$value.val.length - 1;
-				else if (this.root.index !== 0) this.root.index -= 1;
+				if (this._root.index === -1) this._root.index = this._root.$value.val.length - 1;
+				else if (this._root.index !== 0) this._root.index -= 1;
 			}
-			if (key === KEYS.arrowRight && this.root.index !== -1) {
-				this.root.index += 1;
+			if (key === KEYS.arrowRight && this._root.index !== -1) {
+				this._root.index += 1;
 			}
 
 			if (key === KEYS.backspace) {
-				if (this.root.index === -1) this.root.index = this.root.$value.val.length - 1;
-				else if (this.root.index !== -1 && this.root.SelectedTag) {
-					this.root.removeTag(this.root.SelectedTag);
-					if (this.root.index !== 0) this.root.index -= 1;
+				if (this._root.index === -1) this._root.index = this._root.$value.val.length - 1;
+				else if (this._root.index !== -1 && this._root.SelectedTag) {
+					this._root.removeTag(this._root.SelectedTag);
+					if (this._root.index !== 0) this._root.index -= 1;
 				}
 			}
 
-			if (key === KEYS.delete && this.root.SelectedTag) this.root.removeTag(this.root.SelectedTag);
+			if (key === KEYS.delete && this._root.SelectedTag) this._root.removeTag(this._root.SelectedTag);
 		}
 	};
 	#handleInput: TagsInputEvents['onInput'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onInput?.(e);
 
 		const target = e.target as HTMLInputElement;
 
-		if (target.value.trim().length === 0) this.root.invalid = false;
+		if (target.value.trim().length === 0) this._root.invalid = false;
 	};
 	#handleBlur: TagsInputEvents['onBlur'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onBlur?.(e);
 
-		this.root.index = -1;
-		this.root.invalid = false;
+		this._root.index = -1;
+		this._root.invalid = false;
 	};
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('input'),
+				id: this._root.uid('input'),
 				type: 'text',
-				'data-invalid': this.root.invalid || undefined,
+				'data-invalid': this._root.invalid || undefined,
 				'data-tagsinput': '',
 				onblur: this.#handleBlur,
 				onkeydown: this.#handleKeydown,
@@ -182,7 +182,7 @@ class TagsInput {
 	);
 
 	state = $derived.by<TagsInputState>(() => ({
-		invalid: this.root.invalid
+		invalid: this._root.invalid
 	}));
 }
 
@@ -194,16 +194,16 @@ type TagsItemProps = StateValues<{
 }>;
 class TagsItem {
 	uid = createUID('item');
-	root: TagsRoot;
+	_root: TagsRoot;
 
 	$value: TagsItemProps['value'];
 
-	Active = $derived.by(() => this.root.SelectedTag === this.$value.val);
+	Active = $derived.by(() => this._root.SelectedTag === this.$value.val);
 
 	editing = $state<boolean>(false);
 
-	constructor(root: TagsRoot, props: TagsItemProps) {
-		this.root = root;
+	constructor(_root: TagsRoot, props: TagsItemProps) {
+		this._root = _root;
 
 		this.$value = props.value;
 	}
@@ -227,23 +227,23 @@ type TagsDeleteProps = StateValues<{
 	value: string;
 }>;
 class TagsDelete {
-	root: TagsRoot;
+	_root: TagsRoot;
 	#events: TagsDeleteEvents;
 
 	$value: TagsDeleteProps['value'];
 
-	constructor(root: TagsRoot, props: TagsDeleteProps, events: TagsDeleteEvents) {
-		this.root = root;
+	constructor(_root: TagsRoot, props: TagsDeleteProps, events: TagsDeleteEvents) {
+		this._root = _root;
 		this.#events = events;
 
 		this.$value = props.value;
 	}
 
 	#handleClick: TagsDeleteEvents['onClick'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.removeTag(this.$value.val);
+		this._root.removeTag(this.$value.val);
 	};
 
 	attrs = $derived.by(
@@ -259,20 +259,20 @@ class TagsDelete {
 //
 // Builders
 //
-const rootContext = buildContext(TagsRoot);
+const _rootContext = buildContext(TagsRoot);
 
 export const createTagsRootContext = (props: TagsRootProps, events: TagsRootEvents) => {
-	return rootContext.createContext(props, events);
+	return _rootContext.createContext(props, events);
 };
 
 export const useTagsInput = (props: TagsInputProps, events: TagsInputEvents) => {
-	return rootContext.register(TagsInput, props, events);
+	return _rootContext.register(TagsInput, props, events);
 };
 
 export const useTagsItem = (props: TagsItemProps) => {
-	return rootContext.register(TagsItem, props);
+	return _rootContext.register(TagsItem, props);
 };
 
 export const useTagsDelete = (props: TagsDeleteProps, events: TagsDeleteEvents) => {
-	return rootContext.register(TagsDelete, props, events);
+	return _rootContext.register(TagsDelete, props, events);
 };

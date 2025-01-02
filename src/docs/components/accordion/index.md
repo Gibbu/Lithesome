@@ -23,9 +23,15 @@ description: 'An interactive set of panels that hide and reveal sections.'
 <Accordion>
 	<AccordionItem>
 		<AccordionHeading>
-			<AccordionButton />
+			<AccordionButton>Item 1</AccordionButton>
 		</AccordionHeading/>
-		<AccordionContent />
+		<AccordionContent>Item 1 content</AccordionContent>
+	</AccordionItem>
+	<AccordionItem>
+		<AccordionHeading>
+			<AccordionButton>Item 2</AccordionButton>
+		</AccordionHeading/>
+		<AccordionContent>Item 2 content</AccordionContent>
 	</AccordionItem>
 </Accordion>
 ```

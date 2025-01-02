@@ -24,8 +24,8 @@ description: 'Display a temporary message.'
 	{#snippet children(toasts)}
 		{#each toasts as toast (toast.id)}
 			<Toast>
-				<ToastTitle />
-				<ToastMessage />
+				<ToastTitle>{toast.title}</ToastTitle>
+				<ToastMessage>{toast.message}</ToastMessage>
 			</Toast>
 		{/each}
 	{/snippet}

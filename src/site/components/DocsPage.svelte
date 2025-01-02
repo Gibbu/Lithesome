@@ -50,7 +50,11 @@
 			{@render tabBtn(BookOpenText, 'API')}
 		</TabsList>
 		<div class={cn('flex min-h-[450px] w-full flex-1 flex-col', tab === 'api' ? '' : 'max-h-[450px]')}>
-			<TabsContent id="tabs-preview" value="preview" class="not-prose flex-centre w-full flex-1 p-8">
+			<TabsContent
+				id="tabs-preview"
+				value="preview"
+				class="not-prose flex-centre w-full flex-1 overflow-y-auto overflow-x-hidden p-4"
+			>
 				<Component />
 			</TabsContent>
 			<TabsContent value="code" class="not-prose preview-codeblock w-full">

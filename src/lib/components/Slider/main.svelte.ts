@@ -134,20 +134,20 @@ class SliderRoot {
 // Range
 //
 class SliderRange {
-	root: SliderRoot;
+	_root: SliderRoot;
 
-	constructor(root: SliderRoot) {
-		this.root = root;
+	constructor(_root: SliderRoot) {
+		this._root = _root;
 	}
 
 	styles = $derived.by(() => {
-		const perc = `${this.root.Percentage}%`;
+		const perc = `${this._root.Percentage}%`;
 		let obj = {};
 
-		if (this.root.$orientation.val === 'horizontal') {
-			obj = this.root.$reverse.val ? { width: perc, right: '0' } : { width: perc, left: '0' };
-		} else if (this.root.$orientation.val === 'vertical') {
-			obj = this.root.$reverse.val ? { height: perc, top: '0' } : { height: perc, bottom: '0' };
+		if (this._root.$orientation.val === 'horizontal') {
+			obj = this._root.$reverse.val ? { width: perc, right: '0' } : { width: perc, left: '0' };
+		} else if (this._root.$orientation.val === 'vertical') {
+			obj = this._root.$reverse.val ? { height: perc, top: '0' } : { height: perc, bottom: '0' };
 		}
 
 		return Object.entries(obj)
@@ -155,19 +155,19 @@ class SliderRange {
 			.join(';');
 	});
 	attrs = $derived.by(() => ({
-		id: this.root.uid('range'),
+		id: this._root.uid('range'),
 		tabindex: -1,
 		role: 'none',
 		'data-sliderrange': '',
-		'data-value': this.root.$value.val,
-		'data-percentage': this.root.Percentage,
-		'data-reversed': this.root.$reverse.val || undefined,
-		'data-orientation': this.root.$orientation.val,
+		'data-value': this._root.$value.val,
+		'data-percentage': this._root.Percentage,
+		'data-reversed': this._root.$reverse.val || undefined,
+		'data-orientation': this._root.$orientation.val,
 		style: `position: absolute; ${this.styles}`
 	}));
 	state = $derived.by<SliderState>(() => ({
-		value: this.root.$value.val,
-		percentage: this.root.Percentage
+		value: this._root.$value.val,
+		percentage: this._root.Percentage
 	}));
 }
 
@@ -175,50 +175,50 @@ class SliderRange {
 // Thumb
 //
 class SliderThumb {
-	root: SliderRoot;
+	_root: SliderRoot;
 	#events: SliderThumbEvents;
 
-	constructor(root: SliderRoot, thumbElement: HTMLDivElement | undefined, events: SliderThumbEvents) {
-		this.root = root;
+	constructor(_root: SliderRoot, thumbElement: HTMLDivElement | undefined, events: SliderThumbEvents) {
+		this._root = _root;
 		this.#events = events;
 
-		this.root.thumbElement = thumbElement;
+		this._root.thumbElement = thumbElement;
 	}
 
 	#handleMousedown: SliderThumbEvents['onMousedown'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onMousedown?.(e);
 
 		e.preventDefault();
 	};
 	#handleKeydown: SliderThumbEvents['onKeydown'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onKeydown?.(e);
 
 		const { key } = e;
 		if (ALL_ARROW_KEYS.includes(key)) e.preventDefault();
 
 		if (key === KEYS.arrowRight || key === KEYS.arrowUp) {
-			if (this.root.$reverse.val) this.root.stepDown();
-			else this.root.stepUp();
+			if (this._root.$reverse.val) this._root.stepDown();
+			else this._root.stepUp();
 		}
 		if (key === KEYS.arrowLeft || key === KEYS.arrowDown) {
-			if (this.root.$reverse.val) this.root.stepUp();
-			else this.root.stepDown();
+			if (this._root.$reverse.val) this._root.stepUp();
+			else this._root.stepDown();
 		}
 	};
 
 	styles = $derived.by(() => {
-		const perc = `${this.root.Percentage}%`;
+		const perc = `${this._root.Percentage}%`;
 		let translate = '';
 		let obj = {};
 
-		if (this.root.$orientation.val === 'horizontal') {
-			obj = this.root.$reverse.val ? { right: perc } : { left: perc };
-			translate = this.root.$reverse.val ? '50%' : '-50%';
-		} else if (this.root.$orientation.val === 'vertical') {
-			obj = this.root.$reverse ? { top: perc } : { bottom: perc };
-			translate = this.root.$reverse.val ? '0 -50%' : '0 50%';
+		if (this._root.$orientation.val === 'horizontal') {
+			obj = this._root.$reverse.val ? { right: perc } : { left: perc };
+			translate = this._root.$reverse.val ? '50%' : '-50%';
+		} else if (this._root.$orientation.val === 'vertical') {
+			obj = this._root.$reverse ? { top: perc } : { bottom: perc };
+			translate = this._root.$reverse.val ? '0 -50%' : '0 50%';
 		}
 		obj = { ...obj, translate };
 
@@ -227,20 +227,20 @@ class SliderThumb {
 			.join(';');
 	});
 	attrs = $derived.by(() => ({
-		id: this.root.uid('slider'),
+		id: this._root.uid('slider'),
 		role: 'slider',
 		tabindex: 0,
-		'aria-valuenow': this.root.$value.val,
-		'aria-valuemin': this.root.$min.val,
-		'aria-valuemax': this.root.$max.val,
+		'aria-valuenow': this._root.$value.val,
+		'aria-valuemin': this._root.$min.val,
+		'aria-valuemax': this._root.$max.val,
 		'data-sliderthumb': '',
 		onmousedown: this.#handleMousedown,
 		onkeydown: this.#handleKeydown,
 		style: `position: absolute; ${this.styles}`
 	}));
 	state = $derived.by<SliderState>(() => ({
-		value: this.root.$value.val,
-		percentage: this.root.Percentage
+		value: this._root.$value.val,
+		percentage: this._root.Percentage
 	}));
 }
 
@@ -248,28 +248,28 @@ class SliderThumb {
 // Value
 //
 class SliderValue {
-	root: SliderRoot;
+	_root: SliderRoot;
 
-	constructor(root: SliderRoot) {
-		this.root = root;
+	constructor(_root: SliderRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('value'),
-				min: this.root.$min.val,
-				max: this.root.$max.val,
-				step: this.root.$step.val,
-				value: this.root.$value.val,
+				id: this._root.uid('value'),
+				min: this._root.$min.val,
+				max: this._root.$max.val,
+				step: this._root.$step.val,
+				value: this._root.$value.val,
 				'aria-hidden': 'false',
 				'data-slidervalue': '',
 				style: 'display: none;'
 			}) as const
 	);
 	state = $derived.by<SliderState>(() => ({
-		value: this.root.$value.val,
-		percentage: this.root.Percentage
+		value: this._root.$value.val,
+		percentage: this._root.Percentage
 	}));
 }
 

@@ -3,7 +3,6 @@ import {
 	buildContext,
 	createUID,
 	Floating,
-	removeNodeProps,
 	setNodeProps,
 	trackTimeout,
 	type StateValues
@@ -54,24 +53,24 @@ class TooltipRoot extends Floating {
 // Trigger
 //
 class TooltipTrigger {
-	root: TooltipRoot;
+	_root: TooltipRoot;
 
-	constructor(root: TooltipRoot) {
-		this.root = root;
+	constructor(_root: TooltipRoot) {
+		this._root = _root;
 
 		$effect(() => {
-			if (this.root.trigger) {
-				const child = this.root.trigger.children[0] as HTMLElement;
+			if (this._root.trigger) {
+				const child = this._root.trigger.children[0] as HTMLElement;
 
 				setNodeProps(child, {
-					id: this.root.uid('trigger'),
-					'aria-describedby': this.root.uid('content')
+					id: this._root.uid('trigger'),
+					'aria-describedby': this._root.uid('content')
 				});
 				addEventListeners(child, {
-					mouseenter: () => this.root.open(),
-					mouseleave: () => this.root.close(),
-					focus: () => this.root.open(),
-					blur: () => this.root.close()
+					mouseenter: () => this._root.open(),
+					mouseleave: () => this._root.close(),
+					focus: () => this._root.open(),
+					blur: () => this._root.close()
 				});
 			}
 		});
@@ -81,7 +80,7 @@ class TooltipTrigger {
 		'data-tooltiptrigger': ''
 	};
 	state = $derived.by<TooltipState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -89,18 +88,18 @@ class TooltipTrigger {
 // Arrow
 //
 class TooltipArrow {
-	root: TooltipRoot;
+	_root: TooltipRoot;
 
-	constructor(root: TooltipRoot) {
-		this.root = root;
+	constructor(_root: TooltipRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('arrow')
+		id: this._root.uid('arrow')
 	}));
 
 	state = $derived.by<TooltipState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -108,31 +107,31 @@ class TooltipArrow {
 // Content
 //
 class TooltipContent {
-	root: TooltipRoot;
+	_root: TooltipRoot;
 
-	constructor(root: TooltipRoot) {
-		this.root = root;
+	constructor(_root: TooltipRoot) {
+		this._root = _root;
 	}
 
 	state = $derived.by<TooltipState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
 //
 // Builder
 //
-const rootContext = buildContext(TooltipRoot);
+const _rootContext = buildContext(TooltipRoot);
 
 export const createTooltipRootContext = (props: TooltipRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 export const useTooltipTrigger = () => {
-	return rootContext.register(TooltipTrigger);
+	return _rootContext.register(TooltipTrigger);
 };
 export const useTooltipArrow = () => {
-	return rootContext.register(TooltipArrow);
+	return _rootContext.register(TooltipArrow);
 };
 export const useTooltipContent = () => {
-	return rootContext.register(TooltipContent);
+	return _rootContext.register(TooltipContent);
 };

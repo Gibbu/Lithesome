@@ -17,16 +17,14 @@ description: 'Display a summary/preview of a link.'
 
 ```svelte
 <script>
-	import { Hovercard, HovercardTrigger, HovercardContent, HovercardArrow } from 'lithesome';
+	import { Hovercard, HovercardTrigger, HovercardContent } from 'lithesome';
 </script>
 
 <Hovercard>
 	<HovercardTrigger>
-		<button></button>
+		<button>Hover me</button>
 	</HovercardTrigger>
-	<HovercardContent>
-		<HovercardArrow />
-	</HovercardContent>
+	<HovercardContent>Hovercard Content</HovercardContent>
 </Hovercard>
 ```
 
