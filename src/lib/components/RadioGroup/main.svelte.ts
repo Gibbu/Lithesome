@@ -100,28 +100,28 @@ type RadioGroupItemProps = StateValues<{
 class RadioGroupItem {
 	uid = createUID('radioitem');
 
-	root: RadioGroupRoot;
+	_root: RadioGroupRoot;
 	#events: RadioGroupItemEvents;
 
 	$value: RadioGroupItemProps['value'];
 	$disabled: RadioGroupItemProps['disabled'];
 
-	Checked = $derived.by(() => this.root.SelectedItem?.id === this.uid());
+	Checked = $derived.by(() => this._root.SelectedItem?.id === this.uid());
 
-	constructor(root: RadioGroupRoot, props: RadioGroupItemProps, events: RadioGroupItemEvents) {
-		this.root = root;
+	constructor(_root: RadioGroupRoot, props: RadioGroupItemProps, events: RadioGroupItemEvents) {
+		this._root = _root;
 		this.#events = events;
 
 		this.$value = props.value;
 		this.$disabled = props.disabled;
 
-		this.root.items.push(this.$value.val);
+		this._root.items.push(this.$value.val);
 	}
 	#handleClick: RadioGroupItemEvents['onClick'] = (e) => {
 		if (this.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.setSelected({
+		this._root.setSelected({
 			id: this.uid(),
 			value: this.$value.val,
 			disabled: this.$disabled.val
@@ -134,10 +134,10 @@ class RadioGroupItem {
 		const { key } = e;
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) e.preventDefault();
-		if (key === KEYS.home) this.root.navigate('first');
-		if (key === KEYS.end) this.root.navigate('last');
-		if (key === KEYS.arrowUp) this.root.navigate('prev');
-		if (key === KEYS.arrowDown) this.root.navigate('next');
+		if (key === KEYS.home) this._root.navigate('first');
+		if (key === KEYS.end) this._root.navigate('last');
+		if (key === KEYS.arrowUp) this._root.navigate('prev');
+		if (key === KEYS.arrowDown) this._root.navigate('next');
 	};
 
 	attrs = $derived.by(
@@ -148,7 +148,7 @@ class RadioGroupItem {
 				role: 'radio',
 				disabled: this.$disabled.val,
 				'aria-checked': this.Checked,
-				tabindex: !this.root.SelectedItem && this.root.items[0] ? 0 : this.Checked ? 0 : -1,
+				tabindex: !this._root.SelectedItem && this._root.items[0] ? 0 : this.Checked ? 0 : -1,
 				'data-radiogroupitem': '',
 				'data-value': this.$value.val,
 				'data-checked': this.Checked || undefined,
@@ -164,11 +164,11 @@ class RadioGroupItem {
 //
 // Builders
 //
-const rootContext = buildContext(RadioGroupRoot);
+const _rootContext = buildContext(RadioGroupRoot);
 
 export const createRootContext = (props: RadioGroupRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 export const useRadioItem = (props: RadioGroupItemProps, events: RadioGroupItemEvents) => {
-	return rootContext.register(RadioGroupItem, props, events);
+	return _rootContext.register(RadioGroupItem, props, events);
 };

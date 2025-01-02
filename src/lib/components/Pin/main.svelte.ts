@@ -55,18 +55,18 @@ class PinRoot {
 class PinInput {
 	uid = createUID('input');
 
-	root: PinRoot;
+	_root: PinRoot;
 	#events: PinInputEvents;
 
 	focused = $state<boolean>(false);
-	index = $derived.by<number>(() => this.root.inputs.indexOf(this.uid()));
-	value = $derived.by<string>(() => this.root.$value.val[this.index] || '');
+	index = $derived.by<number>(() => this._root.inputs.indexOf(this.uid()));
+	value = $derived.by<string>(() => this._root.$value.val[this.index] || '');
 
-	constructor(root: PinRoot, events: PinInputEvents) {
-		this.root = root;
+	constructor(_root: PinRoot, events: PinInputEvents) {
+		this._root = _root;
 		this.#events = events;
 
-		this.root.inputs.push(this.uid());
+		this._root.inputs.push(this.uid());
 	}
 
 	#moveFocus = (direction: 'next' | 'prev' | 'first' | 'last') => {
@@ -74,14 +74,14 @@ class PinInput {
 			next: this.index + 1,
 			prev: this.index - 1,
 			first: 0,
-			last: this.root.inputs.length - 1
+			last: this._root.inputs.length - 1
 		};
-		const target = this.root.inputs[dir[direction]];
+		const target = this._root.inputs[dir[direction]];
 		if (target) (document.querySelector(`#${target}`) as HTMLInputElement)?.focus();
 	};
 
 	#handleInput: PinInputEvents['onInput'] = async (event) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onInput?.(event);
 
 		const e = event as unknown as InputEvent & { target: HTMLInputElement };
@@ -91,20 +91,20 @@ class PinInput {
 
 		if (e.target.value.length > 1) e.target.value = e.data!;
 
-		this.root.setValue(this.index, e.data!);
+		this._root.setValue(this.index, e.data!);
 		if (this.value.length === 1) {
 			this.#moveFocus('next');
 			return;
 		}
 	};
 	#handleKeydown: PinInputEvents['onKeydown'] = async (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onKeydown?.(e);
 
 		const { key } = e;
 
 		if (key === KEYS.delete) {
-			this.root.setValue(this.index, '');
+			this._root.setValue(this.index, '');
 		}
 		if (key === KEYS.home) {
 			e.preventDefault();
@@ -123,7 +123,7 @@ class PinInput {
 			this.#moveFocus('next');
 		}
 		if (
-			(this.index === this.root.inputs.length - 1 && this.value.length === 0 && key === KEYS.backspace) ||
+			(this.index === this._root.inputs.length - 1 && this.value.length === 0 && key === KEYS.backspace) ||
 			(key === KEYS.backspace && this.value.length === 0)
 		) {
 			await tick();
@@ -132,13 +132,13 @@ class PinInput {
 		}
 	};
 	#handleFocus: PinInputEvents['onFocus'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onFocus?.(e);
 
 		this.focused = true;
 	};
 	#handleBlur: PinInputEvents['onBlur'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onBlur?.(e);
 
 		this.focused = false;
@@ -155,8 +155,8 @@ class PinInput {
 		const values = data.split('');
 		if (values.length === 0) return;
 
-		this.root.inputs.forEach((uid, i) => {
-			this.root.setValue(i, values[i]);
+		this._root.inputs.forEach((uid, i) => {
+			this._root.setValue(i, values[i]);
 
 			const input = document.querySelector(`[data-pininput][id="${uid}"]`) as HTMLInputElement;
 			if (input) input.value = values[i];
@@ -166,10 +166,10 @@ class PinInput {
 
 	attrs = $derived.by(() => ({
 		id: this.uid(),
-		disabled: this.root.$disabled.val,
-		placeholder: this.focused ? '' : this.root.$placeholder.val,
+		disabled: this._root.$disabled.val,
+		placeholder: this.focused ? '' : this._root.$placeholder.val,
 		'data-pininput': '',
-		'data-filled': this.root.Filled,
+		'data-filled': this._root.Filled,
 		oninput: this.#handleInput,
 		onkeydown: this.#handleKeydown,
 		onfocus: this.#handleFocus,
@@ -177,8 +177,8 @@ class PinInput {
 		onpaste: this.#handlePaste
 	}));
 	state = $derived.by<PinInputState>(() => ({
-		filled: this.root.Filled,
-		disabled: this.root.$disabled.val
+		filled: this._root.Filled,
+		disabled: this._root.$disabled.val
 	}));
 }
 
@@ -186,16 +186,16 @@ class PinInput {
 // Value
 //
 class PinValue {
-	root: PinRoot;
+	_root: PinRoot;
 
-	constructor(root: PinRoot) {
-		this.root = root;
+	constructor(_root: PinRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('value'),
+				id: this._root.uid('value'),
 				'aria-hidden': 'true',
 				tabindex: -1,
 				hidden: true,
@@ -207,14 +207,14 @@ class PinValue {
 //
 // Builder
 //
-const rootContext = buildContext(PinRoot);
+const _rootContext = buildContext(PinRoot);
 
 export const createRootContext = (props: PinRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 export const usePinInput = (events: PinInputEvents) => {
-	return rootContext.register(PinInput, events);
+	return _rootContext.register(PinInput, events);
 };
 export const usePinValue = () => {
-	return rootContext.register(PinValue);
+	return _rootContext.register(PinValue);
 };

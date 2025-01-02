@@ -60,10 +60,10 @@ class TreeRoot {
 	}
 
 	queryElements = () => {
-		const root = document.querySelector(`#${this.uid()}`);
-		if (!root) return;
+		const _root = document.querySelector(`#${this.uid()}`);
+		if (!_root) return;
 
-		this.elements = removeDisabledElements(root.querySelectorAll('[role="treeitem"][data-treebutton]'));
+		this.elements = removeDisabledElements(_root.querySelectorAll('[role="treeitem"][data-treebutton]'));
 	};
 
 	attrs = $derived.by(() => ({
@@ -85,15 +85,15 @@ type TreeItemProps = StateValues<{
 }>;
 class TreeItem {
 	uid = createUID('item');
-	root: TreeRoot;
+	_root: TreeRoot;
 
 	$id: TreeItemProps['id'];
 	$disabled: TreeItemProps['disabled'];
 
-	Group = $derived.by(() => this.root.groups.find((el) => el.id === this.$id.val));
+	Group = $derived.by(() => this._root.groups.find((el) => el.id === this.$id.val));
 
-	constructor(root: TreeRoot, props: TreeItemProps) {
-		this.root = root;
+	constructor(_root: TreeRoot, props: TreeItemProps) {
+		this._root = _root;
 
 		this.$id = props.id;
 		this.$disabled = props.disabled;
@@ -104,8 +104,8 @@ class TreeItem {
 		'data-treeitem': ''
 	}));
 	state = $derived.by<TreeItemState>(() => ({
-		selected: this.root.SelectedId === this.$id.val,
-		hovered: this.root.HoveredElementId === this.$id.val,
+		selected: this._root.SelectedId === this.$id.val,
+		hovered: this._root.HoveredElementId === this.$id.val,
 		active: this.Group?.active || false,
 		disabled: this.$disabled.val
 	}));
@@ -115,89 +115,89 @@ class TreeItem {
 // Button
 //
 class TreeButton {
-	root: TreeRoot;
-	item: TreeItem;
+	_root: TreeRoot;
+	_item: TreeItem;
 	#events: TreeButtonEvents;
 
-	constructor(item: TreeItem, root: TreeRoot, events: TreeButtonEvents) {
-		this.item = item;
-		this.root = root;
+	constructor(item: TreeItem, _root: TreeRoot, events: TreeButtonEvents) {
+		this._item = item;
+		this._root = _root;
 		this.#events = events;
 	}
 
 	#handleClick: TreeButtonEvents['onClick'] = (e) => {
-		if (this.item.$disabled.val) return;
+		if (this._item.$disabled.val) return;
 		this.#events.onClick?.(e);
 		e.stopPropagation();
 
-		this.root.queryElements();
+		this._root.queryElements();
 
 		// @ts-ignore - pointerType exist on the PointerEvent object, not the MouseEvent :\
-		if (e.pointerType !== '') this.root.selectedItem = this.item.$id.val;
-		this.root.hoveredIndex = this.root.elements.findIndex((el) => el.dataset.id === e.currentTarget.dataset.id);
+		if (e.pointerType !== '') this._root.selectedItem = this._item.$id.val;
+		this._root.hoveredIndex = this._root.elements.findIndex((el) => el.dataset.id === e.currentTarget.dataset.id);
 
-		const group = this.root.groups.find((el) => el.id === this.item.$id.val);
+		const group = this._root.groups.find((el) => el.id === this._item.$id.val);
 		if (group) group.active = !group.active;
 	};
 
 	#handleKeydown: TreeButtonEvents['onKeydown'] = async (e) => {
-		if (this.item.$disabled.val) return;
+		if (this._item.$disabled.val) return;
 		this.#events.onKeydown?.(e);
 
 		const { key } = e;
 
 		if (ALL_ARROW_KEYS.includes(key) || key === KEYS.enter) e.preventDefault();
 
-		if (this.root.treeElement) {
+		if (this._root.treeElement) {
 			await singleTick();
-			this.root.queryElements();
-			this.root.hoveredIndex = this.root.elements.findIndex((el) => el.dataset.id === this.root.HoveredElementId);
+			this._root.queryElements();
+			this._root.hoveredIndex = this._root.elements.findIndex((el) => el.dataset.id === this._root.HoveredElementId);
 
-			if (this.root.hoveredIndex === -1 && (key === KEYS.arrowLeft || key === KEYS.arrowRight)) {
-				this.root.hoveredIndex = 0;
+			if (this._root.hoveredIndex === -1 && (key === KEYS.arrowLeft || key === KEYS.arrowRight)) {
+				this._root.hoveredIndex = 0;
 			}
-			if (key === KEYS.arrowUp && this.root.hoveredIndex !== 0) {
-				this.root.hoveredIndex--;
-			} else if (key === KEYS.arrowDown && this.root.hoveredIndex !== this.root.elements.length - 1) {
-				this.root.hoveredIndex++;
+			if (key === KEYS.arrowUp && this._root.hoveredIndex !== 0) {
+				this._root.hoveredIndex--;
+			} else if (key === KEYS.arrowDown && this._root.hoveredIndex !== this._root.elements.length - 1) {
+				this._root.hoveredIndex++;
 			} else if (key === KEYS.arrowLeft) {
-				if (this.item.Group && this.item.Group.id === this.item.$id.val && this.item.Group.active) {
-					this.root.HoveredElement?.click();
+				if (this._item.Group && this._item.Group.id === this._item.$id.val && this._item.Group.active) {
+					this._root.HoveredElement?.click();
 				} else {
-					if (!this.root.HoveredElement) return;
+					if (!this._root.HoveredElement) return;
 
-					const itemId = this.root.groups.find((el) => el.children.includes(this.item.$id.val))?.id;
+					const itemId = this._root.groups.find((el) => el.children.includes(this._item.$id.val))?.id;
 					if (!itemId) return;
 
-					const currentIndex = this.root.elements.indexOf(this.root.HoveredElement);
-					const parentGroup = this.root.elements.findLast(
+					const currentIndex = this._root.elements.indexOf(this._root.HoveredElement);
+					const parentGroup = this._root.elements.findLast(
 						(el, i) => i < currentIndex && el.getAttribute('aria-expanded') === 'true' && el.dataset.id === itemId
 					);
 					if (!parentGroup) return;
 
-					this.root.hoveredIndex = this.root.elements.indexOf(parentGroup);
+					this._root.hoveredIndex = this._root.elements.indexOf(parentGroup);
 				}
 			} else if (key === KEYS.arrowRight) {
-				if (!this.item.Group?.active) {
-					this.root.HoveredElement?.click();
+				if (!this._item.Group?.active) {
+					this._root.HoveredElement?.click();
 					await singleTick();
-					if (this.item.Group?.active) this.root.moveFocus = false;
+					if (this._item.Group?.active) this._root.moveFocus = false;
 				}
 
-				if (this.item.Group?.active && !this.root.moveFocus) {
-					this.root.moveFocus = true;
+				if (this._item.Group?.active && !this._root.moveFocus) {
+					this._root.moveFocus = true;
 					return;
 				}
 
-				if (this.item.Group?.active && this.root.HoveredElement) {
-					this.root.hoveredIndex = this.root.elements.indexOf(this.root.HoveredElement) + 1;
+				if (this._item.Group?.active && this._root.HoveredElement) {
+					this._root.hoveredIndex = this._root.elements.indexOf(this._root.HoveredElement) + 1;
 				}
 			} else if (key === KEYS.end) {
-				this.root.hoveredIndex = this.root.elements.length - 1;
+				this._root.hoveredIndex = this._root.elements.length - 1;
 			} else if (key === KEYS.home) {
-				this.root.hoveredIndex = 0;
-			} else if (key === KEYS.enter && this.root.HoveredElementId) {
-				this.root.selectedItem = this.root.HoveredElementId;
+				this._root.hoveredIndex = 0;
+			} else if (key === KEYS.enter && this._root.HoveredElementId) {
+				this._root.selectedItem = this._root.HoveredElementId;
 			}
 		}
 	};
@@ -205,27 +205,27 @@ class TreeButton {
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.item.uid('button'),
+				id: this._item.uid('button'),
 				role: 'treeitem',
 				tabindex:
-					(this.root.SelectedId === this.item.$id.val && this.root.HoveredElementId === this.item.$id.val) ||
-					this.root.HoveredElementId === this.item.$id.val
+					(this._root.SelectedId === this._item.$id.val && this._root.HoveredElementId === this._item.$id.val) ||
+					this._root.HoveredElementId === this._item.$id.val
 						? 0
 						: -1,
-				'aria-selected': this.root.SelectedId === this.item.$id.val,
-				'aria-expanded': this.item.Group ? (this.item.Group.active ? 'true' : 'false') : undefined,
+				'aria-selected': this._root.SelectedId === this._item.$id.val,
+				'aria-expanded': this._item.Group ? (this._item.Group.active ? 'true' : 'false') : undefined,
 				type: 'button',
 				'data-treebutton': '',
-				'data-id': this.item.$id.val,
+				'data-id': this._item.$id.val,
 				onclick: this.#handleClick,
 				onkeydown: this.#handleKeydown
 			}) as const
 	);
 	state = $derived.by<TreeItemState>(() => ({
-		selected: this.root.SelectedId === this.item.$id.val,
-		hovered: this.root.HoveredElementId === this.item.$id.val,
-		active: this.item.Group?.active || false,
-		disabled: this.item.$disabled.val
+		selected: this._root.SelectedId === this._item.$id.val,
+		hovered: this._root.HoveredElementId === this._item.$id.val,
+		active: this._item.Group?.active || false,
+		disabled: this._item.$disabled.val
 	}));
 }
 
@@ -236,35 +236,35 @@ type TreeGroupProps = StateValues<{
 	active: boolean;
 }>;
 class TreeGroup {
-	root: TreeRoot;
-	item: TreeItem;
+	_root: TreeRoot;
+	_item: TreeItem;
 
 	$active: TreeGroupProps['active'];
 
-	Visible = $derived.by(() => this.$active.val || this.root.$forceVisible.val);
+	Visible = $derived.by(() => this.$active.val || this._root.$forceVisible.val);
 
-	constructor(item: TreeItem, root: TreeRoot, props: TreeGroupProps) {
-		this.root = root;
-		this.item = item;
+	constructor(item: TreeItem, _root: TreeRoot, props: TreeGroupProps) {
+		this._root = _root;
+		this._item = item;
 
 		this.$active = props.active;
 
 		$effect(() => {
-			if (this.item.Group) this.$active.val = this.item.Group.active;
+			if (this._item.Group) this.$active.val = this._item.Group.active;
 		});
 
 		$effect(() => {
-			if (this.item.Group?.active) {
+			if (this._item.Group?.active) {
 				singleTick(() => {
-					this.root.queryElements();
+					this._root.queryElements();
 
-					const item = document.querySelector(`#${this.item.uid()}`);
+					const item = document.querySelector(`#${this._item.uid()}`);
 					if (!item) return;
 
 					const group = item.querySelector('[role="group"][data-treegroup]');
-					if (!group || !this.item.Group) return;
+					if (!group || !this._item.Group) return;
 
-					this.item.Group.children = removeDisabledElements(
+					this._item.Group.children = removeDisabledElements(
 						group.querySelectorAll('[role="treeitem"][data-treebutton]')
 					).map((el) => el.dataset.id) as string[];
 				});
@@ -272,17 +272,17 @@ class TreeGroup {
 		});
 
 		onMount(() => {
-			if (!this.root.groups.find((el) => el.id === this.item.$id.val)) {
-				this.root.groups.push({
-					id: this.item.$id.val,
-					active: this.root.$forceVisible.val || false,
+			if (!this._root.groups.find((el) => el.id === this._item.$id.val)) {
+				this._root.groups.push({
+					id: this._item.$id.val,
+					active: this._root.$forceVisible.val || false,
 					children: []
 				});
 			}
-			this.root.queryElements();
+			this._root.queryElements();
 
 			return () => {
-				this.root.groups = this.root.groups.filter((el) => el.id !== this.item.$id.val);
+				this._root.groups = this._root.groups.filter((el) => el.id !== this._item.$id.val);
 			};
 		});
 	}
@@ -290,34 +290,34 @@ class TreeGroup {
 	attrs = $derived.by(() => ({
 		role: 'group',
 		'data-treegroup': '',
-		'data-item': this.item.$id.val
+		'data-item': this._item.$id.val
 	}));
 	state = $derived.by<TreeItemState>(() => ({
-		selected: this.root.SelectedId === this.item.$id.val,
-		hovered: this.root.HoveredElementId === this.item.$id.val,
+		selected: this._root.SelectedId === this._item.$id.val,
+		hovered: this._root.HoveredElementId === this._item.$id.val,
 		active: this.$active.val,
-		disabled: this.item.$disabled.val
+		disabled: this._item.$disabled.val
 	}));
 }
 
 //
 // Builders
 //
-const rootCtx = buildContext(TreeRoot);
+const _rootCtx = buildContext(TreeRoot);
 const itemCtx = buildContext(TreeItem);
 
 export const createTreeRootContext = (props: TreeRootProps) => {
-	return rootCtx.createContext(props);
+	return _rootCtx.createContext(props);
 };
 
 export const createTreeItemContext = (props: TreeItemProps) => {
-	return itemCtx.createContext(rootCtx.getContext(), props);
+	return itemCtx.createContext(_rootCtx.getContext(), props);
 };
 
 export const useTreeButton = (events: TreeButtonEvents) => {
-	return itemCtx.register(TreeButton, rootCtx.getContext(), events);
+	return itemCtx.register(TreeButton, _rootCtx.getContext(), events);
 };
 
 export const useTreeGroup = (props: TreeGroupProps) => {
-	return itemCtx.register(TreeGroup, rootCtx.getContext(), props);
+	return itemCtx.register(TreeGroup, _rootCtx.getContext(), props);
 };

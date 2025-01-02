@@ -37,16 +37,16 @@ class ModalRoot {
 // Overlay
 //
 class ModalOverlay {
-	root: ModalRoot;
+	_root: ModalRoot;
 
-	Visible = $derived.by(() => this.root.$visible.val);
+	Visible = $derived.by(() => this._root.$visible.val);
 
-	constructor(root: ModalRoot) {
-		this.root = root;
+	constructor(_root: ModalRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('overlay'),
+		id: this._root.uid('overlay'),
 		'aria-hidden': true,
 		'data-modaloverlay': ''
 	}));
@@ -56,23 +56,23 @@ class ModalOverlay {
 // Content
 //
 class ModalContent {
-	root: ModalRoot;
+	_root: ModalRoot;
 
-	Visible = $derived.by(() => this.root.$visible.val);
+	Visible = $derived.by(() => this._root.$visible.val);
 
-	constructor(root: ModalRoot) {
-		this.root = root;
+	constructor(_root: ModalRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('content'),
+				id: this._root.uid('content'),
 				role: 'dialog',
 				'aria-modal': 'true',
 				tabindex: -1,
-				'aria-describedby': this.root.uid('description'),
-				'aria-labeledby': this.root.uid('title'),
+				'aria-describedby': this._root.uid('description'),
+				'aria-labeledby': this._root.uid('title'),
 				'data-modalcontent': ''
 			}) as const
 	);
@@ -82,14 +82,14 @@ class ModalContent {
 // Title
 //
 class ModalTitle {
-	root: ModalRoot;
+	_root: ModalRoot;
 
-	constructor(root: ModalRoot) {
-		this.root = root;
+	constructor(_root: ModalRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('title'),
+		id: this._root.uid('title'),
 		'data-modaltitle': ''
 	}));
 }
@@ -98,14 +98,14 @@ class ModalTitle {
 // Description
 //
 class ModalDescription {
-	root: ModalRoot;
+	_root: ModalRoot;
 
-	constructor(root: ModalRoot) {
-		this.root = root;
+	constructor(_root: ModalRoot) {
+		this._root = _root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('description'),
+		id: this._root.uid('description'),
 		'data-modaldescription': ''
 	}));
 }
@@ -113,24 +113,24 @@ class ModalDescription {
 //
 // Builder
 //
-const rootContext = buildContext(ModalRoot);
+const _rootContext = buildContext(ModalRoot);
 
 export const createRootContext = (props: ModalRootProps) => {
-	return rootContext.createContext(props);
+	return _rootContext.createContext(props);
 };
 
 export const useModalOverlay = () => {
-	return rootContext.register(ModalOverlay);
+	return _rootContext.register(ModalOverlay);
 };
 
 export const useModalContent = () => {
-	return rootContext.register(ModalContent);
+	return _rootContext.register(ModalContent);
 };
 
 export const useModalTitle = () => {
-	return rootContext.register(ModalTitle);
+	return _rootContext.register(ModalTitle);
 };
 
 export const useModalDescription = () => {
-	return rootContext.register(ModalDescription);
+	return _rootContext.register(ModalDescription);
 };

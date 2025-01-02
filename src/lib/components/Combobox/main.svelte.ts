@@ -161,74 +161,74 @@ class ComboboxRoot extends Floating {
 // Input
 //
 class ComboboxInput {
-	root: ComboboxRoot;
+	_root: ComboboxRoot;
 	#events: ComboboxInputEvents;
 
 	constructor(root: ComboboxRoot, events: ComboboxInputEvents) {
-		this.root = root;
+		this._root = root;
 		this.#events = events;
 	}
 
 	registerTrigger = (trigger: HTMLInputElement) => {
-		this.root.trigger = trigger;
+		this._root.trigger = trigger;
 	};
 
 	#handleCick: ComboboxInputEvents['onClick'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.toggle();
+		this._root.toggle();
 	};
 	#handleKeydown: ComboboxInputEvents['onKeydown'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onKeydown?.(e);
 
 		const { key } = e;
 
 		if (!PREVENT_KEYS.includes(key)) {
-			this.root.$touched.val = true;
-			if (!this.root.SuperVisible) this.root.open();
+			this._root.$touched.val = true;
+			if (!this._root.SuperVisible) this._root.open();
 		}
 
 		if (key === KEYS.arrowUp || key === KEYS.arrowDown || key === KEYS.end || key === KEYS.home) {
 			e.preventDefault();
-			if (!this.root.SuperVisible) this.root.open();
+			if (!this._root.SuperVisible) this._root.open();
 		}
-		if (key === KEYS.home) this.root.navigate('first');
-		if (key === KEYS.end) this.root.navigate('last');
-		if (key === KEYS.arrowUp) this.root.navigate('prev');
-		if (key === KEYS.arrowDown) this.root.navigate('next');
-		if (key === KEYS.escape) this.root.close();
+		if (key === KEYS.home) this._root.navigate('first');
+		if (key === KEYS.end) this._root.navigate('last');
+		if (key === KEYS.arrowUp) this._root.navigate('prev');
+		if (key === KEYS.arrowDown) this._root.navigate('next');
+		if (key === KEYS.escape) this._root.close();
 		if (key === KEYS.enter) {
 			e.preventDefault();
-			if (this.root.HoveredOption && this.root.SuperVisible) {
-				this.root.HoveredOption.click();
-				if (!this.root.$multiple.val) this.root.close();
+			if (this._root.HoveredOption && this._root.SuperVisible) {
+				this._root.HoveredOption.click();
+				if (!this._root.$multiple.val) this._root.close();
 			} else {
-				this.root.open();
+				this._root.open();
 			}
 		}
-		if (key === 'Tab') this.root.close();
+		if (key === 'Tab') this._root.close();
 	};
 
 	attrs = $derived.by(
 		() =>
 			({
-				id: this.root.uid('input'),
+				id: this._root.uid('input'),
 				type: 'text',
 				role: 'combobox',
 				'aria-autocomplete': 'list',
 				'aria-haspopup': 'listbox',
-				'aria-controls': this.root.SuperVisible ? this.root.uid('content') : undefined,
-				'aria-expanded': this.root.SuperVisible,
-				'aria-activedescendant': this.root.HoveredOption?.id || undefined,
+				'aria-controls': this._root.SuperVisible ? this._root.uid('content') : undefined,
+				'aria-expanded': this._root.SuperVisible,
+				'aria-activedescendant': this._root.HoveredOption?.id || undefined,
 				autocomplete: 'off',
 				onclick: this.#handleCick,
 				onkeydown: this.#handleKeydown
 			}) as const
 	);
 	state = $derived.by<ComboboxInputState>(() => ({
-		visible: this.root.SuperVisible
+		visible: this._root.SuperVisible
 	}));
 }
 
@@ -236,14 +236,14 @@ class ComboboxInput {
 // Arrow
 //
 class ComboboxArrow {
-	root: ComboboxRoot;
+	_root: ComboboxRoot;
 
 	constructor(root: ComboboxRoot) {
-		this.root = root;
+		this._root = root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('arrow')
+		id: this._root.uid('arrow')
 	}));
 }
 
@@ -251,17 +251,17 @@ class ComboboxArrow {
 // Content
 //
 class ComboboxContent {
-	root: ComboboxRoot;
+	_root: ComboboxRoot;
 
 	constructor(root: ComboboxRoot) {
-		this.root = root;
+		this._root = root;
 	}
 
 	attrs = $derived.by(() => ({
-		hidden: !this.root.mounted || undefined
+		hidden: !this._root.mounted || undefined
 	}));
 	state = $derived.by<ComboboxContentState>(() => ({
-		visible: this.root.SuperVisible
+		visible: this._root.SuperVisible
 	}));
 }
 
@@ -276,18 +276,18 @@ type ComboboxOptionProps = StateValues<{
 class ComboboxOption {
 	uid = createUID('option');
 
-	root: ComboboxRoot;
+	_root: ComboboxRoot;
 	#events: ComboboxOptionEvents;
 
 	$value: ComboboxOptionProps['value'];
 	$label: ComboboxOptionProps['label'];
 	$disabled: ComboboxOptionProps['disabled'];
 
-	Hovered = $derived.by(() => this.root.HoveredOption?.id === this.uid());
-	Selected = $derived.by(() => !!this.root.selectedOptions.find((el) => el.dataset.value === this.$value.val));
+	Hovered = $derived.by(() => this._root.HoveredOption?.id === this.uid());
+	Selected = $derived.by(() => !!this._root.selectedOptions.find((el) => el.dataset.value === this.$value.val));
 
 	constructor(root: ComboboxRoot, props: ComboboxOptionProps, events: ComboboxOptionEvents) {
-		this.root = root;
+		this._root = root;
 		this.#events = events;
 
 		this.$value = props.value;
@@ -295,28 +295,28 @@ class ComboboxOption {
 		this.$label = props.label;
 
 		onMount(() => {
-			this.root.queryElements();
+			this._root.queryElements();
 
 			return async () => {
-				if (!this.root.SuperVisible) return;
+				if (!this._root.SuperVisible) return;
 
 				await tick();
-				this.root.queryElements();
+				this._root.queryElements();
 			};
 		});
 	}
 
 	#handleClick: ComboboxOptionEvents['onClick'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.setSelected();
+		this._root.setSelected();
 	};
 	#handleMouseover: ComboboxOptionEvents['onMouseover'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onMouseover?.(e);
 
-		this.root.setHovered(this.uid());
+		this._root.setHovered(this.uid());
 	};
 
 	attrs = $derived.by(

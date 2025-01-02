@@ -35,32 +35,32 @@ class CollapsibleRoot {
 // Button
 //
 class CollapsibleButton {
-	root: CollapsibleRoot;
+	_root: CollapsibleRoot;
 	#events: CollapsibleButtonEvents;
 
 	constructor(root: CollapsibleRoot, events: CollapsibleButtonEvents) {
-		this.root = root;
+		this._root = root;
 		this.#events = events;
 	}
 
 	#handleClick: CollapsibleButtonEvents['onClick'] = (e) => {
-		if (this.root.$disabled.val) return;
+		if (this._root.$disabled.val) return;
 		this.#events.onClick?.(e);
 
-		this.root.$visible.val = !this.root.$visible.val;
+		this._root.$visible.val = !this._root.$visible.val;
 	};
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('button'),
-		'aria-expanded': this.root.$visible.val,
+		id: this._root.uid('button'),
+		'aria-expanded': this._root.$visible.val,
 		'data-collapsiblebutton': '',
-		'data-disabled': this.root.$disabled.val,
-		'data-state': this.root.$visible.val ? 'opened' : 'closed',
+		'data-disabled': this._root.$disabled.val,
+		'data-state': this._root.$visible.val ? 'opened' : 'closed',
 		onclick: this.#handleClick
 	}));
 
 	state = $derived.by<CollapsibleState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 
@@ -68,19 +68,19 @@ class CollapsibleButton {
 // Content
 //
 class CollapsibleContent {
-	root: CollapsibleRoot;
+	_root: CollapsibleRoot;
 
 	constructor(root: CollapsibleRoot) {
-		this.root = root;
+		this._root = root;
 	}
 
 	attrs = $derived.by(() => ({
-		id: this.root.uid('content'),
+		id: this._root.uid('content'),
 		'data-collapsiblecontent': ''
 	}));
 
 	state = $derived.by<CollapsibleState>(() => ({
-		visible: this.root.$visible.val
+		visible: this._root.$visible.val
 	}));
 }
 

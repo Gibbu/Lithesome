@@ -1,6 +1,6 @@
 ---
 title: 'Tree'
-description: 'A hierarchical list of infinitely nested items.'
+description: 'A hierarchical list of potentially infinitely nested items.'
 badge: 'new'
 ---
 
