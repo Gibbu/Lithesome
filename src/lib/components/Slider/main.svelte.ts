@@ -158,7 +158,7 @@ class SliderRange {
 		id: this._root.uid('range'),
 		tabindex: -1,
 		role: 'none',
-		'data-slider': '',
+		'data-sliderrange': '',
 		'data-value': this._root.$value.val,
 		'data-percentage': this._root.Percentage,
 		'data-reversed': this._root.$reverse.val || undefined,
