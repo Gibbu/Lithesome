@@ -1,9 +1,19 @@
 <script lang="ts">
-	import { classProp, stateValue, useActions } from '$internal';
+	import { Element, stateValue } from '$internal';
 	import { useTagsDelete } from './main.svelte.js';
 	import type { TagsDeleteProps } from './types.js';
 
-	let { children, use = [], self = $bindable(), class: klass, value, onClick, ...props }: TagsDeleteProps = $props();
+	let {
+		children,
+		use = [],
+		self = $bindable(),
+		class: klass,
+		value,
+		onClick,
+		as = 'button',
+		transition,
+		...props
+	}: TagsDeleteProps = $props();
 
 	const ctx = useTagsDelete(
 		{
@@ -15,6 +25,4 @@
 	);
 </script>
 
-<button bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
-	{@render children?.({})}
-</button>
+<Element {transition} {as} {klass} bind:self {use} {children} {...ctx.attrs} {...props} />

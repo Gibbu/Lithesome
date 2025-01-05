@@ -1,13 +1,19 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import { useModalTitle } from './main.svelte.js';
 	import type { ModalTitleProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: ModalTitleProps = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self = $bindable(),
+		as = 'h2',
+		transition,
+		...props
+	}: ModalTitleProps = $props();
 
 	const ctx = useModalTitle();
 </script>
 
-<h2 bind:this={self} use:useActions={use} class={classProp(klass)} {...props} {...ctx.attrs}>
-	{@render children?.({})}
-</h2>
+<Element {transition} {as} {klass} bind:self {use} {children} {...ctx.attrs} {...props} />

@@ -1,9 +1,17 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import type { HovercardTriggerProps } from './types.js';
 	import { useHovercardTrigger } from './main.svelte.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: HovercardTriggerProps = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self = $bindable(),
+		as = 'div',
+		transition,
+		...props
+	}: HovercardTriggerProps = $props();
 
 	const ctx = useHovercardTrigger();
 
@@ -12,6 +20,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

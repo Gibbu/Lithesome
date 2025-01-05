@@ -3,9 +3,9 @@
 	import { FloatingArrow } from '$internal';
 	import type { TooltipArrowProps } from './types.js';
 
-	let { class: klass, use = [], self = $bindable(), ...props }: TooltipArrowProps = $props();
+	let { class: klass, use = [], self = $bindable(), as = 'div', ...props }: TooltipArrowProps = $props();
 
 	const ctx = useTooltipArrow();
 </script>
 
-<FloatingArrow {ctx} component="Tooltip" class={klass} {...ctx.attrs} {...props} />
+<FloatingArrow {as} {ctx} component="Tooltip" class={klass} {...ctx.attrs} {...props} />

@@ -50,14 +50,18 @@ class CollapsibleButton {
 		this._root.$visible.val = !this._root.$visible.val;
 	};
 
-	attrs = $derived.by(() => ({
-		id: this._root.uid('button'),
-		'aria-expanded': this._root.$visible.val,
-		'data-collapsiblebutton': '',
-		'data-disabled': this._root.$disabled.val,
-		'data-state': this._root.$visible.val ? 'opened' : 'closed',
-		onclick: this.#handleClick
-	}));
+	attrs = $derived.by(
+		() =>
+			({
+				id: this._root.uid('button'),
+				type: 'button',
+				'aria-expanded': this._root.$visible.val,
+				'data-collapsiblebutton': '',
+				'data-disabled': this._root.$disabled.val,
+				'data-state': this._root.$visible.val ? 'opened' : 'closed',
+				onclick: this.#handleClick
+			}) as const
+	);
 
 	state = $derived.by<CollapsibleState>(() => ({
 		visible: this._root.$visible.val

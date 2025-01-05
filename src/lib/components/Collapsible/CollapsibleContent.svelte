@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useCollapsibleContent } from './main.svelte.js';
-	import { useActions, getTransition, classProp } from '$internal';
+	import { useActions, getTransition, classProp, Element } from '$internal';
 	import type { CollapsibleContentProps } from './types.js';
 
 	let {
@@ -9,6 +9,7 @@
 		use = [],
 		self = $bindable(),
 		transition,
+		as = 'div',
 		...props
 	}: CollapsibleContentProps = $props();
 
@@ -21,14 +22,15 @@
 	} as const);
 </script>
 
-{#if inTransition && outTransition && ctx._root.$visible.val}
-	{@const { config: inConf, transition: inFn } = inTransition}
-	{@const { config: outConf, transition: outFn } = outTransition}
-	<div bind:this={self} use:useActions={use} in:inFn={inConf} out:outFn={outConf} {...attrs} {...props}>
-		{@render children?.(ctx.state)}
-	</div>
-{:else if ctx._root.$visible.val}
-	<div bind:this={self} use:useActions={use} {...attrs} {...props}>
-		{@render children?.(ctx.state)}
-	</div>
-{/if}
+<Element
+	visible={ctx._root.$visible.val}
+	{transition}
+	{as}
+	{klass}
+	bind:self
+	{use}
+	state={ctx.state}
+	{children}
+	{...ctx.attrs}
+	{...props}
+/>

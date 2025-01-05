@@ -1,9 +1,17 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { useActions, classProp, Element } from '$internal';
 	import { useMenuTrigger } from './main.svelte.js';
 	import type { MenuTriggerProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: MenuTriggerProps = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self = $bindable(),
+		transition,
+		as = 'div',
+		...props
+	}: MenuTriggerProps = $props();
 
 	const ctx = useMenuTrigger();
 
@@ -12,6 +20,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} data-menutrigger="" {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

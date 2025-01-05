@@ -1,10 +1,19 @@
 <script lang="ts">
-	import { classProp, useActions } from '$internal';
+	import { Element } from '$internal';
 	import { useSliderThumb } from './main.svelte.js';
 
 	import type { SliderThumbProps } from './types.js';
 
-	let { use = [], class: klass, self = $bindable(), onMousedown, onKeydown, ...props }: SliderThumbProps = $props();
+	let {
+		use = [],
+		class: klass,
+		self = $bindable(),
+		onMousedown,
+		onKeydown,
+		as = 'div',
+		transition,
+		...props
+	}: SliderThumbProps = $props();
 
 	const ctx = useSliderThumb(self, {
 		onKeydown,
@@ -12,4 +21,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}></div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {...ctx.attrs} {...props} />

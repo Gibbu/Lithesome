@@ -10,7 +10,7 @@ export interface CheckboxState {
 	/** If the checkbox is checked or not. */
 	checked: Checked;
 }
-export interface CheckboxProps extends Props<HTMLButtonElement, CheckboxState> {
+export interface CheckboxProps extends Omit<Props<HTMLButtonElement, CheckboxState>, 'as'> {
 	/** If the checkbox is checked or not. */
 	checked?: Checked;
 	/** Adds aria attributes. */

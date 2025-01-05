@@ -62,7 +62,9 @@ export interface ComboboxInputEvents {
 	 */
 	onKeydown?: Handler<KeyboardEvent, HTMLInputElement>;
 }
-export interface ComboboxInputProps extends PropsNoChildren<HTMLInputElement, ComboboxInputState>, ComboboxInputEvents {
+export interface ComboboxInputProps
+	extends Omit<PropsNoChildren<HTMLInputElement, ComboboxInputState>, 'as' | 'transition'>,
+		ComboboxInputEvents {
 	/** Bind the value of the input value. */
 	value: string;
 }

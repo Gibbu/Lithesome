@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { ToastProps } from './types.js';
 
-	let { children, use = [], class: klass, self = $bindable(), ...props }: ToastProps = $props();
+	let { children, use = [], class: klass, self = $bindable(), as = 'div', transition, ...props }: ToastProps = $props();
 
 	const ctx = createRootContext();
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
-	{@render children?.({})}
-</div>
+<Element {transition} {as} {klass} bind:self {use} {children} {...ctx.attrs} {...props} />

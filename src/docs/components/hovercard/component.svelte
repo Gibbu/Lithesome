@@ -5,7 +5,7 @@
 	import { fly } from 'svelte/transition';
 </script>
 
-<Hovercard>
+<Hovercard delay={[0, 10000]}>
 	<HovercardTrigger>
 		<a
 			href="https://github.com/Gibbu"

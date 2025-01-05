@@ -72,9 +72,11 @@ export interface PinInputEvents {
 	 */
 	onPaste?: Handler<ClipboardEvent, HTMLInputElement>;
 }
-export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState>, PinInputEvents {}
+export interface PinInputProps
+	extends Omit<PropsNoChildren<HTMLInputElement, PinInputState>, 'as' | 'transition'>,
+		PinInputEvents {}
 
-export interface PinValueProps extends PropsNoChildren<HTMLInputElement> {
+export interface PinValueProps extends Omit<PropsNoChildren<HTMLInputElement>, 'as'> {
 	/**
 	 * The HTML Input element name attribute.
 	 *

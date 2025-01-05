@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { classProp, stateValue, useActions } from '$internal';
+	import { Element } from '$internal';
 	import { useTreeButton } from './main.svelte.js';
-
 	import type { TreeButtonProps } from './types.js';
 
 	let {
@@ -11,6 +10,8 @@
 		use = [],
 		disabled = $bindable(false),
 		id,
+		as = 'button',
+		transition,
 		onClick,
 		onKeydown,
 		...props
@@ -22,6 +23,4 @@
 	});
 </script>
 
-<button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</button>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

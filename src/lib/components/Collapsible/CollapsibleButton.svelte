@@ -1,22 +1,21 @@
 <script lang="ts">
 	import { useCollapsibleButton } from './main.svelte.js';
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import type { CollapsibleButtonProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: CollapsibleButtonProps = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self = $bindable(),
+		as = 'div',
+		onClick,
+		...props
+	}: CollapsibleButtonProps = $props();
 
 	const ctx = useCollapsibleButton({
 		onClick
 	});
 </script>
 
-<button
-	type="button"
-	bind:this={self}
-	use:useActions={use}
-	class={classProp(klass, ctx.state)}
-	{...ctx.attrs}
-	{...props}
->
-	{@render children?.(ctx.state)}
-</button>
+<Element {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

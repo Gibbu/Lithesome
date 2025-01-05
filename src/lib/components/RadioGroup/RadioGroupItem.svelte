@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { useRadioItem } from './main.svelte.js';
 	import type { RadioGroupItemProps } from './types.js';
 
@@ -9,6 +9,8 @@
 		use = [],
 		self = $bindable(),
 		disabled = $bindable(false),
+		transition,
+		as = 'button',
 		value,
 		onClick,
 		onKeydown,
@@ -27,6 +29,4 @@
 	);
 </script>
 
-<button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</button>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

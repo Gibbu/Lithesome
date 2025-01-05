@@ -10,6 +10,7 @@
 		portalTarget = 'body',
 		class: klass,
 		self = $bindable(),
+		as = 'div',
 		placement = 'bottom',
 		constrainViewport,
 		sameWidth = false,
@@ -25,6 +26,7 @@
 	componentName="Hovercard"
 	visible={ctx._root.$visible.val}
 	bind:self
+	{as}
 	{sameWidth}
 	{transition}
 	{constrainViewport}

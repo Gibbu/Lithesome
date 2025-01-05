@@ -1,5 +1,5 @@
 <script lang="ts" generics="T extends FloatingContext">
-	import { useActions, classProp, log, useFloating, getTransition, type Props, type ContentProps } from '$internal';
+	import { classProp, log, useFloating, Element, type Props, type ContentProps } from '$internal';
 	import { useOutside, usePortal } from '$lib/index.js';
 	import type { FloatingContext } from './types.js';
 
@@ -22,6 +22,7 @@
 		portalTarget = $bindable(),
 		placement = $bindable(),
 		offset = 0,
+		as = 'div',
 		outsideCallback,
 		ctx,
 		componentName,
@@ -35,7 +36,6 @@
 		class: classProp(klass, ctx.state),
 		...ctx.attrs
 	}));
-	const { inTransition, outTransition } = getTransition(transition);
 
 	$effect(() => {
 		if (!visible) return;
@@ -45,46 +45,30 @@
 	});
 </script>
 
-{#if inTransition && outTransition && visible}
-	{@const { config: inConf, transition: inFn } = inTransition}
-	{@const { config: outConf, transition: outFn } = outTransition}
-	<div
-		bind:this={self}
-		use:useFloating={{
-			anchor: ctx._root.trigger,
-			arrow: ctx._root.arrow,
-			sameWidth,
-			constrainViewport,
-			placement,
-			offset
-		}}
-		use:useOutside={{ exclude: ctx._root.trigger, callback: () => outsideCallback() }}
-		use:usePortal={portalTarget}
-		use:useActions={use}
-		in:inFn={inConf}
-		out:outFn={outConf}
-		{...attrs}
-		{...props}
-	>
-		{@render children?.({ visible: visible })}
-	</div>
-{:else if visible}
-	<div
-		bind:this={self}
-		use:useFloating={{
-			anchor: ctx._root.trigger,
-			arrow: ctx._root.arrow,
-			sameWidth,
-			constrainViewport,
-			placement,
-			offset
-		}}
-		use:useOutside={{ exclude: ctx._root.trigger, callback: () => outsideCallback() }}
-		use:usePortal={portalTarget}
-		use:useActions={use}
-		{...attrs}
-		{...props}
-	>
-		{@render children?.({ visible: visible })}
-	</div>
-{/if}
+<Element
+	{visible}
+	{as}
+	{transition}
+	{klass}
+	bind:self
+	use={[
+		[useOutside, { exclude: ctx._root.trigger, callback: () => outsideCallback() }],
+		[usePortal, portalTarget],
+		[
+			useFloating,
+			{
+				anchor: ctx._root.trigger,
+				arrow: ctx._root.arrow,
+				sameWidth,
+				constrainViewport,
+				placement,
+				offset
+			}
+		],
+		...use
+	]}
+	state={ctx.state}
+	{children}
+	{...attrs}
+	{...props}
+/>

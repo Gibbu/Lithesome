@@ -63,6 +63,6 @@ export interface SliderThumbProps extends PropsNoChildren<HTMLDivElement, Slider
 
 export interface SliderRangeProps extends PropsNoChildren<HTMLDivElement, SliderState> {}
 
-export interface SliderValueProps extends PropsNoChildren<HTMLInputElement> {
+export interface SliderValueProps extends Omit<PropsNoChildren<HTMLInputElement>, 'as'> {
 	name: string;
 }

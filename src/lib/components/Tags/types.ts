@@ -60,7 +60,9 @@ export interface TagsInputEvents {
 	 */
 	onBlur?: Handler<FocusEvent, HTMLInputElement>;
 }
-export interface TagsInputProps extends PropsNoChildren<HTMLInputElement, TagsInputState>, TagsInputEvents {}
+export interface TagsInputProps
+	extends Omit<PropsNoChildren<HTMLInputElement, TagsInputState>, 'as' | 'transition'>,
+		TagsInputEvents {}
 
 /**
  * The state that is exposed from the `TagsItem` component.\

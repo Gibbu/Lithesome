@@ -13,6 +13,7 @@
 		self = $bindable(),
 		placement = 'bottom',
 		offset = 0,
+		as = 'div',
 		constrainViewport = false,
 		...props
 	}: SelectContentProps = $props();
@@ -24,6 +25,7 @@
 	{children}
 	componentName="Select"
 	visible={ctx._root.SuperVisible}
+	{as}
 	{ctx}
 	{transition}
 	{use}

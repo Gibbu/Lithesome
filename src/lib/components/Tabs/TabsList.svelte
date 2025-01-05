@@ -1,13 +1,19 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import { useTabsList } from './main.svelte.js';
 	import type { TabsListProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: TabsListProps = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self = $bindable(),
+		transition,
+		as = 'div',
+		...props
+	}: TabsListProps = $props();
 
 	const ctx = useTabsList();
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

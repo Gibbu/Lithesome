@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import { usePortal } from '$lib/index.js';
 	import { toasts } from './main.svelte.js';
 	import type { ToasterProps } from './types.js';
@@ -10,17 +10,20 @@
 		class: klass,
 		self = $bindable(),
 		portalTarget = 'body',
+		as = 'div',
+		transition,
 		...props
 	}: ToasterProps = $props();
 </script>
 
-<div
-	bind:this={self}
-	use:useActions={use}
-	use:usePortal={portalTarget}
-	class={classProp(klass)}
+<Element
+	{transition}
+	{as}
+	{klass}
+	bind:self
+	use={[[usePortal, portalTarget], ...use]}
+	state={toasts}
+	{children}
 	data-toaster=""
 	{...props}
->
-	{@render children?.(toasts)}
-</div>
+/>

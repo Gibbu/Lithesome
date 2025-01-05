@@ -14,6 +14,7 @@
 		self = $bindable(),
 		offset = 0,
 		placement = 'bottom',
+		as = 'div',
 		constrainViewport = false,
 		...props
 	}: PopoverContentProps = $props();
@@ -25,6 +26,7 @@
 	{children}
 	componentName="Popover"
 	visible={ctx._root.$visible.val}
+	{as}
 	{ctx}
 	{transition}
 	use={[

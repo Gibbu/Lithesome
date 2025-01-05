@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { RadioGroupProps } from './types.js';
 
@@ -9,6 +9,8 @@
 		class: klass,
 		self = $bindable(),
 		value = $bindable(''),
+		as = 'div',
+		transition,
 		required = false,
 		onChange,
 		...props
@@ -26,6 +28,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

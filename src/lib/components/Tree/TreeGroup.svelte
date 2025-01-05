@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { classProp, stateValue, useActions } from '$internal';
+	import { Element, stateValue } from '$internal';
 	import { useTreeGroup } from './main.svelte.js';
-
 	import type { TreeGroupProps } from './types.js';
 
 	let {
@@ -10,6 +9,8 @@
 		self = $bindable(),
 		use = [],
 		item,
+		as = 'ul',
+		transition,
 		active = $bindable(false),
 		...props
 	}: TreeGroupProps = $props();
@@ -22,8 +23,15 @@
 	});
 </script>
 
-{#if active}
-	<ul bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-		{@render children?.(ctx.state)}
-	</ul>
-{/if}
+<Element
+	visible={active}
+	{transition}
+	{as}
+	{klass}
+	bind:self
+	{use}
+	state={ctx.state}
+	{children}
+	{...ctx.attrs}
+	{...props}
+/>

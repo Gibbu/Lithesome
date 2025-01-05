@@ -154,6 +154,7 @@ class AccordionButton {
 	attrs = $derived.by(
 		() =>
 			({
+				type: 'button',
 				'aria-expanded': this._item.Active,
 				'aria-disabled': this._item.$disabled.val,
 				'aria-controls': this._item.Active ? this._item.uid('content') : undefined,

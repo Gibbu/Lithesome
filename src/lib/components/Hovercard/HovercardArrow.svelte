@@ -3,9 +3,9 @@
 	import { useHovercardArrow } from './main.svelte.js';
 	import type { HovercardArrowProps } from './types.js';
 
-	let { class: klass, use = [], self = $bindable(), ...props }: HovercardArrowProps = $props();
+	let { class: klass, use = [], self = $bindable(), as = 'div', ...props }: HovercardArrowProps = $props();
 
 	const ctx = useHovercardArrow();
 </script>
 
-<FloatingArrow {ctx} component="Hovercard" class={klass} {...props} />
+<FloatingArrow {as} {ctx} component="Hovercard" class={klass} {...props} />

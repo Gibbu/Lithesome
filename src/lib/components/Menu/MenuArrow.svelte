@@ -3,9 +3,9 @@
 	import { useMenuArrow } from './main.svelte.js';
 	import type { MenuArrowProps } from './types.js';
 
-	let { class: klass, use = [], self = $bindable(), ...props }: MenuArrowProps = $props();
+	let { class: klass, use = [], self = $bindable(), as = 'div', ...props }: MenuArrowProps = $props();
 
 	const ctx = useMenuArrow();
 </script>
 
-<FloatingArrow {ctx} component="Menu" class={klass} {...ctx.attrs} {...props} />
+<FloatingArrow {as} {ctx} component="Menu" class={klass} {...ctx.attrs} {...props} />

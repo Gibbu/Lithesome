@@ -3,9 +3,9 @@
 	import { FloatingArrow } from '$internal';
 	import type { PopoverArrowProps } from './types.js';
 
-	let { class: klass, use = [], self = $bindable(), ...props }: PopoverArrowProps = $props();
+	let { class: klass, use = [], self = $bindable(), as = 'div', ...props }: PopoverArrowProps = $props();
 
 	const ctx = usePopoverArrow();
 </script>
 
-<FloatingArrow {ctx} component="Popover" class={klass} {...ctx.attrs} {...props} />
+<FloatingArrow {as} {ctx} component="Popover" class={klass} {...ctx.attrs} {...props} />

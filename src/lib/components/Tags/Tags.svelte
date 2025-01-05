@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { classProp, stateValue, useActions } from '$internal';
+	import { Element, stateValue } from '$internal';
 	import { createTagsRootContext } from './main.svelte.js';
 
 	import type { TagsProps } from './types.js';
@@ -14,7 +14,10 @@
 		disabled = $bindable(false),
 		blacklist = [],
 		whitelist = [],
-		onClick
+		transition,
+		as = 'div',
+		onClick,
+		...props
 	}: TagsProps = $props();
 
 	const ctx = createTagsRootContext(
@@ -36,6 +39,4 @@
 	);
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { useSelectValue } from './main.svelte.js';
 	import type { SelectValueProps } from './types.js';
 
@@ -7,6 +7,8 @@
 		class: klass,
 		use = [],
 		self = $bindable(),
+		as = 'span',
+		transition,
 		placeholder = 'Select an option...',
 		...props
 	}: SelectValueProps = $props();
@@ -14,6 +16,6 @@
 	const ctx = useSelectValue({ placeholder: stateValue(() => placeholder) });
 </script>
 
-<span bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {...ctx.attrs} {...props}>
 	{ctx.label}
-</span>
+</Element>

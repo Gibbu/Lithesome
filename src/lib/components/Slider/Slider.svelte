@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { createRootContext } from './main.svelte.js';
 	import type { SliderProps } from './types.js';
 
@@ -15,6 +15,8 @@
 		orientation = $bindable('horizontal'),
 		reverse = $bindable(false),
 		disabled = $bindable(false),
+		as = 'div',
+		transition,
 		onMousedown,
 		onClick,
 		...props
@@ -44,6 +46,4 @@
 	);
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { useActions, classProp, stateValue, Element } from '$internal';
 	import type { MenuItemProps } from './types.js';
 	import { useMenuItem } from './main.svelte.js';
 
@@ -10,6 +10,8 @@
 		disabled = $bindable(false),
 		self = $bindable(),
 		href,
+		transition,
+		as = 'button',
 		onClick,
 		onMouseover,
 		...props
@@ -26,14 +28,15 @@
 	);
 </script>
 
-<svelte:element
-	this={href ? 'a' : 'button'}
-	bind:this={self}
+<Element
+	bind:self
+	{transition}
+	as={href ? 'a' : as}
 	href={href || undefined}
-	use:useActions={use}
-	class={classProp(klass, ctx.state)}
+	{klass}
+	{use}
+	state={ctx.state}
+	{children}
 	{...ctx.attrs}
 	{...props}
->
-	{@render children?.(ctx.state)}
-</svelte:element>
+/>

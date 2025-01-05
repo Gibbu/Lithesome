@@ -1,22 +1,22 @@
 <script lang="ts">
 	import { useAccordionButton } from './main.svelte.js';
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import type { AccordionButtonProps } from './types.js';
 
-	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: AccordionButtonProps = $props();
+	let {
+		children,
+		class: klass,
+		use = [],
+		self = $bindable(),
+		as = 'button',
+		transition,
+		onClick,
+		...props
+	}: AccordionButtonProps = $props();
 
 	const ctx = useAccordionButton({
 		onClick
 	});
 </script>
 
-<button
-	type="button"
-	bind:this={self}
-	use:useActions={use}
-	class={classProp(klass, ctx.state)}
-	{...ctx.attrs}
-	{...props}
->
-	{@render children?.(ctx.state)}
-</button>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

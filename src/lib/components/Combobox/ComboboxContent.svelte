@@ -10,6 +10,7 @@
 		portalTarget = 'body',
 		sameWidth = false,
 		class: klass,
+		as = 'div',
 		self = $bindable(),
 		placement = 'bottom',
 		constrainViewport = false,
@@ -25,6 +26,7 @@
 	componentName="Combobox"
 	visible={ctx._root.SuperVisible}
 	bind:self
+	{as}
 	{ctx}
 	{transition}
 	{use}

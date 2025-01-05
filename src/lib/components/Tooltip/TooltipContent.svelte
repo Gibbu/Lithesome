@@ -13,6 +13,7 @@
 		self = $bindable(),
 		placement = 'bottom',
 		constrainViewport = false,
+		as = 'div',
 		offset = 0,
 		...props
 	}: TooltipContentProps = $props();
@@ -24,6 +25,7 @@
 	{children}
 	componentName="Tooltip"
 	visible={ctx._root.$visible.val}
+	{as}
 	{ctx}
 	{transition}
 	{sameWidth}

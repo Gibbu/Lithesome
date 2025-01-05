@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import type { TabsProps } from './types.js';
 	import { createRootContext } from './main.svelte.js';
 
@@ -10,6 +10,8 @@
 		self = $bindable(),
 		orientation = 'horizontal',
 		value = $bindable(''),
+		as = 'div',
+		transition,
 		...props
 	}: TabsProps = $props();
 
@@ -22,6 +24,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

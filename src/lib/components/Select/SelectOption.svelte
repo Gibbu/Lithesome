@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue, Element } from '$internal';
 	import { useSelectOption } from './main.svelte.js';
 	import type { SelectOptionProps } from './types.js';
 
@@ -9,6 +9,8 @@
 		use = [],
 		value,
 		label,
+		transition,
+		as = 'button',
 		self = $bindable(),
 		disabled = $bindable(false),
 		onClick,
@@ -29,6 +31,4 @@
 	);
 </script>
 
-<button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</button>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

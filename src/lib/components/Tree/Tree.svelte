@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { classProp, stateValue, useActions } from '$internal';
+	import { Element, stateValue } from '$internal';
 	import { createTreeRootContext } from './main.svelte.js';
-
 	import type { TreeProps } from './types.js';
 
 	let {
@@ -11,6 +10,8 @@
 		self = $bindable(),
 		value = $bindable(),
 		forceVisible = false,
+		as = 'ul',
+		transition,
 		...props
 	}: TreeProps = $props();
 
@@ -23,6 +24,4 @@
 	});
 </script>
 
-<ul bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</ul>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {children} {...ctx.attrs} {...props} />

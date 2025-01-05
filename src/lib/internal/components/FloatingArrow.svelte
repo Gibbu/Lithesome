@@ -1,7 +1,6 @@
 <script lang="ts" generics="T extends FloatingContext">
 	import { onMount } from 'svelte';
-	import { useActions, classProp, log, type PropsNoChildren } from '$internal';
-
+	import { Element, log, type PropsNoChildren } from '$internal';
 	import type { FloatingContext } from './types.js';
 
 	interface ComponentProps extends PropsNoChildren<HTMLDivElement> {
@@ -9,7 +8,16 @@
 		ctx: T;
 	}
 
-	let { class: klass, use = [], self = $bindable(), ctx, component, ...props }: ComponentProps = $props();
+	let {
+		class: klass,
+		use = [],
+		self = $bindable(),
+		ctx,
+		as = 'div',
+		transition,
+		component,
+		...props
+	}: ComponentProps = $props();
 
 	const attrs = $derived.by(() => ({
 		id: ctx._root.uid('arrow'),
@@ -23,4 +31,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...attrs} {...props}></div>
+<Element {transition} {as} {klass} bind:self {use} state={ctx.state} {...attrs} {...props} />

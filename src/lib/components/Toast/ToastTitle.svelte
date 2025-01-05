@@ -1,13 +1,19 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
+	import { Element } from '$internal';
 	import { useToastTitle } from './main.svelte.js';
 	import type { ToastTitleProps } from './types.js';
 
-	let { children, use = [], class: klass, self = $bindable(), ...props }: ToastTitleProps = $props();
+	let {
+		children,
+		use = [],
+		class: klass,
+		self = $bindable(),
+		transition,
+		as = 'h3',
+		...props
+	}: ToastTitleProps = $props();
 
 	const ctx = useToastTitle();
 </script>
 
-<h3 bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
-	{@render children?.({})}
-</h3>
+<Element {transition} {as} {klass} bind:self {use} {children} {...ctx.attrs} {...props} />

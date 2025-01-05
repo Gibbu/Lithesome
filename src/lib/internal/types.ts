@@ -35,9 +35,17 @@ export interface PropsNoChildren<T extends HTMLElement, C extends Record<string,
 	 */
 	class?: ClassProp<C>;
 	/**
-	 * Alias for `bind:this`, allowing for the binding of the element.
+	 * Alias for `bind:this`, allowing for the binding of the underlying element.
 	 */
 	self?: T;
+	/** The HTML tag to be rendered as the underlying element. */
+	as?: keyof HTMLElementTagNameMap;
+	/**
+	 * The `svelte/transtion` you wish to use.
+	 *
+	 * @see https://lithesome.dev/docs/api#transition-prop
+	 */
+	transition?: Transition;
 	[key: string]: any;
 }
 
