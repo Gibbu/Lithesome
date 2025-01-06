@@ -1,5 +1,5 @@
 <script lang="ts" generics="T extends FloatingContext">
-	import { classProp, log, useFloating, Element, type Props, type ContentProps } from '$internal';
+	import { classProp, log, useFloating, Element, type Props, type ContentProps, stateValue } from '$internal';
 	import { useOutside, usePortal } from '$lib/index.js';
 	import type { FloatingContext } from './types.js';
 
@@ -57,8 +57,8 @@
 		[
 			useFloating,
 			{
-				anchor: ctx._root.trigger,
-				arrow: ctx._root.arrow,
+				anchor: stateValue(() => ctx._root.trigger),
+				arrow: stateValue(() => ctx._root.arrow),
 				sameWidth,
 				constrainViewport,
 				placement,

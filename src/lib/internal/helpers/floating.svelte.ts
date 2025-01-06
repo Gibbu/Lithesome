@@ -8,13 +8,11 @@ import {
 	offset as floatingOffset,
 	type Placement
 } from '@floating-ui/dom';
-import { defaultConfig, setNodeStyles, setNodeProps } from '$internal';
-
-type AnchorElement = HTMLElement | undefined | null;
+import { defaultConfig, setNodeStyles, setNodeProps, type StateValue } from '$internal';
 
 interface FloatingConfig {
-	anchor: AnchorElement;
-	arrow?: AnchorElement;
+	anchor: StateValue<HTMLElement | null>;
+	arrow?: StateValue<HTMLElement | null>;
 	placement?: Placement;
 	constrainViewport?: boolean;
 	sameWidth?: boolean;
@@ -23,24 +21,25 @@ interface FloatingConfig {
 
 export const useFloating = (node: HTMLElement, config: FloatingConfig) => {
 	const { anchor, arrow, placement, constrainViewport, sameWidth, offset } = defaultConfig(config, {
-		anchor: null,
-		arrow: null,
+		anchor: { val: null },
+		arrow: { val: null },
 		placement: 'bottom',
 		constrainViewport: false,
 		sameWidth: false,
 		offset: 0
 	});
 
-	if (!anchor) return;
+	if (!anchor.val) return;
 
 	let cleanUp: VoidFunction | null | undefined = null;
 
-	cleanUp = autoUpdate(anchor, node, () => {
-		computePosition(anchor, node, {
+	cleanUp = autoUpdate(anchor.val, node, () => {
+		if (!anchor.val) return;
+		computePosition(anchor.val, node, {
 			placement,
 			middleware: [
 				floatingOffset(offset),
-				arrow ? floatingArrow({ element: arrow }) : undefined,
+				arrow.val ? floatingArrow({ element: arrow.val }) : undefined,
 				flip(),
 				shift({
 					padding: 10
@@ -70,7 +69,7 @@ export const useFloating = (node: HTMLElement, config: FloatingConfig) => {
 				'data-alignment': alignment || 'center'
 			});
 
-			if (arrow) {
+			if (arrow.val) {
 				const arrowPos = middlewareData.arrow;
 				const side = {
 					top: 'bottom',
@@ -80,9 +79,9 @@ export const useFloating = (node: HTMLElement, config: FloatingConfig) => {
 				}[placement.split('-')[0]];
 				if (!arrowPos || !side) return;
 
-				const arrowSize = (arrow.getBoundingClientRect().width / 3).toFixed();
+				const arrowSize = (arrow.val.getBoundingClientRect().width / 3).toFixed();
 
-				setNodeStyles(arrow, {
+				setNodeStyles(arrow.val, {
 					left: arrowPos.x != null ? `${arrowPos.x}px` : '',
 					top: arrowPos.y != null ? `${arrowPos.y}px` : '',
 					right: '',
@@ -90,7 +89,7 @@ export const useFloating = (node: HTMLElement, config: FloatingConfig) => {
 					[side]: `-${arrowSize}px`,
 					position: 'absolute'
 				});
-				setNodeProps(arrow, {
+				setNodeProps(arrow.val, {
 					'data-side': side
 				});
 			}
