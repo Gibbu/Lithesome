@@ -1,27 +1,14 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
-	import { usePinInput } from './main.svelte.js';
-	import type { PinInputProps } from './types.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { usePinInput } from './state.svelte.js';
 
-	let {
-		class: klass,
-		use = [],
-		self = $bindable(),
-		onKeydown,
-		onInput,
-		onFocus,
-		onBlur,
-		onPaste,
-		...props
-	}: PinInputProps = $props();
+	import type { PinInputProps } from '$lib/types/index.js';
 
-	const ctx = usePinInput({
-		onKeydown,
-		onInput,
-		onBlur,
-		onFocus,
-		onPaste
-	});
+	const uid = $props.id();
+
+	let { id = parseId(uid), ref = $bindable(), ...props }: PinInputProps<typeof ctx.state> = $props();
+
+	let ctx = usePinInput({ id });
 </script>
 
-<input bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props} />
+<Element bind:ref {ctx} as="input" {...props} />

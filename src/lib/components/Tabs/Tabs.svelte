@@ -1,19 +1,24 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
-	import type { TabsProps } from './types.js';
-	import { createRootContext } from './main.svelte.js';
+	import { stateValue } from '$lib/internals/context.svelte.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { createTabsRootContext } from './state.svelte.js';
+
+	import type { TabsProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		use = [],
-		class: klass,
-		self = $bindable(),
-		orientation = 'horizontal',
+		custom,
 		value = $bindable(''),
+		orientation = $bindable('horizontal'),
+		ref = $bindable(),
 		...props
-	}: TabsProps = $props();
+	}: TabsProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = createRootContext({
+	let ctx = createTabsRootContext({
+		id,
 		value: stateValue(
 			() => value,
 			(v) => (value = v)
@@ -22,6 +27,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} {...props} />

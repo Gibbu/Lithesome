@@ -1,22 +1,20 @@
 <script lang="ts">
-	import { useAccordionButton } from './main.svelte.js';
-	import { useActions, classProp } from '$internal';
-	import type { AccordionButtonProps } from './types.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useAccordionButton } from './state.svelte.js';
 
-	let { children, class: klass, use = [], self = $bindable(), onClick, ...props }: AccordionButtonProps = $props();
+	import type { AccordionButtonProps } from '$lib/types/index.js';
 
-	const ctx = useAccordionButton({
-		onClick
-	});
+	const uid = $props.id();
+
+	let {
+		id = parseId(uid),
+		children,
+		custom,
+		ref = $bindable(),
+		...props
+	}: AccordionButtonProps<typeof ctx.attrs, typeof ctx.state> = $props();
+
+	let ctx = useAccordionButton({ id });
 </script>
 
-<button
-	type="button"
-	bind:this={self}
-	use:useActions={use}
-	class={classProp(klass, ctx.state)}
-	{...ctx.attrs}
-	{...props}
->
-	{@render children?.(ctx.state)}
-</button>
+<Element bind:ref {children} {custom} {ctx} as="button" {...props} />

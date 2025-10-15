@@ -1,39 +1,27 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
-	import type { MenuItemProps } from './types.js';
-	import { useMenuItem } from './main.svelte.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
+	import { useMenuItem } from './state.svelte.js';
+
+	import type { MenuItemProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		class: klass,
-		use = [],
+		custom,
 		disabled = $bindable(false),
-		self = $bindable(),
+		closeOnClick = true,
 		href,
-		onClick,
-		onMouseover,
+		ref = $bindable(),
 		...props
-	}: MenuItemProps = $props();
+	}: MenuItemProps<typeof ctx.attrs, typeof ctx.state> & Record<string, any> = $props();
 
-	const ctx = useMenuItem(
-		{
-			disabled: stateValue(() => disabled)
-		},
-		{
-			onClick,
-			onMouseover
-		}
-	);
+	let ctx = useMenuItem({
+		id,
+		disabled: stateValue(() => disabled),
+		closeOnClick: stateValue(() => closeOnClick)
+	});
 </script>
 
-<svelte:element
-	this={href ? 'a' : 'button'}
-	bind:this={self}
-	href={href || undefined}
-	use:useActions={use}
-	class={classProp(klass, ctx.state)}
-	{...ctx.attrs}
-	{...props}
->
-	{@render children?.(ctx.state)}
-</svelte:element>
+<Element bind:ref as={href ? 'a' : 'button'} {href} {children} {custom} {ctx} {...props} />

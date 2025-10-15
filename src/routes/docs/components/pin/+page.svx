@@ -1,0 +1,27 @@
+---
+title: 'Pin Input'
+description: 'Allows a sequence of one-character inputs.'
+---
+
+<script>
+	import {CodePreview, Info} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />
+
+## Basic Example
+
+```svelte
+<script lang="ts">
+	import { Pin, PinInput } from '$lib/index.js';
+</script>
+
+<Pin>
+	<PinInput />
+	<PinInput />
+	<PinInput />
+	<PinInput />
+</Pin>
+```

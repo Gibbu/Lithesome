@@ -1,0 +1,43 @@
+---
+title: 'Getting Started'
+description: 'A quick guide to start using Lithesome'
+---
+
+## Installation
+
+Install Lithesome using your favourite package manager.
+
+```bash
+npm i -D lithesome
+```
+
+```bash
+bun add -D lithesome
+```
+
+```bash
+pnpm i -D lithesome
+```
+
+```bash
+yarn add -D lithesome
+```
+
+## Usage
+
+Once installed, import any of the Lithesome components in your Svelte components.
+
+```svelte
+<script>
+	import { Menu, MenuContent, MenuItem, MenuTrigger } from 'lithesome';
+</script>
+
+<Menu>
+	<MenuTrigger>Post options</MenuTrigger>
+	<MenuContent>
+		<MenuItem>Edit</MenuItem>
+		<MenuItem>Hide</MenuItem>
+		<MenuItem>Delete</MenuItem>
+	</MenuContent>
+</Menu>
+```

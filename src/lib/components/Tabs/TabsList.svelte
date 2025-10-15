@@ -1,13 +1,20 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
-	import { useTabsList } from './main.svelte.js';
-	import type { TabsListProps } from './types.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useTabsList } from './state.svelte.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: TabsListProps = $props();
+	import type { TabsListProps } from '$lib/types/index.js';
 
-	const ctx = useTabsList();
+	const uid = $props.id();
+
+	let {
+		id = parseId(uid),
+		children,
+		custom,
+		ref = $bindable(),
+		...props
+	}: TabsListProps<typeof ctx.attrs, typeof ctx.state> = $props();
+
+	let ctx = useTabsList({ id });
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} {...props} />

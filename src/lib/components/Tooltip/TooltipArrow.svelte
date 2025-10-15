@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { useTooltipArrow } from './main.svelte.js';
-	import { FloatingArrow } from '$internal';
-	import type { TooltipArrowProps } from './types.js';
+	import { Element } from '$lib/internals/index.js';
+	import { useTooltipArrow } from './state.svelte.js';
 
-	let { class: klass, use = [], self = $bindable(), ...props }: TooltipArrowProps = $props();
+	import type { TooltipArrowProps } from '$lib/types/index.js';
 
-	const ctx = useTooltipArrow();
+	let { children, custom, ref = $bindable(), ...props }: TooltipArrowProps<typeof ctx.attrs> = $props();
+
+	let ctx = useTooltipArrow();
 </script>
 
-<FloatingArrow {ctx} component="Tooltip" class={klass} {...ctx.attrs} {...props} />
+<Element bind:ref {children} {custom} {ctx} as="button" {...props} />

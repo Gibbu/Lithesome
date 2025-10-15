@@ -1,156 +1,93 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
-	import { Button, cn, isMobile, Banner, type DocsPageMeta } from '$site/index.js';
-	import { GithubIcon, MenuIcon, MoonIcon, SunIcon } from 'lucide-svelte';
-	import { disableScroll, isBrowser } from '$internal';
-	import { afterNavigate } from '$app/navigation';
+	import { MoonIcon, PenIcon, SunIcon } from '@lucide/svelte';
+	import { mode, toggleMode } from 'mode-watcher';
+	import { page } from '$app/state';
+	import { Button, Container, Toc } from '$site/index.js';
 
-	let { data, children } = $props();
+	let { children, data } = $props();
 
-	let theme = $state<'dark' | 'light'>(isBrowser ? localStorage.theme : 'light');
-	let hideEarlyDev = $state(browser ? localStorage.getItem('earlyDev') : true);
-	let mobileSidebar = $state<boolean>(!isMobile);
-
-	const active = (route: string) => {
-		if (!route || (route === '/' && $page.url.pathname === '/docs')) return true;
-		else if (route === $page.url.pathname.replace('/docs/', '')) return true;
-		else return false;
-	};
-	const hideBanner = () => {
-		localStorage.setItem('earlyDev', 'true');
-		hideEarlyDev = true;
-	};
-	const changeTheme = () => {
-		theme = theme === 'dark' ? 'light' : 'dark';
-		localStorage.setItem('theme', theme);
-		if (theme === 'light') {
-			document.documentElement.classList.remove('dark');
-		} else {
-			document.documentElement.classList.add('dark');
-		}
-	};
-
-	$effect(() => {
-		if (isMobile) {
-			disableScroll(mobileSidebar && !document.body.style.overflow);
-			if (mobileSidebar) {
-				window.scrollTo({ top: 0, behavior: 'smooth' });
-			}
-		}
-	});
-
-	afterNavigate(() => {
-		mobileSidebar = false;
-	});
+	const currentPage = $derived(data.groups.flatMap((group) => group.items).find((item) => item.href === page.route.id));
 </script>
 
-{#snippet link(route: DocsPageMeta)}
-	<a
-		href="/docs{route.path === '/' ? '' : '/' + route.path}"
-		class={cn(
-			'flex items-center rounded-md px-4 py-3 text-sm',
-			active(route.path)
-				? 'bg-neutral-200 font-semibold text-black dark:bg-neutral-900 dark:text-white dark:shadow-none'
-				: 'hover:bg-neutral-100 dark:hover:bg-white/5'
-		)}
-	>
-		<span class="flex-1">{route.title}</span>
-		{#if route.badge}
-			<div
-				class={cn(
-					'rounded-xl px-2.5 py-0.5 text-xs capitalize',
-					route.badge === 'soon' ? 'bg-gray-500/20 text-gray-400' : '',
-					route.badge === 'updated' ? 'bg-blue-500/20 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300' : '',
-					route.badge === 'new' ? 'bg-green-500/20 text-green-500 dark:bg-green-500/20 dark:text-green-300' : ''
-				)}
-			>
-				{route.badge}
-			</div>
-		{/if}
-	</a>
-{/snippet}
-
-<nav
-	class={cn(
-		'fixed top-0 z-20 flex h-[var(--nav-height)] w-full items-center border-b backdrop-blur',
-		'border-b-neutral-200 bg-white/50',
-		'dark:border-b-neutral-900 dark:bg-neutral-950/80'
-	)}
->
-	<div class="wrap flex h-full items-center justify-between px-4">
-		<div class="flex items-center">
-			{#if isMobile}
-				<Button variant="text" onclick={() => (mobileSidebar = !mobileSidebar)}>
-					<MenuIcon class="size-5 text-black dark:text-white" />
-				</Button>
+<Container containerClass="mb-6" bodyClass="flex justify-between items-center">
+	<h2 class="text-2xl text-zinc-900 dark:text-zinc-100">
+		<a href="/">Lithesome</a>
+	</h2>
+	<div class="flex items-center gap-4">
+		<Button variant="text" onclick={() => toggleMode()}>
+			{#if mode.current === 'light'}
+				<SunIcon class="size-5" />
+			{:else}
+				<MoonIcon class="size-5" />
 			{/if}
-			<a
-				href="/"
-				class="text-xl font-semibold tracking-widest text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white"
-			>
-				<span class="font-black text-black dark:text-white">L</span>ithesome
-			</a>
-		</div>
-		<div class="flex items-center">
-			<Button variant="ghost" class="mr-4" href="/docs/changelog">Changelog</Button>
-			<a
-				href="https://github.com/Gibbu/Lithesome"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="flex-centre h-12 w-12 rounded-xl hover:bg-neutral-100 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
-			>
-				<GithubIcon class="size-6" />
-			</a>
-			<button
-				type="button"
-				onclick={changeTheme}
-				class="flex-centre h-12 w-12 rounded-xl hover:bg-neutral-100 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
-			>
-				{#if theme === 'dark'}
-					<SunIcon class="size-6" />
-				{:else}
-					<MoonIcon class="size-6" />
-				{/if}
-			</button>
-		</div>
+		</Button>
 	</div>
-</nav>
+</Container>
 
-<div class="wrap grid items-start px-0 pt-[var(--nav-height)] md:grid-cols-[250px,1fr]">
-	<aside
-		class={cn(
-			'sticky top-[var(--nav-height)] h-[calc(100vh-var(--nav-height))] gap-4 overflow-y-auto p-2',
-			mobileSidebar ? 'block' : 'hidden md:block'
-		)}
+<div class="grid flex-1 grid-cols-[350px_1fr_300px] gap-6">
+	<Container as="nav" containerClass="h-full" bodyClass="space-y-6">
+		{#snippet header()}
+			<h3>Navigation</h3>
+		{/snippet}
+
+		{#each data.groups as group, i}
+			<section>
+				<h4 class="mb-3 font-semibold capitalize dark:text-zinc-200">{group.name}</h4>
+				{#each group.items as item}
+					{@const active = page.route.id === item.href}
+					<a
+						href={item.href}
+						class={[
+							'relative -mx-6 flex items-center px-6 py-4 text-sm select-none',
+							active
+								? 'bg-zinc-200 text-black dark:bg-zinc-900 dark:text-white'
+								: 'hover:bg-zinc-200 dark:hover:bg-zinc-920'
+						]}
+					>
+						{#if active}
+							<div class="pointer-events-none absolute -left-px h-full w-px bg-teal-600 dark:bg-teal-500"></div>
+						{/if}
+						{item.data.title}
+					</a>
+				{/each}
+			</section>
+			{#if data.groups.length - 1 !== i}
+				<hr class="-mx-6 h-px border-zinc-400 dark:border-zinc-800" />
+			{/if}
+		{/each}
+	</Container>
+
+	<Container
+		as="main"
+		headerClass="flex justify-between items-start"
+		containerClass="h-full flex flex-col"
+		bodyClass="flex-1 max-w-full prose dark:prose-invert prose-headings:font-normal toc-target prose-h2:mt-16 prose-h3:mt-12"
 	>
-		<ul class="flex h-full flex-col gap-2">
-			{#each data.routes as route}
-				{#if route.title}
-					{@render link(route)}
-				{/if}
+		{#snippet header()}
+			<div>
+				<h1 class="text-5xl text-black dark:text-white">{currentPage?.data.title}</h1>
+				<p class="mt-2 text-zinc-600 dark:text-zinc-500">{currentPage?.data.description}</p>
+			</div>
 
-				{#if route.folder}
-					<h3 class="ml-4 mt-6 text-xs font-bold uppercase text-neutral-400 dark:text-neutral-500">
-						{route.folder}
-					</h3>
-					<ul class="mt-1">
-						{#each route.children as sub}
-							<li class="mb-1 last:mb-4">
-								{@render link(sub)}
-							</li>
-						{/each}
-					</ul>
-				{/if}
-			{/each}
-		</ul>
-	</aside>
-	<main class="min-h-[calc(100vh-var(--nav-height))] min-w-0 border-l border-neutral-200 p-8 dark:border-neutral-900">
-		{#if !hideEarlyDev}
-			<Banner type="warning" dismissable class="mb-8" onClick={hideBanner}>
-				This package and docs are still under very early development. Expect things to be broken.
-			</Banner>
-		{/if}
+			<Button
+				variant="text"
+				href="https://github.com/Gibbu/Lithesome/blob/main/src/routes{currentPage?.href}/+page.svx"
+				external
+			>
+				<PenIcon class="size-4" />
+			</Button>
+		{/snippet}
+
 		{@render children()}
-	</main>
+	</Container>
+
+	<Container as="aside" bodyClass="sticky top-0">
+		{#snippet header()}
+			<h4>On this page</h4>
+		{/snippet}
+
+		{#key page.route}
+			<Toc />
+		{/key}
+	</Container>
 </div>

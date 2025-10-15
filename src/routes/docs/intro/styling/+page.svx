@@ -1,0 +1,107 @@
+---
+title: 'Styling'
+description: 'Make the components look pretty.'
+---
+
+Lithesome components are completely unstyled, leaving that problem to you.  
+There are a few ways to style each component.
+
+## CSS Frameworks/libraries
+
+If you're using a CSS framework/library, simply pass their classes via the `class` prop on each component.
+
+```svelte
+<MenuItem class="rounded-md px-4 py-2.5">Edit</MenuItem>
+```
+
+## Data attributes
+
+Each component have their own unique `[data]` attribute applied to the underlying element. Target that attribute in your global css.
+
+```svelte
+<MenuItem class="rounded-md px-4 py-2.5">Edit</MenuItem>
+```
+
+```css
+[data-menu-item] {
+	padding: 12px 6px;
+	border-radius: 8px;
+}
+```
+
+To figure out what the data attribute for each component is called, look at the component and add `data` infront, place a `-` before each of the capital letters, and make them all lowercase.
+
+`<MenuItem />` = `[data-menu-item]`  
+`<SelectOption />` = `[data-select-option]`  
+ect...
+
+## Global CSS selectors
+
+If data attributes aren't your cup of tea, you can always create your own classes and then apply them to the components.
+
+```svelte
+<MenuItem class="menu-item">Edit</MenuItem>
+```
+
+```css
+.menu-item {
+	padding: 12px 6px;
+	border-radius: 8px;
+}
+```
+
+## Styling component states
+
+Most components have some sort of “state” to tell the browser what is checked, selected, opened, ect…
+You have a couple of ways of style them accordingly.
+
+### Data attributes
+
+Whenever there’s a “state” that is controlled by the components, they are exposed using `[data]` attributes.
+
+For example:
+
+- `[data-hovered]` is exposed on the `<MenuItem />` when the user has hovered over it, via mouse or keyboard.
+- `[data-state="opened"]` is exposed on the `<Menu />` when the content of that menu is visible.
+
+Check each component API reference to see what data attributes are exposed on each component.
+
+### Class prop function
+
+Each `class` prop exposed by Lithesome components can be used as functions, giving you the state as function object parameter.
+
+```svelte
+<SelectOption
+	value="bobross"
+	class={({ hovered, selected }) => [
+		hovered && !selected ? 'bg-lime-400' : '',
+		selected ? 'bg-teal-500' : '',
+		'rounded-md px-4 py-2 text-xs font-medium'
+	]}
+>
+	Bob Ross
+</SelectOption>
+```
+
+In the example above, we're returning an array.  
+This is allowed since svelte ([5.16.0](https://github.com/sveltejs/svelte/blob/main/packages/svelte/CHANGELOG.md#5160)) under the hood uses [clsx](https://github.com/lukeed/clsx) to handle the logic of conversion for us.
+
+However, if you were to use the `custom` snippet. The class prop will act as it normally would.  
+Instead use the destructured objects on the snippet.
+
+```svelte
+<SelectOption value="bobross">
+	{#snippet custom({ attrs, state })}
+		<div
+			{...attrs}
+			class={[
+				state.hovered && !state.selected ? 'bg-lime-400' : '',
+				state.selected ? 'bg-teal-500' : '',
+				'rounded-md px-4 py-2 text-xs font-medium'
+			]}
+		>
+			Bob Ross
+		</div>
+	{/snippet}
+</SelectOption>
+```

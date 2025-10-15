@@ -1,21 +1,24 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
-	import { createAccordionRootContext } from './main.svelte.js';
-	import type { AccordionProps } from './types.js';
+	import { stateValue } from '$lib/internals/context.svelte.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { createAccordionRootContext } from './state.svelte.js';
+
+	import type { AccordionProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		use = [],
-		class: klass,
-		value = $bindable([]),
-		self = $bindable(),
-		single = $bindable(false),
+		custom,
+		ref = $bindable(),
+		value = $bindable(''),
 		onChange,
 		...props
-	}: AccordionProps = $props();
+	}: AccordionProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = createAccordionRootContext({
-		single: stateValue(() => single),
+	let ctx = createAccordionRootContext({
+		id,
 		value: stateValue(
 			() => value,
 			(v) => {
@@ -26,6 +29,4 @@
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} {...props} />

@@ -1,55 +1,74 @@
 <script lang="ts">
-	import { type Props, useActions } from '$internal';
 	import { cn } from '../utils.js';
 
+	import type { Props } from '../types.js';
+
 	interface ComponentProps extends Props<HTMLButtonElement | HTMLAnchorElement> {
-		variant: 'primary' | 'secondary' | 'text' | 'ghost';
+		variant: 'primary' | 'secondary' | 'text';
 		href?: string;
 		size?: 'sm' | 'md' | 'lg';
 		disabled?: boolean;
-		type?: 'button' | 'submit';
+		class?: string;
+		external?: boolean;
 	}
 
 	let {
-		children,
 		variant,
-		size = 'md',
-		class: klass,
-		use = [],
+		children,
+		disabled,
 		href,
 		self,
-		type = 'button',
-		disabled,
+		size = 'md',
+		external,
+		class: klass,
 		...props
 	}: ComponentProps = $props();
 </script>
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	bind:this={self}
-	type={!href ? type : undefined}
 	href={href || undefined}
+	bind:this={self}
 	disabled={disabled || undefined}
-	use:useActions={use}
 	class={cn(
-		'inline-flex items-center justify-center border text-center font-medium',
-		'focusOutline',
-		size === 'sm' ? 'gap-2 rounded-md px-3 py-2 text-xs' : '',
-		size === 'md' ? 'gap-2 rounded-md px-4 py-2.5 text-sm' : '',
-		size === 'lg' ? 'gap-3 rounded-lg px-6 py-3.5' : '',
-		variant === 'primary'
-			? 'bg-black text-white hover:bg-neutral-700 dark:bg-white dark:text-black dark:hover:bg-neutral-300'
-			: '',
-		variant === 'secondary'
-			? 'border-black/20 bg-white/15 text-black hover:bg-black hover:text-white dark:border-white/20 dark:bg-black/15 dark:text-white dark:hover:bg-white dark:hover:text-black'
-			: '',
-		variant === 'text' ? 'border-transparent text-white hover:bg-white/5' : '',
-		variant === 'ghost'
-			? 'border-transparent bg-neutral-100 text-black hover:bg-neutral-200 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800'
-			: '',
+		'group focusOutline relative inline-flex cursor-pointer items-center justify-center border font-medium',
+		{
+			primary: [
+				'bg-teal-600/15 text-teal-600 hover:bg-teal-500 hover:text-zinc-800',
+				'dark:border-teal-500/25 dark:bg-teal-500/10 dark:text-teal-300 dark:hover:bg-teal-500/20 dark:hover:text-teal-50'
+			],
+			secondary: [
+				'border-zinc-800 bg-black/5 hover:bg-black/10 hover:text-black',
+				'dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-white'
+			],
+			text: 'border-transparent hover:bg-black/5 hover:text-black dark:hover:bg-white/5 dark:hover:text-white'
+		}[variant],
+		{
+			sm: 'gap-1 px-3 py-2 text-xs',
+			md: 'gap-1.5 px-4 py-3 text-sm',
+			lg: 'gap-2.5 px-8 py-4 text-lg'
+		}[size],
 		klass
 	)}
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noopener noreferrer' : undefined}
 	{...props}
 >
-	{@render children?.({})}
+	{#if variant !== 'text'}
+		<div
+			class={[
+				'pointer-events-none absolute left-0 h-full border border-r-0 transition-all group-hover:w-1/2',
+				{ primary: 'border-teal-500', secondary: 'border-zinc-500', text: 'border-transparent' }[variant],
+				{ sm: 'w-2', md: 'w-3', lg: 'w-5' }[size]
+			]}
+		></div>
+		<div
+			class={[
+				'pointer-events-none absolute right-0 h-full border border-l-0 transition-all group-hover:w-1/2',
+				{ primary: 'border-teal-500', secondary: 'border-zinc-500', text: 'border-transparent' }[variant],
+				{ sm: 'w-2', md: 'w-3', lg: 'w-5' }[size]
+			]}
+		></div>
+	{/if}
+	{@render children?.()}
 </svelte:element>

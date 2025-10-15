@@ -1,17 +1,20 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
-	import type { HovercardTriggerProps } from './types.js';
-	import { useHovercardTrigger } from './main.svelte.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useHovercardTrigger } from './state.svelte.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: HovercardTriggerProps = $props();
+	import type { HovercardTriggerProps } from '$lib/types/index.js';
 
-	const ctx = useHovercardTrigger();
+	const uid = $props.id();
 
-	$effect(() => {
-		if (self) ctx._root.registerTrigger(self);
-	});
+	let {
+		id = parseId(uid),
+		children,
+		custom,
+		ref = $bindable(),
+		...props
+	}: HovercardTriggerProps<typeof ctx.attrs> = $props();
+
+	let ctx = useHovercardTrigger({ id });
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} as="button" {...props} />

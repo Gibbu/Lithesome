@@ -1,21 +1,13 @@
 <script lang="ts">
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { Meta } from '$site/index.js';
-	import NProgress from 'nprogress';
-	import '../app.pcss';
+	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
+	import { ModeWatcher } from 'mode-watcher';
 
-	beforeNavigate(() => {
-		NProgress.start();
-	});
-	afterNavigate(() => {
-		NProgress.done();
-	});
+	import '../app.css';
+
+	let { children } = $props();
 </script>
 
-<Meta />
+<ModeWatcher />
+<ProgressBar class="text-teal-500" />
 
-<div class="relative flex min-h-screen flex-col">
-	<div class="flex flex-1 flex-col">
-		<slot />
-	</div>
-</div>
+{@render children()}

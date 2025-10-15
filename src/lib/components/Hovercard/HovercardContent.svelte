@@ -1,39 +1,20 @@
 <script lang="ts">
-	import { FloatingContent } from '$internal';
-	import { useHovercardContent } from './main.svelte.js';
-	import type { HovercardContentProps } from './types.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useHovercardContent } from './state.svelte.js';
+
+	import type { HovercardContentProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		transition,
-		use = [],
-		portalTarget = 'body',
-		class: klass,
-		self = $bindable(),
-		placement = 'bottom',
-		constrainViewport,
-		sameWidth = false,
-		offset = 0,
+		custom,
+		ref = $bindable(),
 		...props
-	}: HovercardContentProps = $props();
+	}: HovercardContentProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = useHovercardContent();
+	let ctx = useHovercardContent({ id });
 </script>
 
-<FloatingContent
-	{children}
-	componentName="Hovercard"
-	visible={ctx._root.$visible.val}
-	bind:self
-	{sameWidth}
-	{transition}
-	{constrainViewport}
-	{placement}
-	{portalTarget}
-	{offset}
-	{ctx}
-	{use}
-	outsideCallback={() => ctx._root.forceClose()}
-	class={klass}
-	{...props}
-/>
+<Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />

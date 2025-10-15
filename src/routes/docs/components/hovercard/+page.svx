@@ -1,0 +1,12 @@
+---
+title: 'Hovercard'
+description: 'Display a summary/preview of a link.'
+---
+
+<script>
+	import {CodePreview} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />

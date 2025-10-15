@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--font-mono: 'Roboto Mono';
+
+	--color-zinc-920: #131316;
+	--color-zinc-930: #101013;
+	--color-zinc-940: #0d0d0f;
+}
+
+[data-tabs-content] .shiki {
+	margin: 0;
+	height: 100%;
+	flex: 1;
+	background: transparent !important;
+}
+
+.shiki {
+	padding: 1rem 1.25rem !important;
+	background: var(--color-zinc-100) !important;
+}
+
+html.dark .shiki,
+html.dark .shiki span {
+	background: transparent !important;
+	color: var(--shiki-dark) !important;
+	font-size: var(--text-sm);
+}
+
+[data-frame-codeblock] {
+	&:has(+ [data-frame-codeblock]) > div {
+		&:nth-child(3),
+		&:nth-child(4) {
+			display: none;
+		}
+	}
+	& + [data-frame-codeblock] {
+		margin-top: -2px;
+
+		& > div {
+			&:nth-child(1),
+			&:nth-child(2) {
+				display: none;
+			}
+		}
+	}
+
+	pre {
+		margin: 0 !important;
+		border-radius: 0 !important;
+	}
+}

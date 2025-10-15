@@ -1,34 +1,43 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
-	import { createRootContext } from './main.svelte.js';
-	import type { PinProps } from './types.js';
+	import { stateValue } from '$lib/internals/context.svelte.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { createPinRootContext } from './state.svelte.js';
+
+	import type { PinProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		use = [],
-		class: klass,
-		self = $bindable(),
+		custom,
 		value = $bindable([]),
 		disabled = $bindable(false),
-		type = $bindable('text'),
 		placeholder = '○',
-		onChange,
+		type = $bindable('text'),
+		onChanged,
 		onFilled,
+		ref = $bindable(),
 		...props
-	}: PinProps = $props();
+	}: PinProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = createRootContext({
-		value: stateValue(() => value),
+	let ctx = createPinRootContext({
+		id,
+		value: stateValue(
+			() => value,
+			(v) => {
+				value = v;
+				onChanged?.(v);
+			}
+		),
 		disabled: stateValue(() => disabled),
-		type: stateValue(() => type),
-		placeholder: stateValue(() => placeholder)
+		placeholder: stateValue(() => placeholder),
+		type: stateValue(() => type)
 	});
 
 	$effect(() => {
-		if (ctx.Filled) onFilled?.(ctx.TransformedValue);
+		if (ctx.Filled) onFilled?.($state.snapshot(ctx.$value.val));
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} {...props} />

@@ -1,32 +1,29 @@
 <script lang="ts">
-	import { useActions, classProp, stateValue } from '$internal';
-	import { useTabsButton } from './main.svelte.js';
-	import type { TabsButtonProps } from './types.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
+	import { useTabsButton } from './state.svelte.js';
+
+	import type { TabsButtonProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		class: klass,
-		use = [],
-		self = $bindable(),
+		custom,
+		value = $bindable(''),
 		disabled = $bindable(false),
-		value,
-		onClick,
-		onKeydown,
+		ref = $bindable(),
 		...props
-	}: TabsButtonProps = $props();
+	}: TabsButtonProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = useTabsButton(
-		{
-			value: stateValue(() => value),
-			disabled: stateValue(() => disabled)
-		},
-		{
-			onClick,
-			onKeydown
-		}
-	);
+	let ctx = useTabsButton({
+		id,
+		value: stateValue(
+			() => value,
+			(v) => (value = v)
+		),
+		disabled: stateValue(() => disabled)
+	});
 </script>
 
-<button bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</button>
+<Element bind:ref {children} {custom} {ctx} {...props} />

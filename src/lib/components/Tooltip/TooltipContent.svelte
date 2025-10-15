@@ -1,39 +1,17 @@
 <script lang="ts">
-	import { useTooltipContent } from './main.svelte.js';
-	import { FloatingContent } from '$internal';
-	import type { TooltipContentProps } from './types.js';
+	import { Element } from '$lib/internals/index.js';
+	import { useTooltipContent } from './state.svelte.js';
+
+	import type { TooltipContentProps } from '$lib/types/index.js';
 
 	let {
 		children,
-		transition,
-		use = [],
-		portalTarget = 'body',
-		sameWidth = false,
-		class: klass,
-		self = $bindable(),
-		placement = 'bottom',
-		constrainViewport = false,
-		offset = 0,
+		custom,
+		ref = $bindable(),
 		...props
-	}: TooltipContentProps = $props();
+	}: TooltipContentProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = useTooltipContent();
+	let ctx = useTooltipContent();
 </script>
 
-<FloatingContent
-	{children}
-	componentName="Tooltip"
-	visible={ctx._root.$visible.val}
-	{ctx}
-	{transition}
-	{sameWidth}
-	{constrainViewport}
-	{placement}
-	{portalTarget}
-	{offset}
-	outsideCallback={() => ctx._root.close()}
-	role="tooltip"
-	class={klass}
-	style="pointer-events: none;"
-	{...props}
-/>
+<Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />

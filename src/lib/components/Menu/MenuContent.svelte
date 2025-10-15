@@ -1,40 +1,22 @@
 <script lang="ts">
-	import { FloatingContent } from '$internal';
-	import { useMenuContent } from './main.svelte.js';
-	import type { MenuContentProps } from './types.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useMenuContent } from './state.svelte.js';
+
+	import type { MenuContentProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		transition,
-		use = [],
-		portalTarget = 'body',
-		sameWidth = false,
-		class: klass,
-		self = $bindable(),
-		placement = 'bottom',
-		constrainViewport = false,
-		offset = 0,
+		custom,
+		ref = $bindable(),
 		...props
-	}: MenuContentProps = $props();
+	}: MenuContentProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = useMenuContent();
+	let ctx = useMenuContent({
+		id
+	});
 </script>
 
-<FloatingContent
-	{children}
-	componentName="Menu"
-	visible={ctx._root.$visible.val}
-	bind:self
-	{ctx}
-	{transition}
-	{use}
-	{sameWidth}
-	{offset}
-	{constrainViewport}
-	{placement}
-	{portalTarget}
-	outsideCallback={() => ctx._root.close()}
-	role="listbox"
-	class={klass}
-	{...props}
-/>
+<Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />

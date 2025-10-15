@@ -1,13 +1,25 @@
 <script lang="ts">
-	import { useAccordionHeading } from './main.svelte.js';
-	import { useActions, classProp } from '$internal';
-	import type { AccordionHeadingProps } from './types.js';
+	import { stateValue } from '$lib/internals/context.svelte.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useAccordionHeading } from './state.svelte.js';
 
-	let { children, class: klass, use = [], level = 3, self = $bindable(), ...props }: AccordionHeadingProps = $props();
+	import type { AccordionHeadingProps } from '$lib/types/index.js';
 
-	const ctx = useAccordionHeading({ level });
+	const uid = $props.id();
+
+	let {
+		id = parseId(uid),
+		children,
+		custom,
+		ref = $bindable(),
+		level = 3,
+		...props
+	}: AccordionHeadingProps<typeof ctx.attrs, typeof ctx.state> = $props();
+
+	let ctx = useAccordionHeading({
+		id,
+		level: stateValue(() => level)
+	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass)} {...ctx.attrs} {...props}>
-	{@render children?.({})}
-</div>
+<Element bind:ref {children} {custom} {ctx} {...props} />

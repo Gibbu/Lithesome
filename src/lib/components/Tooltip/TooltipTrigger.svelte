@@ -1,17 +1,12 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
-	import { useTooltipTrigger } from './main.svelte.js';
-	import type { TooltipTriggerProps } from './types.js';
+	import { Element } from '$lib/internals/index.js';
+	import { useTooltipTrigger } from './state.svelte.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: TooltipTriggerProps = $props();
+	import type { TooltipTriggerProps } from '$lib/types/index.js';
 
-	const ctx = useTooltipTrigger();
+	let { children, custom, ref = $bindable(), ...props }: TooltipTriggerProps<typeof ctx.attrs> = $props();
 
-	$effect(() => {
-		if (self) ctx._root.registerTrigger(self);
-	});
+	let ctx = useTooltipTrigger();
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} {...ctx.attrs} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} as="button" {...props} />

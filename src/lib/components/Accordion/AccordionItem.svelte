@@ -1,25 +1,27 @@
 <script lang="ts">
-	import { createAccordionItemContext } from './main.svelte.js';
-	import { useActions, classProp, stateValue } from '$internal';
+	import { stateValue } from '$lib/internals/context.svelte.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { createAccordionItemContext } from './state.svelte.js';
 
-	import type { AccordionItemProps } from './types.js';
+	import type { AccordionItemProps } from '$lib/types/index.js';
+
+	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
-		class: klass,
-		use = [],
-		self = $bindable(),
-		disabled = $bindable(false),
+		custom,
+		ref = $bindable(),
 		value,
+		disabled = $bindable(false),
 		...props
-	}: AccordionItemProps = $props();
+	}: AccordionItemProps<typeof ctx.attrs, typeof ctx.state> = $props();
 
-	const ctx = createAccordionItemContext({
+	let ctx = createAccordionItemContext({
+		id,
 		value: stateValue(() => value),
 		disabled: stateValue(() => disabled)
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} {...ctx.attrs} class={classProp(klass, ctx.state)} {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} {...props} />

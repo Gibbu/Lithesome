@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { FloatingArrow } from '$internal';
-	import { useHovercardArrow } from './main.svelte.js';
-	import type { HovercardArrowProps } from './types.js';
+	import { Element } from '$lib/internals/index.js';
+	import { useHovercardArrow } from './state.svelte.js';
 
-	let { class: klass, use = [], self = $bindable(), ...props }: HovercardArrowProps = $props();
+	import type { HovercardArrowProps } from '$lib/types/index.js';
 
-	const ctx = useHovercardArrow();
+	let { children, custom, ref = $bindable(), ...props }: HovercardArrowProps<typeof ctx.attrs> = $props();
+
+	let ctx = useHovercardArrow();
 </script>
 
-<FloatingArrow {ctx} component="Hovercard" class={klass} {...props} />
+<Element bind:ref {children} {custom} {ctx} as="button" {...props} />

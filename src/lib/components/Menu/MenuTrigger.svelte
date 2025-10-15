@@ -1,17 +1,22 @@
 <script lang="ts">
-	import { useActions, classProp } from '$internal';
-	import { useMenuTrigger } from './main.svelte.js';
-	import type { MenuTriggerProps } from './types.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useMenuTrigger } from './state.svelte.js';
 
-	let { children, class: klass, use = [], self = $bindable(), ...props }: MenuTriggerProps = $props();
+	import type { MenuTriggerProps } from '$lib/types/index.js';
 
-	const ctx = useMenuTrigger();
+	const uid = $props.id();
 
-	$effect(() => {
-		if (self) ctx._root.registerTrigger(self);
+	let {
+		id = parseId(uid),
+		children,
+		custom,
+		ref = $bindable(),
+		...props
+	}: MenuTriggerProps<typeof ctx.attrs> = $props();
+
+	let ctx = useMenuTrigger({
+		id
 	});
 </script>
 
-<div bind:this={self} use:useActions={use} class={classProp(klass, ctx.state)} data-menutrigger="" {...props}>
-	{@render children?.(ctx.state)}
-</div>
+<Element bind:ref {children} {custom} {ctx} as="button" {...props} />

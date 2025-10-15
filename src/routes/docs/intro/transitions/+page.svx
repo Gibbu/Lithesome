@@ -1,0 +1,6 @@
+---
+title: 'Transitions'
+description: 'Make use of Svelte transitions.'
+---
+
+If you wish to use the inbuilt Svelte transition api (who wouldn't???) luckly for you there's a way!

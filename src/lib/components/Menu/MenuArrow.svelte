@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { FloatingArrow } from '$internal';
-	import { useMenuArrow } from './main.svelte.js';
-	import type { MenuArrowProps } from './types.js';
+	import { Element, parseId } from '$lib/internals/index.js';
+	import { useMenuArrow } from './state.svelte.js';
 
-	let { class: klass, use = [], self = $bindable(), ...props }: MenuArrowProps = $props();
+	import type { MenuArrowProps } from '$lib/types/index.js';
 
-	const ctx = useMenuArrow();
+	const uid = $props.id();
+
+	let { id = parseId(uid), children, custom, ref = $bindable(), ...props }: MenuArrowProps<typeof ctx.attrs> = $props();
+
+	let ctx = useMenuArrow({ id });
 </script>
 
-<FloatingArrow {ctx} component="Menu" class={klass} {...ctx.attrs} {...props} />
+<Element bind:ref {children} {custom} {ctx} as="button" {...props} />
