@@ -1,0 +1,12 @@
+---
+title: 'Tags Input'
+description: 'Display submitted tags one by one.'
+---
+
+<script>
+	import {CodePreview, Info} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />

@@ -4,6 +4,7 @@ export * from './components/tabs/index.js';
 export * from './components/hovercard/index.js';
 export * from './components/menu/index.js';
 export * from './components/pin/index.js';
+export * from './components/tags/index.js';
 
 export * from './attachments/outside.js';
 export * from './attachments/portal.js';

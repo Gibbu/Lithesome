@@ -124,6 +124,11 @@ class PinInput {
 					if (key === KEYS.end) this.moveFocus('last');
 					if (key === KEYS.arrowLeft) this.moveFocus('prev');
 					if (key === KEYS.arrowRight) this.moveFocus('next');
+					if (key === KEYS.delete) {
+						this._root.setValue(this.Index, '');
+						const target = document.querySelector(`${selectors.input}#${this.id}`) as HTMLInputElement | null;
+						if (target) target.value = '';
+					}
 					if (key === KEYS.backspace) {
 						const selection = (e.target as HTMLInputElement).selectionStart;
 
