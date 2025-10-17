@@ -53,6 +53,11 @@ export const load = async () => {
 				items: section.items.toSorted((a, b) => {
 					const aTitle = typeof a === 'string' ? a : a.data.title;
 					const bTitle = typeof b === 'string' ? b : b.data.title;
+					const aOrder = a.data.order;
+					const bOrder = b.data.order;
+
+					if (aOrder && bOrder) return aOrder - bOrder;
+
 					return aTitle.localeCompare(bTitle);
 				})
 			}))

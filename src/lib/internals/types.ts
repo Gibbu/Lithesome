@@ -3,12 +3,19 @@ import type { FlipOptions, Placement, ShiftOptions } from '@floating-ui/dom';
 import type { Snippet } from 'svelte';
 import type { ClassValue } from 'svelte/elements';
 
+export type CSSStyleObject = {
+	[K in keyof CSSStyleDeclaration]?: string | number;
+};
+
+type StyleValue = string | CSSStyleObject;
+
 export type JsonObject = { [key: string]: JsonValue };
 export type JsonValue = undefined | null | boolean | number | string | JsonValue[] | JsonObject;
 export type StateValues<T extends Record<string, any>> = { [K in keyof T]: { val: T[K] } };
 export type StateValue<T> = { val: T };
 export type Orientation = 'horizontal' | 'vertical';
-export type ClassProp<S> = ((props: S) => ClassValue) | ClassValue;
+export type ClassProp<S> = ((state: S) => ClassValue) | ClassValue;
+export type StyleProp<S> = ((state: S) => StyleValue) | StyleValue;
 export type PortalTarget = HTMLElement | string;
 
 export type RemoveFunctionProps<T> = {
@@ -16,10 +23,10 @@ export type RemoveFunctionProps<T> = {
 };
 
 export type GetInternalProps<T extends Record<string, any>> = StateValues<
-	Required<RemoveFunctionProps<Omit<T, 'class' | 'ref' | 'id'>>>
+	Required<RemoveFunctionProps<Omit<T, 'class' | 'ref' | 'id' | 'style'>>>
 > & { id: string };
 export type GetInternalPropsNoId<T extends Record<string, any>> = StateValues<
-	Required<RemoveFunctionProps<Omit<T, 'class' | 'ref' | 'id'>>>
+	Required<RemoveFunctionProps<Omit<T, 'class' | 'ref' | 'id' | 'style'>>>
 >;
 
 export type Class<T> = new (...args: any[]) => T;
@@ -62,6 +69,7 @@ export interface FloatingConfig {
 /** Used for when render a self-closing element, such as an input. */
 export interface PropsNoCildren<E extends HTMLElement, S> {
 	class?: ClassProp<S>;
+	style?: StyleProp<S>;
 	ref?: E;
 	id?: string;
 }

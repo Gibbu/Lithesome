@@ -1,9 +1,10 @@
 ---
 title: 'Styling'
 description: 'Make the components look pretty.'
+order: 2
 ---
 
-Lithesome components are completely unstyled, leaving that problem to you.  
+Lithesome components are completely unstyled, leaving that problem to you.
 There are a few ways to style each component.
 
 ## CSS Frameworks/libraries
@@ -31,8 +32,8 @@ Each component have their own unique `[data]` attribute applied to the underlyin
 
 To figure out what the data attribute for each component is called, look at the component and add `data` infront, place a `-` before each of the capital letters, and make them all lowercase.
 
-`<MenuItem />` = `[data-menu-item]`  
-`<SelectOption />` = `[data-select-option]`  
+`<MenuItem />` = `[data-menu-item]`
+`<SelectOption />` = `[data-select-option]`
 ect...
 
 ## Global CSS selectors
@@ -70,6 +71,8 @@ Check each component API reference to see what data attributes are exposed on ea
 
 Each `class` prop exposed by Lithesome components can be used as functions, giving you the state as function object parameter.
 
+In this example, we're returning an array. This is allowed since svelte ([5.16.0](https://github.com/sveltejs/svelte/blob/main/packages/svelte/CHANGELOG.md#5160)) under the hood uses [clsx](https://github.com/lukeed/clsx) to handle the logic of conversion for us.
+
 ```svelte
 <SelectOption
 	value="bobross"
@@ -83,25 +86,19 @@ Each `class` prop exposed by Lithesome components can be used as functions, givi
 </SelectOption>
 ```
 
-In the example above, we're returning an array.  
-This is allowed since svelte ([5.16.0](https://github.com/sveltejs/svelte/blob/main/packages/svelte/CHANGELOG.md#5160)) under the hood uses [clsx](https://github.com/lukeed/clsx) to handle the logic of conversion for us.
+### Style prop function
 
-However, if you were to use the `custom` snippet. The class prop will act as it normally would.  
-Instead use the destructured objects on the snippet.
+Just like the class prop function, the `style` prop on Lithesome components can take a function as the value.
+However unlike the class prop, we can't use arrays. So we must convert it into an object.
 
 ```svelte
-<SelectOption value="bobross">
-	{#snippet custom({ attrs, state })}
-		<div
-			{...attrs}
-			class={[
-				state.hovered && !state.selected ? 'bg-lime-400' : '',
-				state.selected ? 'bg-teal-500' : '',
-				'rounded-md px-4 py-2 text-xs font-medium'
-			]}
-		>
-			Bob Ross
-		</div>
-	{/snippet}
+<SelectOption
+	value="bobross"
+	style={({ hovered, selected }) => ({
+		background: selected ? 'green' : undefined,
+		color: hovered ? 'yellow' : undefined
+	})}
+>
+	Bob Ross
 </SelectOption>
 ```

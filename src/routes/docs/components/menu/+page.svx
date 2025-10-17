@@ -24,7 +24,7 @@ description: 'A menu of items that is hidden until triggered.'
 		MenuSubContent,
 		MenuSubTrigger,
 		MenuTrigger
-	} from '$lib/index.js';
+	} from 'lithesome';
 </script>
 
 <Menu>
@@ -124,7 +124,7 @@ Just like disabling an item, passing the `disabled` prop to the `<MenuSub />` co
 
 ### Deeply nested sub menus
 
-The `<MenuSub />` components can be place inside of one another to achieve a deeply nested menu.  
+The `<MenuSub />` components can be place inside of one another to achieve a deeply nested menu.
 Just like the example at the top of this page.
 
 ```svelte

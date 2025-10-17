@@ -61,7 +61,7 @@
 		as="main"
 		headerClass="flex justify-between items-start"
 		containerClass="h-full flex flex-col"
-		bodyClass="flex-1 max-w-full prose dark:prose-invert prose-headings:font-normal toc-target prose-h2:mt-16 prose-h3:mt-12"
+		bodyClass="flex-1 max-w-full prose dark:prose-invert toc-target"
 	>
 		{#snippet header()}
 			<div>

@@ -15,7 +15,7 @@ description: 'Allows a sequence of one-character inputs.'
 
 ```svelte
 <script lang="ts">
-	import { Pin, PinInput } from '$lib/index.js';
+	import { Pin, PinInput } from 'lithesome';
 </script>
 
 <Pin>

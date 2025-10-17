@@ -187,8 +187,6 @@ class MenuTrigger {
 						const index = path.indexOf(this._root.focusedGroup);
 						const prevGroup = path[index - 1] || 'root';
 
-						console.log(prevGroup, path[index]);
-
 						if (path[index]) {
 							this._root.openedPath.splice(index, 1);
 							this._root.focusedGroup = prevGroup;
@@ -324,6 +322,7 @@ class MenuItem {
 					await tick();
 					this._root.setHoveredItem(this.id);
 
+					// No idea why I had to snapshot this...?
 					this._root.openedPath = $state.snapshot(this._root.groups[this._root.focusedGroup].path);
 				},
 				click: () => {

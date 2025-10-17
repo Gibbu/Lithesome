@@ -1,0 +1,108 @@
+---
+title: 'Custom Elements'
+description: 'How to use custom components or elements.'
+order: 3
+---
+
+## Using the `custom` snippet
+
+Sometimes you wish to use your own components or just want to change the underlying element.  
+Using the `custom` snippet block on _most_ Lithesome components, you're able to just do that.  
+Here's an example using the `<Menu />` components.
+
+```svelte
+<script>
+	import { Menu, MenuContent, MenuItem, MenuTrigger } from 'lithesome';
+	import { Button } from '$lib';
+</script>
+
+<Menu>
+	<MenuTrigger>
+		<Button>Click me</Button>
+	</MenuTrigger>
+	<MenuContent>
+		<MenuItem>Item 1</MenuItem>
+		<MenuItem>Item 2</MenuItem>
+		<MenuItem>Item 3</MenuItem>
+	</MenuContent>
+</Menu>
+```
+
+Technically this _does_ work. But if you were to view the resulting HTML, it's wrapping a button inside another button. This is very bad for accessibility, event handling, ect...
+
+To work around this, we can simply use a `custom` snippet block!
+
+```svelte
+<Menu>
+	<MenuTrigger>
+		{#snippet custom({ attrs })}
+			<Button {...attrs}>Click me</Button>
+		{/snippet}
+	</MenuTrigger>
+	<MenuContent>
+		<MenuItem>Item 1</MenuItem>
+		<MenuItem>Item 2</MenuItem>
+		<MenuItem>Item 3</MenuItem>
+	</MenuContent>
+</Menu>
+```
+
+This will tell Lithesome not to render the default element but instead the user is going to provide the element to use.  
+Doing this also means you have access to either your own component API or raw HTML apis.
+
+## Svelte Transitions
+
+By using the `custom` snippet, it also means we have access to the awesome svelte transition API.  
+Here an example:
+
+```svelte
+<script>
+	import { Menu, MenuContent, MenuItem, MenuTrigger } from 'lithesome';
+	import { fly } from 'svelte/transition';
+	import { Button } from '$lib';
+</script>
+
+<Menu>
+	<MenuTrigger>
+		{#snippet custom({ attrs })}
+			<Button {...attrs}>Click me</Button>
+		{/snippet}
+	</MenuTrigger>
+	<MenuContent>
+		{#snippet custom({ attrs })}
+			<div transition:fly {...attrs}>
+				<MenuItem>Item 1</MenuItem>
+				<MenuItem>Item 2</MenuItem>
+				<MenuItem>Item 3</MenuItem>
+			</div>
+		{/snippet}
+	</MenuContent>
+</Menu>
+```
+
+But if you were to follow this example, the `<MenuContents />` will always be visible. Why is this?
+
+Well the name implies a "custom implementation". But do not fret, we also provide any necessary state to go along with the custom block if you do not wish to handle that by yourself.
+
+Simply destructure the `state` object inside the custom params.
+
+```svelte
+<Menu>
+	<MenuTrigger>
+		{#snippet custom({ attrs })}
+			<Button {...attrs}>Click me</Button>
+		{/snippet}
+	</MenuTrigger>
+	<MenuContent>
+		{#snippet custom({ attrs, state })}
+			{#if state.visible}
+				<div transition:fly {...attrs}>
+					<MenuItem>Item 1</MenuItem>
+					<MenuItem>Item 2</MenuItem>
+					<MenuItem>Item 3</MenuItem>
+				</div>
+			{/if}
+		{/snippet}
+	</MenuContent>
+</Menu>
+```
