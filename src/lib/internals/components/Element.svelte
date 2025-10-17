@@ -34,27 +34,25 @@
 
 	const classes = $derived(typeof klass === 'function' ? klass(ctx.state) : klass);
 	const styles = $derived.by(() => {
-		let styleString = '';
+		let styleObject: Record<string, any> = {};
+		let styleString: string = '';
 
 		if (typeof style === 'string') styleString += style;
-		if (typeof style === 'object') {
-			for (const property in style) {
-				styleString += `${camelToKebab(property)}: ${style[property]}; `;
-			}
-		}
-		if (ctx.styles) {
-			for (const property in ctx.styles) {
-				styleString += `${camelToKebab(property)}: ${ctx.styles[property]}; `;
-			}
-		}
+		if (typeof style === 'object') styleObject = { ...styleObject, ...style };
+		if (ctx.styles) styleObject = { ...styleObject, ...ctx.styles };
 		if (typeof style === 'function') {
 			const values = style(ctx.state) as Record<string, any>;
-			for (const property in values) {
-				styleString += `${camelToKebab(property)}: ${values[property]}; `;
-			}
+			if (typeof values === 'string') styleString += values;
+			else styleObject = { ...styleObject, ...values };
 		}
-		return styleString;
+		return (
+			Object.entries(styleObject)
+				.map(([p, k]) => (k ? `${camelToKebab(p)}: ${k};` : undefined))
+				.join('') + styleString
+		);
 	});
+
+	$inspect(styles);
 </script>
 
 {#snippet element()}
