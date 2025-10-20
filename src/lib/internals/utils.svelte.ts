@@ -137,18 +137,15 @@ export const trackTimeout = () => {
  */
 export const deepFind = <T>(arr: T[], predicate: (item: T) => boolean): T | undefined => {
 	for (const item of arr) {
-		// If the item is an array, recursively search within it
 		if (Array.isArray(item)) {
 			const foundInNested = deepFind(item, predicate);
 			if (foundInNested !== undefined) {
 				return foundInNested;
 			}
 		} else if (predicate(item as T)) {
-			// If the item satisfies the predicate, return it
 			return item as T;
 		}
 	}
-	// If nothing is found, return undefined
 	return undefined;
 };
 
@@ -232,3 +229,8 @@ export const addEvents = (
 		});
 	};
 };
+
+/**
+ * No operation function
+ */
+export const noop = () => {};

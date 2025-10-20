@@ -3,11 +3,12 @@ import type { FlipOptions, Placement, ShiftOptions } from '@floating-ui/dom';
 import type { Snippet } from 'svelte';
 import type { ClassValue } from 'svelte/elements';
 
+type StyleValue = string | CSSStyleObject;
+type OmitProps = 'children' | 'custom' | 'class' | 'style' | 'ref' | 'id';
+
 export type CSSStyleObject = {
 	[K in keyof CSSStyleDeclaration]?: string | number;
 };
-
-type StyleValue = string | CSSStyleObject;
 
 export type JsonObject = { [key: string]: JsonValue };
 export type JsonValue = undefined | null | boolean | number | string | JsonValue[] | JsonObject;
@@ -23,10 +24,10 @@ export type RemoveFunctionProps<T> = {
 };
 
 export type GetInternalProps<T extends Record<string, any>> = StateValues<
-	Required<RemoveFunctionProps<Omit<T, 'class' | 'ref' | 'id' | 'style'>>>
+	Required<RemoveFunctionProps<Omit<T, OmitProps>>>
 > & { id: string };
 export type GetInternalPropsNoId<T extends Record<string, any>> = StateValues<
-	Required<RemoveFunctionProps<Omit<T, 'class' | 'ref' | 'id' | 'style'>>>
+	Required<RemoveFunctionProps<Omit<T, OmitProps>>>
 >;
 
 export type Class<T> = new (...args: any[]) => T;

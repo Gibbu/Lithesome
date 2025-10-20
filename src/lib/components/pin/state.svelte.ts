@@ -2,7 +2,7 @@ import { tick } from 'svelte';
 import { createAttachment } from '$lib/internals/attachment.js';
 import { buildContext } from '$lib/internals/index.js';
 import { ALL_ARROW_KEYS, KEYS } from '$lib/internals/keyboard.js';
-import { addEvents, calculateIndex, createAttributes } from '$lib/internals/utils.svelte.js';
+import { addEvents, createAttributes } from '$lib/internals/utils.svelte.js';
 
 import type { GetInternalProps } from '$lib/internals/types.js';
 import type { CalcIndexAction } from '$lib/internals/utils.svelte.js';

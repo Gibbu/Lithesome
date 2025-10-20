@@ -80,7 +80,7 @@
 				<MenuSubContent>
 					{#snippet custom({ attrs, state })}
 						{#if state.visible}
-							<Container {...attrs} bodyClass="p-0 py-3" containerClass="w-[200px]">
+							<Container {...attrs} bodyClass="p-0 py-3" containerClass="w-[200px] z-10">
 								{#if item.children}
 									{@render menuContents(item.children)}
 								{/if}

@@ -18,11 +18,12 @@ export const load = async () => {
 				const content = await fs.readFile(filePath, 'utf-8');
 				const { data } = matter(content);
 
-				const [group] = filename.split('\\');
+				// const
+				const group = path.dirname(filename).split('/')[0];
 				const href =
 					'/docs/' +
 					filename
-						.split('\\')
+						.split('/')
 						.filter((el) => el !== '+page.svx')
 						.join('/');
 

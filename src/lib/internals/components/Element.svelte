@@ -51,8 +51,6 @@
 				.join('') + styleString
 		);
 	});
-
-	$inspect(styles);
 </script>
 
 {#snippet element()}

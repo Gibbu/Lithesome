@@ -40,7 +40,18 @@
 			'size-6 leading-relaxed'
 		)}
 	/>
-	<p class="text-sm leading-relaxed">{message}</p>
+	<p
+		class={[
+			'text-sm leading-relaxed',
+			{
+				info: 'text-sky-700 dark:text-sky-100',
+				warning: 'text-amber-700 dark:text-amber-100',
+				error: 'text-red-700 dark:text-red-100'
+			}[type]
+		]}
+	>
+		{message}
+	</p>
 	<div class="pointer-events-none absolute -bottom-[2px] -left-[2px] size-4 border-b-2 border-l-2 {colour[0]}"></div>
 	<div class="pointer-events-none absolute -right-[2px] -bottom-[2px] size-4 border-r-2 border-b-2 {colour[0]}"></div>
 </div>

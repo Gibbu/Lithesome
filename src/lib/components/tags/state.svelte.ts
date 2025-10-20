@@ -37,8 +37,6 @@ class TagsRoot {
 		this.$whitelist = props.whitelist;
 		this.$blacklist = props.blacklist;
 		this.id = props.id;
-
-		$inspect(this.index);
 	}
 
 	allowedTag = (tag: string) => {
