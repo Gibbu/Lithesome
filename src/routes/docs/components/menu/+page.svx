@@ -78,7 +78,7 @@ Each `<MenuItem />` exposes a `href` prop. This will automatically turn the butt
 
 ## Sub Menus
 
-If by chance you would want to group some items together without cluttering the menu, you can place them into a `<MenuSub />` and its related components.
+To keep your menus organized, you can group related items together using the `<MenuSub />` component and its related elements.
 
 ```svelte
 <Menu>
@@ -125,7 +125,6 @@ Just like disabling an item, passing the `disabled` prop to the `<MenuSub />` co
 ### Deeply nested sub menus
 
 The `<MenuSub />` components can be place inside of one another to achieve a deeply nested menu.
-Just like the example at the top of this page.
 
 ```svelte
 <Menu>

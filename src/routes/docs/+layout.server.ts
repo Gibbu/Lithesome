@@ -5,6 +5,8 @@ import matter from 'gray-matter';
 
 import type { Group } from './_types.js';
 
+const pathSplit = process.platform === 'win32' ? '\\' : '/';
+
 export const load = async () => {
 	const directoryPath = path.join(process.cwd(), 'src', 'routes', 'docs');
 	let groups: Group[] = [];
@@ -19,11 +21,11 @@ export const load = async () => {
 				const { data } = matter(content);
 
 				// const
-				const group = path.dirname(filename).split('/')[0];
+				const group = path.dirname(filename).split(pathSplit)[0];
 				const href =
 					'/docs/' +
 					filename
-						.split('/')
+						.split(pathSplit)
 						.filter((el) => el !== '+page.svx')
 						.join('/');
 

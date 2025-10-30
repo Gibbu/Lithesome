@@ -75,6 +75,7 @@ class MenuRoot extends MenuBaseState {
 	focusedGroup = $state<string>('root');
 
 	openedPath = $state<string[]>([]);
+	sharedIds = new Map<'trigger' | 'content', string>();
 
 	HoveredItem = $derived.by<GroupItem | null>(
 		() => this.groups[this.focusedGroup].children?.[this.hoveredIndex] || null
@@ -149,11 +150,16 @@ class MenuTrigger {
 	constructor(parent: MenuRoot, props: TriggerProps) {
 		this.id = props.id;
 		this._root = parent;
+
+		this._root.sharedIds.set('trigger', this.id);
 	}
 
 	attrs = $derived.by(() => ({
 		id: this.id,
 		role: 'button',
+		'aria-haspopup': 'menu',
+		'aria-expanded': this._root.$visible.val,
+		'aria-controls': this._root.$visible.val ? this._root.sharedIds.get('content') : undefined,
 		...createAttachment((node) => {
 			this._root.trigger = node;
 
@@ -250,6 +256,8 @@ class MenuContent {
 	constructor(root: MenuRoot, props: ContentProps) {
 		this._root = root;
 		this.id = props.id;
+
+		this._root.sharedIds.set('content', this.id);
 	}
 
 	attrs = $derived.by(() => ({

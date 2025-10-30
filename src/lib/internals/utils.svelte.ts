@@ -172,19 +172,6 @@ export const deepMerge = <T extends object, U extends object>(first: T, second: 
 };
 
 /**
- * Awaits 1 svelte `tick` and then 0 `setTimeout` tick.
- */
-export const singleTick = async (cb?: VoidFunction) => {
-	await tick();
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve(true);
-			cb?.();
-		}, 0);
-	});
-};
-
-/**
  * Filters out any disabled element of a query/nodelist.
  * @param elements The array of elements
  */

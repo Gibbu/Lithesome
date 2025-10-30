@@ -10,11 +10,12 @@
 	<p class="mb-2 text-sm">What's your stack?</p>
 	<Tags
 		bind:value={tags}
-		class={cn(
+		class={({ invalid }) => [
 			'flex cursor-text items-center gap-2 border p-2',
-			'border-neutral-300 dark:border-neutral-800',
-			'focus-within:border-dark dark:focus-within:border-white'
-		)}
+			invalid
+				? 'border-red-500'
+				: ['border-neutral-300 dark:border-neutral-800', 'focus-within:border-dark dark:focus-within:border-white']
+		]}
 	>
 		<div class="inline-flex flex-wrap gap-1">
 			{#each tags as tag}

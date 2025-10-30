@@ -30,7 +30,8 @@ Here's an example using the `<Menu />` components.
 
 Technically this _does_ work. But if you were to view the resulting HTML, it's wrapping a button inside another button. This is very bad for accessibility, event handling, ect...
 
-To work around this, we can simply use a `custom` snippet block!
+To work around this, we use the `custom` snippet block and destructure the parameter and spread the `attrs` object.  
+The `attrs` object holds all the necessary logic and attributes.
 
 ```svelte
 <Menu>
@@ -84,7 +85,7 @@ But if you were to follow this example, the `<MenuContents />` will always be vi
 
 Well the name implies a "custom implementation". But do not fret, we also provide any necessary state to go along with the custom block if you do not wish to handle that by yourself.
 
-Simply destructure the `state` object inside the custom params.
+Destructure the `state` object inside the custom params and acess the available state.
 
 ```svelte
 <Menu>
@@ -106,3 +107,6 @@ Simply destructure the `state` object inside the custom params.
 	</MenuContent>
 </Menu>
 ```
+
+Lithesome is built using TypeScript, so you _should_ get correct autocompletion on the `state` object show all the available state belonging to that snippet block.  
+If not, go to whatever component you're using and check the API reference.

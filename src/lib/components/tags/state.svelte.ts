@@ -85,7 +85,8 @@ class TagsRoot {
 	}));
 
 	state = $derived.by(() => ({
-		activeTag: this.SelectedTag
+		activeTag: this.SelectedTag,
+		invalid: this.invalid
 	}));
 }
 

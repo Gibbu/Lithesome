@@ -32,13 +32,13 @@ Each component have their own unique `[data]` attribute applied to the underlyin
 
 To figure out what the data attribute for each component is called, look at the component and add `data` infront, place a `-` before each of the capital letters, and make them all lowercase.
 
-`<MenuItem />` = `[data-menu-item]`
-`<SelectOption />` = `[data-select-option]`
+`<MenuItem />` = `[data-menu-item]`  
+`<SelectOption />` = `[data-select-option]`  
 ect...
 
 ## Global CSS selectors
 
-If data attributes aren't your cup of tea, you can always create your own classes and then apply them to the components.
+If data attributes aren't your cup of tea, you can always create your own _global_ classes and then apply them to the components.
 
 ```svelte
 <MenuItem class="menu-item">Edit</MenuItem>
@@ -53,7 +53,7 @@ If data attributes aren't your cup of tea, you can always create your own classe
 
 ## Styling component states
 
-Most components have some sort of “state” to tell the browser what is checked, selected, opened, ect…
+Most components have some sort of “state” to tell the browser what is checked, selected, opened, ect…  
 You have a couple of ways of style them accordingly.
 
 ### Data attributes
@@ -89,7 +89,19 @@ In this example, we're returning an array. This is allowed since svelte ([5.16.0
 ### Style prop function
 
 Just like the class prop function, the `style` prop on Lithesome components can take a function as the value.
-However unlike the class prop, we can't use arrays. So we must convert it into an object.
+
+We can either use a template string:
+
+```svelte
+<SelectOption
+	value="bobross"
+	style={({ hovered, selected }) => `${selected ? 'background: green;' : ''}${hovered ? 'color: yellow;' : ''}`}
+>
+	Bob Ross
+</SelectOption>
+```
+
+Or an object:
 
 ```svelte
 <SelectOption
@@ -102,3 +114,5 @@ However unlike the class prop, we can't use arrays. So we must convert it into a
 	Bob Ross
 </SelectOption>
 ```
+
+Which ever is your cup of tea.
