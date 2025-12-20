@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Element, parseId, stateValue } from '$lib/internals/index.js';
-	import { useSelectContent, useSelectDummyContent } from './state.svelte.js';
+	import { useSelectContent } from './state.svelte.js';
 
 	import type { SelectContentProps } from '$lib/types/index.js';
 
@@ -18,10 +18,6 @@
 		id,
 		ref: stateValue(() => ref!)
 	});
-
-	let dummyCtx = useSelectDummyContent();
 </script>
 
 <Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />
-
-<Element {children} visible={!ctx._root.mounted} ctx={dummyCtx} {...props} />

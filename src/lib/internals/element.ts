@@ -36,7 +36,7 @@ export const setNodeProps = <T extends HTMLElement>(node: T, attrs: Record<strin
  * @param node The element to remove the attributes from.
  * @param attrs The attributes to be removed.
  */
-export const removeNodeProps = <T extends HTMLElement>(node: T, ...props: string[]) => {
+export const removeNodeProps = <T extends HTMLElement>(node: T, ...attrs: string[]) => {
 	attrs.forEach((el) => {
 		node.removeAttribute(el);
 	});

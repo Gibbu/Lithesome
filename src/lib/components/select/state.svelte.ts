@@ -181,6 +181,7 @@ class SelectRoot extends Floating {
 			else if (Array.isArray(value) && value.includes(el.value)) return el;
 		});
 		this.mounted = true;
+		this.$visible.val = false;
 	};
 
 	state = $derived.by(() => ({
@@ -302,34 +303,23 @@ class SelectContent {
 	state = $derived.by(() => ({
 		visible: this._root.$visible.val
 	}));
-}
 
-//
-// ~DUMMY CONTENT
-//
-// Used to get the available options since they're not
-// accessable until they've been mounted.
-//
-class SelectDummyContent {
-	_root: SelectRoot;
-
-	constructor(root: SelectRoot) {
-		this._root = root;
-	}
-
-	styles = {
-		position: 'absolute',
-		width: '1px',
-		height: '1px',
-		padding: '0',
-		margin: '-1px',
-		overflow: 'hidden',
-		clipPath: 'inset(50%)',
-		whiteSpace: 'nowrap',
-		borderWidth: '0',
-		userSelect: 'none',
-		pointerEvents: 'none'
-	};
+	styles = $derived.by(() => {
+		if (!this._root.mounted)
+			return {
+				position: 'absolute',
+				width: '1px',
+				height: '1px',
+				padding: '0',
+				margin: '-1px',
+				overflow: 'hidden',
+				clipPath: 'inset(50%)',
+				whiteSpace: 'nowrap',
+				borderWidth: '0',
+				userSelect: 'none',
+				pointerEvents: 'none'
+			};
+	});
 }
 
 //
@@ -476,9 +466,6 @@ export const useSelectTrigger = (props: TriggerProps) => {
 
 export const useSelectContent = (props: ContentProps) => {
 	return rootCtx.register(SelectContent, props);
-};
-export const useSelectDummyContent = () => {
-	return rootCtx.register(SelectDummyContent);
 };
 
 export const useSelectArrow = (props: ArrowProps) => {

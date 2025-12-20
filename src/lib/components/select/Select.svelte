@@ -10,7 +10,7 @@
 	let {
 		id = parseId(uid),
 		children,
-		visible = $bindable(false),
+		visible = $bindable(true),
 		disabled = $bindable(false),
 		portalTarget = 'body',
 		floatingConfig = {},

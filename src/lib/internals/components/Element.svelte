@@ -54,9 +54,7 @@
 </script>
 
 {#snippet element()}
-	{#if custom}
-		{@render custom({ props: { ...ctx.props, ...ctx.styles }, state: ctx.state })}
-	{:else if selfClosing.includes(as)}
+	{#if selfClosing.includes(as)}
 		<svelte:element this={as} bind:this={ref} {...ctx.props} {...props} class={classes} style={styles} />
 	{:else}
 		<svelte:element this={as} bind:this={ref} {...ctx.props} {...props} class={classes} style={styles}>
@@ -66,7 +64,7 @@
 {/snippet}
 
 {#if custom}
-	{@render custom({ props: ctx.props, state: ctx.state })}
+	{@render custom({ props: { ...ctx.props, style: ctx.styles }, state: ctx.state })}
 {:else if typeof visible === 'boolean'}
 	{#if visible}
 		{@render element()}

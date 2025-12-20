@@ -13,7 +13,7 @@
 		{ value: 'azula', label: 'Firebending Prodigy' }
 	];
 
-	let value = $state();
+	let value = $state('aang');
 </script>
 
 <Select bind:value>
