@@ -38,7 +38,7 @@
 				'dark:border-teal-500/25 dark:bg-teal-500/10 dark:text-teal-300 dark:hover:bg-teal-500/20 dark:hover:text-teal-50'
 			],
 			danger: [
-				'bg-teal-600/15 text-rose-600 hover:bg-rose-500 hover:text-zinc-800',
+				'bg-rose-600/15 text-rose-600 hover:bg-rose-500 hover:text-zinc-800',
 				'dark:border-rose-500/25 dark:bg-rose-500/10 dark:text-rose-300 dark:hover:bg-rose-500/20 dark:hover:text-rose-50'
 			],
 			secondary: [
