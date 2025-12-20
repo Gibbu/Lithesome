@@ -1,49 +1,35 @@
-import { error } from 'console';
-import fs from 'fs/promises';
-import path from 'path';
+import { error } from '@sveltejs/kit';
 import matter from 'gray-matter';
 
 import type { Group } from './_types.js';
 
-const pathSplit = process.platform === 'win32' ? '\\' : '/';
-
 export const load = async () => {
-	const directoryPath = path.join(process.cwd(), 'src', 'routes', 'docs');
 	let groups: Group[] = [];
+	const pages = Object.entries(import.meta.glob('/src/routes/docs/**/*.svx', { query: '?raw', import: 'default' }));
+	for (const [filepath, resolver] of pages) {
+		const page = (await resolver()) as string;
 
-	try {
-		const filenames = await fs.readdir(directoryPath, { recursive: true });
-		await Promise.all(
-			filenames.map(async (filename) => {
-				if (!filename.endsWith('.svx')) return undefined;
-				const filePath = path.join(directoryPath, filename);
-				const content = await fs.readFile(filePath, 'utf-8');
-				const { data } = matter(content);
+		try {
+			if (!filepath.endsWith('.svx')) return undefined;
+			const { data } = matter(page);
 
-				// const
-				const group = path.dirname(filename).split(pathSplit)[0];
-				const href =
-					'/docs/' +
-					filename
-						.split(pathSplit)
-						.filter((el) => el !== '+page.svx')
-						.join('/');
+			const group = filepath.match(/\/docs\/([^/]+)\//)?.[1]!;
+			const href = filepath.replace('/+page.svx', '').replace('src/routes/', '');
 
-				const found = groups.find((el) => el.name === group);
+			const found = groups.find((el) => el.name === group);
 
-				if (found) {
-					found.items.push({ href, data });
-				} else {
-					groups.push({
-						name: group,
-						items: [{ href, data }]
-					});
-				}
-			})
-		);
-	} catch (err) {
-		console.error('Error reading directory:', err);
-		error(500, 'Failed to read files');
+			if (found) {
+				found.items.push({ href, data });
+			} else {
+				groups.push({
+					name: group,
+					items: [{ href, data }]
+				});
+			}
+		} catch (err) {
+			console.error('Error reading directory:', err);
+			error(500, 'Failed to read files');
+		}
 	}
 
 	const groupOrder = ['intro', 'components'];
