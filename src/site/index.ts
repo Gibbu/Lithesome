@@ -4,6 +4,7 @@ export { default as Frame } from './components/Frame.svelte';
 export { default as CodePreview } from './components/CodePreview.svelte';
 export { default as Toc } from './components/Toc.svelte';
 export { default as Info } from './components/Info.svelte';
+export { default as Meta } from './components/Meta.svelte';
 
 export * from './utils.js';
 export * from './types.js';

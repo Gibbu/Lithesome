@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { CheckIcon, CopyIcon } from '@lucide/svelte';
 	import { version } from '$app/environment';
-	import { Button, cn, Container, copy } from '$site/index.js';
+	import Meta from '$site/components/Meta.svelte';
+	import { Button, Container, copy } from '$site/index.js';
 
 	let copied = $state(false);
 	const copySuccess = () => {
@@ -13,6 +14,8 @@
 
 	const Icon = $derived(copied ? CheckIcon : CopyIcon);
 </script>
+
+<Meta />
 
 <Container bodyClass="items-center flex flex-col p-12">
 	<div

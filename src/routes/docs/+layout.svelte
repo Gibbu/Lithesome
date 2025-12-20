@@ -2,12 +2,14 @@
 	import { MoonIcon, PenIcon, SunIcon } from '@lucide/svelte';
 	import { mode, toggleMode } from 'mode-watcher';
 	import { page } from '$app/state';
-	import { Button, Container, Toc } from '$site/index.js';
+	import { Button, Container, Meta, Toc } from '$site/index.js';
 
 	let { children, data } = $props();
 
 	const currentPage = $derived(data.groups.flatMap((group) => group.items).find((item) => item.href === page.route.id));
 </script>
+
+<Meta title={currentPage?.data.title} description={currentPage?.data.description} />
 
 <Container containerClass="mb-6" bodyClass="flex justify-between items-center">
 	<h2 class="text-2xl text-zinc-900 dark:text-zinc-100">
