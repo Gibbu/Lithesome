@@ -1,3 +1,4 @@
+import { SvelteMap } from 'svelte/reactivity';
 import { portal } from '$lib/index.js';
 import {
 	addEvents,
@@ -11,7 +12,12 @@ import {
 } from '$lib/internals/index.js';
 
 import type { GetInternalProps, GetInternalPropsNoId } from '$lib/internals/index.js';
-import type { HovercardContentProps, HovercardProps, HovercardTriggerProps } from '$lib/types/index.js';
+import type {
+	HovercardArrowProps,
+	HovercardContentProps,
+	HovercardProps,
+	HovercardTriggerProps
+} from '$lib/types/index.js';
 
 const { attrs } = createAttributes('hovercard', ['trigger', 'content', 'arrow']);
 
@@ -26,7 +32,7 @@ class HovercardRoot extends Floating {
 	$portalTarget: RootProps['portalTarget'];
 	$floatingConfig: RootProps['floatingConfig'];
 
-	sharedIds = new Map<'trigger' | 'content', string>();
+	sharedIds = new SvelteMap<'trigger' | 'content', string>();
 	timeout = trackTimeout();
 	hovered = $state<boolean>(false);
 
@@ -159,19 +165,25 @@ class HovercardContent {
 //
 // ~~ARROW
 //
+type ArrowProps = GetInternalProps<HovercardArrowProps>;
 class HovercardArrow {
+	$id: ArrowProps['id'];
+
 	_root: HovercardRoot;
 
-	constructor(root: HovercardRoot) {
+	constructor(root: HovercardRoot, props: ArrowProps) {
 		this._root = root;
+
+		this.$id = props.id;
 	}
 
-	props = {
+	props = $derived.by(() => ({
+		id: this.$id,
 		[attrs.arrow]: '',
 		...attach((node) => {
 			this._root.arrow = node;
 		})
-	};
+	}));
 
 	state = $derived.by(() => ({
 		visible: this._root.$visible.val
@@ -189,8 +201,8 @@ export const createHovercardRootContext = (props: RootProps) => {
 export const useHovercardTrigger = (props: TriggerProps) => {
 	return rootContext.register(HovercardTrigger, props);
 };
-export const useHovercardArrow = () => {
-	return rootContext.register(HovercardArrow);
+export const useHovercardArrow = (props: ArrowProps) => {
+	return rootContext.register(HovercardArrow, props);
 };
 export const useHovercardContent = (props: ContentProps) => {
 	return rootContext.register(HovercardContent, props);

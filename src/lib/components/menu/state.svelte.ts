@@ -1,4 +1,5 @@
 import { tick } from 'svelte';
+import { SvelteMap } from 'svelte/reactivity';
 import { outside } from '$lib/attachments/outside.js';
 import { portal } from '$lib/attachments/portal.js';
 import {
@@ -75,7 +76,7 @@ class MenuRoot extends MenuBaseState {
 	focusedGroup = $state<string>('root');
 
 	openedPath = $state<string[]>([]);
-	sharedIds = new Map<'trigger' | 'content', string>();
+	sharedIds = new SvelteMap<'trigger' | 'content', string>();
 
 	HoveredItem = $derived.by<GroupItem | null>(
 		() => this.groups[this.focusedGroup].children?.[this.hoveredIndex] || null
@@ -360,7 +361,7 @@ class MenuSub extends MenuBaseState {
 	_sub?: MenuSub;
 
 	path = $state<string[]>([]);
-	sharedIds = new Map<'content' | 'trigger', string>();
+	sharedIds = new SvelteMap<'content' | 'trigger', string>();
 
 	IsActive = $derived.by(() => this._root.openedPath.includes(this.$name.val));
 

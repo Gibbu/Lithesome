@@ -19,6 +19,7 @@
 
 	let ctx = createAccordionRootContext({
 		id,
+		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
 			(v) => {

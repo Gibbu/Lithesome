@@ -17,6 +17,7 @@
 
 	let ctx = useTabsContent({
 		id,
+		ref: stateValue(() => ref!),
 		value: stateValue(() => value)
 	});
 </script>

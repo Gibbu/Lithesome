@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
 	import { useAccordionButton } from './state.svelte.js';
 
 	import type { AccordionButtonProps } from '$lib/types/index.js';
@@ -14,7 +14,7 @@
 		...props
 	}: AccordionButtonProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useAccordionButton({ id });
+	let ctx = useAccordionButton({ id, ref: stateValue(() => ref!) });
 </script>
 
 <Element bind:ref {children} {custom} {ctx} as="button" {...props} />

@@ -19,6 +19,7 @@
 
 	let ctx = createTabsRootContext({
 		id,
+		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
 			(v) => (value = v)

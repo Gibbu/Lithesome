@@ -9,7 +9,6 @@
 		offset: 15,
 		placement: 'top'
 	}}
-	portalTarget="#layers"
 >
 	<TooltipTrigger>
 		{#snippet custom({ props })}

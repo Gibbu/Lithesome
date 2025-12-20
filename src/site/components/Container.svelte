@@ -51,7 +51,9 @@
 		{@render children()}
 	</div>
 	{#if footer}
-		{@render footer()}
+		<footer class="flex justify-end gap-3 border-t border-zinc-400 p-6 dark:border-zinc-800">
+			{@render footer()}
+		</footer>
 	{/if}
 	<div
 		class="pointer-events-none absolute -bottom-[2px] -left-[2px] size-4 border-b-2 border-l-2 border-zinc-950 dark:border-zinc-500"

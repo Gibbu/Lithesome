@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
 	import { useSliderThumb } from './state.svelte.js';
 
 	import type { SliderThumbProps } from '$lib/types/index.js';
@@ -8,7 +8,10 @@
 
 	let { id = parseId(uid), ref = $bindable(), ...props }: SliderThumbProps<typeof ctx.state> = $props();
 
-	let ctx = useSliderThumb({ id });
+	let ctx = useSliderThumb({
+		id,
+		ref: stateValue(() => ref!)
+	});
 </script>
 
 <Element bind:ref {ctx} {...props} />

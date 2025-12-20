@@ -64,20 +64,21 @@ export interface RadioGroupItemProps<P = any, S = any> extends Props<HTMLInputEl
 <script lang="ts">
 	import { stateValue } from '$lib/internals/context.svelte.js';
 	import { Element, parseId } from '$lib/internals/index.js';
-	import { useRadioGroupItem } from './state.svelte.js';
+	import { useModalContent } from './state.svelte.js';
 
-	import type { RadioGroupItemProps } from '$lib/types/index.js';
+	import type { ModalContentProps } from '$lib/types/index.js';
 
 	const uid = $props.id();
 
 	let {
 		id = parseId(uid),
+		ref = $bindable(),
 		children,
 		custom,
 		...props
-	}: RadioGroupItemProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: ModalContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useRadioGroupItem({
+	let ctx = useModalContent({
 		id,
 		ref: stateValue(() => ref!)
 	});

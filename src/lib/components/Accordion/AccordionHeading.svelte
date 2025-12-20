@@ -18,6 +18,7 @@
 
 	let ctx = useAccordionHeading({
 		id,
+		ref: stateValue(() => ref!),
 		level: stateValue(() => level)
 	});
 </script>

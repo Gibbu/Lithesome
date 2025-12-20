@@ -1,4 +1,5 @@
 import { getContext, hasContext, setContext } from 'svelte';
+import { internalState } from '$lib/internals/index.js';
 import { log } from './log.js';
 
 import type { Class } from '$lib/internals/index.js';
@@ -45,6 +46,47 @@ export class Floating {
 	arrow = $state<HTMLElement | null>(null);
 	content = $state<HTMLElement | null>(null);
 	trigger = $state<HTMLElement | null>(null);
+}
+
+export class Scrolling {
+	#scrollId: string;
+
+	constructor(id: string) {
+		this.#scrollId = id;
+
+		$effect(() => {
+			if (internalState.ScrollingDisabled) this.#disableScroll();
+			else this.#enableScroll();
+		});
+	}
+
+	addItemToScrollQueue() {
+		if (internalState.itemsDisablingScroll.includes(this.#scrollId)) return;
+		internalState.itemsDisablingScroll.push(this.#scrollId);
+	}
+
+	removeItemFromScrollQueue() {
+		if (internalState.itemsDisablingScroll.includes(this.#scrollId)) {
+			internalState.itemsDisablingScroll = internalState.itemsDisablingScroll.filter((el) => el !== this.#scrollId);
+		}
+	}
+
+	#disableScroll = () => {
+		const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+		if (scrollBarWidth > 0) {
+			document.documentElement.style.setProperty('--scrollbar-width', `${scrollBarWidth}px`);
+			document.documentElement.style.setProperty('padding-right', `${scrollBarWidth}px`);
+			document.documentElement.style.setProperty('margin-right', '0px');
+		}
+		document.documentElement.style.setProperty('overflow', 'hidden');
+	};
+
+	#enableScroll = () => {
+		document.documentElement.style.removeProperty('--scrollbar-width');
+		document.documentElement.style.removeProperty('overflow');
+		document.documentElement.style.removeProperty('padding-right');
+	};
 }
 
 /**

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
 	import { useHovercardContent } from './state.svelte.js';
 
 	import type { HovercardContentProps } from '$lib/types/index.js';
@@ -14,7 +14,10 @@
 		...props
 	}: HovercardContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useHovercardContent({ id });
+	let ctx = useHovercardContent({
+		id,
+		ref: stateValue(() => ref!)
+	});
 </script>
 
 <Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />

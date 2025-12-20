@@ -13,7 +13,7 @@ export interface MenuProps<S = any> extends PropsNoRender<S> {
 //
 // ~TRIGGER
 //
-export interface MenuTriggerProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
+export interface MenuTriggerProps<P = any, S = any> extends Props<HTMLButtonElement, P, S> {}
 
 //
 // ~CONTENT
@@ -37,7 +37,7 @@ export interface MenuItemProps<P = any, S = any> extends Props<HTMLElement, P, S
 //
 // ~SUB
 //
-export interface MenuSubProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+export interface MenuSubProps<S = any> extends PropsNoRender<S> {
 	name: string;
 	visible?: boolean;
 	disabled?: boolean;
@@ -48,7 +48,7 @@ export interface MenuSubProps<P = any, S = any> extends Props<HTMLElement, P, S>
 //
 // ~SUB TRIGGER
 //
-export interface MenuSubTriggerProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
+export interface MenuSubTriggerProps<P = any, S = any> extends Props<HTMLButtonElement, P, S> {}
 
 //
 // ~CONTENT

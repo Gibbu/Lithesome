@@ -8,3 +8,4 @@ export type * from './components/tags.ts';
 export type * from './components/slider.ts';
 export type * from './components/select.ts';
 export type * from './components/radiogroup.ts';
+export type * from './components/modal.ts';

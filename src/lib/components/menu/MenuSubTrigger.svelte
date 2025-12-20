@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
 	import { useMenuSubTrigger } from './state.svelte.js';
 
 	import type { MenuTriggerProps } from '$lib/types/index.js';
@@ -14,7 +14,10 @@
 		...props
 	}: MenuTriggerProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useMenuSubTrigger({ id });
+	let ctx = useMenuSubTrigger({
+		id,
+		ref: stateValue(() => ref!)
+	});
 </script>
 
 <Element bind:ref {children} {custom} {ctx} as="button" {...props} />

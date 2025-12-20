@@ -1,3 +1,4 @@
+import { SvelteMap } from 'svelte/reactivity';
 import { portal } from '$lib/index.js';
 import {
 	addEvents,
@@ -12,6 +13,7 @@ import {
 
 import type { GetInternalProps } from '$lib/internals/index.js';
 import type { TooltipProps } from '$lib/types/index.js';
+import type { TooltipArrowProps } from './types.js';
 
 const { attrs } = createAttributes('tooltip', ['trigger', 'content', 'arrow']);
 
@@ -26,7 +28,7 @@ class TooltipRoot extends Floating {
 	$portalTarget: RootProps['portalTarget'];
 	$floatingConfig: RootProps['floatingConfig'];
 
-	sharedIds = new Map<'trigger' | 'content', string>();
+	sharedIds = new SvelteMap<'trigger' | 'content', string>();
 	timeout = trackTimeout();
 
 	ParsedDelay = $derived.by(() => parseDelay(this.$delay.val));
@@ -63,11 +65,16 @@ class TooltipRoot extends Floating {
 //
 // ~~TRIGGER
 //
+type TriggerProps = GetInternalProps<TooltipArrowProps>;
 class TooltipTrigger {
+	$id: TriggerProps['id'];
+
 	_root: TooltipRoot;
 
-	constructor(root: TooltipRoot) {
+	constructor(root: TooltipRoot, props: TriggerProps) {
 		this._root = root;
+
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
@@ -106,11 +113,16 @@ class TooltipTrigger {
 //
 // ~~CONTENT
 //
+type ContentProps = GetInternalProps<TooltipArrowProps>;
 class TooltipContent {
+	$id: ContentProps['id'];
+
 	_root: TooltipRoot;
 
-	constructor(root: TooltipRoot) {
+	constructor(root: TooltipRoot, props: ContentProps) {
 		this._root = root;
+
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
@@ -135,24 +147,29 @@ class TooltipContent {
 }
 
 //
-// ~~ARROW
+// ~ARROW
 //
+type ArrowProps = GetInternalProps<TooltipArrowProps>;
 class TooltipArrow {
-	_root: TooltipRoot;
+	id: string;
 
-	constructor(root: TooltipRoot) {
-		this._root = root;
+	_parent: TooltipRoot;
+
+	constructor(parent: TooltipRoot, props: ArrowProps) {
+		this._parent = parent;
+		this.id = props.id;
 	}
 
-	props = {
+	props = $derived.by(() => ({
+		id: this.id,
 		[attrs.arrow]: '',
 		...attach((node) => {
-			this._root.arrow = node;
+			this._parent.arrow = node;
 		})
-	};
+	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._parent.$visible.val
 	}));
 }
 
@@ -164,12 +181,12 @@ const rootContext = buildContext(TooltipRoot);
 export const createTooltipRootContext = (props: RootProps) => {
 	return rootContext.create(props);
 };
-export const useTooltipTrigger = () => {
-	return rootContext.register(TooltipTrigger);
+export const useTooltipTrigger = (props: TriggerProps) => {
+	return rootContext.register(TooltipTrigger, props);
 };
-export const useTooltipArrow = () => {
-	return rootContext.register(TooltipArrow);
+export const useTooltipArrow = (props: ArrowProps) => {
+	return rootContext.register(TooltipArrow, props);
 };
-export const useTooltipContent = () => {
-	return rootContext.register(TooltipContent);
+export const useTooltipContent = (props: ContentProps) => {
+	return rootContext.register(TooltipContent, props);
 };

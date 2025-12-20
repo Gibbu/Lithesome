@@ -1,3 +1,4 @@
+import { SvelteMap } from 'svelte/reactivity';
 import {
 	addEvents,
 	attach,
@@ -27,7 +28,7 @@ class TabsRoot {
 	tabs = $state<string[]>([]);
 	index = $state<number>(0);
 	tabButtonToPanel = new Map<string, string>();
-	sharedIds = new Map();
+	sharedIds = new SvelteMap();
 
 	ActiveTab = $derived.by(() => this.tabs[this.index] || this.tabs[0]);
 

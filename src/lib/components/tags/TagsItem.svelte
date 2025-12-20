@@ -18,6 +18,7 @@
 
 	let ctx = useTagsItem({
 		id,
+		ref: stateValue(() => ref!),
 		value: stateValue(() => value)
 	});
 </script>

@@ -45,11 +45,13 @@
 			if (typeof values === 'string') styleString += values;
 			else styleObject = { ...styleObject, ...values };
 		}
-		return (
+
+		const result =
 			Object.entries(styleObject)
 				.map(([p, k]) => (k ? `${camelToKebab(p)}: ${k};` : undefined))
-				.join('') + styleString
-		);
+				.join('') + styleString;
+
+		return result || undefined;
 	});
 </script>
 
@@ -64,7 +66,8 @@
 {/snippet}
 
 {#if custom}
-	{@render custom({ props: { ...ctx.props, style: ctx.styles }, state: ctx.state })}
+	{@const props = ctx.styles ? { ...ctx.props, style: styles } : ctx.props}
+	{@render custom({ props, state: ctx.state })}
 {:else if typeof visible === 'boolean'}
 	{#if visible}
 		{@render element()}

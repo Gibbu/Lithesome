@@ -1,3 +1,4 @@
+import { SvelteMap } from 'svelte/reactivity';
 import { attach } from '$lib/internals/attachment.js';
 import { buildContext } from '$lib/internals/context.svelte.js';
 import { addEvents, createAttributes } from '$lib/internals/utils.svelte.js';
@@ -65,7 +66,7 @@ class AccordionItem {
 
 	_root: AccordionRoot;
 
-	sharedIds = new Map<'item' | 'button' | 'content', string>();
+	sharedIds = new SvelteMap<'item' | 'button' | 'content', string>();
 
 	Active = $derived.by(() => this._root.isActive(this.$value.val));
 

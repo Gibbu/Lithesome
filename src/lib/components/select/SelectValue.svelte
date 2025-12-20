@@ -15,6 +15,7 @@
 
 	let ctx = useSelectValue({
 		id,
+		ref: stateValue(() => ref!),
 		placeholder: stateValue(() => placeholder || 'Select an option...')
 	});
 </script>

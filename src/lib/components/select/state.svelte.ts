@@ -1,4 +1,5 @@
 import { tick } from 'svelte';
+import { SvelteMap } from 'svelte/reactivity';
 import { outside } from '$lib/attachments/outside.js';
 import { portal } from '$lib/attachments/portal.js';
 import {
@@ -46,7 +47,7 @@ class SelectRoot extends Floating {
 	hoveredIndex = $state<number>(-1);
 	options = $state<InternalSelectOption[]>([]);
 	selectedOptions = $state<InternalSelectOption[]>([]);
-	sharedIds = new Map<'content' | 'trigger', string>();
+	sharedIds = new SvelteMap<'content' | 'trigger', string>();
 	mounted = $state<boolean>(false);
 
 	HoveredOption = $derived.by<InternalSelectOption | undefined>(() => this.options[this.hoveredIndex] || undefined);

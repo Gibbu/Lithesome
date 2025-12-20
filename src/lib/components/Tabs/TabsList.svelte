@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
 	import { useTabsList } from './state.svelte.js';
 
 	import type { TabsListProps } from '$lib/types/index.js';
@@ -14,7 +14,10 @@
 		...props
 	}: TabsListProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useTabsList({ id });
+	let ctx = useTabsList({
+		id,
+		ref: stateValue(() => ref!)
+	});
 </script>
 
 <Element bind:ref {children} {custom} {ctx} {...props} />

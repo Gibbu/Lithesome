@@ -25,6 +25,7 @@
 
 	let ctx = createSliderRootContext({
 		id,
+		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
 			(v) => (value = v)

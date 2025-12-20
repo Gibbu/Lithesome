@@ -1,0 +1,14 @@
+---
+title: 'Modal'
+description: 'An overlaying window to take focus away from the current context.'
+---
+
+<script>
+	import {CodePreview, Info} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />
+
+<div style="padding-bottom: 2000px;"></div>

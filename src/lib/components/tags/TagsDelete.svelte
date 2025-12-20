@@ -18,6 +18,7 @@
 
 	let ctx = useTagsDelete({
 		id,
+		ref: stateValue(() => ref!),
 		value: stateValue(() => value)
 	});
 </script>

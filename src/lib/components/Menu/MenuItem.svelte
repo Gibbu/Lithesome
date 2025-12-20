@@ -19,6 +19,7 @@
 
 	let ctx = useMenuItem({
 		id,
+		ref: stateValue(() => ref!),
 		disabled: stateValue(() => disabled),
 		closeOnClick: stateValue(() => closeOnClick)
 	});

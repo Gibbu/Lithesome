@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { Element, parseId, stateValue } from '$lib/internals/index.js';
 	import { useHovercardTrigger } from './state.svelte.js';
 
 	import type { HovercardTriggerProps } from '$lib/types/index.js';
@@ -14,7 +14,10 @@
 		...props
 	}: HovercardTriggerProps<typeof ctx.props> = $props();
 
-	let ctx = useHovercardTrigger({ id });
+	let ctx = useHovercardTrigger({
+		id,
+		ref: stateValue(() => ref!)
+	});
 </script>
 
 <Element bind:ref {children} {custom} {ctx} as="button" {...props} />
