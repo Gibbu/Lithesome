@@ -53,3 +53,7 @@ html.dark .shiki span {
 		border-radius: 0 !important;
 	}
 }
+
+.site-value {
+	@apply absolute right-1 bottom-1 opacity-40;
+}

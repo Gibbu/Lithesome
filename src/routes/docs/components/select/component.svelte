@@ -53,6 +53,4 @@
 	</SelectContent>
 </Select>
 
-<span class="absolute right-1 bottom-1 opacity-20">
-	{value}
-</span>
+<span class="site-value">{value}</span>

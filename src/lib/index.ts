@@ -7,6 +7,7 @@ export * from './components/pin/index.js';
 export * from './components/tags/index.js';
 export * from './components/slider/index.js';
 export * from './components/select/index.js';
+export * from './components/radiogroup/index.js';
 
 export * from './attachments/outside.js';
 export * from './attachments/portal.js';

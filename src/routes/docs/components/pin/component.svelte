@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { Pin, PinInput } from '$lib/index.js';
 
+	let value = $state<string[]>([]);
+
 	const filled = (value: string[]) => {
 		console.log('Pin Input value:', value.join(''));
 	};
 </script>
 
-<Pin class="flex items-center gap-6" onFilled={filled}>
+<Pin bind:value class="flex items-center gap-6" onFilled={filled}>
 	{#each { length: 6 }}
 		<PinInput
 			class={({ filled }) => [
@@ -18,3 +20,5 @@
 		/>
 	{/each}
 </Pin>
+
+<span class="site-value">{value}</span>

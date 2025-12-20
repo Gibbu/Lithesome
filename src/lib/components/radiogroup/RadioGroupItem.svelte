@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { stateValue } from '$lib/internals/context.svelte.js';
 	import { Element, parseId } from '$lib/internals/index.js';
-	import { createAccordionItemContext } from './state.svelte.js';
+	import { useRadioGroupItem } from './state.svelte.js';
 
-	import type { AccordionItemProps } from '$lib/types/index.js';
+	import type { RadioGroupItemProps } from '$lib/types/index.js';
 
 	const uid = $props.id();
 
@@ -15,9 +15,9 @@
 		value,
 		disabled = $bindable(false),
 		...props
-	}: AccordionItemProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: RadioGroupItemProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = createAccordionItemContext({
+	let ctx = useRadioGroupItem({
 		id,
 		ref: stateValue(() => ref!),
 		value: stateValue(() => value),

@@ -45,6 +45,4 @@
 	</Tags>
 </div>
 
-<div class="absolute right-2 bottom-2 text-xs opacity-20">
-	{tags}
-</div>
+<span class="site-value">{tags}</span>

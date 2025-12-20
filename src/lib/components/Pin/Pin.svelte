@@ -23,6 +23,7 @@
 
 	let ctx = createPinRootContext({
 		id,
+		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
 			(v) => {
