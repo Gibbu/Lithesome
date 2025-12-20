@@ -1,6 +1,6 @@
 {
 	"name": "lithesome",
-	"version": "0.19.0",
+	"version": "0.19.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "bun --bun vite build && npm run prepack",
@@ -27,6 +27,9 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
+		},
+		"./types": {
+			"types": "./dist/types/index.d.ts"
 		}
 	},
 	"peerDependencies": {

@@ -9,3 +9,5 @@ export type * from './components/slider.ts';
 export type * from './components/select.ts';
 export type * from './components/radiogroup.ts';
 export type * from './components/modal.ts';
+
+export type { Placement, Side, Alignment } from '@floating-ui/dom';
