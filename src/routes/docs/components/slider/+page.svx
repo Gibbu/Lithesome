@@ -1,0 +1,25 @@
+---
+title: 'Slider'
+description: 'An input where the value is within a set range.'
+---
+
+<script>
+	import {CodePreview, Info} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />
+
+## Basic Example
+
+```svelte
+<script lang="ts">
+	import { Slider, SliderRange, SliderThumb } from 'lithesome';
+</script>
+
+<Slider>
+	<SliderRange />
+	<SliderThumb />
+</Slider>
+```

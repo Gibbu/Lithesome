@@ -1,0 +1,37 @@
+---
+title: 'Accordion'
+description: 'An interactive set of panels that hide and reveal sections.'
+---
+
+<script>
+	import {CodePreview} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />
+
+## Basic Example
+
+```svelte
+<script>
+	import { Accordion, AccordionButton, AccordionContent, AccordionHeading, AccordionItem } from 'lithesome';
+
+	const items = [
+		{ title: 'First item', content: 'First item content', value: 'first' },
+		{ title: 'Second item', content: 'Second item content', value: 'second' },
+		{ title: 'Third item', content: 'Third item content', value: 'third' }
+	];
+</script>
+
+<Accordion>
+	{#each items as { title, content, value }}
+		<AccordionItem {value}>
+			<AccordionHeading>
+				<AccordionButton>{title}</AccordionButton>
+			</AccordionHeading>
+			<AccordionContent>{content}</AccordionContent>
+		</AccordionItem>
+	{/each}
+</Accordion>
+```

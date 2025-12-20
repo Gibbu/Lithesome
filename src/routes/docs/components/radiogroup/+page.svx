@@ -1,0 +1,12 @@
+---
+title: 'Radio Group'
+description: 'Allow users to select a single choice from a list.'
+---
+
+<script>
+	import {CodePreview, Info} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />

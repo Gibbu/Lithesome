@@ -17,7 +17,7 @@ pnpm i -D lithesome
 
 ```svelte
 <script>
-	import { Menu, MenuTrigger, MenuContent, MenuItem } from 'lithesome';
+	import { Menu, MenuContent, MenuItem, MenuTrigger } from 'lithesome';
 </script>
 
 <Menu>
