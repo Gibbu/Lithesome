@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: TabsListProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: TabsListProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useTabsList({ id });
 </script>

@@ -6,9 +6,9 @@
 
 	const uid = $props.id();
 
-	let { ref = $bindable(), ...props }: SliderRangeProps<typeof ctx.state> = $props();
+	let { id = parseId(uid), ref = $bindable(), ...props }: SliderRangeProps<typeof ctx.state> = $props();
 
-	let ctx = useSliderRange({ id: parseId(uid) });
+	let ctx = useSliderRange({ id });
 </script>
 
 <Element bind:ref {ctx} {...props} />

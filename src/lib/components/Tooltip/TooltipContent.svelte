@@ -9,7 +9,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: TooltipContentProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: TooltipContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useTooltipContent();
 </script>

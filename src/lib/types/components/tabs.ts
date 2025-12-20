@@ -3,7 +3,7 @@ import type { Orientation, Props } from '$lib/internals/index.js';
 //
 // ~~ROOT
 //
-export interface TabsProps<A = any, S = any> extends Props<HTMLElement, A, S> {
+export interface TabsProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	value?: string;
 	orientation?: Orientation;
 }
@@ -11,12 +11,12 @@ export interface TabsProps<A = any, S = any> extends Props<HTMLElement, A, S> {
 //
 // ~~LIST
 //
-export interface TabsListProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface TabsListProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~~BUTTON
 //
-export interface TabsButtonProps<A = any, S = any> extends Props<HTMLButtonElement, A, S> {
+export interface TabsButtonProps<P = any, S = any> extends Props<HTMLButtonElement, P, S> {
 	value: string;
 	disabled?: boolean;
 }
@@ -24,6 +24,6 @@ export interface TabsButtonProps<A = any, S = any> extends Props<HTMLButtonEleme
 //
 // ~~CONTENT
 //
-export interface TabsContentProps<A = any, S = any> extends Props<HTMLElement, A, S> {
+export interface TabsContentProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	value: string;
 }

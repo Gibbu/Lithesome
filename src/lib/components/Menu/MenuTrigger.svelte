@@ -12,11 +12,9 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: MenuTriggerProps<typeof ctx.attrs> = $props();
+	}: MenuTriggerProps<typeof ctx.props> = $props();
 
-	let ctx = useMenuTrigger({
-		id
-	});
+	let ctx = useMenuTrigger({ id });
 </script>
 
 <Element bind:ref {children} {custom} {ctx} as="button" {...props} />

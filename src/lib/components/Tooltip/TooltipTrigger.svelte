@@ -4,7 +4,7 @@
 
 	import type { TooltipTriggerProps } from '$lib/types/index.js';
 
-	let { children, custom, ref = $bindable(), ...props }: TooltipTriggerProps<typeof ctx.attrs> = $props();
+	let { children, custom, ref = $bindable(), ...props }: TooltipTriggerProps<typeof ctx.props> = $props();
 
 	let ctx = useTooltipTrigger();
 </script>

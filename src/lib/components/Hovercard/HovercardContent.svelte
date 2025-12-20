@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: HovercardContentProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: HovercardContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useHovercardContent({ id });
 </script>

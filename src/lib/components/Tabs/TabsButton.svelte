@@ -14,7 +14,7 @@
 		disabled = $bindable(false),
 		ref = $bindable(),
 		...props
-	}: TabsButtonProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: TabsButtonProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useTabsButton({
 		id,

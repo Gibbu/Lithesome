@@ -13,22 +13,22 @@ export interface MenuProps<S = any> extends PropsNoRender<S> {
 //
 // ~TRIGGER
 //
-export interface MenuTriggerProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface MenuTriggerProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~CONTENT
 //
-export interface MenuContentProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface MenuContentProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~ARROW
 //
-export interface MenuArrowProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface MenuArrowProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~ITEM
 //
-export interface MenuItemProps<A = any, S = any> extends Props<HTMLElement, A, S> {
+export interface MenuItemProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	href?: string;
 	disabled?: boolean;
 	closeOnClick?: boolean;
@@ -37,7 +37,7 @@ export interface MenuItemProps<A = any, S = any> extends Props<HTMLElement, A, S
 //
 // ~SUB
 //
-export interface MenuSubProps<A = any, S = any> extends Props<HTMLElement, A, S> {
+export interface MenuSubProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	name: string;
 	visible?: boolean;
 	disabled?: boolean;
@@ -48,9 +48,9 @@ export interface MenuSubProps<A = any, S = any> extends Props<HTMLElement, A, S>
 //
 // ~SUB TRIGGER
 //
-export interface MenuSubTriggerProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface MenuSubTriggerProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~CONTENT
 //
-export interface MenuSubContentProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface MenuSubContentProps<P = any, S = any> extends Props<HTMLElement, P, S> {}

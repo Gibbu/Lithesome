@@ -73,6 +73,8 @@ Each `class` prop exposed by Lithesome components can be used as functions, givi
 
 In this example, we're returning an array. This is allowed since svelte ([5.16.0](https://github.com/sveltejs/svelte/blob/main/packages/svelte/CHANGELOG.md#5160)) under the hood uses [clsx](https://github.com/lukeed/clsx) to handle the logic of conversion for us.
 
+However if you're using tailwind, this won't remove any conflicting tailwind classes. You'll still need `tailwind-merge` for that function.
+
 ```svelte
 <SelectOption
 	value="bobross"
@@ -116,3 +118,5 @@ Or an object:
 ```
 
 Which ever is your cup of tea.
+
+If any Lithesome component uses `style` internally, those styles will take presidence as they're needed for position.

@@ -6,9 +6,9 @@
 
 	const uid = $props.id();
 
-	let { ref = $bindable(), ...props }: SliderThumbProps<typeof ctx.state> = $props();
+	let { id = parseId(uid), ref = $bindable(), ...props }: SliderThumbProps<typeof ctx.state> = $props();
 
-	let ctx = useSliderThumb({ id: parseId(uid) });
+	let ctx = useSliderThumb({ id });
 </script>
 
 <Element bind:ref {ctx} {...props} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Slider, SliderRange, SliderThumb } from '$lib/index.js';
+	import { Slider, SliderRange, SliderThumb, SliderValue } from '$lib/index.js';
 </script>
 
 <Slider
@@ -13,4 +13,5 @@
 			'left-(--slider-percentage) -translate-x-1/2'
 		]}
 	/>
+	<SliderValue />
 </Slider>

@@ -1,9 +1,9 @@
-import type { Props, PropsNoCildren } from '$lib/internals/index.js';
+import type { Props, PropsNoChildren } from '$lib/internals/index.js';
 
 //
 // ~ROOT
 //
-export interface SliderProps<A = any, S = any> extends Props<HTMLElement, A, S> {
+export interface SliderProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	value?: number;
 	min?: number;
 	max?: number;
@@ -16,13 +16,13 @@ export interface SliderProps<A = any, S = any> extends Props<HTMLElement, A, S> 
 //
 // ~THUMB
 //
-export interface SliderThumbProps<S = any> extends PropsNoCildren<HTMLElement, S> {}
+export interface SliderThumbProps<S = any> extends PropsNoChildren<HTMLElement, S> {}
 
 //
 // ~RANGE
 //
-export interface SliderRangeProps<S = any> extends PropsNoCildren<HTMLElement, S> {}
+export interface SliderRangeProps<S = any> extends PropsNoChildren<HTMLElement, S> {}
 //
 // ~VALUE
 //
-export interface SliderValueProps<S = any> extends PropsNoCildren<HTMLElement, S> {}
+export interface SliderValueProps<S = any> extends PropsNoChildren<HTMLElement, S> {}

@@ -4,7 +4,7 @@
 
 	import type { TooltipArrowProps } from '$lib/types/index.js';
 
-	let { children, custom, ref = $bindable(), ...props }: TooltipArrowProps<typeof ctx.attrs> = $props();
+	let { children, custom, ref = $bindable(), ...props }: TooltipArrowProps<typeof ctx.props> = $props();
 
 	let ctx = useTooltipArrow();
 </script>

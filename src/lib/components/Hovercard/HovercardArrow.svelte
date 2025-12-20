@@ -4,7 +4,7 @@
 
 	import type { HovercardArrowProps } from '$lib/types/index.js';
 
-	let { children, custom, ref = $bindable(), ...props }: HovercardArrowProps<typeof ctx.attrs> = $props();
+	let { children, custom, ref = $bindable(), ...props }: HovercardArrowProps<typeof ctx.props> = $props();
 
 	let ctx = useHovercardArrow();
 </script>

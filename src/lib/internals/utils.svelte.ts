@@ -29,6 +29,10 @@ export const calculateIndex = (action: CalcIndexAction, items: any[], index: num
 	return index;
 };
 
+/**
+ * Transforms Svelte component IDs.
+ * @param id The Svelte component ID.
+ */
 export const parseId = (id: string) => {
 	return `lithe-${id}`;
 };

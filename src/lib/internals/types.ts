@@ -4,7 +4,7 @@ import type { Snippet } from 'svelte';
 import type { ClassValue } from 'svelte/elements';
 
 type StyleValue = string | CSSStyleObject;
-type OmitProps = 'children' | 'custom' | 'class' | 'style' | 'ref' | 'id';
+type OmitProps = 'children' | 'custom' | 'class' | 'style' | 'id';
 
 export type CSSStyleObject = {
 	[K in keyof CSSStyleDeclaration]?: string | number;
@@ -68,7 +68,7 @@ export interface FloatingConfig {
 }
 
 /** Used for when render a self-closing element, such as an input. */
-export interface PropsNoCildren<E extends HTMLElement, S> {
+export interface PropsNoChildren<E extends HTMLElement, S> {
 	class?: ClassProp<S>;
 	style?: StyleProp<S>;
 	ref?: E;
@@ -76,13 +76,13 @@ export interface PropsNoCildren<E extends HTMLElement, S> {
 }
 
 /** Default, used for when a component renders an element with children */
-export interface Props<E extends HTMLElement, A, S> extends PropsNoCildren<E, S> {
+export interface Props<E extends HTMLElement, P, S> extends PropsNoChildren<E, S> {
 	children?: Snippet<[S extends Record<string, any> ? S : never]>;
-	custom?: Snippet<[S extends Record<string, any> ? { attrs: A; state: S } : { attrs: A }]>;
+	custom?: Snippet<[S extends Record<string, any> ? { props: P; state: S } : { props: P }]>;
 }
 
 /** Used if the element does render children, but does not allow for the custom snippet. */
-export type PropsNoCustom<E extends HTMLElement, A, S> = Omit<Props<E, A, S>, 'custom'>;
+export type PropsNoCustom<E extends HTMLElement, P, S> = Omit<Props<E, P, S>, 'custom'>;
 
 /** Used if the element does render children, but does not wrap said children in an element. */
 export interface PropsNoRender<S> {

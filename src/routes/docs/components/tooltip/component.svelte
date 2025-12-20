@@ -12,17 +12,17 @@
 	portalTarget="#layers"
 >
 	<TooltipTrigger>
-		{#snippet custom({ attrs })}
-			<Button variant="primary" {...attrs}>Hover me</Button>
+		{#snippet custom({ props })}
+			<Button variant="primary" {...props}>Hover me</Button>
 		{/snippet}
 	</TooltipTrigger>
 
 	<TooltipContent>
-		{#snippet custom({ attrs, state })}
+		{#snippet custom({ props, state })}
 			{#if state.visible}
 				<div
 					transition:fly={{ duration: 150, y: 5 }}
-					{...attrs}
+					{...props}
 					class="rounded-md bg-white px-3 py-1.5 text-sm text-black shadow-md dark:bg-zinc-800 dark:text-white"
 				>
 					<TooltipArrow class="size-3 rotate-45 bg-white dark:bg-zinc-800" />

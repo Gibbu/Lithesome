@@ -30,9 +30,9 @@
 				</AccordionButton>
 			</AccordionHeading>
 			<AccordionContent>
-				{#snippet custom({ attrs, state })}
+				{#snippet custom({ props, state })}
 					{#if state.active}
-						<div transition:slide={{ duration: 150 }} {...attrs} class="px-4 pb-4 text-sm">{content}</div>
+						<div transition:slide={{ duration: 150 }} {...props} class="px-4 pb-4 text-sm">{content}</div>
 					{/if}
 				{/snippet}
 			</AccordionContent>

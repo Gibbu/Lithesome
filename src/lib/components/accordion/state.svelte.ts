@@ -1,4 +1,4 @@
-import { createAttachment } from '$lib/internals/attachment.js';
+import { attach } from '$lib/internals/attachment.js';
 import { buildContext } from '$lib/internals/context.svelte.js';
 import { addEvents, createAttributes } from '$lib/internals/utils.svelte.js';
 
@@ -43,7 +43,7 @@ export class AccordionRoot {
 		return typeof this.$value.val === 'string' ? this.$value.val === value : this.$value.val.includes(value);
 	};
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.#id,
 		[attrs.root]: ''
 	}));
@@ -78,7 +78,7 @@ class AccordionItem {
 		this.sharedIds.set('item', this.#id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.#id,
 		[attrs.item]: '',
 		'data-disabled': this.$disabled.val,
@@ -111,7 +111,7 @@ class AccordionHeading {
 		this.#id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.#id,
 		[attrs.heading]: '',
 		role: 'heading',
@@ -142,7 +142,7 @@ class AccordionButton {
 		this._item.sharedIds.set('button', this.#id);
 	}
 
-	attrs = $derived.by(
+	props = $derived.by(
 		() =>
 			({
 				id: this.#id,
@@ -153,7 +153,7 @@ class AccordionButton {
 				tabindex: this._item.$disabled.val ? -1 : 0,
 				'data-accordionbutton': '',
 				'data-active': this._item.Active || undefined,
-				...createAttachment((node) =>
+				...attach((node) =>
 					addEvents(node, {
 						click: () => {
 							if (this._item.$disabled.val) return;
@@ -187,7 +187,7 @@ class AccordionContent {
 		this._item.sharedIds.set('content', this.#id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.#id,
 		[attrs.content]: '',
 		'data-active': this._item.Active

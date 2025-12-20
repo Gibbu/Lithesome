@@ -3,9 +3,9 @@ import { outside } from '$lib/attachments/outside.js';
 import { portal } from '$lib/attachments/portal.js';
 import {
 	addEvents,
+	attach,
 	buildContext,
 	calculateIndex,
-	createAttachment,
 	createAttributes,
 	floating,
 	Floating,
@@ -154,13 +154,13 @@ class MenuTrigger {
 		this._root.sharedIds.set('trigger', this.id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		role: 'button',
 		'aria-haspopup': 'menu',
 		'aria-expanded': this._root.$visible.val,
 		'aria-controls': this._root.$visible.val ? this._root.sharedIds.get('content') : undefined,
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._root.trigger = node;
 
 			return addEvents(node, {
@@ -231,10 +231,10 @@ class MenuArrow {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.arrow]: '',
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._parent.arrow = node;
 		})
 	}));
@@ -260,10 +260,10 @@ class MenuContent {
 		this._root.sharedIds.set('content', this.id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.content]: '',
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._root.content = node;
 
 			const outsideCleanUp = outside(this._root.close, [
@@ -311,13 +311,13 @@ class MenuItem {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		role: 'menuitem',
 		[attrs.item]: '',
 		'aria-disabled': this.$disabled.val,
 		'data-active': this.IsActive ? '' : undefined,
-		...createAttachment((node) => {
+		...attach((node) => {
 			if (this.$disabled.val) return;
 
 			this._root.registerItem(this.id, this._sub?.$name.val || 'root');
@@ -406,7 +406,7 @@ class MenuSubTrigger {
 		this._sub.sharedIds.set('trigger', this.id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		role: 'menuitem',
 		'aria-haspopup': 'menu',
@@ -415,7 +415,7 @@ class MenuSubTrigger {
 		[attrs['sub-trigger']]: '',
 		'data-active': this.IsActive ? '' : undefined,
 		'data-opened': this.IsOpened ? '' : undefined,
-		...createAttachment((node) => {
+		...attach((node) => {
 			if (this._sub.$disabled.val) return;
 
 			this._sub.trigger = node;
@@ -467,10 +467,10 @@ class MenuSubContent {
 		this._sub.sharedIds.set('content', this.id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs['sub-content']]: '',
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._sub.content = node;
 
 			const floatingCleanUp = floating(this._sub.trigger, this._sub.arrow, this._sub.$floatingConfig.val)(node);

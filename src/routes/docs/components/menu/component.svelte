@@ -78,9 +78,9 @@
 					<ChevronRightIcon class="size-4" />
 				</MenuSubTrigger>
 				<MenuSubContent>
-					{#snippet custom({ attrs, state })}
+					{#snippet custom({ props, state })}
 						{#if state.visible}
-							<Container {...attrs} bodyClass="p-0 py-3" containerClass="w-[200px] z-10">
+							<Container {...props} bodyClass="p-0 py-3" containerClass="w-[200px] z-10">
 								{#if item.children}
 									{@render menuContents(item.children)}
 								{/if}
@@ -107,14 +107,14 @@
 
 <Menu>
 	<MenuTrigger>
-		{#snippet custom({ attrs })}
-			<Button variant="secondary" {...attrs}>Actions</Button>
+		{#snippet custom({ props })}
+			<Button variant="secondary" {...props}>Actions</Button>
 		{/snippet}
 	</MenuTrigger>
 	<MenuContent>
-		{#snippet custom({ attrs, state })}
+		{#snippet custom({ props, state })}
 			{#if state.visible}
-				<Container {...attrs} bodyClass="p-0 py-3" containerClass="w-[200px]">
+				<Container {...props} bodyClass="p-0 py-3" containerClass="w-[200px]">
 					{@render menuContents(items)}
 				</Container>
 			{/if}

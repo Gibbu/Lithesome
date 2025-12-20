@@ -12,11 +12,9 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: MenuContentProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: MenuContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useMenuContent({
-		id
-	});
+	let ctx = useMenuContent({ id });
 </script>
 
 <Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />

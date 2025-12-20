@@ -1,8 +1,8 @@
 import {
 	addEvents,
+	attach,
 	buildContext,
 	calculateIndex,
-	createAttachment,
 	createAttributes,
 	KEYS,
 	log,
@@ -53,7 +53,7 @@ class TabsRoot {
 		(document.querySelector(`${attrs.button}[data-value="${this.ActiveTab}"]`) as HTMLButtonElement | null)?.focus();
 	};
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.root]: '',
 		'data-orientation': this.$orientation.val,
@@ -79,7 +79,7 @@ class TabsList {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.list]: '',
 		role: 'tablist',
@@ -114,7 +114,7 @@ class TabsButton {
 		this._root.tabButtonToPanel.set('button-' + this.$value.val, this.id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.button]: '',
 		type: 'button',
@@ -122,7 +122,7 @@ class TabsButton {
 		'data-active': this.IsActive ? '' : undefined,
 		'data-value': this.$value.val,
 		'aria-controls': this._root.tabButtonToPanel.get('panel-' + this.$value.val),
-		...createAttachment((node) =>
+		...attach((node) =>
 			addEvents(node, {
 				click: () => {
 					if (this.$disabled.val) return;
@@ -180,7 +180,7 @@ class TabsContent {
 		this._root.tabButtonToPanel.set('panel-' + this.$value.val, this.id);
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.content]: '',
 		role: 'tabpanel',

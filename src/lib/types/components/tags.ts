@@ -1,9 +1,9 @@
-import type { Props, PropsNoCildren } from '$lib/internals/index.js';
+import type { Props, PropsNoChildren } from '$lib/internals/index.js';
 
 //
 // ~ROOT
 //
-export interface TagsProps<A = any, S = any> extends Props<HTMLElement, A, S> {
+export interface TagsProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	value: string[];
 	disabled?: boolean;
 	max?: number;
@@ -14,18 +14,18 @@ export interface TagsProps<A = any, S = any> extends Props<HTMLElement, A, S> {
 //
 // ~ITEM
 //
-export interface TagsItemProps<A = any, S = any> extends Props<HTMLElement, A, S> {
+export interface TagsItemProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	value: string;
 }
 
 //
 // ~DELETE
 //
-export interface TagsDeleteProps<A = any, S = any> extends Props<HTMLButtonElement, A, S> {
+export interface TagsDeleteProps<P = any, S = any> extends Props<HTMLButtonElement, P, S> {
 	value: string;
 }
 
 //
 // ~INPUT
 //
-export interface TagsInputProps<S = any> extends PropsNoCildren<HTMLInputElement, S> {}
+export interface TagsInputProps<S = any> extends PropsNoChildren<HTMLInputElement, S> {}

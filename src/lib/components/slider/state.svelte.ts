@@ -1,9 +1,9 @@
 import {
 	addEvents,
 	ALL_ARROW_KEYS,
+	attach,
 	buildContext,
 	clamp,
-	createAttachment,
 	createAttributes,
 	KEYS
 } from '$lib/internals/index.js';
@@ -102,7 +102,7 @@ class SliderRoot {
 		this.$value.val = clamp(this.$min.val, (this.$value.val -= this.$step.val), this.$max.val);
 	};
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		tabindex: -1,
 		role: 'none',
@@ -111,7 +111,7 @@ class SliderRoot {
 		'data-percentage': this.Percentage,
 		'data-reversed': this.$reverse.val || undefined,
 		'data-orientation': this.$orientation.val,
-		...createAttachment((node) => {
+		...attach((node) => {
 			this.trackElement = node;
 
 			return addEvents(node, {
@@ -156,7 +156,7 @@ class SliderThumb {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		role: 'slider',
 		tabindex: 0,
@@ -164,7 +164,7 @@ class SliderThumb {
 		'aria-valuemin': this._root.$min.val,
 		'aria-valuemax': this._root.$max.val,
 		'data-sliderthumb': '',
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._root.thumbElement = node;
 
 			return addEvents(node, {
@@ -212,7 +212,7 @@ class SliderRange {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		tabindex: -1,
 		role: 'none',
@@ -221,7 +221,7 @@ class SliderRange {
 		'data-percentage': this._root.Percentage,
 		'data-reversed': this._root.$reverse.val || undefined,
 		'data-orientation': this._root.$orientation.val,
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._root.thumbElement = node;
 		})
 	}));
@@ -237,14 +237,34 @@ class SliderRange {
 //
 type ValueProps = GetInternalProps<SliderValueProps>;
 class SliderValue {
+	$id: string;
+
 	_root: SliderRoot;
 
-	id: string;
-
 	constructor(root: SliderRoot, props: ValueProps) {
+		this.$id = props.id;
 		this._root = root;
-		this.id = props.id;
 	}
+
+	props = $derived.by(
+		() =>
+			({
+				id: this.$id,
+				[attrs.value]: '',
+				'aria-hidden': 'false',
+				min: this._root.$min.val,
+				max: this._root.$max.val,
+				step: this._root.$step.val,
+				value: this._root.$value.val
+			}) as const
+	);
+	state = $derived.by(() => ({
+		value: this._root.$value.val,
+		percentage: this._root.Percentage
+	}));
+	styles = $derived.by(() => ({
+		display: 'none'
+	}));
 }
 
 //

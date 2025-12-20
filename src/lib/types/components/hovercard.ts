@@ -14,14 +14,14 @@ export interface HovercardProps<S = any> extends PropsNoRender<S> {
 //
 // ~~TRIGGER
 //
-export interface HovercardTriggerProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface HovercardTriggerProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~~CONTENT
 //
-export interface HovercardContentProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface HovercardContentProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~~ARROW
 //
-export interface HovercardArrowProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface HovercardArrowProps<P = any, S = any> extends Props<HTMLElement, P, S> {}

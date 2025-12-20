@@ -14,7 +14,7 @@
 		ref = $bindable(),
 		value,
 		...props
-	}: TagsDeleteProps<typeof ctx.attrs> = $props();
+	}: TagsDeleteProps<typeof ctx.props> = $props();
 
 	let ctx = useTagsDelete({
 		id,

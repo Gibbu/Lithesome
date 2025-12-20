@@ -6,22 +6,22 @@
 
 <Hovercard floatingConfig={{ offset: 25, placement: 'top' }}>
 	<HovercardTrigger>
-		{#snippet custom({ attrs })}
+		{#snippet custom({ props })}
 			<a
 				href="https://github.com/Gibbu"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="block size-12 overflow-hidden rounded-full border-2 border-black shadow-md shadow-black/30 dark:border-white"
-				{...attrs}
+				{...props}
 			>
 				<img src="https://github.com/Gibbu.png" alt="GitHub avatar" class="w-full" />
 			</a>
 		{/snippet}
 	</HovercardTrigger>
 	<HovercardContent>
-		{#snippet custom({ attrs, state })}
+		{#snippet custom({ props, state })}
 			{#if state.visible}
-				<Container absolute {...attrs} containerClass="w-[320px] origin-top translate-y-3 shadow-xl">
+				<Container absolute {...props} containerClass="w-[320px] origin-top translate-y-3 shadow-xl">
 					<HovercardArrow
 						class={[
 							'size-3 rotate-45 border-r border-b',

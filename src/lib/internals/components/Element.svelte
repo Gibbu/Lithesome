@@ -55,18 +55,18 @@
 
 {#snippet element()}
 	{#if custom}
-		{@render custom({ attrs: { ...ctx.attrs, ...ctx.styles }, state: ctx.state })}
+		{@render custom({ props: { ...ctx.props, ...ctx.styles }, state: ctx.state })}
 	{:else if selfClosing.includes(as)}
-		<svelte:element this={as} bind:this={ref} {...ctx.attrs} {...props} class={classes} style={styles} />
+		<svelte:element this={as} bind:this={ref} {...ctx.props} {...props} class={classes} style={styles} />
 	{:else}
-		<svelte:element this={as} bind:this={ref} {...ctx.attrs} {...props} class={classes} style={styles}>
+		<svelte:element this={as} bind:this={ref} {...ctx.props} {...props} class={classes} style={styles}>
 			{@render children?.(ctx.state)}
 		</svelte:element>
 	{/if}
 {/snippet}
 
 {#if custom}
-	{@render custom({ attrs: ctx.attrs, state: ctx.state })}
+	{@render custom({ props: ctx.props, state: ctx.state })}
 {:else if typeof visible === 'boolean'}
 	{#if visible}
 		{@render element()}

@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: AccordionContentProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: AccordionContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useAccordionContent({ id });
 </script>

@@ -1,11 +1,4 @@
-import {
-	addEvents,
-	buildContext,
-	createAttachment,
-	createAttributes,
-	KEYS,
-	PREVENT_KEYS
-} from '$lib/internals/index.js';
+import { addEvents, attach, buildContext, createAttributes, KEYS, PREVENT_KEYS } from '$lib/internals/index.js';
 
 import type { GetInternalProps } from '$lib/internals/index.js';
 import type { TagsDeleteProps, TagsInputProps, TagsItemProps, TagsProps } from '$lib/types/components/tags.js';
@@ -69,11 +62,11 @@ class TagsRoot {
 		}
 	};
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.root]: '',
 		'data-activeTag': this.SelectedTag || undefined,
-		...createAttachment((node) =>
+		...attach((node) =>
 			addEvents(node, {
 				click: (e) => {
 					if (e.target === e.currentTarget) {
@@ -104,12 +97,12 @@ class TagsInput {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.input]: '',
 		type: 'text',
 		'data-invalid': this._root.invalid ? '' : undefined,
-		...createAttachment<HTMLInputElement>((node) => {
+		...attach<HTMLInputElement>((node) => {
 			this._root.input = node;
 
 			return addEvents(node, {
@@ -189,7 +182,7 @@ class TagsItem {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.item]: '',
 		'data-active': this.Active ? '' : undefined
@@ -217,12 +210,12 @@ class TagsDelete {
 		this.id = props.id;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.delete]: '',
 		type: 'button',
 		tabIndex: -1,
-		...createAttachment((node) =>
+		...attach((node) =>
 			addEvents(node, {
 				click: () => {
 					if (this._root.$disabled.val) return;

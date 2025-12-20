@@ -1,8 +1,8 @@
 import { portal } from '$lib/index.js';
 import {
 	addEvents,
+	attach,
 	buildContext,
-	createAttachment,
 	createAttributes,
 	floating,
 	Floating,
@@ -53,7 +53,7 @@ class TooltipRoot extends Floating {
 		}, this.ParsedDelay.out);
 	};
 
-	attrs = {};
+	props = {};
 
 	state = $derived.by(() => ({
 		visible: this.$visible.val
@@ -70,11 +70,11 @@ class TooltipTrigger {
 		this._root = root;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this._root.sharedIds.get('trigger'),
 		[attrs.trigger]: '',
 		'aria-describedby': this._root.sharedIds.get('content'),
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._root.trigger = node;
 
 			return addEvents(node, {
@@ -113,10 +113,10 @@ class TooltipContent {
 		this._root = root;
 	}
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this._root.sharedIds.get('content'),
 		[attrs.content]: '',
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._root.content = node;
 
 			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$floatingConfig.val)(node);
@@ -144,9 +144,9 @@ class TooltipArrow {
 		this._root = root;
 	}
 
-	attrs = {
+	props = {
 		[attrs.arrow]: '',
-		...createAttachment((node) => {
+		...attach((node) => {
 			this._root.arrow = node;
 		})
 	};

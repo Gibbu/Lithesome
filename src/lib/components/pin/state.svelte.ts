@@ -1,5 +1,5 @@
 import { tick } from 'svelte';
-import { createAttachment } from '$lib/internals/attachment.js';
+import { attach } from '$lib/internals/attachment.js';
 import { buildContext } from '$lib/internals/index.js';
 import { ALL_ARROW_KEYS, KEYS } from '$lib/internals/keyboard.js';
 import { addEvents, createAttributes } from '$lib/internals/utils.svelte.js';
@@ -43,7 +43,7 @@ class PinRoot {
 		if (!this.inputs.includes(id)) this.inputs.push(id);
 	};
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		[attrs.root]: '',
 		'aria-disabled': this.$disabled.val || undefined,
@@ -86,14 +86,14 @@ class PinInput {
 		if (target) (document.querySelector(`${selectors.input}#${target}`) as HTMLInputElement)?.focus();
 	};
 
-	attrs = $derived.by(() => ({
+	props = $derived.by(() => ({
 		id: this.id,
 		disabled: this._root.$disabled.val,
 		placeholder: this.focused ? '' : this._root.$placeholder.val,
 		[attrs.input]: '',
 		'data-filled': this._root.Filled,
 		'data-focused': this.focused || undefined,
-		...createAttachment((node) =>
+		...attach((node) =>
 			addEvents(node, {
 				input: async (event) => {
 					if (this._root.$disabled.val) return;

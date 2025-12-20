@@ -14,14 +14,14 @@ export interface TooltipProps<S = any> extends PropsNoRender<S> {
 //
 // ~~TRIGGER
 //
-export interface TooltipTriggerProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface TooltipTriggerProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~~CONTENT
 //
-export interface TooltipContentProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface TooltipContentProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
 
 //
 // ~~ARROW
 //
-export interface TooltipArrowProps<A = any, S = any> extends Props<HTMLElement, A, S> {}
+export interface TooltipArrowProps<P = any, S = any> extends Props<HTMLElement, P, S> {}

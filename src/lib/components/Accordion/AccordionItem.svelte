@@ -15,7 +15,7 @@
 		value,
 		disabled = $bindable(false),
 		...props
-	}: AccordionItemProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: AccordionItemProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = createAccordionItemContext({
 		id,

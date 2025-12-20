@@ -15,7 +15,7 @@
 		value = $bindable(''),
 		onChange,
 		...props
-	}: AccordionProps<typeof ctx.attrs, typeof ctx.state> = $props();
+	}: AccordionProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = createAccordionRootContext({
 		id,

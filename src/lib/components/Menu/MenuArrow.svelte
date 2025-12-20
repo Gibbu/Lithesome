@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), children, custom, ref = $bindable(), ...props }: MenuArrowProps<typeof ctx.attrs> = $props();
+	let { id = parseId(uid), children, custom, ref = $bindable(), ...props }: MenuArrowProps<typeof ctx.props> = $props();
 
 	let ctx = useMenuArrow({ id });
 </script>

@@ -1,0 +1,12 @@
+---
+title: 'Select'
+description: 'Allow users to chooe from a list of options.'
+---
+
+<script>
+	import {CodePreview, Info} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />
