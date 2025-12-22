@@ -4,14 +4,23 @@
 	const items = [
 		{ value: 'aang', label: 'Avatar Aang' },
 		{ value: 'zuko', label: 'Firelord Zuko' },
-		{ value: 'toph', label: 'Greatest Earthbender' }
+		{ value: 'toph', label: 'Greatest Earthbender' },
+		{ value: 'azula', label: 'Firebending Prodigy', disabled: true },
+		{ value: 'iroh', label: 'Uncle Iroh' }
 	];
 	let value = $state<string>('zuko');
 </script>
 
 <RadioGroup bind:value class="space-y-4">
-	{#each items as { value, label }}
-		<RadioGroupItem {value} class="group flex cursor-pointer items-center gap-2">
+	{#each items as { value, label, disabled }}
+		<RadioGroupItem
+			{value}
+			{disabled}
+			class={({ disabled }) => [
+				'group flex cursor-pointer items-center gap-2',
+				disabled && 'pointer-events-none opacity-40'
+			]}
+		>
 			{#snippet children({ selected })}
 				<div
 					class={[
@@ -25,7 +34,7 @@
 						<div class="m-auto size-4 rounded-full bg-teal-500"></div>
 					{/if}
 				</div>
-				<span>
+				<span class="select-none">
 					{label}
 				</span>
 			{/snippet}

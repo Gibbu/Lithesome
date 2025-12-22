@@ -60,8 +60,6 @@ class HovercardRoot extends Floating {
 		}, this.ParsedDelay.out);
 	};
 
-	props = {};
-
 	state = $derived.by(() => ({
 		visible: this.$visible.val
 	}));
@@ -72,17 +70,17 @@ class HovercardRoot extends Floating {
 //
 type TriggerProps = GetInternalProps<HovercardTriggerProps>;
 class HovercardTrigger {
-	#id: string;
+	$id: TriggerProps['id'];
 
 	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot, props: TriggerProps) {
 		this._root = root;
-		this.#id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.#id,
+		id: this.$id,
 		[attrs.trigger]: '',
 		'aria-describedby': this._root.sharedIds.get('content'),
 		...attach((node) => {
@@ -119,19 +117,19 @@ class HovercardTrigger {
 //
 type ContentProps = GetInternalProps<HovercardContentProps>;
 class HovercardContent {
-	#id: string;
+	$id: ContentProps['id'];
 
 	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot, props: ContentProps) {
 		this._root = root;
-		this.#id = props.id;
+		this.$id = props.id;
 
-		this._root.sharedIds.set('trigger', this.#id);
+		this._root.sharedIds.set('trigger', this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.#id,
+		id: this.$id,
 		[attrs.content]: '',
 		...attach((node) => {
 			this._root.content = node;

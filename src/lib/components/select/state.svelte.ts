@@ -11,7 +11,7 @@ import {
 	floating,
 	Floating,
 	KEYS,
-	removeDisabledElements
+	visuallyHidden
 } from '$lib/internals/index.js';
 
 import type { CalcIndexAction, GetInternalProps, JsonValue } from '$lib/internals/index.js';
@@ -36,13 +36,13 @@ interface InternalSelectOption {
 //
 type RootProps = GetInternalProps<SelectProps>;
 class SelectRoot extends Floating {
+	$id: RootProps['id'];
 	$value: RootProps['value'];
 	$visible: RootProps['visible'];
 	$multiple: RootProps['multiple'];
 	$disabled: RootProps['disabled'];
 	$floatingConfig: RootProps['floatingConfig'];
 	$portalTarget: RootProps['portalTarget'];
-	$id: RootProps['id'];
 
 	hoveredIndex = $state<number>(-1);
 	options = $state<InternalSelectOption[]>([]);
@@ -306,20 +306,7 @@ class SelectContent {
 	}));
 
 	styles = $derived.by(() => {
-		if (!this._root.mounted)
-			return {
-				position: 'absolute',
-				width: '1px',
-				height: '1px',
-				padding: '0',
-				margin: '-1px',
-				overflow: 'hidden',
-				clipPath: 'inset(50%)',
-				whiteSpace: 'nowrap',
-				borderWidth: '0',
-				userSelect: 'none',
-				pointerEvents: 'none'
-			};
+		if (!this._root.mounted) return visuallyHidden;
 	});
 }
 
@@ -392,8 +379,6 @@ class SelectOption {
 		role: 'option',
 		tabindex: 0,
 		'aria-selected': this.Selected,
-		'data-selected': this.Selected,
-		'data-hovered': this.Hovered,
 		'data-value': this.$value.val,
 		'data-label': this.$label.val,
 		...attach((node) =>

@@ -5,7 +5,7 @@ import type { CalcIndexAction } from '$lib/internals/index.js';
 import type { GetInternalProps } from '$lib/internals/types.js';
 import type { RadioGroupItemProps, RadioGroupProps } from '$lib/types/index.js';
 
-const { attrs, selectors } = createAttributes('radiogroup', ['root', 'item']);
+const { attrs } = createAttributes('radiogroup', ['root', 'item']);
 
 interface InternalRadioGroupItem {
 	id: string;
@@ -84,7 +84,7 @@ class RadioGroupItem {
 		this.$value = props.value;
 		this.$disabled = props.disabled;
 
-		this._root.items.push({ id: this.$id, value: this.$value.val });
+		if (!this.$disabled.val) this._root.items.push({ id: this.$id, value: this.$value.val });
 	}
 
 	props = $derived.by(() => ({
@@ -92,12 +92,8 @@ class RadioGroupItem {
 		[attrs.item]: '',
 		type: 'button',
 		role: 'radio',
-		disabled: this.$disabled.val,
 		'aria-checked': this.Selected,
 		tabindex: !this._root.SelectedItem && this._root.items[0] ? 0 : this.Selected ? 0 : -1,
-		'data-radiogroupitem': '',
-		'data-value': this.$value.val,
-		'data-checked': this.Selected || undefined,
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
@@ -118,8 +114,10 @@ class RadioGroupItem {
 			})
 		)
 	}));
+
 	state = $derived.by(() => ({
-		selected: this.Selected
+		selected: this.Selected,
+		disabled: this.$disabled.val
 	}));
 }
 

@@ -15,12 +15,12 @@ const { attrs, selectors } = createAttributes('pin', ['root', 'input', 'value'])
 //
 type RootProps = GetInternalProps<PinProps>;
 class PinRoot {
+	$id: string;
 	$value: RootProps['value'];
 	$disabled: RootProps['disabled'];
 	$placeholder: RootProps['placeholder'];
 	$type: RootProps['type'];
 
-	id: string;
 	inputs = $state<string[]>([]);
 
 	Filled = $derived.by(
@@ -32,7 +32,7 @@ class PinRoot {
 		this.$disabled = props.disabled;
 		this.$placeholder = props.placeholder;
 		this.$type = props.type;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	setValue = (index: number, value: string) => {
@@ -44,10 +44,9 @@ class PinRoot {
 	};
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.root]: '',
-		'aria-disabled': this.$disabled.val || undefined,
-		'data-filled': this.Filled
+		'aria-disabled': this.$disabled.val || undefined
 	}));
 
 	state = $derived.by(() => ({
@@ -60,18 +59,20 @@ class PinRoot {
 //
 type InputProps = GetInternalProps<PinInputProps>;
 class PinInput {
+	$id: string;
+
 	_root: PinRoot;
-	id: string;
+
 	focused = $state<boolean>(false);
 
-	Index = $derived.by(() => this._root.inputs.indexOf(this.id));
+	Index = $derived.by(() => this._root.inputs.indexOf(this.$id));
 	Value = $derived.by(() => this._root.$value.val[this.Index] || '');
 
 	constructor(root: PinRoot, props: InputProps) {
-		this.id = props.id;
+		this.$id = props.id;
 		this._root = root;
 
-		this._root.registerInput(this.id);
+		this._root.registerInput(this.$id);
 	}
 
 	moveFocus = (action: CalcIndexAction | number) => {
@@ -87,12 +88,10 @@ class PinInput {
 	};
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		disabled: this._root.$disabled.val,
 		placeholder: this.focused ? '' : this._root.$placeholder.val,
 		[attrs.input]: '',
-		'data-filled': this._root.Filled,
-		'data-focused': this.focused || undefined,
 		...attach((node) =>
 			addEvents(node, {
 				input: async (event) => {
@@ -126,7 +125,7 @@ class PinInput {
 					if (key === KEYS.arrowRight) this.moveFocus('next');
 					if (key === KEYS.delete) {
 						this._root.setValue(this.Index, '');
-						const target = document.querySelector(`${selectors.input}#${this.id}`) as HTMLInputElement | null;
+						const target = document.querySelector(`${selectors.input}#${this.$id}`) as HTMLInputElement | null;
 						if (target) target.value = '';
 					}
 					if (key === KEYS.backspace) {
@@ -134,7 +133,7 @@ class PinInput {
 
 						if (!selection && this.Value.length) {
 							this._root.setValue(this.Index, '');
-							const target = document.querySelector(`${selectors.input}#${this.id}`) as HTMLInputElement | null;
+							const target = document.querySelector(`${selectors.input}#${this.$id}`) as HTMLInputElement | null;
 							if (target) target.value = '';
 							return;
 						}
@@ -178,7 +177,8 @@ class PinInput {
 
 	state = $derived.by(() => ({
 		filled: this._root.Filled,
-		disabled: this._root.$disabled.val
+		disabled: this._root.$disabled.val,
+		focused: this.focused
 	}));
 }
 

@@ -19,15 +19,14 @@ const { attrs } = createAttributes('accordion', ['root', 'item', 'heading', 'but
 //
 type RootProps = GetInternalProps<AccordionProps>;
 export class AccordionRoot {
+	$id: string;
 	$value: RootProps['value'];
-
-	#id: string;
 
 	items = $state<string[]>([]);
 
 	constructor(props: RootProps) {
 		this.$value = props.value;
-		this.#id = props.id;
+		this.$id = props.id;
 	}
 
 	toggleActiveItem = (itemId: string) => {
@@ -45,7 +44,7 @@ export class AccordionRoot {
 	};
 
 	props = $derived.by(() => ({
-		id: this.#id,
+		id: this.$id,
 		[attrs.root]: ''
 	}));
 
@@ -59,10 +58,9 @@ export class AccordionRoot {
 //
 type ItemProps = GetInternalProps<AccordionItemProps>;
 class AccordionItem {
+	$id: string;
 	$value: ItemProps['value'];
 	$disabled: ItemProps['disabled'];
-
-	#id: string;
 
 	_root: AccordionRoot;
 
@@ -74,16 +72,14 @@ class AccordionItem {
 		this._root = root;
 		this.$value = props.value;
 		this.$disabled = props.disabled;
-		this.#id = props.id;
+		this.$id = props.id;
 
-		this.sharedIds.set('item', this.#id);
+		this.sharedIds.set('item', this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.#id,
+		id: this.$id,
 		[attrs.item]: '',
-		'data-disabled': this.$disabled.val,
-		'data-opened': this.Active ? 'opened' : 'closed',
 		'data-value': this.$value.val
 	}));
 
@@ -98,9 +94,8 @@ class AccordionItem {
 //
 type HeadingProps = GetInternalProps<AccordionHeadingProps>;
 class AccordionHeading {
+	$id: HeadingProps['id'];
 	$level: HeadingProps['level'];
-
-	#id: string;
 
 	_root: AccordionRoot;
 	_item: AccordionItem;
@@ -109,15 +104,14 @@ class AccordionHeading {
 		this._root = root;
 		this._item = item;
 		this.$level = props.level;
-		this.#id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.#id,
+		id: this.$id,
 		[attrs.heading]: '',
 		role: 'heading',
-		'aria-level': this.$level.val,
-		'data-opened': this._item.Active ? 'opened' : 'closed'
+		'aria-level': this.$level.val
 	}));
 
 	state = $derived.by(() => ({
@@ -130,7 +124,7 @@ class AccordionHeading {
 //
 type ButtonProps = GetInternalProps<AccordionButtonProps>;
 class AccordionButton {
-	#id: string;
+	$id: ButtonProps['id'];
 
 	_item: AccordionItem;
 	_root: AccordionRoot;
@@ -138,22 +132,20 @@ class AccordionButton {
 	constructor(item: AccordionItem, root: AccordionRoot, props: ButtonProps) {
 		this._item = item;
 		this._root = root;
-		this.#id = props.id;
+		this.$id = props.id;
 
-		this._item.sharedIds.set('button', this.#id);
+		this._item.sharedIds.set('button', this.$id);
 	}
 
 	props = $derived.by(
 		() =>
 			({
-				id: this.#id,
+				id: this.$id,
+				[attrs.button]: '',
 				type: 'button',
 				'aria-expanded': this._item.Active,
-				'aria-disabled': this._item.$disabled.val,
 				'aria-controls': this._item.Active ? this._item.sharedIds.get('content') : undefined,
 				tabindex: this._item.$disabled.val ? -1 : 0,
-				'data-accordionbutton': '',
-				'data-active': this._item.Active || undefined,
 				...attach((node) =>
 					addEvents(node, {
 						click: () => {
@@ -166,7 +158,8 @@ class AccordionButton {
 	);
 
 	state = $derived.by(() => ({
-		active: this._item.Active
+		active: this._item.Active,
+		disabled: this._item.$disabled.val
 	}));
 }
 
@@ -175,7 +168,7 @@ class AccordionButton {
 //
 type ContentProps = GetInternalProps<AccordionContentProps>;
 class AccordionContent {
-	#id: string;
+	$id: ContentProps['id'];
 
 	_item: AccordionItem;
 	_root: AccordionRoot;
@@ -183,15 +176,14 @@ class AccordionContent {
 	constructor(item: AccordionItem, root: AccordionRoot, props: ContentProps) {
 		this._item = item;
 		this._root = root;
-		this.#id = props.id;
+		this.$id = props.id;
 
-		this._item.sharedIds.set('content', this.#id);
+		this._item.sharedIds.set('content', this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.#id,
-		[attrs.content]: '',
-		'data-active': this._item.Active
+		id: this.$id,
+		[attrs.content]: ''
 	}));
 
 	state = $derived.by(() => ({

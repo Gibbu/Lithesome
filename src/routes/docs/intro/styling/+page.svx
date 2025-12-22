@@ -36,6 +36,10 @@ To figure out what the data attribute for each component is called, look at the 
 `<SelectOption />` = `[data-select-option]`  
 ect...
 
+The expection to this however are the base components that render an element.  
+Such as `<Accordion />`. This will be `[data-accordion-root]`.  
+`<Pin />` will be `[data-pin-root]`, ect...
+
 ## Global CSS selectors
 
 If data attributes aren't your cup of tea, you can always create your own _global_ classes and then apply them to the components.
@@ -62,8 +66,8 @@ Whenever there’s a “state” that is controlled by the components, they are 
 
 For example:
 
-- `[data-hovered]` is exposed on the `<MenuItem />` when the user has hovered over it, via mouse or keyboard.
-- `[data-state="opened"]` is exposed on the `<Menu />` when the content of that menu is visible.
+- `[data-active]` is exposed on the `<MenuItem />` when the user has hovered over it, via mouse or keyboard.
+- `[data-filled="true"]` is exposed on the `<Pin />` every input has a value.
 
 Check each component API reference to see what data attributes are exposed on each component.
 

@@ -20,10 +20,9 @@ const { attrs } = createAttributes('tabs', ['root', 'list', 'button', 'content']
 //
 type RootProps = GetInternalProps<TabsProps>;
 class TabsRoot {
+	$id: string;
 	$value: RootProps['value'];
 	$orientation: RootProps['orientation'];
-
-	id: string;
 
 	tabs = $state<string[]>([]);
 	index = $state<number>(0);
@@ -35,7 +34,7 @@ class TabsRoot {
 	constructor(props: RootProps) {
 		this.$value = props.value;
 		this.$orientation = props.orientation;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	setActiveTab = (btnValue: string) => {
@@ -55,14 +54,13 @@ class TabsRoot {
 	};
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.root]: '',
-		'data-orientation': this.$orientation.val,
-		'data-active': this.ActiveTab
+		'data-orientation': this.$orientation.val
 	}));
 
 	state = $derived.by(() => ({
-		tab: this.ActiveTab
+		activeTab: this.ActiveTab
 	}));
 }
 
@@ -71,17 +69,17 @@ class TabsRoot {
 //
 type ListProps = GetInternalProps<TabsListProps>;
 class TabsList {
-	id: string;
+	$id: string;
 
 	_root: TabsRoot;
 
 	constructor(root: TabsRoot, props: ListProps) {
 		this._root = root;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.list]: '',
 		role: 'tablist',
 		'aria-orientation': this._root.$orientation.val,
@@ -98,10 +96,9 @@ class TabsList {
 //
 type ButtonProps = GetInternalProps<TabsButtonProps>;
 class TabsButton {
+	$id: string;
 	$value: ButtonProps['value'];
 	$disabled: ButtonProps['disabled'];
-
-	id: string;
 
 	_root: TabsRoot;
 
@@ -111,17 +108,15 @@ class TabsButton {
 		this._root = root;
 		this.$value = props.value;
 		this.$disabled = props.disabled;
-		this.id = props.id;
-		this._root.tabButtonToPanel.set('button-' + this.$value.val, this.id);
+		this.$id = props.id;
+		this._root.tabButtonToPanel.set('button-' + this.$value.val, this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.button]: '',
 		type: 'button',
 		tabindex: this.IsActive ? 0 : -1,
-		'data-active': this.IsActive ? '' : undefined,
-		'data-value': this.$value.val,
 		'aria-controls': this._root.tabButtonToPanel.get('panel-' + this.$value.val),
 		...attach((node) =>
 			addEvents(node, {
@@ -164,9 +159,8 @@ class TabsButton {
 //
 type ContentProps = GetInternalProps<TabsContentProps>;
 class TabsContent {
+	$id: string;
 	$value: ContentProps['value'];
-
-	id: string;
 
 	_root: TabsRoot;
 
@@ -175,14 +169,14 @@ class TabsContent {
 	constructor(_root: TabsRoot, props: ContentProps) {
 		this._root = _root;
 		this.$value = props.value;
-		this.id = props.id;
+		this.$id = props.id;
 
 		this._root.tabs.push(props.value.val);
-		this._root.tabButtonToPanel.set('panel-' + this.$value.val, this.id);
+		this._root.tabButtonToPanel.set('panel-' + this.$value.val, this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.content]: '',
 		role: 'tabpanel',
 		'aria-hidden': !this.IsActive,

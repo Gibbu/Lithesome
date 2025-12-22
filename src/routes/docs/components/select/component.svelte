@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CheckIcon } from '@lucide/svelte';
+	import { CheckIcon, ChevronsUpDownIcon } from '@lucide/svelte';
 	import { Select, SelectContent, SelectOption, SelectTrigger, SelectValue } from '$lib/index.js';
 	import { Button, Container } from '$site/index.js';
 
@@ -19,8 +19,9 @@
 <Select bind:value>
 	<SelectTrigger>
 		{#snippet custom({ props })}
-			<Button variant="secondary" class="w-[250px]" {...props}>
+			<Button variant="secondary" class="w-[250px] justify-between" {...props}>
 				<SelectValue />
+				<ChevronsUpDownIcon class="size-4" />
 			</Button>
 		{/snippet}
 	</SelectTrigger>

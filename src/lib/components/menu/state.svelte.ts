@@ -45,11 +45,11 @@ interface GroupItem {
 }
 
 class MenuBaseState extends Floating {
+	$id: string;
 	$visible: RootProps['visible'];
 	$disabled: RootProps['disabled'];
 	$portalTarget: RootProps['portalTarget'];
 	$floatingConfig: RootProps['floatingConfig'];
-	id: string;
 
 	constructor(props: RootProps) {
 		super();
@@ -58,7 +58,7 @@ class MenuBaseState extends Floating {
 		this.$disabled = props.disabled;
 		this.$portalTarget = props.portalTarget;
 		this.$floatingConfig = props.floatingConfig;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	state = $derived.by(() => ({
@@ -144,19 +144,19 @@ class MenuRoot extends MenuBaseState {
 //
 type TriggerProps = GetInternalProps<MenuTriggerProps>;
 class MenuTrigger {
-	id: string;
+	$id: string;
 
 	_root: MenuRoot;
 
 	constructor(parent: MenuRoot, props: TriggerProps) {
-		this.id = props.id;
+		this.$id = props.id;
 		this._root = parent;
 
-		this._root.sharedIds.set('trigger', this.id);
+		this._root.sharedIds.set('trigger', this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		role: 'button',
 		'aria-haspopup': 'menu',
 		'aria-expanded': this._root.$visible.val,
@@ -216,6 +216,10 @@ class MenuTrigger {
 			});
 		})
 	}));
+
+	state = $derived.by(() => ({
+		visible: this._root.$visible.val
+	}));
 }
 
 //
@@ -223,17 +227,17 @@ class MenuTrigger {
 //
 type ArrowProps = GetInternalProps<MenuArrowProps>;
 class MenuArrow {
-	id: string;
+	$id: string;
 
 	_parent: MenuRoot;
 
 	constructor(parent: MenuRoot, props: ArrowProps) {
 		this._parent = parent;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.arrow]: '',
 		...attach((node) => {
 			this._parent.arrow = node;
@@ -250,19 +254,19 @@ class MenuArrow {
 //
 type ContentProps = GetInternalProps<MenuContentProps>;
 class MenuContent {
-	id: string;
+	$id: string;
 
 	_root: MenuRoot;
 
 	constructor(root: MenuRoot, props: ContentProps) {
 		this._root = root;
-		this.id = props.id;
+		this.$id = props.id;
 
-		this._root.sharedIds.set('content', this.id);
+		this._root.sharedIds.set('content', this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.content]: '',
 		...attach((node) => {
 			this._root.content = node;
@@ -293,15 +297,14 @@ class MenuContent {
 //
 type ItemProps = GetInternalProps<Omit<MenuItemProps, 'href'>>;
 class MenuItem {
+	$id: string;
 	$disabled: ItemProps['disabled'];
 	$closeOnClick: ItemProps['closeOnClick'];
-
-	id: string;
 
 	_root: MenuRoot;
 	_sub?: MenuSub;
 
-	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.id);
+	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.$id);
 
 	constructor(root: MenuRoot, props: ItemProps, sub?: MenuSub) {
 		this._root = root;
@@ -309,19 +312,18 @@ class MenuItem {
 
 		this.$disabled = props.disabled;
 		this.$closeOnClick = props.closeOnClick;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		role: 'menuitem',
 		[attrs.item]: '',
 		'aria-disabled': this.$disabled.val,
-		'data-active': this.IsActive ? '' : undefined,
 		...attach((node) => {
 			if (this.$disabled.val) return;
 
-			this._root.registerItem(this.id, this._sub?.$name.val || 'root');
+			this._root.registerItem(this.$id, this._sub?.$name.val || 'root');
 
 			return addEvents(node, {
 				mouseenter: async () => {
@@ -329,7 +331,7 @@ class MenuItem {
 						this._root.focusedGroup = this._sub?.$name.val || 'root';
 
 					await tick();
-					this._root.setHoveredItem(this.id);
+					this._root.setHoveredItem(this.$id);
 
 					// No idea why I had to snapshot this...?
 					this._root.openedPath = $state.snapshot(this._root.groups[this._root.focusedGroup].path);
@@ -391,38 +393,36 @@ class MenuSub extends MenuBaseState {
 //
 type SubTriggerProps = GetInternalProps<MenuSubTriggerProps>;
 class MenuSubTrigger {
-	id: string;
+	$id: string;
 
 	_root: MenuRoot;
 	_sub: MenuSub;
 
-	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.id);
+	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.$id);
 	IsOpened = $derived.by(() => this._root.openedPath.includes(this._sub.$name.val));
 
 	constructor(sub: MenuSub, root: MenuRoot, props: SubTriggerProps) {
 		this._root = root;
 		this._sub = sub;
-		this.id = props.id;
+		this.$id = props.id;
 
-		this._sub.sharedIds.set('trigger', this.id);
+		this._sub.sharedIds.set('trigger', this.$id);
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
+		[attrs['sub-trigger']]: '',
 		role: 'menuitem',
 		'aria-haspopup': 'menu',
 		'aria-expanded': this.IsOpened,
 		'aria-controls': this.IsOpened ? this._sub.sharedIds.get('content') : undefined,
-		[attrs['sub-trigger']]: '',
-		'data-active': this.IsActive ? '' : undefined,
-		'data-opened': this.IsOpened ? '' : undefined,
 		...attach((node) => {
 			if (this._sub.$disabled.val) return;
 
 			this._sub.trigger = node;
 
 			this._root.registerItem(
-				this.id,
+				this.$id,
 				this._root.groups[this._sub.$name.val]?.path?.at(-2) || 'root',
 				this._sub.$name.val
 			);
@@ -434,7 +434,7 @@ class MenuSubTrigger {
 						this._root.openedPath[index] = this._sub.$name.val;
 					}
 
-					this._root.setHoveredItem(this.id);
+					this._root.setHoveredItem(this.$id);
 				}
 			});
 		})

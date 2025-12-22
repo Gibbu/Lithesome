@@ -23,6 +23,7 @@ const { attrs } = createAttributes('slider', ['root', 'thumb', 'range', 'value']
 //
 type RootProps = GetInternalProps<SliderProps>;
 class SliderRoot {
+	$id: string;
 	$min: RootProps['min'];
 	$max: RootProps['max'];
 	$step: RootProps['step'];
@@ -31,7 +32,6 @@ class SliderRoot {
 	$reverse: RootProps['reverse'];
 	$disabled: RootProps['disabled'];
 
-	id: string;
 	dragging = $state<boolean>(false);
 	trackElement = $state<HTMLElement | null>(null);
 	thumbElement = $state<HTMLElement | null>(null);
@@ -41,6 +41,7 @@ class SliderRoot {
 	);
 
 	constructor(props: RootProps) {
+		this.$id = props.id;
 		this.$min = props.min;
 		this.$max = props.max;
 		this.$step = props.step;
@@ -48,7 +49,6 @@ class SliderRoot {
 		this.$orientation = props.orientation;
 		this.$reverse = props.reverse;
 		this.$disabled = props.disabled;
-		this.id = props.id;
 
 		$effect(() => {
 			if (this.$disabled.val || !this.trackElement) return;
@@ -103,12 +103,10 @@ class SliderRoot {
 	};
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		tabindex: -1,
 		role: 'none',
 		[attrs.root]: '',
-		'data-value': this.$value.val,
-		'data-percentage': this.Percentage,
 		'data-reversed': this.$reverse.val || undefined,
 		'data-orientation': this.$orientation.val,
 		...attach((node) => {
@@ -147,17 +145,17 @@ class SliderRoot {
 //
 type ThumbProps = GetInternalProps<SliderThumbProps>;
 class SliderThumb {
-	_root: SliderRoot;
+	$id: string;
 
-	id: string;
+	_root: SliderRoot;
 
 	constructor(root: SliderRoot, props: ThumbProps) {
 		this._root = root;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		role: 'slider',
 		tabindex: 0,
 		'aria-valuenow': this._root.$value.val,
@@ -203,22 +201,20 @@ class SliderThumb {
 //
 type RangeProps = GetInternalProps<SliderRangeProps>;
 class SliderRange {
-	_root: SliderRoot;
+	$id: string;
 
-	id: string;
+	_root: SliderRoot;
 
 	constructor(root: SliderRoot, props: ThumbProps) {
 		this._root = root;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		tabindex: -1,
 		role: 'none',
 		'data-sliderrange': '',
-		'data-value': this._root.$value.val,
-		'data-percentage': this._root.Percentage,
 		'data-reversed': this._root.$reverse.val || undefined,
 		'data-orientation': this._root.$orientation.val,
 		...attach((node) => {

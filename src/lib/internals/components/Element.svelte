@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { camelToKebab, styleObjectToString } from '../utils.svelte.js';
+
 	import type { Snippet } from 'svelte';
 	import type { ClassProp, Props, StyleProp } from '../types.js';
 
@@ -26,10 +28,6 @@
 		...props
 	}: ElProps = $props();
 
-	const camelToKebab = (property: string) => {
-		return property.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
-	};
-
 	const selfClosing: (keyof HTMLElementTagNameMap)[] = ['input', 'hr', 'img'];
 
 	const classes = $derived(typeof klass === 'function' ? klass(ctx.state) : klass);
@@ -46,27 +44,29 @@
 			else styleObject = { ...styleObject, ...values };
 		}
 
-		const result =
-			Object.entries(styleObject)
-				.map(([p, k]) => (k ? `${camelToKebab(p)}: ${k};` : undefined))
-				.join('') + styleString;
-
-		return result || undefined;
+		return styleObjectToString(styleObject) + styleString || undefined;
+	});
+	const propsWithState = $derived.by(() => {
+		let props = ctx.props;
+		for (const key in ctx.state) {
+			if (ctx.state[key]) props = { ...props, [`data-${camelToKebab(key)}`]: ctx.state[key] };
+		}
+		return props;
 	});
 </script>
 
 {#snippet element()}
 	{#if selfClosing.includes(as)}
-		<svelte:element this={as} bind:this={ref} {...ctx.props} {...props} class={classes} style={styles} />
+		<svelte:element this={as} bind:this={ref} {...propsWithState} {...props} class={classes} style={styles} />
 	{:else}
-		<svelte:element this={as} bind:this={ref} {...ctx.props} {...props} class={classes} style={styles}>
+		<svelte:element this={as} bind:this={ref} {...propsWithState} {...props} class={classes} style={styles}>
 			{@render children?.(ctx.state)}
 		</svelte:element>
 	{/if}
 {/snippet}
 
 {#if custom}
-	{@const props = ctx.styles ? { ...ctx.props, style: styles } : ctx.props}
+	{@const props = ctx.styles ? { ...propsWithState, style: styles } : propsWithState}
 	{@render custom({ props, state: ctx.state })}
 {:else if typeof visible === 'boolean'}
 	{#if visible}

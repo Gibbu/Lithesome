@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { MoonIcon, PenIcon, SunIcon } from '@lucide/svelte';
+	import { ClockFadingIcon, MoonIcon, PenIcon, SunIcon } from '@lucide/svelte';
 	import { mode, toggleMode } from 'mode-watcher';
 	import { page } from '$app/state';
 	import { Button, Container, Meta, Toc } from '$site/index.js';
 
 	let { children, data } = $props();
 
-	const currentPage = $derived(data.groups.flatMap((group) => group.items).find((item) => item.href === page.route.id));
+	const groups = $derived(data.groups)!;
+
+	const currentPage = $derived(groups.flatMap((group) => group.items).find((item) => item.href === page.route.id));
 </script>
 
 <Meta title={currentPage?.data.title} description={currentPage?.data.description} />
@@ -16,6 +18,9 @@
 		<a href="/">Lithesome</a>
 	</h2>
 	<div class="flex items-center gap-4">
+		<Button variant="text" href="/docs/changelog">
+			<ClockFadingIcon class="size-5" />
+		</Button>
 		<Button variant="text" onclick={() => toggleMode()}>
 			{#if mode.current === 'light'}
 				<SunIcon class="size-5" />
@@ -32,29 +37,31 @@
 			<h3>Navigation</h3>
 		{/snippet}
 
-		{#each data.groups as group, i}
-			<section>
-				<h4 class="mb-3 font-semibold capitalize dark:text-zinc-200">{group.name}</h4>
-				{#each group.items as item}
-					{@const active = page.route.id === item.href}
-					<a
-						href={item.href}
-						class={[
-							'relative -mx-6 flex items-center px-6 py-4 text-sm select-none',
-							active
-								? 'bg-zinc-200 text-black dark:bg-zinc-900 dark:text-white'
-								: 'hover:bg-zinc-200 dark:hover:bg-zinc-920'
-						]}
-					>
-						{#if active}
-							<div class="pointer-events-none absolute -left-px h-full w-px bg-teal-600 dark:bg-teal-500"></div>
-						{/if}
-						{item.data.title}
-					</a>
-				{/each}
-			</section>
-			{#if data.groups.length - 1 !== i}
-				<hr class="-mx-6 h-px border-zinc-400 dark:border-zinc-800" />
+		{#each groups as group, i}
+			{#if group.name !== 'changelog'}
+				<section>
+					<h4 class="mb-3 font-semibold capitalize dark:text-zinc-200">{group.name}</h4>
+					{#each group.items as item}
+						{@const active = page.route.id === item.href}
+						<a
+							href={item.href}
+							class={[
+								'relative -mx-6 flex items-center px-6 py-4 text-sm select-none',
+								active
+									? 'bg-zinc-200 text-black dark:bg-zinc-900 dark:text-white'
+									: 'hover:bg-zinc-200 dark:hover:bg-zinc-920'
+							]}
+						>
+							{#if active}
+								<div class="pointer-events-none absolute -left-px h-full w-px bg-teal-600 dark:bg-teal-500"></div>
+							{/if}
+							{item.data.title}
+						</a>
+					{/each}
+				</section>
+				{#if groups.length - 1 !== i}
+					<hr class="-mx-6 h-px border-zinc-400 dark:border-zinc-800" />
+				{/if}
 			{/if}
 		{/each}
 	</Container>

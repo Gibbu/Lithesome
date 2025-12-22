@@ -222,6 +222,36 @@ export const addEvents = (
 };
 
 /**
- * No operation function
+ * CSS rules to visual hide an element.
  */
-export const noop = () => {};
+export const visuallyHidden = {
+	position: 'absolute',
+	width: '1px',
+	height: '1px',
+	padding: '0',
+	margin: '-1px',
+	overflow: 'hidden',
+	clipPath: 'inset(50%)',
+	whiteSpace: 'nowrap',
+	borderWidth: '0',
+	userSelect: 'none',
+	pointerEvents: 'none'
+} as const;
+
+/**
+ * Transforms a camelCase string to a kebab-case string
+ * @param property The property to convert
+ */
+export const camelToKebab = (property: string) => {
+	return property.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
+};
+
+/**
+ * Transforms a style object into a string, while converting camelCase to kebab-case.
+ * @param obj The object to transform.
+ */
+export const styleObjectToString = (obj: Record<string, any>) => {
+	return Object.entries(obj)
+		.map(([p, k]) => (k ? `${camelToKebab(p)}: ${k};` : undefined))
+		.join('');
+};

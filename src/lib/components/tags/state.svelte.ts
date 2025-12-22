@@ -10,13 +10,13 @@ const { attrs } = createAttributes('tags', ['root', 'input', 'item', 'delete']);
 //
 type RootProps = GetInternalProps<TagsProps>;
 class TagsRoot {
+	$id: string;
 	$value: RootProps['value'];
 	$disabled: RootProps['disabled'];
 	$max: RootProps['max'];
 	$whitelist: RootProps['whitelist'];
 	$blacklist: RootProps['blacklist'];
 
-	id: string;
 	invalid = $state<boolean>(false);
 	index = $state<number>(-1);
 	input = $state<HTMLInputElement | null>(null);
@@ -29,7 +29,7 @@ class TagsRoot {
 		this.$max = props.max;
 		this.$whitelist = props.whitelist;
 		this.$blacklist = props.blacklist;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	allowedTag = (tag: string) => {
@@ -63,9 +63,8 @@ class TagsRoot {
 	};
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.root]: '',
-		'data-activeTag': this.SelectedTag || undefined,
 		...attach((node) =>
 			addEvents(node, {
 				click: (e) => {
@@ -88,20 +87,19 @@ class TagsRoot {
 //
 type InputProps = GetInternalProps<TagsInputProps>;
 class TagsInput {
-	id: string;
+	$id: string;
 
 	_root: TagsRoot;
 
 	constructor(root: TagsRoot, props: InputProps) {
 		this._root = root;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.input]: '',
 		type: 'text',
-		'data-invalid': this._root.invalid ? '' : undefined,
 		...attach<HTMLInputElement>((node) => {
 			this._root.input = node;
 
@@ -168,24 +166,22 @@ class TagsInput {
 //
 type ItemProps = GetInternalProps<TagsItemProps>;
 class TagsItem {
+	$id: string;
 	$value: ItemProps['value'];
 
 	_root: TagsRoot;
-
-	id: string;
 
 	Active = $derived.by(() => this._root.SelectedTag === this.$value.val);
 
 	constructor(root: TagsRoot, props: ItemProps) {
 		this._root = root;
 		this.$value = props.value;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
-		[attrs.item]: '',
-		'data-active': this.Active ? '' : undefined
+		id: this.$id,
+		[attrs.item]: ''
 	}));
 
 	state = $derived.by(() => ({
@@ -198,20 +194,19 @@ class TagsItem {
 //
 type DeleteProps = GetInternalProps<TagsDeleteProps>;
 class TagsDelete {
+	$id: string;
 	$value: DeleteProps['value'];
-
-	id: string;
 
 	_root: TagsRoot;
 
 	constructor(root: TagsRoot, props: DeleteProps) {
 		this._root = root;
 		this.$value = props.value;
-		this.id = props.id;
+		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$id,
 		[attrs.delete]: '',
 		type: 'button',
 		tabIndex: -1,
