@@ -16,9 +16,9 @@
 	}: ModalTitleProps<typeof ctx.props, any> = $props();
 
 	let ctx = useModalTitle({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>
 
-<Element bind:ref as="h2" {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />
+<Element bind:ref as="h2" {children} {custom} {ctx} {...props} />

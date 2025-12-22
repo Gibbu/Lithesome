@@ -15,7 +15,7 @@
 	}: MenuTriggerProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useMenuSubTrigger({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

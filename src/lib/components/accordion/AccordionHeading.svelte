@@ -17,7 +17,7 @@
 	}: AccordionHeadingProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useAccordionHeading({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		level: stateValue(() => level)
 	});

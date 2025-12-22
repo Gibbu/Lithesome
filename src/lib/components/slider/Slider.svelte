@@ -24,7 +24,7 @@
 	}: SliderProps<typeof ctx.state> = $props();
 
 	let ctx = createSliderRootContext({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,

@@ -23,35 +23,21 @@ const { attrs } = createAttributes('slider', ['root', 'thumb', 'range', 'value']
 //
 type RootProps = GetInternalProps<SliderProps>;
 class SliderRoot {
-	$id: string;
-	$min: RootProps['min'];
-	$max: RootProps['max'];
-	$step: RootProps['step'];
-	$value: RootProps['value'];
-	$orientation: RootProps['orientation'];
-	$reverse: RootProps['reverse'];
-	$disabled: RootProps['disabled'];
+	$$: RootProps;
 
 	dragging = $state<boolean>(false);
 	trackElement = $state<HTMLElement | null>(null);
 	thumbElement = $state<HTMLElement | null>(null);
 
 	Percentage = $derived.by(() =>
-		Math.round(((this.$value.val - this.$min.val) / (this.$max.val - this.$min.val)) * 100)
+		Math.round(((this.$$.value.val - this.$$.min.val) / (this.$$.max.val - this.$$.min.val)) * 100)
 	);
 
 	constructor(props: RootProps) {
-		this.$id = props.id;
-		this.$min = props.min;
-		this.$max = props.max;
-		this.$step = props.step;
-		this.$value = props.value;
-		this.$orientation = props.orientation;
-		this.$reverse = props.reverse;
-		this.$disabled = props.disabled;
+		this.$$ = props;
 
 		$effect(() => {
-			if (this.$disabled.val || !this.trackElement) return;
+			if (this.$$.disabled.val || !this.trackElement) return;
 
 			document.addEventListener('pointerup', (e) => this.loseFocus(e));
 			document.addEventListener('pointermove', (e) => {
@@ -77,49 +63,55 @@ class SliderRoot {
 		const { clientX, clientY } = e;
 		const { width, height, left, right, top, bottom } = this.trackElement.getBoundingClientRect();
 
-		const position = this.$orientation.val === 'horizontal' ? clientX : clientY;
-		const length = this.$orientation.val === 'horizontal' ? width : height;
+		const position = this.$$.orientation.val === 'horizontal' ? clientX : clientY;
+		const length = this.$$.orientation.val === 'horizontal' ? width : height;
 		const start =
-			this.$orientation.val === 'horizontal' ? (this.$reverse.val ? right : left) : this.$reverse.val ? top : bottom;
+			this.$$.orientation.val === 'horizontal'
+				? this.$$.reverse.val
+					? right
+					: left
+				: this.$$.reverse.val
+					? top
+					: bottom;
 
-		this.$value.val = clamp(
-			this.$min.val,
+		this.$$.value.val = clamp(
+			this.$$.min.val,
 			Math.round(
-				((this.$max.val - this.$min.val) *
+				((this.$$.max.val - this.$$.min.val) *
 					((position - start) / length) *
-					(this.$reverse.val ? -1 : 1) *
-					(this.$orientation.val === 'vertical' ? -1 : 1)) /
-					this.$step.val
-			) * this.$step.val,
-			this.$max.val
+					(this.$$.reverse.val ? -1 : 1) *
+					(this.$$.orientation.val === 'vertical' ? -1 : 1)) /
+					this.$$.step.val
+			) * this.$$.step.val,
+			this.$$.max.val
 		);
 	};
 
 	stepUp = () => {
-		this.$value.val = clamp(this.$min.val, (this.$value.val += this.$step.val), this.$max.val);
+		this.$$.value.val = clamp(this.$$.min.val, (this.$$.value.val += this.$$.step.val), this.$$.max.val);
 	};
 	stepDown = () => {
-		this.$value.val = clamp(this.$min.val, (this.$value.val -= this.$step.val), this.$max.val);
+		this.$$.value.val = clamp(this.$$.min.val, (this.$$.value.val -= this.$$.step.val), this.$$.max.val);
 	};
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		tabindex: -1,
 		role: 'none',
 		[attrs.root]: '',
-		'data-reversed': this.$reverse.val || undefined,
-		'data-orientation': this.$orientation.val,
+		'data-reversed': this.$$.reverse.val || undefined,
+		'data-orientation': this.$$.orientation.val,
 		...attach((node) => {
 			this.trackElement = node;
 
 			return addEvents(node, {
 				pointerdown: () => {
-					if (this.$disabled.val) return;
+					if (this.$$.disabled.val) return;
 
 					this.dragging = true;
 				},
 				click: (e) => {
-					if (this.$disabled.val) return;
+					if (this.$$.disabled.val) return;
 
 					e.preventDefault();
 					this.dragging = true;
@@ -131,7 +123,7 @@ class SliderRoot {
 	}));
 
 	state = $derived.by(() => ({
-		value: this.$value.val,
+		value: this.$$.value.val,
 		percentage: this.Percentage
 	}));
 
@@ -145,44 +137,44 @@ class SliderRoot {
 //
 type ThumbProps = GetInternalProps<SliderThumbProps>;
 class SliderThumb {
-	$id: string;
+	$$: ThumbProps;
 
 	_root: SliderRoot;
 
 	constructor(root: SliderRoot, props: ThumbProps) {
 		this._root = root;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		role: 'slider',
 		tabindex: 0,
-		'aria-valuenow': this._root.$value.val,
-		'aria-valuemin': this._root.$min.val,
-		'aria-valuemax': this._root.$max.val,
+		'aria-valuenow': this._root.$$.value.val,
+		'aria-valuemin': this._root.$$.min.val,
+		'aria-valuemax': this._root.$$.max.val,
 		'data-sliderthumb': '',
 		...attach((node) => {
 			this._root.thumbElement = node;
 
 			return addEvents(node, {
 				pointerdown: (e) => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					e.preventDefault();
 				},
 				keydown: (e) => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					const { key } = e;
 					if (ALL_ARROW_KEYS.includes(key)) e.preventDefault();
 
 					if (key === KEYS.arrowRight || key === KEYS.arrowUp) {
-						if (this._root.$reverse.val) this._root.stepDown();
+						if (this._root.$$.reverse.val) this._root.stepDown();
 						else this._root.stepUp();
 					}
 					if (key === KEYS.arrowLeft || key === KEYS.arrowDown) {
-						if (this._root.$reverse.val) this._root.stepUp();
+						if (this._root.$$.reverse.val) this._root.stepUp();
 						else this._root.stepDown();
 					}
 				}
@@ -191,7 +183,7 @@ class SliderThumb {
 	}));
 
 	state = $derived.by(() => ({
-		value: this._root.$value.val,
+		value: this._root.$$.value.val,
 		percentage: this._root.Percentage
 	}));
 }
@@ -201,29 +193,29 @@ class SliderThumb {
 //
 type RangeProps = GetInternalProps<SliderRangeProps>;
 class SliderRange {
-	$id: string;
+	$$: RangeProps;
 
 	_root: SliderRoot;
 
 	constructor(root: SliderRoot, props: ThumbProps) {
 		this._root = root;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		tabindex: -1,
 		role: 'none',
 		'data-sliderrange': '',
-		'data-reversed': this._root.$reverse.val || undefined,
-		'data-orientation': this._root.$orientation.val,
+		'data-reversed': this._root.$$.reverse.val || undefined,
+		'data-orientation': this._root.$$.orientation.val,
 		...attach((node) => {
 			this._root.thumbElement = node;
 		})
 	}));
 
 	state = $derived.by(() => ({
-		value: this._root.$value.val,
+		value: this._root.$$.value.val,
 		percentage: this._root.Percentage
 	}));
 }
@@ -233,29 +225,29 @@ class SliderRange {
 //
 type ValueProps = GetInternalProps<SliderValueProps>;
 class SliderValue {
-	$id: string;
+	$$: ValueProps;
 
 	_root: SliderRoot;
 
 	constructor(root: SliderRoot, props: ValueProps) {
-		this.$id = props.id;
 		this._root = root;
+		this.$$ = props;
 	}
 
 	props = $derived.by(
 		() =>
 			({
-				id: this.$id,
+				id: this.$$.id.val,
 				[attrs.value]: '',
 				'aria-hidden': 'false',
-				min: this._root.$min.val,
-				max: this._root.$max.val,
-				step: this._root.$step.val,
-				value: this._root.$value.val
+				min: this._root.$$.min.val,
+				max: this._root.$$.max.val,
+				step: this._root.$$.step.val,
+				value: this._root.$$.value.val
 			}) as const
 	);
 	state = $derived.by(() => ({
-		value: this._root.$value.val,
+		value: this._root.$$.value.val,
 		percentage: this._root.Percentage
 	}));
 	styles = $derived.by(() => ({

@@ -17,9 +17,7 @@ interface InternalRadioGroupItem {
 //
 type RootProps = GetInternalProps<RadioGroupProps>;
 class RadioGroupRoot {
-	$id: RootProps['id'];
-	$value: RootProps['value'];
-	$disabled: RootProps['disabled'];
+	$$: RootProps;
 
 	items = $state<InternalRadioGroupItem[]>([]);
 	selectedIndex = $state<number>(-1);
@@ -27,11 +25,9 @@ class RadioGroupRoot {
 	SelectedItem = $derived.by<InternalRadioGroupItem | null>(() => this.items[this.selectedIndex] || null);
 
 	constructor(props: RootProps) {
-		this.$id = props.id;
-		this.$value = props.value;
-		this.$disabled = props.disabled;
+		this.$$ = props;
 
-		if (this.$value.val) this.setInitialSelected();
+		if (this.$$.value.val) this.setInitialSelected();
 	}
 
 	navigate = (action: CalcIndexAction) => {
@@ -41,26 +37,26 @@ class RadioGroupRoot {
 			const item = document.querySelector(`#${this.SelectedItem.id}`) as HTMLElement;
 			if (item) {
 				item.focus();
-				this.$value.val = this.SelectedItem.value;
+				this.$$.value.val = this.SelectedItem.value;
 			}
 		}
 	};
 	setSelectedItem = (value: string) => {
 		this.selectedIndex = this.items.findIndex((item) => item.value === value);
-		this.$value.val = value;
+		this.$$.value.val = value;
 	};
 	setInitialSelected = async () => {
 		await tick();
-		this.selectedIndex = this.items.findIndex((item) => item.value === this.$value.val);
+		this.selectedIndex = this.items.findIndex((item) => item.value === this.$$.value.val);
 	};
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.root]: ''
 	}));
 	state = $derived.by(() => ({
-		value: this.$value.val,
-		disabled: this.$disabled.val
+		value: this.$$.value.val,
+		disabled: this.$$.disabled.val
 	}));
 }
 
@@ -69,26 +65,22 @@ class RadioGroupRoot {
 //
 type ItemProps = GetInternalProps<RadioGroupItemProps>;
 class RadioGroupItem {
-	$id: ItemProps['id'];
-	$value: ItemProps['value'];
-	$disabled: ItemProps['disabled'];
+	$$: ItemProps;
 
 	_root: RadioGroupRoot;
 
-	Selected = $derived.by(() => this._root.SelectedItem?.id === this.$id);
+	Selected = $derived.by(() => this._root.SelectedItem?.id === this.$$.id.val);
 
 	constructor(root: RadioGroupRoot, props: ItemProps) {
 		this._root = root;
 
-		this.$id = props.id;
-		this.$value = props.value;
-		this.$disabled = props.disabled;
+		this.$$ = props;
 
-		if (!this.$disabled.val) this._root.items.push({ id: this.$id, value: this.$value.val });
+		if (!this.$$.disabled.val) this._root.items.push({ id: this.$$.id.val, value: this.$$.value.val });
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.item]: '',
 		type: 'button',
 		role: 'radio',
@@ -97,9 +89,9 @@ class RadioGroupItem {
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
-					if (this._root.$disabled.val || this.$disabled.val) return;
+					if (this._root.$$.disabled.val || this.$$.disabled.val) return;
 
-					this._root.setSelectedItem(this.$value.val);
+					this._root.setSelectedItem(this.$$.value.val);
 				},
 				keydown: (e) => {
 					const { key } = e;
@@ -117,7 +109,7 @@ class RadioGroupItem {
 
 	state = $derived.by(() => ({
 		selected: this.Selected,
-		disabled: this.$disabled.val
+		disabled: this.$$.disabled.val
 	}));
 }
 

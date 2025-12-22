@@ -24,10 +24,7 @@ export type RemoveFunctionProps<T> = {
 };
 
 export type GetInternalProps<T extends Record<string, any>> = StateValues<
-	Required<RemoveFunctionProps<Omit<T, OmitProps>>>
-> & { id: string };
-export type GetInternalPropsNoId<T extends Record<string, any>> = StateValues<
-	Required<RemoveFunctionProps<Omit<T, OmitProps>>>
+	Required<RemoveFunctionProps<Omit<T, OmitProps>> & { id: string }>
 >;
 
 export type Class<T> = new (...args: any[]) => T;

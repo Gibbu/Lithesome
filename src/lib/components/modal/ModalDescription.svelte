@@ -16,9 +16,9 @@
 	}: ModalDescriptionProps<typeof ctx.props, any> = $props();
 
 	let ctx = useModalDescription({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>
 
-<Element bind:ref as="p" {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />
+<Element bind:ref as="p" {children} {custom} {ctx} {...props} />

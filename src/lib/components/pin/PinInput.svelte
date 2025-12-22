@@ -9,7 +9,7 @@
 	let { id = parseId(uid), ref = $bindable(), ...props }: PinInputProps<typeof ctx.state> = $props();
 
 	let ctx = usePinInput({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

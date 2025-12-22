@@ -9,7 +9,7 @@
 	let { id = parseId(uid), ref = $bindable(), ...props }: SliderValueProps<typeof ctx.state> = $props();
 
 	let ctx = useSliderValue({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

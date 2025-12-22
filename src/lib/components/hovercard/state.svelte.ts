@@ -11,7 +11,7 @@ import {
 	trackTimeout
 } from '$lib/internals/index.js';
 
-import type { GetInternalProps, GetInternalPropsNoId } from '$lib/internals/index.js';
+import type { GetInternalProps } from '$lib/internals/index.js';
 import type {
 	HovercardArrowProps,
 	HovercardContentProps,
@@ -24,44 +24,35 @@ const { attrs } = createAttributes('hovercard', ['trigger', 'content', 'arrow'])
 //
 // ~~ROOT
 //
-type RootProps = GetInternalPropsNoId<HovercardProps>;
+type RootProps = GetInternalProps<HovercardProps>;
 class HovercardRoot extends Floating {
-	$visible: RootProps['visible'];
-	$disabled: RootProps['disabled'];
-	$delay: RootProps['delay'];
-	$portalTarget: RootProps['portalTarget'];
-	$floatingConfig: RootProps['floatingConfig'];
+	$$: RootProps;
 
 	sharedIds = new SvelteMap<'trigger' | 'content', string>();
 	timeout = trackTimeout();
 	hovered = $state<boolean>(false);
 
-	ParsedDelay = $derived.by(() => parseDelay(this.$delay.val));
+	ParsedDelay = $derived.by(() => parseDelay(this.$$.delay.val));
 
 	constructor(props: RootProps) {
 		super();
-
-		this.$visible = props.visible;
-		this.$disabled = props.disabled;
-		this.$delay = props.delay;
-		this.$portalTarget = props.portalTarget;
-		this.$floatingConfig = props.floatingConfig;
+		this.$$ = props;
 	}
 
 	open = () => {
 		this.timeout.set(() => {
-			this.$visible.val = true;
+			this.$$.visible.val = true;
 		}, this.ParsedDelay.in);
 	};
 
 	close = () => {
 		this.timeout.set(() => {
-			if (!this.hovered) this.$visible.val = false;
+			if (!this.hovered) this.$$.visible.val = false;
 		}, this.ParsedDelay.out);
 	};
 
 	state = $derived.by(() => ({
-		visible: this.$visible.val
+		visible: this.$$.visible.val
 	}));
 }
 
@@ -70,17 +61,17 @@ class HovercardRoot extends Floating {
 //
 type TriggerProps = GetInternalProps<HovercardTriggerProps>;
 class HovercardTrigger {
-	$id: TriggerProps['id'];
+	$$: TriggerProps;
 
 	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot, props: TriggerProps) {
+		this.$$ = props;
 		this._root = root;
-		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.trigger]: '',
 		'aria-describedby': this._root.sharedIds.get('content'),
 		...attach((node) => {
@@ -88,19 +79,19 @@ class HovercardTrigger {
 
 			return addEvents(node, {
 				mouseenter: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.open();
 				},
 				mouseleave: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.close();
 				},
 				focus: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.open();
 				},
 				blur: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.close();
 				}
 			});
@@ -108,7 +99,7 @@ class HovercardTrigger {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -117,25 +108,25 @@ class HovercardTrigger {
 //
 type ContentProps = GetInternalProps<HovercardContentProps>;
 class HovercardContent {
-	$id: ContentProps['id'];
+	$$: ContentProps;
 
 	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot, props: ContentProps) {
+		this.$$ = props;
 		this._root = root;
-		this.$id = props.id;
 
-		this._root.sharedIds.set('trigger', this.$id);
+		this._root.sharedIds.set('trigger', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.content]: '',
 		...attach((node) => {
 			this._root.content = node;
 
-			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$floatingConfig.val)(node);
-			const portalCleanUp = portal(this._root.$portalTarget.val)(node);
+			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$$.floatingConfig.val)(node);
+			const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
 			const eventsCleanUp = addEvents(node, {
 				mouseenter: () => {
 					this._root.hovered = true;
@@ -156,7 +147,7 @@ class HovercardContent {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -165,18 +156,17 @@ class HovercardContent {
 //
 type ArrowProps = GetInternalProps<HovercardArrowProps>;
 class HovercardArrow {
-	$id: ArrowProps['id'];
+	$$: ArrowProps;
 
 	_root: HovercardRoot;
 
 	constructor(root: HovercardRoot, props: ArrowProps) {
+		this.$$ = props;
 		this._root = root;
-
-		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.arrow]: '',
 		...attach((node) => {
 			this._root.arrow = node;
@@ -184,7 +174,7 @@ class HovercardArrow {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 

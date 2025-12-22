@@ -15,7 +15,7 @@
 	}: TooltipArrowProps<typeof ctx.props> = $props();
 
 	let ctx = useTooltipArrow({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

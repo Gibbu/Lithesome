@@ -15,28 +15,20 @@ const { attrs, selectors } = createAttributes('pin', ['root', 'input', 'value'])
 //
 type RootProps = GetInternalProps<PinProps>;
 class PinRoot {
-	$id: string;
-	$value: RootProps['value'];
-	$disabled: RootProps['disabled'];
-	$placeholder: RootProps['placeholder'];
-	$type: RootProps['type'];
+	$$: RootProps;
 
 	inputs = $state<string[]>([]);
 
 	Filled = $derived.by(
-		() => this.$value.val.length === this.inputs.length && this.$value.val.every((el) => el?.length === 1)
+		() => this.$$.value.val.length === this.inputs.length && this.$$.value.val.every((el) => el?.length === 1)
 	);
 
 	constructor(props: RootProps) {
-		this.$value = props.value;
-		this.$disabled = props.disabled;
-		this.$placeholder = props.placeholder;
-		this.$type = props.type;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	setValue = (index: number, value: string) => {
-		this.$value.val[index] = value;
+		this.$$.value.val[index] = value;
 	};
 
 	registerInput = (id: string) => {
@@ -44,9 +36,9 @@ class PinRoot {
 	};
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.root]: '',
-		'aria-disabled': this.$disabled.val || undefined
+		'aria-disabled': this.$$.disabled.val || undefined
 	}));
 
 	state = $derived.by(() => ({
@@ -59,20 +51,20 @@ class PinRoot {
 //
 type InputProps = GetInternalProps<PinInputProps>;
 class PinInput {
-	$id: string;
+	$$: InputProps;
 
 	_root: PinRoot;
 
 	focused = $state<boolean>(false);
 
-	Index = $derived.by(() => this._root.inputs.indexOf(this.$id));
-	Value = $derived.by(() => this._root.$value.val[this.Index] || '');
+	Index = $derived.by(() => this._root.inputs.indexOf(this.$$.id.val));
+	Value = $derived.by(() => this._root.$$.value.val[this.Index] || '');
 
 	constructor(root: PinRoot, props: InputProps) {
-		this.$id = props.id;
+		this.$$ = props;
 		this._root = root;
 
-		this._root.registerInput(this.$id);
+		this._root.registerInput(this.$$.id.val);
 	}
 
 	moveFocus = (action: CalcIndexAction | number) => {
@@ -88,14 +80,14 @@ class PinInput {
 	};
 
 	props = $derived.by(() => ({
-		id: this.$id,
-		disabled: this._root.$disabled.val,
-		placeholder: this.focused ? '' : this._root.$placeholder.val,
+		id: this.$$.id.val,
+		disabled: this._root.$$.disabled.val,
+		placeholder: this.focused ? '' : this._root.$$.placeholder.val,
 		[attrs.input]: '',
 		...attach((node) =>
 			addEvents(node, {
 				input: async (event) => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					const e = event as unknown as InputEvent & { target: HTMLInputElement };
 
@@ -111,7 +103,7 @@ class PinInput {
 					}
 				},
 				keydown: async (e) => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					const { key } = e;
 
@@ -125,7 +117,7 @@ class PinInput {
 					if (key === KEYS.arrowRight) this.moveFocus('next');
 					if (key === KEYS.delete) {
 						this._root.setValue(this.Index, '');
-						const target = document.querySelector(`${selectors.input}#${this.$id}`) as HTMLInputElement | null;
+						const target = document.querySelector(`${selectors.input}#${this.$$.id.val}`) as HTMLInputElement | null;
 						if (target) target.value = '';
 					}
 					if (key === KEYS.backspace) {
@@ -133,7 +125,7 @@ class PinInput {
 
 						if (!selection && this.Value.length) {
 							this._root.setValue(this.Index, '');
-							const target = document.querySelector(`${selectors.input}#${this.$id}`) as HTMLInputElement | null;
+							const target = document.querySelector(`${selectors.input}#${this.$$.id.val}`) as HTMLInputElement | null;
 							if (target) target.value = '';
 							return;
 						}
@@ -144,12 +136,12 @@ class PinInput {
 					}
 				},
 				focus: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					this.focused = true;
 				},
 				blur: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					this.focused = false;
 				},
@@ -177,7 +169,7 @@ class PinInput {
 
 	state = $derived.by(() => ({
 		filled: this._root.Filled,
-		disabled: this._root.$disabled.val,
+		disabled: this._root.$$.disabled.val,
 		focused: this.focused
 	}));
 }

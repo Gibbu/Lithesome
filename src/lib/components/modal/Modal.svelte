@@ -18,7 +18,7 @@
 	}: ModalProps<typeof ctx.state> = $props();
 
 	let ctx = createModalRootContext({
-		id,
+		id: stateValue(() => id),
 		visible: stateValue(
 			() => visible,
 			(v) => (visible = v)

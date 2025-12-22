@@ -14,7 +14,7 @@
 		...props
 	}: AccordionContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useAccordionContent({ id, ref: stateValue(() => ref!) });
+	let ctx = useAccordionContent({ id: stateValue(() => id), ref: stateValue(() => ref!) });
 </script>
 
 <Element bind:ref {children} {custom} {ctx} visible={ctx._item.Active} {...props} />

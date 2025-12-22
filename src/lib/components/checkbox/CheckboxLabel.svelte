@@ -16,7 +16,7 @@
 	}: CheckboxLabelProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useCheckboxLabel({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

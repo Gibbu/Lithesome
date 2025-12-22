@@ -15,7 +15,7 @@
 	}: TooltipTriggerProps<typeof ctx.props> = $props();
 
 	let ctx = useTooltipTrigger({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

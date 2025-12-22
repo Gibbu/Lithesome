@@ -18,7 +18,7 @@
 	}: TooltipProps<typeof ctx.state> = $props();
 
 	let ctx = createTooltipRootContext({
-		id,
+		id: stateValue(() => id),
 		visible: stateValue(
 			() => visible,
 			(v) => {

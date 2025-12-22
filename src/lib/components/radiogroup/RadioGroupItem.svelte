@@ -18,7 +18,7 @@
 	}: RadioGroupItemProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useRadioGroupItem({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		value: stateValue(() => value),
 		disabled: stateValue(() => disabled)

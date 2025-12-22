@@ -20,22 +20,14 @@ const { attrs } = createAttributes('modal', ['root', 'trigger', 'backdrop', 'con
 //
 type RootProps = GetInternalProps<ModalProps>;
 class ModalRoot extends Scrolling {
-	$id: RootProps['id'];
-	$visible: RootProps['visible'];
-	$portalTarget: RootProps['portalTarget'];
-	$disabled: RootProps['disabled'];
-	$closeOnBackdropClick: RootProps['closeOnBackdropClick'];
+	$$: RootProps;
 
 	sharedIds = new SvelteMap<'content' | 'title' | 'description', string>();
 
 	constructor(props: RootProps) {
-		super(props.id);
+		super(props.id.val);
 
-		this.$id = props.id;
-		this.$visible = props.visible;
-		this.$portalTarget = props.portalTarget;
-		this.$disabled = props.disabled;
-		this.$closeOnBackdropClick = props.closeOnBackdropClick;
+		this.$$ = props;
 
 		$effect(() => {
 			window.addEventListener('keydown', this.handleKeydown);
@@ -45,7 +37,7 @@ class ModalRoot extends Scrolling {
 		});
 
 		$effect(() => {
-			if (this.$visible.val) {
+			if (this.$$.visible.val) {
 				this.addItemToScrollQueue();
 			} else {
 				this.removeItemFromScrollQueue();
@@ -54,21 +46,21 @@ class ModalRoot extends Scrolling {
 	}
 
 	open = () => {
-		this.$visible.val = true;
+		this.$$.visible.val = true;
 	};
 	close = () => {
-		this.$visible.val = false;
+		this.$$.visible.val = false;
 	};
 	toggle = () => {
-		this.$visible.val = !this.$visible.val;
+		this.$$.visible.val = !this.$$.visible.val;
 	};
 
 	handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === KEYS.escape) this.$visible.val = false;
+		if (e.key === KEYS.escape) this.$$.visible.val = false;
 	};
 
 	state = $derived.by(() => ({
-		visible: this.$visible.val
+		visible: this.$$.visible.val
 	}));
 }
 
@@ -77,26 +69,25 @@ class ModalRoot extends Scrolling {
 //
 type TriggerProps = GetInternalProps<ModalTriggerProps>;
 class ModalTrigger {
-	$id: TriggerProps['id'];
+	$$: TriggerProps;
 
 	_root: ModalRoot;
 
 	constructor(root: ModalRoot, props: TriggerProps) {
 		this._root = root;
-
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.trigger]: '',
 		'aria-haspopup': 'dialog',
-		'aria-expanded': this._root.$visible.val,
-		'aria-controls': this._root.$visible.val ? this._root.sharedIds.get('content') : undefined,
+		'aria-expanded': this._root.$$.visible.val,
+		'aria-controls': this._root.$$.visible.val ? this._root.sharedIds.get('content') : undefined,
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					this._root.toggle();
 				}
@@ -105,7 +96,7 @@ class ModalTrigger {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -114,29 +105,28 @@ class ModalTrigger {
 //
 type BackdropProps = GetInternalProps<ModalBackdropProps>;
 class ModalBackdrop {
-	$id: BackdropProps['id'];
+	$$: BackdropProps;
 
 	_root: ModalRoot;
 
 	constructor(root: ModalRoot, props: BackdropProps) {
 		this._root = root;
-
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.backdrop]: '',
 		'aria-hidden': true,
 		...attach((node) => {
 			const eventsCleanUp = addEvents(node, {
 				click: () => {
-					if (this._root.$disabled.val || !this._root.$closeOnBackdropClick.val) return;
+					if (this._root.$$.disabled.val || !this._root.$$.closeOnBackdropClick.val) return;
 
 					this._root.close();
 				}
 			});
-			const portalCleanUp = portal(this._root.$portalTarget.val)(node);
+			const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
 
 			return () => {
 				eventsCleanUp?.();
@@ -146,7 +136,7 @@ class ModalBackdrop {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -155,20 +145,19 @@ class ModalBackdrop {
 //
 type ContentProps = GetInternalProps<ModalContentProps>;
 class ModalContent {
-	$id: ContentProps['id'];
+	$$: ContentProps;
 
 	_root: ModalRoot;
 
 	constructor(root: ModalRoot, props: ContentProps) {
 		this._root = root;
-
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(
 		() =>
 			({
-				id: this.$id,
+				id: this.$$.id.val,
 				[attrs.content]: '',
 				role: 'dialog',
 				'aria-modal': 'true',
@@ -179,7 +168,7 @@ class ModalContent {
 					const trapCleanUp = trap({
 						allowOutsideClick: true
 					})(node);
-					const portalCleanUp = portal(this._root.$portalTarget.val)(node);
+					const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
 
 					return () => {
 						trapCleanUp?.();
@@ -190,7 +179,7 @@ class ModalContent {
 	);
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -199,20 +188,20 @@ class ModalContent {
 //
 type TitleProps = GetInternalProps<ModalTitleProps>;
 class ModalTitle {
-	$id: TitleProps['id'];
+	$$: TitleProps;
 
 	_root: ModalRoot;
 
-	constructor(_root: ModalRoot, props: TitleProps) {
-		this._root = _root;
+	constructor(root: ModalRoot, props: TitleProps) {
+		this._root = root;
 
-		this.$id = props.id;
+		this.$$ = props;
 
-		this._root.sharedIds.set('title', this.$id);
+		this._root.sharedIds.set('title', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.title]: ''
 	}));
 }
@@ -222,20 +211,20 @@ class ModalTitle {
 //
 type DescriptionProps = GetInternalProps<ModalDescriptionProps>;
 class ModalDescription {
-	$id: DescriptionProps['id'];
+	$$: DescriptionProps;
 
 	_root: ModalRoot;
 
-	constructor(_root: ModalRoot, props: DescriptionProps) {
-		this._root = _root;
+	constructor(root: ModalRoot, props: DescriptionProps) {
+		this._root = root;
 
-		this.$id = props.id;
+		this.$$ = props;
 
-		this._root.sharedIds.set('description', this.$id);
+		this._root.sharedIds.set('description', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.description]: ''
 	}));
 }

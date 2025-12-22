@@ -19,37 +19,37 @@ const { attrs } = createAttributes('accordion', ['root', 'item', 'heading', 'but
 //
 type RootProps = GetInternalProps<AccordionProps>;
 export class AccordionRoot {
-	$id: string;
-	$value: RootProps['value'];
+	$$: RootProps;
 
 	items = $state<string[]>([]);
 
 	constructor(props: RootProps) {
-		this.$value = props.value;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	toggleActiveItem = (itemId: string) => {
-		if (Array.isArray(this.$value.val)) {
-			if (this.$value.val.includes(itemId)) this.$value.val = this.$value.val.filter((el) => el != itemId);
-			else this.$value.val.push(itemId);
+		if (Array.isArray(this.$$.value.val)) {
+			if (this.$$.value.val.includes(itemId)) this.$$.value.val = this.$$.value.val.filter((el) => el != itemId);
+			else this.$$.value.val.push(itemId);
+
+			console.log(this.$$.value.val);
 		} else {
-			if (this.$value.val === itemId) this.$value.val = '';
-			else this.$value.val = itemId;
+			if (this.$$.value.val === itemId) this.$$.value.val = '';
+			else this.$$.value.val = itemId;
 		}
 	};
 
 	isActive = (value: string) => {
-		return typeof this.$value.val === 'string' ? this.$value.val === value : this.$value.val.includes(value);
+		return typeof this.$$.value.val === 'string' ? this.$$.value.val === value : this.$$.value.val.includes(value);
 	};
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.root]: ''
 	}));
 
 	state = $derived.by(() => ({
-		value: this.$value.val
+		value: this.$$.value.val
 	}));
 }
 
@@ -58,34 +58,30 @@ export class AccordionRoot {
 //
 type ItemProps = GetInternalProps<AccordionItemProps>;
 class AccordionItem {
-	$id: string;
-	$value: ItemProps['value'];
-	$disabled: ItemProps['disabled'];
+	$$: ItemProps;
 
 	_root: AccordionRoot;
 
 	sharedIds = new SvelteMap<'item' | 'button' | 'content', string>();
 
-	Active = $derived.by(() => this._root.isActive(this.$value.val));
+	Active = $derived.by(() => this._root.isActive(this.$$.value.val));
 
 	constructor(root: AccordionRoot, props: ItemProps) {
+		this.$$ = props;
 		this._root = root;
-		this.$value = props.value;
-		this.$disabled = props.disabled;
-		this.$id = props.id;
 
-		this.sharedIds.set('item', this.$id);
+		this.sharedIds.set('item', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.item]: '',
-		'data-value': this.$value.val
+		'data-value': this.$$.value.val
 	}));
 
 	state = $derived.by(() => ({
 		active: this.Active,
-		disabled: this.$disabled.val
+		disabled: this.$$.disabled.val
 	}));
 }
 
@@ -94,24 +90,23 @@ class AccordionItem {
 //
 type HeadingProps = GetInternalProps<AccordionHeadingProps>;
 class AccordionHeading {
-	$id: HeadingProps['id'];
-	$level: HeadingProps['level'];
+	$$: HeadingProps;
 
 	_root: AccordionRoot;
 	_item: AccordionItem;
 
 	constructor(root: AccordionRoot, item: AccordionItem, props: HeadingProps) {
+		this.$$ = props;
+
 		this._root = root;
 		this._item = item;
-		this.$level = props.level;
-		this.$id = props.id;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.heading]: '',
 		role: 'heading',
-		'aria-level': this.$level.val
+		'aria-level': this.$$.level.val
 	}));
 
 	state = $derived.by(() => ({
@@ -124,33 +119,34 @@ class AccordionHeading {
 //
 type ButtonProps = GetInternalProps<AccordionButtonProps>;
 class AccordionButton {
-	$id: ButtonProps['id'];
+	$$: ButtonProps;
 
 	_item: AccordionItem;
 	_root: AccordionRoot;
 
 	constructor(item: AccordionItem, root: AccordionRoot, props: ButtonProps) {
+		this.$$ = props;
+
 		this._item = item;
 		this._root = root;
-		this.$id = props.id;
 
-		this._item.sharedIds.set('button', this.$id);
+		this._item.sharedIds.set('button', this.$$.id.val);
 	}
 
 	props = $derived.by(
 		() =>
 			({
-				id: this.$id,
+				id: this.$$.id.val,
 				[attrs.button]: '',
 				type: 'button',
 				'aria-expanded': this._item.Active,
 				'aria-controls': this._item.Active ? this._item.sharedIds.get('content') : undefined,
-				tabindex: this._item.$disabled.val ? -1 : 0,
+				tabindex: this._item.$$.disabled.val ? -1 : 0,
 				...attach((node) =>
 					addEvents(node, {
 						click: () => {
-							if (this._item.$disabled.val) return;
-							this._root.toggleActiveItem(this._item.$value.val);
+							if (this._item.$$.disabled.val) return;
+							this._root.toggleActiveItem(this._item.$$.value.val);
 						}
 					})
 				)
@@ -159,7 +155,7 @@ class AccordionButton {
 
 	state = $derived.by(() => ({
 		active: this._item.Active,
-		disabled: this._item.$disabled.val
+		disabled: this._item.$$.disabled.val
 	}));
 }
 
@@ -168,21 +164,22 @@ class AccordionButton {
 //
 type ContentProps = GetInternalProps<AccordionContentProps>;
 class AccordionContent {
-	$id: ContentProps['id'];
+	$$: ContentProps;
 
 	_item: AccordionItem;
 	_root: AccordionRoot;
 
 	constructor(item: AccordionItem, root: AccordionRoot, props: ContentProps) {
+		this.$$ = props;
+
 		this._item = item;
 		this._root = root;
-		this.$id = props.id;
 
-		this._item.sharedIds.set('content', this.$id);
+		this._item.sharedIds.set('content', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.content]: ''
 	}));
 

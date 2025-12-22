@@ -22,43 +22,33 @@ const { attrs } = createAttributes('tooltip', ['trigger', 'content', 'arrow']);
 //
 type RootProps = GetInternalProps<TooltipProps>;
 class TooltipRoot extends Floating {
-	$visible: RootProps['visible'];
-	$disabled: RootProps['disabled'];
-	$delay: RootProps['delay'];
-	$portalTarget: RootProps['portalTarget'];
-	$floatingConfig: RootProps['floatingConfig'];
+	$$: RootProps;
 
 	sharedIds = new SvelteMap<'trigger' | 'content', string>();
 	timeout = trackTimeout();
 
-	ParsedDelay = $derived.by(() => parseDelay(this.$delay.val));
+	ParsedDelay = $derived.by(() => parseDelay(this.$$.delay.val));
 
 	constructor(props: RootProps) {
 		super();
 
-		this.$visible = props.visible;
-		this.$disabled = props.disabled;
-		this.$delay = props.delay;
-		this.$portalTarget = props.portalTarget;
-		this.$floatingConfig = props.floatingConfig;
+		this.$$ = props;
 	}
 
 	open = () => {
 		this.timeout.set(() => {
-			this.$visible.val = true;
+			this.$$.visible.val = true;
 		}, this.ParsedDelay.in);
 	};
 
 	close = () => {
 		this.timeout.set(() => {
-			this.$visible.val = false;
+			this.$$.visible.val = false;
 		}, this.ParsedDelay.out);
 	};
 
-	props = {};
-
 	state = $derived.by(() => ({
-		visible: this.$visible.val
+		visible: this.$$.visible.val
 	}));
 }
 
@@ -67,14 +57,14 @@ class TooltipRoot extends Floating {
 //
 type TriggerProps = GetInternalProps<TooltipArrowProps>;
 class TooltipTrigger {
-	$id: TriggerProps['id'];
+	$$: TriggerProps;
 
 	_root: TooltipRoot;
 
 	constructor(root: TooltipRoot, props: TriggerProps) {
 		this._root = root;
 
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
@@ -86,19 +76,19 @@ class TooltipTrigger {
 
 			return addEvents(node, {
 				mouseenter: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.open();
 				},
 				mouseleave: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.close();
 				},
 				focus: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.open();
 				},
 				blur: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 					this._root.close();
 				}
 			});
@@ -106,7 +96,7 @@ class TooltipTrigger {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -115,14 +105,14 @@ class TooltipTrigger {
 //
 type ContentProps = GetInternalProps<TooltipArrowProps>;
 class TooltipContent {
-	$id: ContentProps['id'];
+	$$: ContentProps;
 
 	_root: TooltipRoot;
 
 	constructor(root: TooltipRoot, props: ContentProps) {
 		this._root = root;
 
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
@@ -131,8 +121,8 @@ class TooltipContent {
 		...attach((node) => {
 			this._root.content = node;
 
-			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$floatingConfig.val)(node);
-			const portalCleanUp = portal(this._root.$portalTarget.val)(node);
+			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$$.floatingConfig.val)(node);
+			const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
 
 			return () => {
 				floatingCleanUp?.();
@@ -142,7 +132,7 @@ class TooltipContent {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -151,17 +141,17 @@ class TooltipContent {
 //
 type ArrowProps = GetInternalProps<TooltipArrowProps>;
 class TooltipArrow {
-	id: string;
+	$$: ArrowProps;
 
 	_parent: TooltipRoot;
 
 	constructor(parent: TooltipRoot, props: ArrowProps) {
 		this._parent = parent;
-		this.id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$$.id.val,
 		[attrs.arrow]: '',
 		...attach((node) => {
 			this._parent.arrow = node;
@@ -169,7 +159,7 @@ class TooltipArrow {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._parent.$visible.val
+		visible: this._parent.$$.visible.val
 	}));
 }
 

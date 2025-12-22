@@ -15,7 +15,7 @@
 	}: TooltipContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useTooltipContent({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

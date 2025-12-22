@@ -20,7 +20,7 @@
 	}: SelectProps<typeof ctx.state> = $props();
 
 	let ctx = createSelectRootContext({
-		id,
+		id: stateValue(() => id),
 		value: stateValue(
 			() => value,
 			(v) => {

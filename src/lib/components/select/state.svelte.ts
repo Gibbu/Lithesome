@@ -36,13 +36,7 @@ interface InternalSelectOption {
 //
 type RootProps = GetInternalProps<SelectProps>;
 class SelectRoot extends Floating {
-	$id: RootProps['id'];
-	$value: RootProps['value'];
-	$visible: RootProps['visible'];
-	$multiple: RootProps['multiple'];
-	$disabled: RootProps['disabled'];
-	$floatingConfig: RootProps['floatingConfig'];
-	$portalTarget: RootProps['portalTarget'];
+	$$: RootProps;
 
 	hoveredIndex = $state<number>(-1);
 	options = $state<InternalSelectOption[]>([]);
@@ -55,15 +49,9 @@ class SelectRoot extends Floating {
 	constructor(props: RootProps) {
 		super();
 
-		this.$value = props.value;
-		this.$visible = props.visible;
-		this.$multiple = props.multiple;
-		this.$disabled = props.disabled;
-		this.$floatingConfig = props.floatingConfig;
-		this.$portalTarget = props.portalTarget;
-		this.$id = props.id;
+		this.$$ = props;
 
-		if (this.$value.val) this.setInitialSelected();
+		if (this.$$.value.val) this.setInitialSelected();
 		else this.doneMounting();
 	}
 
@@ -71,20 +59,20 @@ class SelectRoot extends Floating {
 	 * Toggle the visible state of the content
 	 */
 	toggle = () => {
-		this.$visible.val = !this.$visible.val;
+		this.$$.visible.val = !this.$$.visible.val;
 	};
 	/**
 	 * Set the visible state of the content to true
 	 */
 	open = () => {
-		this.$visible.val = true;
+		this.$$.visible.val = true;
 	};
 	/**
 	 * Set the visible state of the content to false\
 	 * and reset variables to reduce duplicate entries.
 	 */
 	close = () => {
-		this.$visible.val = false;
+		this.$$.visible.val = false;
 		this.options = [];
 		this.hoveredIndex = -1;
 	};
@@ -93,7 +81,7 @@ class SelectRoot extends Floating {
 	 */
 	doneMounting = () => {
 		this.mounted = true;
-		this.$visible.val = false;
+		this.$$.visible.val = false;
 	};
 
 	/**
@@ -103,7 +91,7 @@ class SelectRoot extends Floating {
 		const hovered = this.options[this.hoveredIndex];
 		if (hovered) {
 			const option = document.querySelector(
-				`#${this.$id} ${selectors.option}[data-value=${hovered.value}]`
+				`#${this.$$.id.val} ${selectors.option}[data-value=${hovered.value}]`
 			) as HTMLElement;
 			if (option) return option;
 		}
@@ -165,7 +153,7 @@ class SelectRoot extends Floating {
 	setSelected = () => {
 		if (!this.HoveredOption) return;
 
-		if (this.$multiple.val) {
+		if (this.$$.multiple.val) {
 			if (this.selectedOptions.find((el) => el.value === this.HoveredOption?.value)) {
 				this.selectedOptions = this.selectedOptions.filter((el) => el.value !== this.HoveredOption?.value);
 			} else {
@@ -175,16 +163,18 @@ class SelectRoot extends Floating {
 			this.selectedOptions[0] = this.HoveredOption;
 		}
 
-		if (!this.$multiple.val) this.$visible.val = false;
+		if (!this.$$.multiple.val) this.$$.visible.val = false;
 
-		this.$value.val = this.$multiple.val ? this.selectedOptions.map((el) => el.value) : this.selectedOptions[0].value;
+		this.$$.value.val = this.$$.multiple.val
+			? this.selectedOptions.map((el) => el.value)
+			: this.selectedOptions[0].value;
 	};
 	/**
 	 * Sets the trigger label to the selected value, only if it's found in the options array.
 	 */
 	setInitialSelected = async () => {
 		await tick();
-		const value = this.$value.val;
+		const value = this.$$.value.val;
 		this.selectedOptions = this.options.filter((el) => {
 			if (!Array.isArray(value) && el.value === value) return el;
 			else if (Array.isArray(value) && value.includes(el.value)) return el;
@@ -193,7 +183,7 @@ class SelectRoot extends Floating {
 	};
 
 	state = $derived.by(() => ({
-		visible: this.$visible.val
+		visible: this.$$.visible.val
 	}));
 }
 
@@ -202,32 +192,30 @@ class SelectRoot extends Floating {
 //
 type TriggerProps = GetInternalProps<SelectTriggerProps>;
 class SelectTrigger {
-	$id: TriggerProps['id'];
-	$ref: OptionProps['ref'];
+	$$: TriggerProps;
 
 	_root: SelectRoot;
 
 	constructor(root: SelectRoot, props: TriggerProps) {
 		this._root = root;
-		this.$id = props.id;
-		this.$ref = props.ref;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.trigger]: '',
 		role: 'button',
 		'aria-haspopup': 'listbox',
-		'aria-expanded': this._root.$visible.val,
+		'aria-expanded': this._root.$$.visible.val,
 		'aria-autocomplete': 'list',
-		'aria-controls': this._root.$visible.val ? this._root.sharedIds.get('content') : undefined,
+		'aria-controls': this._root.$$.visible.val ? this._root.sharedIds.get('content') : undefined,
 		...attach((node) => {
 			this._root.trigger = node;
 
 			// Such a hacky way, but it works :\
 			if (this._root.HoveredOption || this._root.selectedOptions[0]) {
 				tick().then(async () => {
-					if (this._root.$visible.val) {
+					if (this._root.$$.visible.val) {
 						const id = await this._root.getHoveredOrFirstSelectedId();
 						if (id) node.setAttribute('aria-activedescendant', id);
 					} else {
@@ -238,7 +226,7 @@ class SelectTrigger {
 
 			return addEvents(node, {
 				click: () => {
-					if (this._root.$disabled.val) return;
+					if (this._root.$$.disabled.val) return;
 
 					this._root.toggle();
 				},
@@ -254,9 +242,9 @@ class SelectTrigger {
 					if (key === KEYS.escape) this._root.close();
 					if (key === KEYS.enter) {
 						e.preventDefault();
-						if (this._root.HoveredOption && this._root.$visible.val) {
+						if (this._root.HoveredOption && this._root.$$.visible.val) {
 							this._root.getElementByValue(this._root.HoveredOption.value)?.click();
-							if (!this._root.$multiple) this._root.close();
+							if (!this._root.$$.multiple.val) this._root.close();
 						} else {
 							this._root.open();
 						}
@@ -268,7 +256,7 @@ class SelectTrigger {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -277,28 +265,26 @@ class SelectTrigger {
 //
 type ContentProps = GetInternalProps<SelectContentProps>;
 class SelectContent {
-	$id: ContentProps['id'];
-	$ref: OptionProps['ref'];
+	$$: ContentProps;
 
 	_root: SelectRoot;
 
 	constructor(root: SelectRoot, props: ContentProps) {
 		this._root = root;
-		this.$id = props.id;
-		this.$ref = props.ref;
+		this.$$ = props;
 
-		this._root.sharedIds.set('content', this.$id);
+		this._root.sharedIds.set('content', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.content]: '',
 		...attach((node) => {
 			this._root.content = node;
 
 			const outsideCleanUp = outside(this._root.close, [this._root.trigger, selectors.content])(node);
-			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$floatingConfig.val)(node);
-			const portalCleanUp = portal(this._root.$portalTarget.val)(node);
+			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$$.floatingConfig.val)(node);
+			const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
 
 			return () => {
 				outsideCleanUp?.();
@@ -309,7 +295,7 @@ class SelectContent {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 
 	styles = $derived.by(() => {
@@ -322,26 +308,25 @@ class SelectContent {
 //
 type ArrowProps = GetInternalProps<SelectArrowProps>;
 class SelectArrow {
-	$id: ArrowProps['id'];
-	$ref: OptionProps['ref'];
+	$$: ArrowProps;
 
 	_root: SelectRoot;
 
 	constructor(root: SelectRoot, props: ArrowProps) {
 		this._root = root;
-		this.$id = props.id;
-		this.$ref = props.ref;
-
-		this._root.arrow = this.$ref.val;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
-		[attrs.arrow]: ''
+		id: this.$$.id.val,
+		[attrs.arrow]: '',
+		...attach((node) => {
+			this._root.arrow = node;
+		})
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -350,55 +335,47 @@ class SelectArrow {
 //
 type OptionProps = GetInternalProps<SelectOptionProps>;
 class SelectOption {
-	$value: OptionProps['value'];
-	$disabled: OptionProps['disabled'];
-	$label: OptionProps['label'];
-	$id: OptionProps['id'];
-	$ref: OptionProps['ref'];
+	$$: OptionProps;
 
 	_root: SelectRoot;
 
-	Hovered = $derived.by(() => this._root.HoveredOption?.value === this.$value.val);
-	Selected = $derived.by(() => !!this._root.selectedOptions.find((el) => el.value === this.$value.val));
+	Hovered = $derived.by(() => this._root.HoveredOption?.value === this.$$.value.val);
+	Selected = $derived.by(() => !!this._root.selectedOptions.find((el) => el.value === this.$$.value.val));
 
 	constructor(root: SelectRoot, props: OptionProps) {
 		this._root = root;
 
-		this.$value = props.value;
-		this.$disabled = props.disabled;
-		this.$label = props.label;
-		this.$id = props.id;
-		this.$ref = props.ref;
+		this.$$ = props;
 
 		$effect(() => {
-			if (this.$disabled.val) return;
+			if (this.$$.disabled.val) return;
 
-			const label = this.$label.val || this.$ref.val.textContent.trim();
-			this._root.registerOption(this.$value.val, label);
+			const label = this.$$.label.val || this.$$.ref.val.textContent.trim();
+			this._root.registerOption(this.$$.value.val, label);
 		});
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.option]: '',
 		type: 'button',
-		disabled: this.$disabled.val,
+		disabled: this.$$.disabled.val,
 		role: 'option',
 		tabindex: 0,
 		'aria-selected': this.Selected,
-		'data-value': this.$value.val,
-		'data-label': this.$label.val,
+		'data-value': this.$$.value.val,
+		'data-label': this.$$.label.val,
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
-					if (this.$disabled.val) return;
+					if (this.$$.disabled.val) return;
 
 					this._root.setSelected();
 				},
 				mouseover: () => {
-					if (this.$disabled.val) return;
+					if (this.$$.disabled.val) return;
 
-					this._root.setHovered(this.$value.val);
+					this._root.setHovered(this.$$.value.val);
 				}
 			})
 		)
@@ -415,8 +392,7 @@ class SelectOption {
 //
 type ValueProps = GetInternalProps<SelectValueProps>;
 class SelectValue {
-	$placeholder: ValueProps['placeholder'];
-	$id: ValueProps['id'];
+	$$: ValueProps;
 
 	_root: SelectRoot;
 
@@ -425,15 +401,14 @@ class SelectValue {
 	constructor(root: SelectRoot, props: ValueProps) {
 		this._root = root;
 
-		this.$placeholder = props.placeholder;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	label = $derived.by(() =>
-		this.PlaceholderVisible ? this.$placeholder.val : this._root.selectedOptions.map((el) => el.label).join(',')
+		this.PlaceholderVisible ? this.$$.placeholder.val : this._root.selectedOptions.map((el) => el.label).join(',')
 	);
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.option]: '',
 		'data-selectvalue': '',
 		'data-placeholder': this.PlaceholderVisible || undefined

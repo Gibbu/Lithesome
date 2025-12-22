@@ -14,7 +14,7 @@
 		...props
 	}: AccordionButtonProps<typeof ctx.props, typeof ctx.state> = $props();
 
-	let ctx = useAccordionButton({ id, ref: stateValue(() => ref!) });
+	let ctx = useAccordionButton({ id: stateValue(() => id), ref: stateValue(() => ref!) });
 </script>
 
 <Element bind:ref {children} {custom} {ctx} as="button" {...props} />

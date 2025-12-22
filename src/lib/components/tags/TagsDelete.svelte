@@ -17,7 +17,7 @@
 	}: TagsDeleteProps<typeof ctx.props> = $props();
 
 	let ctx = useTagsDelete({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		value: stateValue(() => value)
 	});

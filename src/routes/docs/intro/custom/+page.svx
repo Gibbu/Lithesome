@@ -30,8 +30,8 @@ Here's an example using the `<Menu />` components.
 
 Technically this _does_ work. But if you were to view the resulting HTML, it's wrapping a button inside another button. This is very bad for accessibility, event handling, ect...
 
-To work around this, we use the `custom` snippet block and destructure the parameter and spread the `attrs` object.  
-The `attrs` object holds all the necessary logic and attributes.
+To work around this, we use the `custom` snippet block and destructure the parameter and spread the `props` object.  
+The `props` object holds all the necessary logic and attributes.
 
 ```svelte
 <Menu>

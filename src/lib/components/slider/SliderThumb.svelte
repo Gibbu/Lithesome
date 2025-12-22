@@ -9,7 +9,7 @@
 	let { id = parseId(uid), ref = $bindable(), ...props }: SliderThumbProps<typeof ctx.state> = $props();
 
 	let ctx = useSliderThumb({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

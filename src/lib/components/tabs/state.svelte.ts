@@ -20,9 +20,7 @@ const { attrs } = createAttributes('tabs', ['root', 'list', 'button', 'content']
 //
 type RootProps = GetInternalProps<TabsProps>;
 class TabsRoot {
-	$id: string;
-	$value: RootProps['value'];
-	$orientation: RootProps['orientation'];
+	$$: RootProps;
 
 	tabs = $state<string[]>([]);
 	index = $state<number>(0);
@@ -32,9 +30,7 @@ class TabsRoot {
 	ActiveTab = $derived.by(() => this.tabs[this.index] || this.tabs[0]);
 
 	constructor(props: RootProps) {
-		this.$value = props.value;
-		this.$orientation = props.orientation;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	setActiveTab = (btnValue: string) => {
@@ -44,7 +40,7 @@ class TabsRoot {
 		}
 
 		this.index = this.tabs.findIndex((el) => el === btnValue);
-		this.$value.val = this.tabs[this.index];
+		this.$$.value.val = this.tabs[this.index];
 	};
 
 	navigate = (action: CalcIndexAction) => {
@@ -54,9 +50,9 @@ class TabsRoot {
 	};
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.root]: '',
-		'data-orientation': this.$orientation.val
+		'data-orientation': this.$$.orientation.val
 	}));
 
 	state = $derived.by(() => ({
@@ -69,21 +65,21 @@ class TabsRoot {
 //
 type ListProps = GetInternalProps<TabsListProps>;
 class TabsList {
-	$id: string;
+	$$: ListProps;
 
 	_root: TabsRoot;
 
 	constructor(root: TabsRoot, props: ListProps) {
 		this._root = root;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.list]: '',
 		role: 'tablist',
-		'aria-orientation': this._root.$orientation.val,
-		'data-orientation': this._root.$orientation.val
+		'aria-orientation': this._root.$$.orientation.val,
+		'data-orientation': this._root.$$.orientation.val
 	}));
 
 	state = $derived.by(() => ({
@@ -96,37 +92,34 @@ class TabsList {
 //
 type ButtonProps = GetInternalProps<TabsButtonProps>;
 class TabsButton {
-	$id: string;
-	$value: ButtonProps['value'];
-	$disabled: ButtonProps['disabled'];
+	$$: ButtonProps;
 
 	_root: TabsRoot;
 
-	IsActive = $derived.by(() => this._root.ActiveTab === this.$value.val);
+	IsActive = $derived.by(() => this._root.ActiveTab === this.$$.value.val);
 
 	constructor(root: TabsRoot, props: ButtonProps) {
 		this._root = root;
-		this.$value = props.value;
-		this.$disabled = props.disabled;
-		this.$id = props.id;
-		this._root.tabButtonToPanel.set('button-' + this.$value.val, this.$id);
+		this.$$ = props;
+
+		this._root.tabButtonToPanel.set('button-' + this.$$.value.val, this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.button]: '',
 		type: 'button',
 		tabindex: this.IsActive ? 0 : -1,
-		'aria-controls': this._root.tabButtonToPanel.get('panel-' + this.$value.val),
+		'aria-controls': this._root.tabButtonToPanel.get('panel-' + this.$$.value.val),
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
-					if (this.$disabled.val) return;
+					if (this.$$.disabled.val) return;
 
-					this._root.setActiveTab(this.$value.val);
+					this._root.setActiveTab(this.$$.value.val);
 				},
 				keydown: (e) => {
-					if (this.$disabled.val) return;
+					if (this.$$.disabled.val) return;
 
 					const { key } = e;
 
@@ -135,13 +128,13 @@ class TabsButton {
 					if (key === KEYS.home) this._root.navigate('first');
 					if (key === KEYS.end) this._root.navigate('last');
 					if (
-						(key === KEYS.arrowUp && this._root.$orientation.val === 'vertical') ||
-						(key === KEYS.arrowLeft && this._root.$orientation.val === 'horizontal')
+						(key === KEYS.arrowUp && this._root.$$.orientation.val === 'vertical') ||
+						(key === KEYS.arrowLeft && this._root.$$.orientation.val === 'horizontal')
 					)
 						this._root.navigate('prev');
 					if (
-						(key === KEYS.arrowDown && this._root.$orientation.val === 'vertical') ||
-						(key === KEYS.arrowRight && this._root.$orientation.val === 'horizontal')
+						(key === KEYS.arrowDown && this._root.$$.orientation.val === 'vertical') ||
+						(key === KEYS.arrowRight && this._root.$$.orientation.val === 'horizontal')
 					)
 						this._root.navigate('next');
 				}
@@ -159,30 +152,28 @@ class TabsButton {
 //
 type ContentProps = GetInternalProps<TabsContentProps>;
 class TabsContent {
-	$id: string;
-	$value: ContentProps['value'];
+	$$: ContentProps;
 
 	_root: TabsRoot;
 
-	IsActive = $derived.by(() => this._root.ActiveTab === this.$value.val);
+	IsActive = $derived.by(() => this._root.ActiveTab === this.$$.value.val);
 
 	constructor(_root: TabsRoot, props: ContentProps) {
 		this._root = _root;
-		this.$value = props.value;
-		this.$id = props.id;
+		this.$$ = props;
 
 		this._root.tabs.push(props.value.val);
-		this._root.tabButtonToPanel.set('panel-' + this.$value.val, this.$id);
+		this._root.tabButtonToPanel.set('panel-' + this.$$.value.val, this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.content]: '',
 		role: 'tabpanel',
 		'aria-hidden': !this.IsActive,
 		'data-state': this.IsActive ? 'active' : 'inactive',
-		'data-value': this.$value.val,
-		'data-orientation': this._root.$orientation.val
+		'data-value': this.$$.value.val,
+		'data-orientation': this._root.$$.orientation.val
 	}));
 
 	state = $derived.by(() => ({

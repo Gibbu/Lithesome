@@ -18,7 +18,7 @@
 	}: SelectOptionProps<typeof ctx.props, typeof ctx.state> & Record<string, any> = $props();
 
 	let ctx = useSelectOption({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		disabled: stateValue(() => disabled),
 		label: stateValue(() => label || ref?.dataset.label || ''),

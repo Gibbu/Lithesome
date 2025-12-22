@@ -17,7 +17,7 @@
 	}: TabsButtonProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useTabsButton({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,

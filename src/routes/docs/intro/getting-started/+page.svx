@@ -9,15 +9,15 @@ order: 1
 Install Lithesome using your favourite package manager.
 
 ```bash
-npm i -D lithesome
-```
-
-```bash
 bun add -D lithesome
 ```
 
 ```bash
 pnpm i -D lithesome
+```
+
+```bash
+npm i -D lithesome
 ```
 
 ```bash

@@ -11,25 +11,21 @@ const { attrs } = createAttributes('checkbox', ['group', 'button', 'group', 'lab
 //
 type GroupProps = GetInternalProps<CheckboxGroupProps>;
 class CheckboxGroup {
-	$id: GroupProps['id'];
-	$checked: GroupProps['checked'];
-	$disabled: GroupProps['disabled'];
+	$$: GroupProps;
 
 	sharedIds = new SvelteMap<'button' | 'label', string>();
 
 	constructor(props: GroupProps) {
-		this.$id = props.id;
-		this.$checked = props.checked;
-		this.$disabled = props.disabled;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.group]: ''
 	}));
 	state = $derived.by(() => ({
-		checked: this.$checked.val,
-		disabled: this.$disabled.val
+		checked: this.$$.checked.val,
+		disabled: this.$$.disabled.val
 	}));
 }
 
@@ -38,38 +34,30 @@ class CheckboxGroup {
 //
 type ButtonProps = GetInternalProps<CheckboxButtonProps>;
 class CheckboxButton {
-	$id: ButtonProps['id'];
-	$checked: ButtonProps['checked'];
-	$disabled: ButtonProps['disabled'];
-	$name: ButtonProps['name'];
-	$required: ButtonProps['required'];
+	$$: ButtonProps;
 
 	_group?: CheckboxGroup;
 
-	Checked = $derived.by(() => this._group?.$checked.val || this.$checked.val);
-	Disabled = $derived.by(() => this._group?.$disabled.val || this.$disabled.val);
+	Checked = $derived.by(() => this._group?.$$.checked.val || this.$$.checked.val);
+	Disabled = $derived.by(() => this._group?.$$.disabled.val || this.$$.disabled.val);
 	CheckedBool = $derived.by(() => !!this.Checked);
 
 	constructor(props: ButtonProps, group?: CheckboxGroup) {
-		this.$id = props.id;
-		this.$checked = props.checked;
-		this.$disabled = props.disabled;
-		this.$name = props.name;
-		this.$required = props.required;
+		this.$$ = props;
 
 		if (group) {
 			this._group = group;
-			this._group.sharedIds.set('button', this.$id);
+			this._group.sharedIds.set('button', this.$$.id.val);
 		}
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.button]: '',
 		role: 'checkbox',
 		type: 'button',
 		'aria-checked': this.Checked,
-		'aria-required': this.$required.val || undefined,
+		'aria-required': this.$$.required.val || undefined,
 		'aria-labelledby': this._group?.sharedIds.get('label'),
 		disabled: this.Disabled || undefined,
 		...attach((node) =>
@@ -77,9 +65,9 @@ class CheckboxButton {
 				click: () => {
 					if (this.Disabled) return;
 					if (this._group) {
-						this._group.$checked.val = !this._group.$checked.val;
-						this.$checked.val = this._group.$checked.val;
-					} else this.$checked.val = !this.$checked.val;
+						this._group.$$.checked.val = !this._group.$$.checked.val;
+						this.$$.checked.val = this._group.$$.checked.val;
+					} else this.$$.checked.val = !this.$$.checked.val;
 				}
 			})
 		)
@@ -95,25 +83,26 @@ class CheckboxButton {
 //
 type LabelProps = GetInternalProps<CheckboxLabelProps>;
 class CheckboxLabel {
-	$id: LabelProps['id'];
+	$$: LabelProps;
 
 	_group: CheckboxGroup;
 
 	constructor(group: CheckboxGroup, props: LabelProps) {
-		this._group = group;
-		this.$id = props.id;
+		this.$$ = props;
 
-		this._group.sharedIds.set('label', this.$id);
+		this._group = group;
+
+		this._group.sharedIds.set('label', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.label]: '',
 		for: this._group.sharedIds.get('button')
 	}));
 	state = $derived.by(() => ({
-		checked: this._group.$checked.val,
-		disabled: this._group.$disabled.val
+		checked: this._group.$$.checked.val,
+		disabled: this._group.$$.disabled.val
 	}));
 }
 

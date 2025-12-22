@@ -16,7 +16,7 @@
 	}: ModalTriggerProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useModalTrigger({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

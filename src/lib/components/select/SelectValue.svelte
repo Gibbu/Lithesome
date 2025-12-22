@@ -14,7 +14,7 @@
 	}: SelectValueProps<typeof ctx.props, typeof ctx.state> & Record<string, any> = $props();
 
 	let ctx = useSelectValue({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		placeholder: stateValue(() => placeholder || 'Select an option...')
 	});

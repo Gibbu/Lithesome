@@ -45,24 +45,15 @@ interface GroupItem {
 }
 
 class MenuBaseState extends Floating {
-	$id: string;
-	$visible: RootProps['visible'];
-	$disabled: RootProps['disabled'];
-	$portalTarget: RootProps['portalTarget'];
-	$floatingConfig: RootProps['floatingConfig'];
+	$$: RootProps;
 
 	constructor(props: RootProps) {
 		super();
-
-		this.$visible = props.visible;
-		this.$disabled = props.disabled;
-		this.$portalTarget = props.portalTarget;
-		this.$floatingConfig = props.floatingConfig;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	state = $derived.by(() => ({
-		visible: this.$visible.val
+		visible: this.$$.visible.val
 	}));
 }
 
@@ -87,7 +78,7 @@ class MenuRoot extends MenuBaseState {
 		super(props);
 
 		$effect(() => {
-			if (!this.$visible.val) {
+			if (!this.$$.visible.val) {
 				this.groups = { root: { children: [], path: [] } };
 				this.hoveredIndex = -1;
 				this.openedPath = [];
@@ -103,20 +94,20 @@ class MenuRoot extends MenuBaseState {
 	}
 
 	open = () => {
-		if (this.$disabled.val) return;
-		this.$visible.val = true;
+		if (this.$$.disabled.val) return;
+		this.$$.visible.val = true;
 	};
 	close = () => {
-		if (this.$disabled.val) return;
-		this.$visible.val = false;
+		if (this.$$.disabled.val) return;
+		this.$$.visible.val = false;
 	};
 	toggle = () => {
-		if (this.$disabled.val) return;
-		this.$visible.val = !this.$visible.val;
+		if (this.$$.disabled.val) return;
+		this.$$.visible.val = !this.$$.visible.val;
 	};
 
 	navigate = (action: CalcIndexAction) => {
-		if (this.$disabled.val) return;
+		if (this.$$.disabled.val) return;
 		this.hoveredIndex = calculateIndex(action, this.CurrentGroup.children, this.hoveredIndex, true);
 	};
 	registerItem = (id: string, group: string, sub?: string) => {
@@ -135,7 +126,7 @@ class MenuRoot extends MenuBaseState {
 	};
 
 	state = $derived.by(() => ({
-		visible: this.$visible.val
+		visible: this.$$.visible.val
 	}));
 }
 
@@ -144,23 +135,23 @@ class MenuRoot extends MenuBaseState {
 //
 type TriggerProps = GetInternalProps<MenuTriggerProps>;
 class MenuTrigger {
-	$id: string;
+	$$: TriggerProps;
 
 	_root: MenuRoot;
 
 	constructor(parent: MenuRoot, props: TriggerProps) {
-		this.$id = props.id;
+		this.$$ = props;
 		this._root = parent;
 
-		this._root.sharedIds.set('trigger', this.$id);
+		this._root.sharedIds.set('trigger', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		role: 'button',
 		'aria-haspopup': 'menu',
-		'aria-expanded': this._root.$visible.val,
-		'aria-controls': this._root.$visible.val ? this._root.sharedIds.get('content') : undefined,
+		'aria-expanded': this._root.$$.visible.val,
+		'aria-controls': this._root.$$.visible.val ? this._root.sharedIds.get('content') : undefined,
 		...attach((node) => {
 			this._root.trigger = node;
 
@@ -204,7 +195,7 @@ class MenuTrigger {
 
 					if (key === KEYS.enter) {
 						e.preventDefault();
-						if (this._root.$visible.val) {
+						if (this._root.$$.visible.val) {
 							if (this._root.HoveredItem) this._root.getHoveredElement()?.click();
 							else this._root.close();
 						} else {
@@ -218,7 +209,7 @@ class MenuTrigger {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -227,17 +218,17 @@ class MenuTrigger {
 //
 type ArrowProps = GetInternalProps<MenuArrowProps>;
 class MenuArrow {
-	$id: string;
+	$$: ArrowProps;
 
 	_parent: MenuRoot;
 
 	constructor(parent: MenuRoot, props: ArrowProps) {
 		this._parent = parent;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.arrow]: '',
 		...attach((node) => {
 			this._parent.arrow = node;
@@ -245,7 +236,7 @@ class MenuArrow {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._parent.$visible.val
+		visible: this._parent.$$.visible.val
 	}));
 }
 
@@ -254,19 +245,19 @@ class MenuArrow {
 //
 type ContentProps = GetInternalProps<MenuContentProps>;
 class MenuContent {
-	$id: string;
+	$$: ContentProps;
 
 	_root: MenuRoot;
 
 	constructor(root: MenuRoot, props: ContentProps) {
 		this._root = root;
-		this.$id = props.id;
+		this.$$ = props;
 
-		this._root.sharedIds.set('content', this.$id);
+		this._root.sharedIds.set('content', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs.content]: '',
 		...attach((node) => {
 			this._root.content = node;
@@ -276,8 +267,8 @@ class MenuContent {
 				selectors.content,
 				selectors['sub-content']
 			])(node);
-			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$floatingConfig.val)(node);
-			const portalCleanUp = portal(this._root.$portalTarget.val)(node);
+			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$$.floatingConfig.val)(node);
+			const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
 
 			return () => {
 				outsideCleanUp?.();
@@ -288,7 +279,7 @@ class MenuContent {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._root.$visible.val
+		visible: this._root.$$.visible.val
 	}));
 }
 
@@ -297,47 +288,42 @@ class MenuContent {
 //
 type ItemProps = GetInternalProps<Omit<MenuItemProps, 'href'>>;
 class MenuItem {
-	$id: string;
-	$disabled: ItemProps['disabled'];
-	$closeOnClick: ItemProps['closeOnClick'];
+	$$: ItemProps;
 
 	_root: MenuRoot;
 	_sub?: MenuSub;
 
-	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.$id);
+	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.$$.id.val);
 
 	constructor(root: MenuRoot, props: ItemProps, sub?: MenuSub) {
 		this._root = root;
 		this._sub = sub;
-
-		this.$disabled = props.disabled;
-		this.$closeOnClick = props.closeOnClick;
-		this.$id = props.id;
+		this.$$ = props;
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		role: 'menuitem',
 		[attrs.item]: '',
-		'aria-disabled': this.$disabled.val,
+		'aria-disabled': this.$$.disabled.val,
 		...attach((node) => {
-			if (this.$disabled.val) return;
+			if (this.$$.disabled.val) return;
 
-			this._root.registerItem(this.$id, this._sub?.$name.val || 'root');
+			this._root.registerItem(this.$$.id.val, this._sub?.$$.name.val || 'root');
 
 			return addEvents(node, {
 				mouseenter: async () => {
-					if (this._root.focusedGroup !== this._sub?.$name.val || 'root')
-						this._root.focusedGroup = this._sub?.$name.val || 'root';
+					if (this._root.focusedGroup !== this._sub?.$$.name.val || 'root')
+						this._root.focusedGroup = this._sub?.$$.name.val || 'root';
 
 					await tick();
-					this._root.setHoveredItem(this.$id);
+					this._root.setHoveredItem(this.$$.id.val);
 
 					// No idea why I had to snapshot this...?
 					this._root.openedPath = $state.snapshot(this._root.groups[this._root.focusedGroup].path);
 				},
 				click: () => {
-					if (this.$closeOnClick.val) this._root.close();
+					if (this.$$.closeOnClick.val) this._root.close();
 				}
 			});
 		})
@@ -346,7 +332,7 @@ class MenuItem {
 	state = $derived.by(
 		() =>
 			({
-				disabled: this.$disabled.val,
+				disabled: this.$$.disabled.val,
 				active: this.IsActive
 			}) as const
 	);
@@ -357,7 +343,7 @@ class MenuItem {
 //
 type SubProps = GetInternalProps<MenuSubProps>;
 class MenuSub extends MenuBaseState {
-	$name: SubProps['name'];
+	$$: SubProps;
 
 	_root: MenuRoot;
 	_sub?: MenuSub;
@@ -365,24 +351,24 @@ class MenuSub extends MenuBaseState {
 	path = $state<string[]>([]);
 	sharedIds = new SvelteMap<'content' | 'trigger', string>();
 
-	IsActive = $derived.by(() => this._root.openedPath.includes(this.$name.val));
+	IsActive = $derived.by(() => this._root.openedPath.includes(this.$$.name.val));
 
 	constructor(root: MenuRoot, props: SubProps, sub: MenuSub) {
 		super(props);
+		this.$$ = props;
 
-		this.$name = props.name;
 		this._root = root;
 		this._sub = sub;
 
-		this.path = this._sub ? [...this._sub.path, this.$name.val] : [this.$name.val];
-		this._root.groups[this.$name.val] = { path: this.path, children: [] };
+		this.path = this._sub ? [...this._sub.path, this.$$.name.val] : [this.$$.name.val];
+		this._root.groups[this.$$.name.val] = { path: this.path, children: [] };
 
 		$effect(() => {
-			this.$visible.val = this.IsActive;
+			this.$$.visible.val = this.IsActive;
 		});
 		$effect(() => {
-			if (!this.$visible.val) {
-				this._root.groups[this.$name.val].children = [];
+			if (!this.$$.visible.val) {
+				this._root.groups[this.$$.name.val].children = [];
 			}
 		});
 	}
@@ -393,48 +379,48 @@ class MenuSub extends MenuBaseState {
 //
 type SubTriggerProps = GetInternalProps<MenuSubTriggerProps>;
 class MenuSubTrigger {
-	$id: string;
+	$$: SubTriggerProps;
 
 	_root: MenuRoot;
 	_sub: MenuSub;
 
-	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.$id);
-	IsOpened = $derived.by(() => this._root.openedPath.includes(this._sub.$name.val));
+	IsActive = $derived.by(() => this._root.HoveredItem?.id === this.$$.id.val);
+	IsOpened = $derived.by(() => this._root.openedPath.includes(this._sub.$$.name.val));
 
 	constructor(sub: MenuSub, root: MenuRoot, props: SubTriggerProps) {
 		this._root = root;
 		this._sub = sub;
-		this.$id = props.id;
+		this.$$ = props;
 
-		this._sub.sharedIds.set('trigger', this.$id);
+		this._sub.sharedIds.set('trigger', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.$id,
+		id: this.$$.id.val,
 		[attrs['sub-trigger']]: '',
 		role: 'menuitem',
 		'aria-haspopup': 'menu',
 		'aria-expanded': this.IsOpened,
 		'aria-controls': this.IsOpened ? this._sub.sharedIds.get('content') : undefined,
 		...attach((node) => {
-			if (this._sub.$disabled.val) return;
+			if (this._sub.$$.disabled.val) return;
 
 			this._sub.trigger = node;
 
 			this._root.registerItem(
-				this.$id,
-				this._root.groups[this._sub.$name.val]?.path?.at(-2) || 'root',
-				this._sub.$name.val
+				this.$$.id.val,
+				this._root.groups[this._sub.$$.name.val]?.path?.at(-2) || 'root',
+				this._sub.$$.name.val
 			);
 
 			return addEvents(node, {
 				mouseenter: async () => {
 					if (this._sub) {
-						const index = this._sub.path.indexOf(this._sub.$name.val);
-						this._root.openedPath[index] = this._sub.$name.val;
+						const index = this._sub.path.indexOf(this._sub.$$.name.val);
+						this._root.openedPath[index] = this._sub.$$.name.val;
 					}
 
-					this._root.setHoveredItem(this.$id);
+					this._root.setHoveredItem(this.$$.id.val);
 				}
 			});
 		})
@@ -443,7 +429,7 @@ class MenuSubTrigger {
 	state = $derived.by(
 		() =>
 			({
-				disabled: this._sub.$disabled.val,
+				disabled: this._sub.$$.disabled.val,
 				active: this.IsActive,
 				opened: this.IsOpened
 			}) as const
@@ -455,7 +441,7 @@ class MenuSubTrigger {
 //
 type SubContentProps = GetInternalProps<MenuSubContentProps>;
 class MenuSubContent {
-	id: string;
+	$$: SubContentProps;
 
 	_root: MenuRoot;
 	_sub: MenuSub;
@@ -463,19 +449,19 @@ class MenuSubContent {
 	constructor(sub: MenuSub, root: MenuRoot, props: ContentProps) {
 		this._root = root;
 		this._sub = sub;
-		this.id = props.id;
+		this.$$ = props;
 
-		this._sub.sharedIds.set('content', this.id);
+		this._sub.sharedIds.set('content', this.$$.id.val);
 	}
 
 	props = $derived.by(() => ({
-		id: this.id,
+		id: this.$$.id.val,
 		[attrs['sub-content']]: '',
 		...attach((node) => {
 			this._sub.content = node;
 
-			const floatingCleanUp = floating(this._sub.trigger, this._sub.arrow, this._sub.$floatingConfig.val)(node);
-			const portalCleanUp = portal(this._sub.$portalTarget.val)(node);
+			const floatingCleanUp = floating(this._sub.trigger, this._sub.arrow, this._sub.$$.floatingConfig.val)(node);
+			const portalCleanUp = portal(this._sub.$$.portalTarget.val)(node);
 
 			return () => {
 				floatingCleanUp?.();
@@ -485,7 +471,7 @@ class MenuSubContent {
 	}));
 
 	state = $derived.by(() => ({
-		visible: this._sub.$visible.val
+		visible: this._sub.$$.visible.val
 	}));
 }
 

@@ -21,7 +21,7 @@
 	}: TagsProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = createTagsRootContext({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,

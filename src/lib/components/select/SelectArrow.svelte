@@ -15,7 +15,7 @@
 	}: SelectArrowProps<typeof ctx.props> = $props();
 
 	let ctx = useSelectArrow({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

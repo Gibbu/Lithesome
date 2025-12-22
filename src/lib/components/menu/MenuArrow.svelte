@@ -9,7 +9,7 @@
 	let { id = parseId(uid), children, custom, ref = $bindable(), ...props }: MenuArrowProps<typeof ctx.props> = $props();
 
 	let ctx = useMenuArrow({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

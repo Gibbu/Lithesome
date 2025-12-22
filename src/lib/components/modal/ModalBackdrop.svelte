@@ -16,9 +16,9 @@
 	}: ModalBackdropProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useModalBackdrop({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>
 
-<Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />
+<Element bind:ref {children} {custom} visible={ctx._root.$$.visible.val} {ctx} {...props} />

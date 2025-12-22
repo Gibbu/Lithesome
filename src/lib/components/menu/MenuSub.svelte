@@ -8,6 +8,7 @@
 	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
 		name,
 		visible = $bindable(false),
@@ -17,7 +18,7 @@
 	}: MenuSubProps<typeof ctx.state> = $props();
 
 	let ctx = createMenuSubContext({
-		id: parseId(uid),
+		id: stateValue(() => id),
 		name: stateValue(() => name.toLowerCase().replace(/ /g, '')),
 		visible: stateValue(
 			() => visible,

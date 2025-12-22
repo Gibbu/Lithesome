@@ -9,7 +9,7 @@
 	let { id = parseId(uid), ref = $bindable(), ...props }: SliderRangeProps<typeof ctx.state> = $props();
 
 	let ctx = useSliderRange({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

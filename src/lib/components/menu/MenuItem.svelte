@@ -18,7 +18,7 @@
 	}: MenuItemProps<typeof ctx.props, typeof ctx.state> & Record<string, any> = $props();
 
 	let ctx = useMenuItem({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		disabled: stateValue(() => disabled),
 		closeOnClick: stateValue(() => closeOnClick)

@@ -15,7 +15,7 @@
 	}: HovercardArrowProps<typeof ctx.props> = $props();
 
 	let ctx = useHovercardArrow({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

@@ -15,7 +15,7 @@
 	}: SelectContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useSelectContent({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

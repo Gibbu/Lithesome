@@ -4,6 +4,13 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.20.2
+
+<small>23rd December, 2025</small>
+
+- Fixed `<ModalTitle />` and `<ModalDescription />` unrendering when visibility is false.
+- Internal code changes.
+
 ### v0.20.1
 
 <small>21st December, 2025</small>

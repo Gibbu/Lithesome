@@ -15,9 +15,9 @@
 	}: MenuContentProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useMenuContent({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>
 
-<Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />
+<Element bind:ref {children} {custom} visible={ctx._root.$$.visible.val} {ctx} {...props} />

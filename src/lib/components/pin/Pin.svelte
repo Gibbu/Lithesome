@@ -22,7 +22,7 @@
 	}: PinProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = createPinRootContext({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
@@ -37,7 +37,7 @@
 	});
 
 	$effect(() => {
-		if (ctx.Filled) onFilled?.($state.snapshot(ctx.$value.val));
+		if (ctx.Filled) onFilled?.($state.snapshot(ctx.$$.value.val));
 	});
 </script>
 

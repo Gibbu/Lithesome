@@ -15,7 +15,7 @@
 	}: SelectTriggerProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useSelectTrigger({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>

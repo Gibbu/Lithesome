@@ -22,7 +22,7 @@
 	}: CheckboxButtonProps<typeof ctx.props, typeof ctx.state> = $props();
 
 	let ctx = useCheckboxButton({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
 		checked: stateValue(
 			() => checked,

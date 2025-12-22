@@ -9,7 +9,7 @@
 	let { id = parseId(uid), ref = $bindable(), ...props }: TagsInputProps<typeof ctx.state> = $props();
 
 	let ctx = useTagsInput({
-		id,
+		id: stateValue(() => id),
 		ref: stateValue(() => ref!)
 	});
 </script>
