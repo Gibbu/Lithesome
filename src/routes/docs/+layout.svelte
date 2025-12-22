@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { ClockFadingIcon, MoonIcon, PenIcon, SunIcon } from '@lucide/svelte';
 	import { mode, toggleMode } from 'mode-watcher';
+	import { browser } from '$app/environment';
 	import { page } from '$app/state';
+	import Info from '$site/components/Info.svelte';
 	import { Button, Container, Meta, Toc } from '$site/index.js';
 
 	let { children, data } = $props();
@@ -9,6 +11,7 @@
 	const groups = $derived(data.groups)!;
 
 	const currentPage = $derived(groups.flatMap((group) => group.items).find((item) => item.href === page.route.id));
+	let wipAlert = $derived(browser ? !localStorage.getItem('wipAlert') : false);
 </script>
 
 <Meta title={currentPage?.data.title} description={currentPage?.data.description} />
@@ -87,6 +90,18 @@
 			</Button>
 		{/snippet}
 
+		{#if wipAlert}
+			<Info
+				type="warning"
+				message="Lithesome has just gone under a massive rewrite, some components are gone, others have changed, and the docs are very barebones. Please bare with me."
+				class="mb-6"
+				dismissable
+				onDismiss={() => {
+					localStorage.setItem('wipAlert', 'true');
+					wipAlert = false;
+				}}
+			/>
+		{/if}
 		{@render children()}
 	</Container>
 

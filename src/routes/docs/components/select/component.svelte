@@ -6,14 +6,14 @@
 	const options = [
 		{ value: 'aang', label: 'Avatar Aang' },
 		{ value: 'zuko', label: 'Firelord Zuko' },
-		{ value: 'sokka', label: 'Councilman Sokka', disabled: true },
-		{ value: 'katara', label: 'Katara' },
+		{ value: 'sokka', label: 'Councilman Sokka' },
+		{ value: 'katara', label: 'Katara', disabled: true },
 		{ value: 'toph', label: 'Greatest Earthbender' },
 		{ value: 'iroh', label: 'Uncle Iroh' },
 		{ value: 'azula', label: 'Firebending Prodigy' }
 	];
 
-	let value = $state('aang');
+	let value = $state('sokka');
 </script>
 
 <Select bind:value>
@@ -37,7 +37,7 @@
 								'flex w-full cursor-pointer items-center gap-2 py-2 pr-6 pl-14 text-left',
 								hovered && 'bg-zinc-900 text-zinc-200',
 								selected && 'text-teal-500',
-								disabled && 'opacity-40'
+								disabled && 'pointer-events-none opacity-40'
 							]}
 						>
 							{#snippet children({ selected, hovered })}

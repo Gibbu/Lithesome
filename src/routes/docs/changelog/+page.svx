@@ -4,20 +4,23 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
-<style>
-	small {
-		opacity: 0.7;
-		display: block;
-		margin: -0.75rem 0 -0.25rem;
-	}
-	:global(.dark) small {
-		opacity: 0.5;
-	}
-</style>
+### v0.20.1
+
+<small>21st December, 2025</small>
+
+- Fixed `<Select />` components not displaying contents if no initial option was selected.
+
+### v0.20.0
+
+<small>21st December, 2025</small>
+
+- [Checkbox](/docs/components/checkbox) components.
+- Added auto application of component states to data attributes.
+  > This means whatever state you can get via the class prop or snippet props, will also reflect on the `data-attributes` automatically.
 
 ### v0.19.1
 
-<small>21th December, 2025</small>
+<small>21st December, 2025</small>
 
 - Exported types via `lithesome/types`.
 
@@ -238,3 +241,14 @@ hidden: true
 <small>13th April, 2024</small>
 
 - New arrow components for [Combobox](/docs/components/combobox), [Hover Card](/docs/components/hovercard), [Menu](/docs/components/menu), [Popover](/docs/components/popover), and [Select](/docs/components/select)
+
+<style>
+	small {
+		opacity: 0.7;
+		display: block;
+		margin: -0.75rem 0 -0.25rem;
+	}
+	:global(.dark) small {
+		opacity: 0.5;
+	}
+</style>

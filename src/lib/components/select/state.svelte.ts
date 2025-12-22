@@ -64,6 +64,7 @@ class SelectRoot extends Floating {
 		this.$id = props.id;
 
 		if (this.$value.val) this.setInitialSelected();
+		else this.doneMounting();
 	}
 
 	/**
@@ -86,6 +87,13 @@ class SelectRoot extends Floating {
 		this.$visible.val = false;
 		this.options = [];
 		this.hoveredIndex = -1;
+	};
+	/**
+	 * Tells the components that checks have been completed, render as normal.
+	 */
+	doneMounting = () => {
+		this.mounted = true;
+		this.$visible.val = false;
 	};
 
 	/**
@@ -181,8 +189,7 @@ class SelectRoot extends Floating {
 			if (!Array.isArray(value) && el.value === value) return el;
 			else if (Array.isArray(value) && value.includes(el.value)) return el;
 		});
-		this.mounted = true;
-		this.$visible.val = false;
+		this.doneMounting();
 	};
 
 	state = $derived.by(() => ({
