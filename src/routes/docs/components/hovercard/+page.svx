@@ -10,3 +10,19 @@ description: 'Display a summary/preview of a link.'
 </script>
 
 <CodePreview {Comp} {code} />
+
+## Basic Example
+
+```svelte
+<script>
+	import { Hovercard, HovercardTrigger, HovercardContent, HovercardArrow } from 'lithesome';
+</script>
+
+<Hovercard>
+	<HovercardTrigger>Hover me</HovercardTrigger>
+	<HovercardContent>
+		<HovercardArrow />
+		Content
+	</HovercardContent>
+</Hovercard>
+```

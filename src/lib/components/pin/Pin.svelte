@@ -33,11 +33,8 @@
 		),
 		disabled: stateValue(() => disabled),
 		placeholder: stateValue(() => placeholder),
-		type: stateValue(() => type)
-	});
-
-	$effect(() => {
-		if (ctx.Filled) onFilled?.($state.snapshot(ctx.$$.value.val));
+		type: stateValue(() => type),
+		onFilled
 	});
 </script>
 

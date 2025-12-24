@@ -10,6 +10,7 @@ export * from './components/select/index.js';
 export * from './components/radiogroup/index.js';
 export * from './components/modal/index.js';
 export * from './components/checkbox/index.js';
+export * from './components/dropzone/index.js';
 
 export * from './attachments/outside.js';
 export * from './attachments/portal.js';

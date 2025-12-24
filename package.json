@@ -1,6 +1,6 @@
 {
 	"name": "lithesome",
-	"version": "0.20.2",
+	"version": "0.21.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "bun --bun vite build && npm run prepack",

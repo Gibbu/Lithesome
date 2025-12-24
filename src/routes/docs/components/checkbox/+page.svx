@@ -10,3 +10,21 @@ description: 'A control that lets users switch between a checked and unchecked s
 </script>
 
 <CodePreview {Comp} {code} />
+
+## Basic Example
+
+```svelte
+<script>
+	import { Checkbox } from 'lithesome';
+
+	let checked = $state(false);
+</script>
+
+<Checkbox bind:checked>
+	{#if checked}
+		Check Icon
+	{:else}
+		Nothing
+	{/if}
+</Checkbox>
+```

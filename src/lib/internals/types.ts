@@ -12,19 +12,20 @@ export type CSSStyleObject = {
 
 export type JsonObject = { [key: string]: JsonValue };
 export type JsonValue = undefined | null | boolean | number | string | JsonValue[] | JsonObject;
-export type StateValues<T extends Record<string, any>> = { [K in keyof T]: { val: T[K] } };
+export type StateValues<T> = {
+	[K in keyof T as T[K] extends (...args: any[]) => any ? never : K]: { val: T[K] };
+} & {
+	[K in keyof T as T[K] extends (...args: any[]) => any ? K : never]?: T[K];
+};
+// export type StateValues<T extends Record<string, any>> = { [K in keyof T]: { val: T[K] } };
 export type StateValue<T> = { val: T };
 export type Orientation = 'horizontal' | 'vertical';
 export type ClassProp<S> = ((state: S) => ClassValue) | ClassValue;
 export type StyleProp<S> = ((state: S) => StyleValue) | StyleValue;
 export type PortalTarget = HTMLElement | string;
 
-export type RemoveFunctionProps<T> = {
-	[K in keyof T as Exclude<T[K], undefined> extends (...args: any[]) => unknown ? never : K]: T[K];
-};
-
 export type GetInternalProps<T extends Record<string, any>> = StateValues<
-	Required<RemoveFunctionProps<Omit<T, OmitProps>> & { id: string }>
+	Required<Omit<T, OmitProps> & { id: string }>
 >;
 
 export type Class<T> = new (...args: any[]) => T;

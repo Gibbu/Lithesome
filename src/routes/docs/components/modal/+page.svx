@@ -11,4 +11,20 @@ description: 'An overlaying window to take focus away from the current context.'
 
 <CodePreview {Comp} {code} />
 
-<div style="padding-bottom: 2000px;"></div>
+## Basic Example
+
+```svelte
+<script>
+	import { Modal, ModalTrigger, ModalBackdrop, ModalContent, ModalTitle, ModalDescription } from 'lithesome';
+</script>
+
+<Modal>
+	<ModalTrigger>Click me</ModalTrigger>
+
+	<ModalBackdrop />
+	<ModalContent>
+		<ModalTitle>Modal Title</ModalTitle>
+		<ModalDescription>Modal Description</ModalDescription>
+	</ModalContent>
+</Modal>
+```

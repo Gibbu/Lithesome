@@ -29,11 +29,11 @@
 
 <svelte:element
 	this={as}
-	class={cn([
+	class={cn(
 		'border border-zinc-400 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-940',
 		absolute ? 'absolute' : 'relative',
 		containerClass
-	])}
+	)}
 	{...props}
 >
 	<div
@@ -43,11 +43,11 @@
 		class="pointer-events-none absolute -top-[2px] -right-[2px] size-4 border-t-2 border-r-2 border-zinc-950 dark:border-zinc-500"
 	></div>
 	{#if header}
-		<header class={cn(['border-b border-zinc-300 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-920', headerClass])}>
+		<header class={cn('border-b border-zinc-300 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-920', headerClass)}>
 			{@render header()}
 		</header>
 	{/if}
-	<div class={cn(['p-6', bodyClass])}>
+	<div class={cn('p-6', bodyClass)}>
 		{@render children()}
 	</div>
 	{#if footer}

@@ -10,5 +10,6 @@ export type * from './components/select.ts';
 export type * from './components/radiogroup.ts';
 export type * from './components/modal.ts';
 export type * from './components/checkbox.ts';
+export type * from './components/dropzone.ts';
 
 export type { Placement, Side, Alignment } from '@floating-ui/dom';

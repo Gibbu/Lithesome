@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { stateValue } from '$lib/internals/context.svelte.js';
+	import { parseId } from '$lib/internals/utils.svelte.js';
 	import { createHovercardRootContext } from './state.svelte.js';
 
 	import type { HovercardProps } from '$lib/types/index.js';
 
+	const uid = $props.id();
+
 	let {
+		id = parseId(uid),
 		children,
 		visible = $bindable(false),
 		delay = 700,
@@ -14,6 +18,7 @@
 	}: HovercardProps<typeof ctx.state> = $props();
 
 	let ctx = createHovercardRootContext({
+		id: stateValue(() => id),
 		visible: stateValue(
 			() => visible,
 			(v) => {

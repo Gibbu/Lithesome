@@ -16,9 +16,11 @@ description: 'Allows a sequence of one-character inputs.'
 ```svelte
 <script lang="ts">
 	import { Pin, PinInput } from 'lithesome';
+
+	let value = $state([]);
 </script>
 
-<Pin>
+<Pin bind:value>
 	<PinInput />
 	<PinInput />
 	<PinInput />

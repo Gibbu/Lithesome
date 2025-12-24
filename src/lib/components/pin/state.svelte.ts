@@ -25,6 +25,10 @@ class PinRoot {
 
 	constructor(props: RootProps) {
 		this.$$ = props;
+
+		$effect(() => {
+			if (this.Filled) this.$$.onFilled?.(this.$$.value.val);
+		});
 	}
 
 	setValue = (index: number, value: string) => {

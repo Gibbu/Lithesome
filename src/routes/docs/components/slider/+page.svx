@@ -16,9 +16,11 @@ description: 'An input where the value is within a set range.'
 ```svelte
 <script lang="ts">
 	import { Slider, SliderRange, SliderThumb } from 'lithesome';
+
+	let value = $state(20);
 </script>
 
-<Slider>
+<Slider bind:value>
 	<SliderRange />
 	<SliderThumb />
 </Slider>

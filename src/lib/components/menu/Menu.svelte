@@ -8,6 +8,7 @@
 	const uid = $props.id();
 
 	let {
+		id = parseId(uid),
 		children,
 		visible = $bindable(false),
 		disabled = $bindable(false),
@@ -16,7 +17,7 @@
 	}: MenuProps<typeof ctx.state> = $props();
 
 	let ctx = createMenuRootContext({
-		id: parseId(uid),
+		id: stateValue(() => id),
 		visible: stateValue(
 			() => visible,
 			(v) => {
