@@ -6,7 +6,7 @@ import type { Attachment } from 'svelte/attachments';
 /**
  * Creates a focus trap.
  */
-export const trap = (opts: Options): Attachment<HTMLElement> => {
+export const trap = (opts?: Options): Attachment<HTMLElement> => {
 	return (node) => {
 		let trap: FocusTrap | null = null;
 		if (trap) return;

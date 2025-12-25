@@ -1,0 +1,20 @@
+---
+title: 'Stepper'
+description: 'A sequence of steps to complete an action.'
+---
+
+<script>
+	import {CodePreview} from '$site/index.js'
+	import Comp from './component.svelte';
+	import code from './component.svelte?raw';
+</script>
+
+<CodePreview {Comp} {code} />
+
+## Basic Example
+
+```svelte
+<script>
+
+</script>
+```

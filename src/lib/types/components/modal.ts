@@ -1,4 +1,5 @@
-import type { PortalTarget, Props, PropsNoRender } from '$lib/internals/index.js';
+import type { Props, PropsNoRender } from '$lib/internals/index.js';
+import type { PortalTarget } from '$lib/types/index.js';
 
 //
 // ~ROOT

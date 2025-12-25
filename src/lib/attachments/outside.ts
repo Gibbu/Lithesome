@@ -1,36 +1,34 @@
+import type { OutsideOptions } from '$lib/types/index.ts';
 import type { Attachment } from 'svelte/attachments';
 
-type ExcludeElement = HTMLElement | string | null | undefined;
-
 /**
- * An attachment that fires if the node is not clicked on.
- * @param callback The function called when clicking outside of the element.
- * @param exlude The element to be excluded when calling the `callback` handler.
- * @param event The event to trigger the callback function.
- *
- * Default = `click`
+ * An attachment that runs if an event is fired outside the target element.
+ * @param callback The function to be called when the event fires outside of the element.
+ * @param opts Optional params for the attachment.
  */
-export const outside = (
-	callback: VoidFunction,
-	exclude: ExcludeElement[],
-	on?: keyof DocumentEventMap
-): Attachment<HTMLElement> => {
+export const outside = (callback: VoidFunction, opts?: OutsideOptions): Attachment<HTMLElement> => {
+	const on = opts?.on || 'click';
+	const exclude = opts?.exclude;
+
 	return (node) => {
 		const event = (e: Event) => {
 			const target = e.target as HTMLElement;
 			let elements: HTMLElement[] = [];
+			let contains: boolean = false;
 
-			exclude.forEach((el) => {
-				if (el) {
-					if (typeof el === 'string') {
-						const query = Array.from(document.querySelectorAll(el)) as HTMLElement[];
-						elements = [...elements, ...query];
-					} else {
-						elements.push(el);
+			if (exclude) {
+				exclude.forEach((el) => {
+					if (el) {
+						if (typeof el === 'string') {
+							const query = Array.from(document.querySelectorAll(el)) as HTMLElement[];
+							elements = [...elements, ...query];
+						} else {
+							elements.push(el);
+						}
 					}
-				}
-			});
-			const contains = elements.some((el) => el?.contains(target));
+				});
+				contains = elements.some((el) => el?.contains(target));
+			}
 
 			if (node && !node.contains(target) && !e.defaultPrevented && !contains) callback();
 		};

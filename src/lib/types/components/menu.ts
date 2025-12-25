@@ -1,4 +1,5 @@
-import type { FloatingConfig, PortalTarget, Props, PropsNoRender } from '$lib/internals/types.js';
+import type { FloatingConfig, Props, PropsNoRender } from '$lib/internals/types.js';
+import type { PortalTarget } from '$lib/types/index.js';
 
 //
 // ~ROOT

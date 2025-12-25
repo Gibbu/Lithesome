@@ -49,7 +49,8 @@
 	const propsWithState = $derived.by(() => {
 		let props = ctx.props;
 		for (const key in ctx.state) {
-			if (ctx.state[key]) props = { ...props, [`data-${camelToKebab(key)}`]: ctx.state[key] };
+			if (ctx.state[key] != null && ctx.state[key] !== false)
+				props = { ...props, [`data-${camelToKebab(key)}`]: ctx.state[key] };
 		}
 		return props;
 	});

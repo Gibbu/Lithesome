@@ -11,6 +11,7 @@
 		bodyClass,
 		header,
 		footer,
+		ref = $bindable(),
 		as = 'div',
 		absolute = false,
 		...props
@@ -21,6 +22,7 @@
 		bodyClass?: ClassValue;
 		header?: Snippet;
 		footer?: Snippet;
+		ref?: HTMLElement;
 		as?: keyof HTMLElementTagNameMap;
 		absolute?: boolean;
 		[key: string]: any;
@@ -29,6 +31,7 @@
 
 <svelte:element
 	this={as}
+	bind:this={ref}
 	class={cn(
 		'border border-zinc-400 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-940',
 		absolute ? 'absolute' : 'relative',

@@ -3,11 +3,23 @@ title: 'Changelog'
 description: 'The timeline of changes for Lithesome'
 ---
 
+### v0.21.1
+
+<small>24th December, 2025</small>
+
+- `<HovercardContent />` will now forcefully close if the user clicks outside.
+- Fixed `<Modal />` rendering an empty div elemenet.
+- Renamed types inside `lithesome/types`:
+	- `Placement` → `FloatingPlacement`
+	- `Alignment` → `FloatingAlignment`
+	- `Side` → `FloatingSide`
+- Exported `FocusTrapOptions`, `PortalTarget` in `lithesome/types`.
+
 ### v0.21.0
 
 <small>24th December, 2025</small>
 
-- Added [Dropzone](/docs/components/dropzone) components
+- Added [Dropzone](/docs/components/dropzone) components.
 
 ### v0.20.2
 

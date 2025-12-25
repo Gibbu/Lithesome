@@ -262,11 +262,9 @@ class MenuContent {
 		...attach((node) => {
 			this._root.content = node;
 
-			const outsideCleanUp = outside(this._root.close, [
-				this._root.trigger,
-				selectors.content,
-				selectors['sub-content']
-			])(node);
+			const outsideCleanUp = outside(this._root.close, {
+				exclude: [this._root.trigger, selectors.content, selectors['sub-content']]
+			})(node);
 			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$$.floatingConfig.val)(node);
 			const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
 

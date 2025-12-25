@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { stateValue } from '$lib/internals/context.svelte.js';
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { parseId } from '$lib/internals/index.js';
 	import { createModalRootContext } from './state.svelte.js';
 
 	import type { ModalProps } from '$lib/types/index.js';
@@ -29,4 +29,4 @@
 	});
 </script>
 
-<Element {children} {ctx} {...props} />
+{@render children?.(ctx.state)}

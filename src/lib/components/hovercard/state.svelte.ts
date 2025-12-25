@@ -1,5 +1,5 @@
 import { SvelteMap } from 'svelte/reactivity';
-import { portal } from '$lib/index.js';
+import { outside, portal } from '$lib/index.js';
 import {
 	addEvents,
 	attach,
@@ -49,6 +49,11 @@ class HovercardRoot extends Floating {
 		this.timeout.set(() => {
 			if (!this.hovered) this.$$.visible.val = false;
 		}, this.ParsedDelay.out);
+	};
+
+	forceClose = () => {
+		this.timeout.clear();
+		this.$$.visible.val = false;
 	};
 
 	state = $derived.by(() => ({
@@ -127,6 +132,7 @@ class HovercardContent {
 
 			const floatingCleanUp = floating(this._root.trigger, this._root.arrow, this._root.$$.floatingConfig.val)(node);
 			const portalCleanUp = portal(this._root.$$.portalTarget.val)(node);
+			const outsideCleanUp = outside(this._root.forceClose, { exclude: [this._root.trigger] })(node);
 			const eventsCleanUp = addEvents(node, {
 				mouseenter: () => {
 					this._root.hovered = true;
@@ -141,6 +147,7 @@ class HovercardContent {
 			return () => {
 				floatingCleanUp?.();
 				portalCleanUp?.();
+				outsideCleanUp?.();
 				eventsCleanUp?.();
 			};
 		})

@@ -1,16 +1,17 @@
 import { tick } from 'svelte';
 import { log } from '$lib/internals/index.js';
 
+import type { PortalTarget } from '$lib/types/index.js';
 import type { Attachment } from 'svelte/attachments';
 
 /**
- * A svelte attachment to portal content from one part of the dom to another.
- * @param target The element to be portaled to.\
+ * An attachment that mounts the element to a different location in the DOM.
+ * @param target The element to mount the content to.\
  * Default = `body`.
  */
-export const portal = (target: HTMLElement | string = 'body'): Attachment<HTMLElement> => {
+export const portal = (target: PortalTarget = 'body'): Attachment<HTMLElement> => {
 	return (node) => {
-		const update = async (newTarget: HTMLElement | string) => {
+		const update = async (newTarget: PortalTarget) => {
 			let el: HTMLElement | null = typeof newTarget === 'string' ? document.querySelector(newTarget) : newTarget;
 
 			await tick();

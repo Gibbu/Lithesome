@@ -22,7 +22,6 @@ export type StateValue<T> = { val: T };
 export type Orientation = 'horizontal' | 'vertical';
 export type ClassProp<S> = ((state: S) => ClassValue) | ClassValue;
 export type StyleProp<S> = ((state: S) => StyleValue) | StyleValue;
-export type PortalTarget = HTMLElement | string;
 
 export type GetInternalProps<T extends Record<string, any>> = StateValues<
 	Required<Omit<T, OmitProps> & { id: string }>

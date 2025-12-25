@@ -10,6 +10,7 @@
 		disabled?: boolean;
 		class?: string;
 		external?: boolean;
+		ref?: HTMLButtonElement | HTMLAnchorElement;
 	}
 
 	let {
@@ -17,7 +18,7 @@
 		children,
 		disabled,
 		href,
-		self,
+		ref = $bindable(),
 		size = 'md',
 		external,
 		class: klass,
@@ -28,7 +29,7 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	href={href || undefined}
-	bind:this={self}
+	bind:this={ref}
 	disabled={disabled || undefined}
 	class={cn(
 		'group focusOutline relative inline-flex cursor-pointer items-center justify-center border font-medium',

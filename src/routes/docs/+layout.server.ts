@@ -32,7 +32,7 @@ export const load = async () => {
 		}
 	}
 
-	const groupOrder = ['intro', 'components'];
+	const groupOrder = ['intro', 'components', 'attachments'];
 
 	return {
 		groups: groups
