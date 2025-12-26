@@ -35,4 +35,4 @@
 	});
 </script>
 
-<Element {children} {ctx} {...props} />
+{@render children?.(ctx.state)}

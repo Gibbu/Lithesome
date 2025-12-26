@@ -70,7 +70,7 @@
 
 <Stepper>
 	{#snippet children({ previousStepIndex, currentStepIndex })}
-		<div class="flex flex-col gap-2">
+		<div class="flex flex-col gap-4">
 			<StepperSteps class="flex items-center justify-between">
 				{#each steps as step, i}
 					<StepperLink item={step.name} class={['cursor-pointer text-sm', currentStepIndex > i && 'text-teal-500']}>
@@ -103,25 +103,24 @@
 					{/each}
 				</div>
 			</Container>
-		</div>
-
-		<div class="mt-4 flex justify-between">
-			<StepperPrev>
-				{#snippet custom({ props, state })}
-					<Button variant="text" {...props} disabled={state.disabled}>
-						<ArrowLeftIcon class="size-4" />
-						Prev
-					</Button>
-				{/snippet}
-			</StepperPrev>
-			<StepperNext>
-				{#snippet custom({ props, state })}
-					<Button variant="secondary" {...props} disabled={state.disabled}>
-						Next
-						<ArrowRightIcon class="size-4" />
-					</Button>
-				{/snippet}
-			</StepperNext>
+			<div class="flex justify-between">
+				<StepperPrev>
+					{#snippet custom({ props, state })}
+						<Button variant="text" {...props} disabled={state.disabled}>
+							<ArrowLeftIcon class="size-4" />
+							Prev
+						</Button>
+					{/snippet}
+				</StepperPrev>
+				<StepperNext>
+					{#snippet custom({ props, state })}
+						<Button variant="secondary" {...props} disabled={state.disabled}>
+							Next
+							<ArrowRightIcon class="size-4" />
+						</Button>
+					{/snippet}
+				</StepperNext>
+			</div>
 		</div>
 	{/snippet}
 </Stepper>
