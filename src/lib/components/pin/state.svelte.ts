@@ -173,8 +173,17 @@ class PinInput {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if every input is filled.
+		 */
 		filled: this._root.Filled,
+		/**
+		 * True if the input is disabled.
+		 */
 		disabled: this._root.$$.disabled.val,
+		/**
+		 * True if the input is focused.
+		 */
 		focused: this.focused
 	}));
 }

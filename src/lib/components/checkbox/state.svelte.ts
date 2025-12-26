@@ -24,7 +24,13 @@ class CheckboxGroup {
 		[attrs.group]: ''
 	}));
 	state = $derived.by(() => ({
+		/**
+		 * True if the button is checked.
+		 */
 		checked: this.$$.checked.val,
+		/**
+		 * True if the group is disabled.
+		 */
 		disabled: this.$$.disabled.val
 	}));
 }
@@ -73,7 +79,13 @@ class CheckboxButton {
 		)
 	}));
 	state = $derived.by(() => ({
+		/**
+		 * True if the button is checked.
+		 */
 		checked: this.Checked,
+		/**
+		 * True if the group is disabled.
+		 */
 		disabled: this.Disabled
 	}));
 }
@@ -101,7 +113,13 @@ class CheckboxLabel {
 		for: this._group.sharedIds.get('button')
 	}));
 	state = $derived.by(() => ({
+		/**
+		 * True if the button is checked.
+		 */
 		checked: this._group.$$.checked.val,
+		/**
+		 * True if the group is disabled.
+		 */
 		disabled: this._group.$$.disabled.val
 	}));
 }

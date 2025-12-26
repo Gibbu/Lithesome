@@ -69,7 +69,7 @@
 {/snippet}
 
 <Stepper>
-	{#snippet children({ previousIndex, currentStepIndex })}
+	{#snippet children({ previousStepIndex, currentStepIndex })}
 		<div class="flex flex-col gap-2">
 			<StepperSteps class="flex items-center justify-between">
 				{#each steps as step, i}
@@ -92,8 +92,8 @@
 									<div
 										{...props}
 										class="stepContent"
-										in:fly={{ x: currentStepIndex > previousIndex ? 20 : -20, duration: 140, delay: 140 }}
-										out:fly={{ x: currentStepIndex > previousIndex ? -20 : 20, duration: 140 }}
+										in:fly={{ x: currentStepIndex > previousStepIndex ? 20 : -20, duration: 140, delay: 140 }}
+										out:fly={{ x: currentStepIndex > previousStepIndex ? -20 : 20, duration: 140 }}
 									>
 										{@render step.snippet()}
 									</div>

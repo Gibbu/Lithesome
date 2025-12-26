@@ -55,7 +55,13 @@ class RadioGroupRoot {
 		[attrs.root]: ''
 	}));
 	state = $derived.by(() => ({
+		/**
+		 * The current value of the group.
+		 */
 		value: this.$$.value.val,
+		/**
+		 * True if the group is disabled.
+		 */
 		disabled: this.$$.disabled.val
 	}));
 }
@@ -108,7 +114,13 @@ class RadioGroupItem {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the item is selected.
+		 */
 		selected: this.Selected,
+		/**
+		 * True if the item is disabled.
+		 */
 		disabled: this.$$.disabled.val
 	}));
 }

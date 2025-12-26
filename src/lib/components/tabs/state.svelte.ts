@@ -56,6 +56,9 @@ class TabsRoot {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The value of the active tab.
+		 */
 		activeTab: this.ActiveTab
 	}));
 }
@@ -83,7 +86,10 @@ class TabsList {
 	}));
 
 	state = $derived.by(() => ({
-		tab: this._root.ActiveTab
+		/**
+		 * The value of the active tab.
+		 */
+		activeTab: this._root.ActiveTab
 	}));
 }
 
@@ -143,6 +149,9 @@ class TabsButton {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the item is active.
+		 */
 		active: this.IsActive
 	}));
 }
@@ -177,6 +186,9 @@ class TabsContent {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the item is active.
+		 */
 		active: this.IsActive
 	}));
 

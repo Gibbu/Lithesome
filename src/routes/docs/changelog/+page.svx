@@ -7,6 +7,16 @@ description: 'The timeline of changes for Lithesome'
 
 <small>26th December, 2025</small>
 
+- Fixed `<Stepper />` components' displaying `0` in data attributes.
+- Changed `<Stepper />` state:
+  - Added `previousStep` which returns the previous unique name.
+  - Renamed `previousIndex` → `previousStepIndex`.
+- Added comments to component states.
+
+### v0.22.0
+
+<small>26th December, 2025</small>
+
 - [Stepper](/docs/components/stepper) components.
 - `<HovercardContent />` will now forcefully close if the user clicks outside.
 - Added the `required` prop to the invisible checkbox if `name` is provided to the `<CheckboxButton />` component.

@@ -60,6 +60,9 @@ class ModalRoot extends Scrolling {
 	};
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this.$$.visible.val
 	}));
 }
@@ -96,6 +99,9 @@ class ModalTrigger {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -136,6 +142,9 @@ class ModalBackdrop {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -179,6 +188,9 @@ class ModalContent {
 	);
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }

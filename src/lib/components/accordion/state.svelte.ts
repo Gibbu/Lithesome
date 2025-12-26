@@ -47,6 +47,9 @@ export class AccordionRoot {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The current value.
+		 */
 		value: this.$$.value.val
 	}));
 }
@@ -78,7 +81,13 @@ class AccordionItem {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the item is active.
+		 */
 		active: this.Active,
+		/**
+		 * True the item is disabled.
+		 */
 		disabled: this.$$.disabled.val
 	}));
 }
@@ -108,6 +117,9 @@ class AccordionHeading {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the item is active.
+		 */
 		active: this._item.Active
 	}));
 }
@@ -152,7 +164,13 @@ class AccordionButton {
 	);
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the item is active.
+		 */
 		active: this._item.Active,
+		/**
+		 * True if the item is disabled.
+		 */
 		disabled: this._item.$$.disabled.val
 	}));
 }
@@ -182,6 +200,9 @@ class AccordionContent {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the item is active.
+		 */
 		active: this._item.Active
 	}));
 }

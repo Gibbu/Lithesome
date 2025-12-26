@@ -67,7 +67,17 @@ class TagsRoot {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The value if the selected tag via keyboard navigation.
+		 */
 		activeTag: this.SelectedTag,
+		/**
+		 * True if:
+		 * - Input value is less than 1.
+		 * - Tag already exists.
+		 * - Tag isn't in the whitelist.
+		 * - Tag isn't allowed by the blacklist.
+		 */
 		invalid: this.invalid
 	}));
 }
@@ -147,6 +157,13 @@ class TagsInput {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if:
+		 * - Input value is less than 1.
+		 * - Tag already exists.
+		 * - Tag isn't in the whitelist.
+		 * - Tag isn't allowed by the blacklist.
+		 */
 		invalid: this._root.invalid
 	}));
 }
@@ -173,6 +190,9 @@ class TagsItem {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The value if the selected tag via keyboard navigation.
+		 */
 		active: this.Active
 	}));
 }

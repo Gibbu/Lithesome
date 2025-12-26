@@ -89,8 +89,6 @@ class DropzoneRoot {
 		}
 	};
 
-	validate = () => {};
-
 	props = $derived.by(() => ({
 		id: this.$$.id.val,
 		[attrs.root]: '',
@@ -131,7 +129,13 @@ class DropzoneRoot {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the dropzone is currently being hovered with a file.
+		 */
 		dragging: this.dragging,
+		/**
+		 * True if any validation errors are found.
+		 */
 		errors: this.errorsFound
 	}));
 }

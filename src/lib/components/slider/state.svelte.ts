@@ -123,7 +123,13 @@ class SliderRoot {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The current value.
+		 */
 		value: this.$$.value.val,
+		/**
+		 * The current percentage from 0 to 100.
+		 */
 		percentage: this.Percentage
 	}));
 
@@ -183,7 +189,13 @@ class SliderThumb {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The current value.
+		 */
 		value: this._root.$$.value.val,
+		/**
+		 * The current percentage from 0 to 100.
+		 */
 		percentage: this._root.Percentage
 	}));
 }
@@ -215,7 +227,13 @@ class SliderRange {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The current value.
+		 */
 		value: this._root.$$.value.val,
+		/**
+		 * The current percentage from 0 to 100.
+		 */
 		percentage: this._root.Percentage
 	}));
 }
@@ -247,7 +265,13 @@ class SliderValue {
 			}) as const
 	);
 	state = $derived.by(() => ({
+		/**
+		 * The current value.
+		 */
 		value: this._root.$$.value.val,
+		/**
+		 * The current percentage from 0 to 100.
+		 */
 		percentage: this._root.Percentage
 	}));
 	styles = $derived.by(() => ({

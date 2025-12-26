@@ -12,8 +12,7 @@ import {
 } from '$lib/internals/index.js';
 
 import type { GetInternalProps } from '$lib/internals/index.js';
-import type { TooltipProps } from '$lib/types/index.js';
-import type { TooltipArrowProps } from './types.js';
+import type { TooltipArrowProps, TooltipProps } from '$lib/types/index.js';
 
 const { attrs } = createAttributes('tooltip', ['trigger', 'content', 'arrow']);
 
@@ -48,6 +47,9 @@ class TooltipRoot extends Floating {
 	};
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this.$$.visible.val
 	}));
 }
@@ -96,6 +98,9 @@ class TooltipTrigger {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -132,6 +137,9 @@ class TooltipContent {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -159,6 +167,9 @@ class TooltipArrow {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._parent.$$.visible.val
 	}));
 }

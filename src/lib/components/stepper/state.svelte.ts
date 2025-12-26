@@ -33,6 +33,8 @@ class StepperRoot {
 
 	Index = $derived.by(() => (this.$$.step.val ? this.items.findIndex((item) => item.name === this.$$.step.val) : 0));
 	CurrentItem = $derived.by<Item | null>(() => this.items[this.Index] || null);
+	PreviousItem = $derived.by<Item | null>(() => this.items[this.prevIndex] || null);
+
 	IsLast = $derived.by(() => this.Index === this.items.length - 1);
 	IsFirst = $derived.by(() => this.Index === 0);
 
@@ -78,11 +80,33 @@ class StepperRoot {
 	}));
 
 	state = $derived.by(() => ({
-		previousIndex: this.prevIndex,
+		/**
+		 * The previously active step.
+		 */
+		previousStep: this.PreviousItem?.name,
+		/**
+		 * The index of the previously active step.
+		 */
+		previousStepIndex: this.prevIndex,
+		/**
+		 * The active step.
+		 */
 		currentStep: this.CurrentItem?.name,
+		/**
+		 * The index of the active step.
+		 */
 		currentStepIndex: this.Index,
+		/**
+		 * True if the component is disabled.
+		 */
 		disabled: this.$$.disabled.val,
+		/**
+		 * True if the step index is 0.
+		 */
 		isFirstStep: this.IsFirst,
+		/**
+		 * True if the step index is the last.
+		 */
 		isLastStep: this.IsLast
 	}));
 }
@@ -108,7 +132,10 @@ class StepperSteps {
 	}));
 
 	state = $derived.by(() => ({
-		stepIndex: 0
+		/**
+		 * The index of the active step.
+		 */
+		currentIndex: this._root.Index
 	}));
 }
 
@@ -123,6 +150,7 @@ class StepperLink {
 
 	Disabled = $derived.by(() => this._root.$$.disabled.val || this.$$.disabled.val);
 	Active = $derived.by(() => this._root.CurrentItem?.name === this.$$.item.val);
+	ThisIndex = $derived.by(() => this._root.items.findIndex((item) => item.name === this.$$.item.val));
 
 	constructor(root: StepperRoot, props: LinkProps) {
 		this._root = root;
@@ -142,7 +170,7 @@ class StepperLink {
 			this._root.jumpToStep(nextItem.name, this.$$.skipCanDoNext.val);
 			tick().then(() => {
 				const query = document.querySelector(
-					`#${this._root.$$.id.val} ${selectors.steps} [data-name="${this._root.$$.step.val}"]`
+					`#${this._root.$$.id.val} ${selectors.steps} [data-item-name="${this._root.$$.step.val}"]`
 				) as HTMLButtonElement;
 				if (query) query.focus();
 			});
@@ -181,9 +209,18 @@ class StepperLink {
 	}));
 
 	state = $derived.by(() => ({
-		stepIndex: 0,
+		/**
+		 * The index of the related item.
+		 */
+		stepIndex: this.ThisIndex,
+		/**
+		 * True if the list is currently active.
+		 */
 		active: this.Active,
-		name: this.$$.item.val
+		/**
+		 * The name of the related item.
+		 */
+		itemName: this.$$.item.val
 	}));
 }
 
@@ -195,6 +232,8 @@ class StepperItem {
 	$$: ItemProps;
 
 	_root: StepperRoot;
+
+	ThisIndex = $derived.by(() => this._root.items.findIndex((item) => item.name === this.$$.name.val));
 
 	constructor(root: StepperRoot, props: ItemProps) {
 		this._root = root;
@@ -209,7 +248,13 @@ class StepperItem {
 	}));
 
 	state = $derived.by(() => ({
-		index: 0,
+		/**
+		 * The index of the item.
+		 */
+		index: this.ThisIndex,
+		/**
+		 * The unique name of the item.
+		 */
 		name: this.$$.name.val
 	}));
 }
@@ -247,7 +292,16 @@ class StepperPrev {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if:
+		 * - Parent `<Stepper />` component is disabled.
+		 * - `disabled` prop is true.
+		 * - The current step index is 0.
+		 */
 		disabled: this.Disabled,
+		/**
+		 * True if the current step index is not 0.
+		 */
 		canGoPrev: !this._root.IsFirst
 	}));
 }
@@ -288,7 +342,18 @@ class StepperNext {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if:
+		 * - Parent `<Stepper />` component is disabled.
+		 * - `disabled` prop is true.
+		 * - The current step index is not the last step.
+		 */
 		disabled: this.Disabled || !this.CanGoNext,
+		/**
+		 * True if:
+		 * - `canGoNext` function is true and passed.
+		 * - Will return value of the `disabled` prop if `canDoNext` is not passed.
+		 */
 		canGoNext: this.CanGoNext
 	}));
 }
@@ -323,6 +388,11 @@ class StepperJump {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if:
+		 * - Parent `<Stepper />` component is disabled.
+		 * - `disabled` prop is true.
+		 */
 		disabled: this.Disabled
 	}));
 }

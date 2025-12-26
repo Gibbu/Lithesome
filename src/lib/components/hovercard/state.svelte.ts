@@ -57,6 +57,9 @@ class HovercardRoot extends Floating {
 	};
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this.$$.visible.val
 	}));
 }
@@ -104,6 +107,9 @@ class HovercardTrigger {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -154,6 +160,9 @@ class HovercardContent {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -181,6 +190,9 @@ class HovercardArrow {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }

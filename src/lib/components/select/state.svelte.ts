@@ -183,6 +183,9 @@ class SelectRoot extends Floating {
 	};
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this.$$.visible.val
 	}));
 }
@@ -256,6 +259,9 @@ class SelectTrigger {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -295,6 +301,9 @@ class SelectContent {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 
@@ -326,6 +335,9 @@ class SelectArrow {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -382,7 +394,13 @@ class SelectOption {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the option is hovered.
+		 */
 		hovered: this.Hovered,
+		/**
+		 * True if the option is selected.
+		 */
 		selected: this.Selected
 	}));
 }
@@ -414,6 +432,9 @@ class SelectValue {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * The value of the placeholder
+		 */
 		placeholderVisible: this.PlaceholderVisible
 	}));
 }

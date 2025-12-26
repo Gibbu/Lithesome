@@ -53,6 +53,9 @@ class MenuBaseState extends Floating {
 	}
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this.$$.visible.val
 	}));
 }
@@ -126,6 +129,9 @@ class MenuRoot extends MenuBaseState {
 	};
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this.$$.visible.val
 	}));
 }
@@ -209,6 +215,9 @@ class MenuTrigger {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -236,6 +245,9 @@ class MenuArrow {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._parent.$$.visible.val
 	}));
 }
@@ -277,6 +289,9 @@ class MenuContent {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -330,7 +345,13 @@ class MenuItem {
 	state = $derived.by(
 		() =>
 			({
+				/**
+				 * True if the item is disabled.
+				 */
 				disabled: this.$$.disabled.val,
+				/**
+				 * True if the item is being hovered.
+				 */
 				active: this.IsActive
 			}) as const
 	);
@@ -427,8 +448,17 @@ class MenuSubTrigger {
 	state = $derived.by(
 		() =>
 			({
+				/**
+				 * True if the sub menu is disabled.
+				 */
 				disabled: this._sub.$$.disabled.val,
+				/**
+				 * True if item is hovered.
+				 */
 				active: this.IsActive,
+				/**
+				 * True if the sub menu is opened.
+				 */
 				opened: this.IsOpened
 			}) as const
 	);
@@ -469,6 +499,9 @@ class MenuSubContent {
 	}));
 
 	state = $derived.by(() => ({
+		/**
+		 * True if the contents are visible.
+		 */
 		visible: this._sub.$$.visible.val
 	}));
 }
