@@ -20,4 +20,4 @@
 	});
 </script>
 
-<Element bind:ref {children} {custom} visible={ctx._root.$visible.val} {ctx} {...props} />
+<Element bind:ref {children} {custom} visible={ctx._root.$$.visible.val} {ctx} {...props} />
