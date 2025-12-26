@@ -3,11 +3,17 @@ title: 'Changelog'
 description: 'The timeline of changes for Lithesome'
 ---
 
-### v0.22.2
+### v0.22.3
 
 <small>26th December, 2025</small>
 
 - Fixed `<Stepper />` component rendering a `div` wrapper element.
+
+### v0.22.2
+
+<small>26th December, 2025</small>
+
+- Fixed `<SelectContent />` and `<TooltipContent />` components from trying to access a undefined value.
 
 ### v0.22.1
 
