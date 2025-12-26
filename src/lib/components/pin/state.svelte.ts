@@ -87,6 +87,7 @@ class PinInput {
 		id: this.$$.id.val,
 		disabled: this._root.$$.disabled.val,
 		placeholder: this.focused ? '' : this._root.$$.placeholder.val,
+		type: this._root.$$.type.val,
 		[attrs.input]: '',
 		...attach((node) =>
 			addEvents(node, {

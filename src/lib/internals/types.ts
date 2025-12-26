@@ -66,9 +66,57 @@ export interface FloatingConfig {
 
 /** Used for when render a self-closing element, such as an input. */
 export interface PropsNoChildren<E extends HTMLElement, S> {
+	/**
+	 * Any CSS classes to be applied to the underlying element.
+	 *
+	 * Lithesome components can also recieve a function that returns a `ClassValue`.\
+	 * With this function, we can destructure the first parameter to use the state of that component.
+	 *
+	 * @example
+	 * ```svelte
+	 * <SelectOption value="1" class={({ hovered }) => [
+	 * 	'hovered' && 'bg-red-500',
+	 * ]}>
+	 * 	Item 1
+	 * </SelectOption>
+	 * ```
+	 * With this any select option that is currently being hovered will have a red background.
+	 */
 	class?: ClassProp<S>;
+	/**
+	 * Any styles to be applied to the underlying element.
+	 *
+	 * Some Lithesome components (such as `<SelectContent />`) will already have styles applied to them,\
+	 * Lithesome will take the internal styles over the ones provided so components work correctly.
+	 *
+	 * Just like the `class` prop, we can recieve a function that has the state of the component as a destructred parameter.\
+	 * This function can return a string or an object. The object will be converted from camelCase to kebeb-case automatically.
+	 *
+	 * But we _don't_ need to pass a function, a regular string or object will do just fine.
+	 * @example
+	 * ```svelte
+	 * <SelectOption value="1" style={({ hovered }) => ({
+	 * 	backgroundColor: hovered ? 'red' : undefined
+	 * })}>
+	 * 	Item 1
+	 * </SelectOption>
+	 * ```
+	 * Any select option that is hovered will have a red background.
+	 *
+	 * It is **important** that return `undefined` or `null` if the condition isn't met as CSS will still accept string as a valid value.
+	 */
 	style?: StyleProp<S>;
+	/**
+	 * The reference to the underlying element.
+	 *
+	 * ### `$bindable`
+	 */
 	ref?: E;
+	/**
+	 * The current ID of the element.
+	 *
+	 * If no ID is provided, Lithesome will use Svelte's inbuilt `$props.id()` function to generate and unique ID.
+	 */
 	id?: string;
 }
 
@@ -84,5 +132,33 @@ export type PropsNoCustom<E extends HTMLElement, P, S> = Omit<Props<E, P, S>, 'c
 /** Used if the element does render children, but does not wrap said children in an element. */
 export interface PropsNoRender<S> {
 	children?: Snippet<[S extends Record<string, any> ? S : never]>;
+	/**
+	 * The current ID of the element.
+	 *
+	 * If no ID is provided, Lithesome will use Svelte's inbuilt `$props.id()` function to generate and unique ID.
+	 */
 	id?: string;
+}
+
+export interface FloatingContent {
+	/**
+	 * The current visibility of the contents.
+	 *
+	 * ### `$bindable`
+	 */
+	visible?: boolean;
+	/**
+	 * Disables the entire component tree.
+	 *
+	 * ### `$bindable`
+	 */
+	disabled?: boolean;
+	/**
+	 * The DOM target to mount the content to.
+	 */
+	portalTarget?: HTMLElement | string;
+	/**
+	 * The underlying FloatinUI config.
+	 */
+	floatingConfig?: FloatingConfig;
 }

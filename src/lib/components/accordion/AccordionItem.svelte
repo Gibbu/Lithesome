@@ -9,11 +9,11 @@
 
 	let {
 		id = parseId(uid),
+		ref = $bindable(),
+		disabled = $bindable(false),
+		value,
 		children,
 		custom,
-		ref = $bindable(),
-		value,
-		disabled = $bindable(false),
 		...props
 	}: AccordionItemProps<typeof ctx.props, typeof ctx.state> = $props();
 

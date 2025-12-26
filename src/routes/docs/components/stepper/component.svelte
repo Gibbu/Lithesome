@@ -8,8 +8,10 @@
 		Stepper,
 		StepperItem,
 		StepperJump,
+		StepperLink,
 		StepperNext,
-		StepperPrev
+		StepperPrev,
+		StepperSteps
 	} from '$lib/index.js';
 	import Button from '$site/components/Button.svelte';
 	import { Container } from '$site/index.js';
@@ -69,18 +71,18 @@
 <Stepper>
 	{#snippet children({ previousIndex, currentStepIndex })}
 		<div class="flex flex-col gap-2">
-			<div class="flex items-center justify-between">
+			<StepperSteps class="flex items-center justify-between">
 				{#each steps as step, i}
-					<StepperJump name={step.name} class={['cursor-pointer text-sm', currentStepIndex >= i && 'text-teal-500']}>
+					<StepperLink item={step.name} class={['cursor-pointer text-sm', currentStepIndex > i && 'text-teal-500']}>
 						{step.name}
-					</StepperJump>
+					</StepperLink>
 					{#if i !== steps.length - 1}
 						<div
 							class={['h-0.5 w-8 rounded-md', currentStepIndex > i ? 'bg-teal-500' : 'bg-zinc-400 dark:bg-zinc-600']}
 						></div>
 					{/if}
 				{/each}
-			</div>
+			</StepperSteps>
 			<Container containerClass="w-[550px] h-[250px] flex flex-col" bodyClass="flex-1">
 				<div class="stepContainer">
 					{#each steps as step, i}

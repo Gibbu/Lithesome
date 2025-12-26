@@ -9,10 +9,10 @@
 
 	let {
 		id = parseId(uid),
-		children,
-		custom,
 		ref = $bindable(),
 		value = $bindable(''),
+		children,
+		custom,
 		onChange,
 		...props
 	}: AccordionProps<typeof ctx.props, typeof ctx.state> = $props();

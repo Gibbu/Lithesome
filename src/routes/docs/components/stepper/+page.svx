@@ -15,6 +15,21 @@ description: 'A sequence of steps to complete an action.'
 
 ```svelte
 <script>
-
+	import { Stepper, StepperItem, StepperLink, StepperNext, StepperPrev, StepperSteps } from '$lib/index.js';
 </script>
+
+<Stepper>
+	<StepperSteps>
+		<StepperLink item="intro">Intro</StepperLink>
+		<StepperLink item="details">Details</StepperLink>
+		<StepperLink item="summary">Summary</StepperLink>
+	</StepperSteps>
+
+	<StepperItem name="intro">Intro</StepperItem>
+	<StepperItem name="details">Details</StepperItem>
+	<StepperItem name="summary">Summary</StepperItem>
+
+	<StepperPrev>Prev</StepperPrev>
+	<StepperNext>Next</StepperNext>
+</Stepper>
 ```

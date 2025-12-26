@@ -1,19 +1,23 @@
-import { attach, buildContext } from '$lib/internals/index.js';
+import { tick } from 'svelte';
+import { attach, buildContext, KEYS, PREVENT_KEYS } from '$lib/internals/index.js';
 import { addEvents, createAttributes } from '$lib/internals/utils.svelte.js';
 
 import type { GetInternalProps } from '$lib/internals/types.js';
+import type { CalcIndexAction } from '$lib/internals/utils.svelte.js';
 import type {
 	StepperItemProps,
 	StepperJumpProps,
+	StepperLinkProps,
 	StepperNextProps,
 	StepperPrevProps,
-	StepperProps
+	StepperProps,
+	StepperStepsProps
 } from '$lib/types/index.js';
 
-const { attrs } = createAttributes('stepper', ['root', 'item', 'prev', 'next']);
+const { attrs, selectors } = createAttributes('stepper', ['root', 'steps', 'link', 'item', 'prev', 'next', 'jump']);
 
 interface Item {
-	id: string;
+	name: string;
 	canGoNext?: () => boolean;
 }
 
@@ -27,32 +31,45 @@ class StepperRoot {
 	items = $state<Item[]>([]);
 	prevIndex = $state<number>(0);
 
-	Index = $derived.by(() => (this.$$.step.val ? this.items.findIndex((item) => item.id === this.$$.step.val) : 0));
+	Index = $derived.by(() => (this.$$.step.val ? this.items.findIndex((item) => item.name === this.$$.step.val) : 0));
 	CurrentItem = $derived.by<Item | null>(() => this.items[this.Index] || null);
 	IsLast = $derived.by(() => this.Index === this.items.length - 1);
 	IsFirst = $derived.by(() => this.Index === 0);
 
 	constructor(props: RootProps) {
 		this.$$ = props;
+
+		$effect(() => {
+			if (this.CurrentItem) this.$$.step.val = this.CurrentItem.name;
+		});
+
+		$effect(() => {
+			if (this.CurrentItem) {
+				if (this.Index > this.prevIndex) this.$$.onNextStep?.(this.CurrentItem.name);
+				else if (this.Index < this.prevIndex) this.$$.onPrevStep?.(this.CurrentItem.name);
+			}
+		});
 	}
 
-	next = () => {
-		if (this.Index < this.items.length - 1) {
-			this.prevIndex = this.Index;
-			this.Index++;
+	jumpToStep = (name: string, skipCanDoNext: boolean) => {
+		let targetIndex = this.items.findIndex((item) => item.name === name);
+		if (!skipCanDoNext) {
+			const stepsBefore = this.items.slice(0, targetIndex);
+
+			for (let i = 0; i < stepsBefore.length; i++) {
+				const step = stepsBefore[i];
+				if (step.canGoNext && !step.canGoNext()) {
+					targetIndex = this.items.findIndex((item) => item.name === step.name);
+					break;
+				}
+			}
 		}
+
+		this.prevIndex = this.Index;
+		this.Index = targetIndex;
 	};
-	prev = () => {
-		if (this.Index > 0) {
-			this.prevIndex = this.Index;
-			this.Index--;
-		}
-	};
-	jump = (index: number) => {
-		this.Index = index;
-	};
-	registerItem = (id: string, canGoNext?: () => boolean) => {
-		if (!this.items.find((item) => item.id === id)) this.items.push({ id, canGoNext });
+	registerItem = (name: string, canGoNext?: () => boolean) => {
+		if (!this.items.find((item) => item.name === name)) this.items.push({ name, canGoNext });
 	};
 
 	props = $derived.by(() => ({
@@ -62,11 +79,111 @@ class StepperRoot {
 
 	state = $derived.by(() => ({
 		previousIndex: this.prevIndex,
-		currentStep: this.CurrentItem?.id,
+		currentStep: this.CurrentItem?.name,
 		currentStepIndex: this.Index,
 		disabled: this.$$.disabled.val,
 		isFirstStep: this.IsFirst,
 		isLastStep: this.IsLast
+	}));
+}
+
+//
+// ~STEPS
+//
+type StepsProps = GetInternalProps<StepperStepsProps>;
+class StepperSteps {
+	$$: StepsProps;
+
+	_root: StepperRoot;
+
+	constructor(root: StepperRoot, props: StepsProps) {
+		this._root = root;
+		this.$$ = props;
+	}
+
+	props = $derived.by(() => ({
+		id: this.$$.id.val,
+		[attrs.steps]: '',
+		role: 'navigation'
+	}));
+
+	state = $derived.by(() => ({
+		stepIndex: 0
+	}));
+}
+
+//
+// ~LINK
+//
+type LinkProps = GetInternalProps<StepperLinkProps>;
+class StepperLink {
+	$$: LinkProps;
+
+	_root: StepperRoot;
+
+	Disabled = $derived.by(() => this._root.$$.disabled.val || this.$$.disabled.val);
+	Active = $derived.by(() => this._root.CurrentItem?.name === this.$$.item.val);
+
+	constructor(root: StepperRoot, props: LinkProps) {
+		this._root = root;
+		this.$$ = props;
+	}
+
+	keyboardMove = (action: CalcIndexAction) => {
+		let nextItem: Item | null = null;
+
+		if (action === 'first') nextItem = this._root.items[0];
+		if (action === 'last') nextItem = this._root.items[this._root.items.length - 1];
+		if (action === 'prev' && this._root.Index > 0) nextItem = this._root.items[this._root.Index - 1];
+		if (action === 'next' && this._root.Index !== this._root.items.length - 1)
+			nextItem = this._root.items[this._root.Index + 1];
+
+		if (nextItem) {
+			this._root.jumpToStep(nextItem.name, this.$$.skipCanDoNext.val);
+			tick().then(() => {
+				const query = document.querySelector(
+					`#${this._root.$$.id.val} ${selectors.steps} [data-name="${this._root.$$.step.val}"]`
+				) as HTMLButtonElement;
+				if (query) query.focus();
+			});
+		}
+	};
+
+	props = $derived.by(() => ({
+		id: this.$$.id.val,
+		[attrs.link]: '',
+		'aria-disabled': this.$$.disabled.val,
+		'aria-current': this.Active ? 'step' : undefined,
+		tabindex: this.Active ? 0 : -1,
+		...attach((node) =>
+			addEvents(node, {
+				click: () => {
+					if (this.Disabled) return;
+					this._root.jumpToStep(this.$$.item.val, this.$$.skipCanDoNext.val);
+				},
+				keydown: (e) => {
+					if (PREVENT_KEYS.includes(e.key)) e.preventDefault();
+					if (this.Disabled) return;
+
+					if (e.key === KEYS.home) this.keyboardMove('first');
+					if (e.key === KEYS.end) this.keyboardMove('last');
+
+					if (this._root.$$.orientation.val === 'horizontal') {
+						if (e.key === KEYS.arrowLeft) this.keyboardMove('prev');
+						if (e.key === KEYS.arrowRight) this.keyboardMove('next');
+					} else {
+						if (e.key === KEYS.arrowUp) this.keyboardMove('prev');
+						if (e.key === KEYS.arrowDown) this.keyboardMove('next');
+					}
+				}
+			})
+		)
+	}));
+
+	state = $derived.by(() => ({
+		stepIndex: 0,
+		active: this.Active,
+		name: this.$$.item.val
 	}));
 }
 
@@ -92,7 +209,8 @@ class StepperItem {
 	}));
 
 	state = $derived.by(() => ({
-		stepIndex: 0
+		index: 0,
+		name: this.$$.name.val
 	}));
 }
 
@@ -118,7 +236,11 @@ class StepperPrev {
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
-					this._root.prev();
+					if (this.Disabled) return;
+					if (this._root.Index > 0) {
+						this._root.prevIndex = this._root.Index;
+						this._root.Index--;
+					}
 				}
 			})
 		)
@@ -155,7 +277,11 @@ class StepperNext {
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
-					if (this.CanGoNext) this._root.next();
+					if (this.Disabled) return;
+					if (this.CanGoNext && this._root.Index < this._root.items.length - 1) {
+						this._root.prevIndex = this._root.Index;
+						this._root.Index++;
+					}
 				}
 			})
 		)
@@ -168,7 +294,7 @@ class StepperNext {
 }
 
 //
-// ~NEXT
+// ~JUMP
 //
 type JumpProps = GetInternalProps<StepperJumpProps>;
 class StepperJump {
@@ -176,7 +302,7 @@ class StepperJump {
 
 	_root: StepperRoot;
 
-	Disabled = $derived.by(() => this._root.$$.disabled.val || this.$$.disabled.val || this._root.IsLast);
+	Disabled = $derived.by(() => this._root.$$.disabled.val || this.$$.disabled.val);
 
 	constructor(root: StepperRoot, props: JumpProps) {
 		this._root = root;
@@ -185,24 +311,12 @@ class StepperJump {
 
 	props = $derived.by(() => ({
 		id: this.$$.id.val,
-		[attrs.next]: '',
+		[attrs.jump]: '',
 		...attach((node) =>
 			addEvents(node, {
 				click: () => {
-					let targetIndex = this._root.items.findIndex((item) => item.id === this.$$.name.val);
-					if (!this.$$.skipCanDoNext.val) {
-						const stepsBefore = this._root.items.slice(0, targetIndex);
-
-						for (let i = 0; i < stepsBefore.length; i++) {
-							const step = stepsBefore[i];
-							if (step.canGoNext && !step.canGoNext()) {
-								targetIndex = this._root.items.findIndex((item) => item.id === step.id);
-								break;
-							}
-						}
-					}
-
-					this._root.jump(targetIndex);
+					if (this.Disabled) return;
+					this._root.jumpToStep(this.$$.name.val, this.$$.skipCanDoNext.val);
 				}
 			})
 		)
@@ -220,6 +334,14 @@ const rootCtx = buildContext(StepperRoot);
 
 export const createStepperRootContext = (props: RootProps) => {
 	return rootCtx.create(props);
+};
+
+export const useStepperSteps = (props: StepsProps) => {
+	return rootCtx.register(StepperSteps, props);
+};
+
+export const useStepperLink = (props: LinkProps) => {
+	return rootCtx.register(StepperLink, props);
 };
 
 export const useStepperItem = (props: ItemProps) => {

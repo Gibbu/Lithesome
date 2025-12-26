@@ -24,4 +24,4 @@
 	});
 </script>
 
-<Element bind:ref {children} {custom} visible={ctx._root.CurrentItem?.id === name} {ctx} {...props} />
+<Element bind:ref {children} {custom} visible={ctx._root.CurrentItem?.name === name} {ctx} {...props} />

@@ -1,13 +1,12 @@
-import type { Props, PropsNoRender } from '$lib/internals/index.js';
-import type { PortalTarget } from '$lib/types/index.js';
+import type { FloatingContent, Props, PropsNoRender } from '$lib/internals/index.js';
 
 //
 // ~ROOT
 //
-export interface ModalProps<S = any> extends PropsNoRender<S> {
-	visible?: boolean;
-	disabled?: boolean;
-	portalTarget?: PortalTarget;
+export interface ModalProps<S = any> extends PropsNoRender<S>, FloatingContent {
+	/**
+	 * Allows the backdrop to close the modal if the user clicks on it.
+	 */
 	closeOnBackdropClick?: boolean;
 }
 

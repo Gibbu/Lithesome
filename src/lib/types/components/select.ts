@@ -1,16 +1,23 @@
-import type { FloatingConfig, JsonValue, Props, PropsNoChildren, PropsNoRender } from '$lib/internals/index.js';
-import type { PortalTarget } from '$lib/types/index.js';
+import type { FloatingContent, JsonValue, Props, PropsNoChildren, PropsNoRender } from '$lib/internals/index.js';
 
 //
 // ~ROOT
 //
-export interface SelectProps<S = any, V extends JsonValue = any> extends PropsNoRender<S> {
+export interface SelectProps<S = any, V extends JsonValue = any> extends PropsNoRender<S>, FloatingContent {
+	/**
+	 * The currently selected option(s).
+	 *
+	 * ### `$bindable`
+	 */
 	value?: V;
-	visible?: boolean;
+	/**
+	 * Allows multiple options to be selected at once.
+	 */
 	multiple?: boolean;
-	disabled?: boolean;
-	floatingConfig?: FloatingConfig;
-	portalTarget?: PortalTarget;
+	/**
+	 * Fires whenever the `value` prop changes.
+	 * @param value The new value
+	 */
 	onValueChanged?: (value: V) => void;
 }
 
@@ -33,14 +40,30 @@ export interface SelectArrowProps<P = any, S = any> extends Props<HTMLElement, P
 // ~OPTION
 //
 export interface SelectOptionProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+	/**
+	 * The value of the option.
+	 */
 	value: JsonValue;
+	/**
+	 * Disables the option, skipping mouse/keyboard navigation and stopping events from firing.
+	 *
+	 * ### `$bindable`
+	 */
 	disabled?: boolean;
+	/**
+	 * The label to be display on the option and if this option is selected.
+	 *
+	 * If this prop is not provided, the text content of the option is used.
+	 */
 	label?: string;
 }
 
 //
 // ~VALUE
 //
-export interface SelectValueProps<P = any, S = any> extends PropsNoChildren<HTMLElement, S> {
+export interface SelectValueProps<S = any> extends PropsNoChildren<HTMLElement, S> {
+	/**
+	 *
+	 */
 	placeholder?: string;
 }

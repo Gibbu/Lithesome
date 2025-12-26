@@ -3,16 +3,23 @@ title: 'Changelog'
 description: 'The timeline of changes for Lithesome'
 ---
 
-### v0.21.1
+### v0.22.0
 
-<small>24th December, 2025</small>
+<small>26th December, 2025</small>
 
+- [Stepper](/docs/components/stepper) components.
 - `<HovercardContent />` will now forcefully close if the user clicks outside.
+- Added the `required` prop to the invisible checkbox if `name` is provided to the `<CheckboxButton />` component.
+- Added comments to all exported types.
+- Changed `<Dropzone />` `onSuccess` callback to only provide the successfull file.
+- Changed `<SelectValue />` element to `span`.
+- Fixed `<SelectValue />` data attributes.
+- Fixed `<Pin />` not using `type` prop.
 - Fixed `<Modal />` rendering an empty div elemenet.
 - Renamed types inside `lithesome/types`:
-	- `Placement` → `FloatingPlacement`
-	- `Alignment` → `FloatingAlignment`
-	- `Side` → `FloatingSide`
+  - `Placement` → `FloatingPlacement`
+  - `Alignment` → `FloatingAlignment`
+  - `Side` → `FloatingSide`
 - Exported `FocusTrapOptions`, `PortalTarget` in `lithesome/types`.
 
 ### v0.21.0

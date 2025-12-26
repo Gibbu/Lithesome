@@ -31,8 +31,6 @@ export class AccordionRoot {
 		if (Array.isArray(this.$$.value.val)) {
 			if (this.$$.value.val.includes(itemId)) this.$$.value.val = this.$$.value.val.filter((el) => el != itemId);
 			else this.$$.value.val.push(itemId);
-
-			console.log(this.$$.value.val);
 		} else {
 			if (this.$$.value.val === itemId) this.$$.value.val = '';
 			else this.$$.value.val = itemId;

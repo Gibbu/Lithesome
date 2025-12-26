@@ -11,6 +11,7 @@
 		id = parseId(uid),
 		disabled = $bindable(false),
 		step,
+		orientation = 'horizontal',
 		children,
 		onStepChange,
 		onPrevStep,
@@ -28,6 +29,7 @@
 				onStepChange?.(v);
 			}
 		),
+		orientation: stateValue(() => orientation),
 		onPrevStep,
 		onNextStep
 	});

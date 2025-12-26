@@ -4,7 +4,16 @@ import type { Props } from '$lib/internals/types.js';
 // ~~ROOT
 //
 export interface AccordionProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+	/**
+	 * The current value of the accordion.
+	 *
+	 * ### `$bindable`
+	 */
 	value?: string | string[];
+	/**
+	 * Fires whenever the `value` prop is changed.
+	 * @param val The new value
+	 */
 	onChange?: (val: string | string[]) => void;
 }
 
@@ -12,7 +21,15 @@ export interface AccordionProps<P = any, S = any> extends Props<HTMLElement, P, 
 // ~~ITEM
 //
 export interface AccordionItemProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+	/**
+	 * The value of the item.
+	 */
 	value: string;
+	/**
+	 * Disables the item, stop events from firing and skips over via keyboard navigation.
+	 *
+	 * ### `$bindable`
+	 */
 	disabled?: boolean;
 }
 

@@ -11,7 +11,7 @@
 		ref = $bindable(),
 		placeholder = $bindable(''),
 		...props
-	}: SelectValueProps<typeof ctx.props, typeof ctx.state> & Record<string, any> = $props();
+	}: SelectValueProps<typeof ctx.state> & Record<string, any> = $props();
 
 	let ctx = useSelectValue({
 		id: stateValue(() => id),
@@ -20,6 +20,6 @@
 	});
 </script>
 
-<Element bind:ref {ctx} {...props}>
+<Element bind:ref {ctx} {...props} as="span">
 	{ctx.label}
 </Element>

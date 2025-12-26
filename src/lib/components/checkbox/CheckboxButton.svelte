@@ -48,6 +48,7 @@
 		type="checkbox"
 		bind:checked={ctx.CheckedBool}
 		{name}
+		{required}
 		value={value || 'on'}
 		aria-hidden="true"
 		tabindex="-1"

@@ -9,12 +9,12 @@
 
 	let {
 		id = parseId(uid),
-		children,
-		custom,
 		value = $bindable(''),
 		disabled = $bindable(false),
 		ref = $bindable(),
 		onValueChanged,
+		children,
+		custom,
 		...props
 	}: RadioGroupProps<typeof ctx.props, typeof ctx.state> = $props();
 

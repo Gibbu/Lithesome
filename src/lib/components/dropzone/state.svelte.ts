@@ -85,10 +85,7 @@ class DropzoneRoot {
 				this.$$.files.val[0] = file;
 			}
 
-			this.$$.onSuccess?.({
-				type: 'success',
-				file
-			});
+			this.$$.onSuccess?.(file);
 		}
 	};
 

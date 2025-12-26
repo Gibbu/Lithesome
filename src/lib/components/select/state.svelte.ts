@@ -409,8 +409,7 @@ class SelectValue {
 	);
 	props = $derived.by(() => ({
 		id: this.$$.id.val,
-		[attrs.option]: '',
-		'data-selectvalue': '',
+		[attrs.value]: '',
 		'data-placeholder': this.PlaceholderVisible || undefined
 	}));
 
