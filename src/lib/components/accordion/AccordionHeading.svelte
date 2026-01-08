@@ -14,7 +14,7 @@
 		ref = $bindable(),
 		level = 3,
 		...props
-	}: AccordionHeadingProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: AccordionHeadingProps<typeof ctx.props> = $props();
 
 	let ctx = useAccordionHeading({
 		id: stateValue(() => id),

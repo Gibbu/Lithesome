@@ -15,7 +15,7 @@
 		children,
 		custom,
 		...props
-	}: AccordionItemProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: AccordionItemProps<typeof ctx.props> = $props();
 
 	let ctx = createAccordionItemContext({
 		id: stateValue(() => id),

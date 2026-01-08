@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: SelectContentProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: SelectContentProps<typeof ctx.props> = $props();
 
 	let ctx = useSelectContent({
 		id: stateValue(() => id),

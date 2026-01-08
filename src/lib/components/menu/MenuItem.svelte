@@ -15,7 +15,7 @@
 		href,
 		ref = $bindable(),
 		...props
-	}: MenuItemProps<typeof ctx.props, typeof ctx.state> & Record<string, any> = $props();
+	}: MenuItemProps<typeof ctx.props> & Record<string, any> = $props();
 
 	let ctx = useMenuItem({
 		id: stateValue(() => id),

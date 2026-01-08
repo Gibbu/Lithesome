@@ -3,7 +3,7 @@ import type { FloatingContent, JsonValue, Props, PropsNoChildren, PropsNoRender 
 //
 // ~ROOT
 //
-export interface SelectProps<S = any, V extends JsonValue = any> extends PropsNoRender<S>, FloatingContent {
+export interface SelectProps<V extends JsonValue = any> extends PropsNoRender<SelectState>, FloatingContent {
 	/**
 	 * The currently selected option(s).
 	 *
@@ -20,26 +20,50 @@ export interface SelectProps<S = any, V extends JsonValue = any> extends PropsNo
 	 */
 	onValueChanged?: (value: V) => void;
 }
+export interface SelectState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}
 
 //
 // ~TRIGGER
 //
-export interface SelectTriggerProps<P = any, S = any> extends Props<HTMLButtonElement, P, S> {}
+export interface SelectTriggerProps<P = any> extends Props<HTMLButtonElement, P, SelectTriggerState> {}
+export interface SelectTriggerState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}
 
 //
 // ~CONTENT
 //
-export interface SelectContentProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
+export interface SelectContentProps<P = any> extends Props<HTMLElement, P, SelectContentState> {}
+export interface SelectContentState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}
 
 //
 // ~ARROW
 //
-export interface SelectArrowProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
+export interface SelectArrowProps<P = any> extends Props<HTMLElement, P, SelectArrowState> {}
+export interface SelectArrowState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}
 
 //
 // ~OPTION
 //
-export interface SelectOptionProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+export interface SelectOptionProps<P = any> extends Props<HTMLElement, P, SelectOptionState> {
 	/**
 	 * The value of the option.
 	 */
@@ -57,13 +81,33 @@ export interface SelectOptionProps<P = any, S = any> extends Props<HTMLElement, 
 	 */
 	label?: string;
 }
+export interface SelectOptionState {
+	/**
+	 * True if the option is hovered.
+	 */
+	hovered: boolean;
+	/**
+	 * True if the option is selected.
+	 */
+	selected: boolean;
+}
 
 //
 // ~VALUE
 //
-export interface SelectValueProps<S = any> extends PropsNoChildren<HTMLElement, S> {
+export interface SelectValueProps extends PropsNoChildren<HTMLElement, SelectValueState> {
 	/**
-	 *
+	 * The value displayed when no option(s) is selected.
 	 */
 	placeholder?: string;
+}
+export interface SelectValueState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+	/**
+	 * True if no options are selected.
+	 */
+	placeholderVisible: boolean;
 }

@@ -2,7 +2,14 @@ import { SvelteMap } from 'svelte/reactivity';
 import { addEvents, attach, buildContext, createAttributes } from '$lib/internals/index.js';
 
 import type { GetInternalProps } from '$lib/internals/types.js';
-import type { CheckboxButtonProps, CheckboxGroupProps, CheckboxLabelProps } from '$lib/types/index.js';
+import type {
+	CheckboxButtonProps,
+	CheckboxButtonState,
+	CheckboxGroupProps,
+	CheckboxGroupState,
+	CheckboxLabelProps,
+	CheckboxLabelState
+} from '$lib/types/index.js';
 
 const { attrs } = createAttributes('checkbox', ['group', 'button', 'group', 'label']);
 
@@ -23,14 +30,8 @@ class CheckboxGroup {
 		id: this.$$.id.val,
 		[attrs.group]: ''
 	}));
-	state = $derived.by(() => ({
-		/**
-		 * True if the button is checked.
-		 */
+	state = $derived.by<CheckboxGroupState>(() => ({
 		checked: this.$$.checked.val,
-		/**
-		 * True if the group is disabled.
-		 */
 		disabled: this.$$.disabled.val
 	}));
 }
@@ -78,14 +79,8 @@ class CheckboxButton {
 			})
 		)
 	}));
-	state = $derived.by(() => ({
-		/**
-		 * True if the button is checked.
-		 */
+	state = $derived.by<CheckboxButtonState>(() => ({
 		checked: this.Checked,
-		/**
-		 * True if the group is disabled.
-		 */
 		disabled: this.Disabled
 	}));
 }
@@ -112,14 +107,8 @@ class CheckboxLabel {
 		[attrs.label]: '',
 		for: this._group.sharedIds.get('button')
 	}));
-	state = $derived.by(() => ({
-		/**
-		 * True if the button is checked.
-		 */
+	state = $derived.by<CheckboxLabelState>(() => ({
 		checked: this._group.$$.checked.val,
-		/**
-		 * True if the group is disabled.
-		 */
 		disabled: this._group.$$.disabled.val
 	}));
 }

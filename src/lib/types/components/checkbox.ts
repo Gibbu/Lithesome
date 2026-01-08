@@ -5,7 +5,7 @@ export type CheckboxChecked = boolean | 'mixed';
 //
 // ~GROUP
 //
-export interface CheckboxGroupProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+export interface CheckboxGroupProps<P = any> extends Props<HTMLElement, P, CheckboxGroupState> {
 	/**
 	 * The current checked state.
 	 *
@@ -24,11 +24,21 @@ export interface CheckboxGroupProps<P = any, S = any> extends Props<HTMLElement,
 	 */
 	onCheckedChange?: (checked: CheckboxChecked) => void;
 }
+export interface CheckboxGroupState {
+	/**
+	 * True if the button is checked.
+	 */
+	checked: CheckboxChecked;
+	/**
+	 * True if the group is disabled.
+	 */
+	disabled: boolean;
+}
 
 //
 // ~BUTTON
 //
-export interface CheckboxButtonProps<P = any, S = any> extends Props<HTMLButtonElement, P, S> {
+export interface CheckboxButtonProps<P = any> extends Props<HTMLButtonElement, P, CheckboxButtonState> {
 	/**
 	 * The current checked state.
 	 *
@@ -61,8 +71,28 @@ export interface CheckboxButtonProps<P = any, S = any> extends Props<HTMLButtonE
 	 */
 	onCheckedChange?: (v: CheckboxChecked) => void;
 }
+export interface CheckboxButtonState {
+	/**
+	 * True if the button is checked.
+	 */
+	checked: CheckboxChecked;
+	/**
+	 * True if the group is disabled.
+	 */
+	disabled: boolean;
+}
 
 //
 // ~LABEL
 //
-export interface CheckboxLabelProps<P = any, S = any> extends Props<HTMLLabelElement, P, S> {}
+export interface CheckboxLabelProps<P = any> extends Props<HTMLLabelElement, P, CheckboxLabelState> {}
+export interface CheckboxLabelState {
+	/**
+	 * True if the button is checked.
+	 */
+	checked: CheckboxChecked;
+	/**
+	 * True if the group is disabled.
+	 */
+	disabled: boolean;
+}

@@ -1,4 +1,4 @@
-import { tick } from 'svelte';
+import { on } from 'svelte/events';
 import { isBrowser, isObject } from './is.js';
 import { log } from './log.js';
 
@@ -58,18 +58,6 @@ export const createAttributes = <const P extends string, const T extends string[
 };
 
 /**
- * Removes any "invalid" values from the given value.
- * @param value The value to be pruned.
- */
-export const pruneValue = (value: JsonValue) => {
-	if (!value) return;
-	else if (typeof value === 'number' || typeof value === 'boolean') return value;
-	else if (Array.isArray(value)) return value.filter(Boolean);
-	else if (typeof value === 'object') return Object.entries(value).filter(Boolean);
-	else return value.trim();
-};
-
-/**
  * Contructs a object with in and out properties.
  */
 export const parseDelay = (delay: number | [number, number]) => {
@@ -77,22 +65,6 @@ export const parseDelay = (delay: number | [number, number]) => {
 		in: Array.isArray(delay) ? delay[0] : delay,
 		out: Array.isArray(delay) ? delay[1] : delay
 	};
-};
-
-/**
- * Transforms the string value to a number.
- *
- * Supported identifiers: `ms`, `s`
- * @param value The value to be transformed.
- */
-export const parseDuration = (value: number | string): number => {
-	if (typeof value === 'number') return value;
-	if (!/ms|s$/.test(value)) throw log.error('`duration` prop was given a string but not a leading identifier (ms/s).');
-
-	const duration: number = parseFloat(value.split(/ms|s/)[0]);
-
-	if (/(?=ms)(?!s)/.test(value)) return duration;
-	return duration * 1000;
 };
 
 /**
@@ -132,25 +104,6 @@ export const trackTimeout = () => {
 		 */
 		clear
 	};
-};
-
-/**
- * Deeply searches an array
- * @param arr The array to search through
- * @param predicate The condition to meet
- */
-export const deepFind = <T>(arr: T[], predicate: (item: T) => boolean): T | undefined => {
-	for (const item of arr) {
-		if (Array.isArray(item)) {
-			const foundInNested = deepFind(item, predicate);
-			if (foundInNested !== undefined) {
-				return foundInNested;
-			}
-		} else if (predicate(item as T)) {
-			return item as T;
-		}
-	}
-	return undefined;
 };
 
 /**
@@ -205,17 +158,17 @@ export const addEvents = (
 	node: HTMLElement,
 	events: { [K in keyof HTMLElementEventMap]?: (e: HTMLElementEventMap[K]) => void }
 ) => {
-	let map = new Map<keyof HTMLElementEventMap, (e: any) => void>();
+	let map = new Map<keyof HTMLElementEventMap, () => void>();
 
 	Object.entries(events).forEach(([event, fn]) => {
 		const ev = event as keyof HTMLElementEventMap;
-		map.set(ev, fn);
-		node.addEventListener(ev, map.get(ev) as any);
+		map.set(ev, on(node, event, fn as EventListener));
 	});
 
 	return () => {
-		map.forEach((value, key) => {
-			node.removeEventListener(key, value);
+		map.forEach((_, key) => {
+			const cleanUp = map.get(key);
+			if (cleanUp) cleanUp();
 			map.delete(key);
 		});
 	};

@@ -1,0 +1,20 @@
+---
+title: 'Tooltip'
+description: 'A popup that displays additonal information when hovering or focusing an element.'
+---
+
+## Basic Example
+
+```svelte
+<script>
+	import { Tooltip, TooltipArrow, TooltipContent, TooltipTrigger } from 'lithesome';
+</script>
+
+<Tooltip>
+	<TooltipTrigger>Hover me</TooltipTrigger>
+	<TooltipContent>
+		<TooltipArrow />
+		Howdy!
+	</TooltipContent>
+</Tooltip>
+```

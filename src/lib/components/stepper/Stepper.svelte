@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { stateValue } from '$lib/internals/context.svelte.js';
-	import { Element, parseId } from '$lib/internals/index.js';
+	import { parseId } from '$lib/internals/index.js';
 	import { createStepperRootContext } from './state.svelte.js';
 
 	import type { StepperProps } from '$lib/types/index.js';
@@ -15,9 +15,8 @@
 		children,
 		onStepChange,
 		onPrevStep,
-		onNextStep,
-		...props
-	}: StepperProps<typeof ctx.state> = $props();
+		onNextStep
+	}: StepperProps = $props();
 
 	let ctx = createStepperRootContext({
 		id: stateValue(() => id),

@@ -10,11 +10,13 @@
 
 	const groups = $derived(data.groups)!;
 
-	const currentPage = $derived(groups.flatMap((group) => group.items).find((item) => item.href === page.route.id));
+	const currentPage = $derived(groups.flatMap((group) => group.items).find((item) => item.path === page.url.pathname));
 	let wipAlert = $derived(browser ? !localStorage.getItem('wipAlert') : false);
+
+	$inspect(groups);
 </script>
 
-<Meta title={currentPage?.data.title} description={currentPage?.data.description} />
+<Meta title={currentPage?.title} description={currentPage?.description} />
 
 <Container containerClass="mb-6" bodyClass="flex justify-between items-center">
 	<h2 class="text-2xl text-zinc-900 dark:text-zinc-100">
@@ -45,9 +47,9 @@
 				<section>
 					<h4 class="mb-3 font-semibold capitalize dark:text-zinc-200">{group.name}</h4>
 					{#each group.items as item}
-						{@const active = page.route.id === item.href}
+						{@const active = page.url.pathname === item.path}
 						<a
-							href={item.href}
+							href={item.path}
 							class={[
 								'relative -mx-6 flex items-center px-6 py-4 text-sm select-none',
 								active
@@ -58,7 +60,7 @@
 							{#if active}
 								<div class="pointer-events-none absolute -left-px h-full w-px bg-teal-600 dark:bg-teal-500"></div>
 							{/if}
-							{item.data.title}
+							{item.title}
 						</a>
 					{/each}
 				</section>
@@ -73,17 +75,17 @@
 		as="main"
 		headerClass="flex justify-between items-start"
 		containerClass="h-full flex flex-col"
-		bodyClass="flex-1 max-w-full prose dark:prose-invert toc-target"
+		bodyClass="flex-1 max-w-full prose dark:prose-invert prose-zinc toc-target prose-td:py-6"
 	>
 		{#snippet header()}
 			<div>
-				<h1 class="text-5xl text-black dark:text-white">{currentPage?.data.title}</h1>
-				<p class="mt-2 text-zinc-600 dark:text-zinc-500">{currentPage?.data.description}</p>
+				<h1 class="text-5xl text-black dark:text-white">{currentPage?.title}</h1>
+				<p class="mt-2 text-zinc-600 dark:text-zinc-500">{currentPage?.description}</p>
 			</div>
 
 			<Button
 				variant="text"
-				href="https://github.com/Gibbu/Lithesome/blob/main/src/routes{currentPage?.href}/+page.svx"
+				href="https://github.com/Gibbu/Lithesome/blob/main/src/{currentPage?.path}/+page.svx"
 				external
 			>
 				<PenIcon class="size-4" />

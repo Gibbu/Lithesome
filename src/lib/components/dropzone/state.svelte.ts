@@ -3,7 +3,7 @@ import { attach, buildContext } from '$lib/internals/index.js';
 import { addEvents, createAttributes } from '$lib/internals/utils.svelte.js';
 
 import type { GetInternalProps } from '$lib/internals/types.js';
-import type { DropzoneInputProps, DropzoneProps } from '$lib/types/index.js';
+import type { DropzoneInputProps, DropzoneProps, DropzoneState } from '$lib/types/index.js';
 
 const { attrs } = createAttributes('dropzone', ['root', 'input']);
 
@@ -128,14 +128,8 @@ class DropzoneRoot {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the dropzone is currently being hovered with a file.
-		 */
+	state = $derived.by<DropzoneState>(() => ({
 		dragging: this.dragging,
-		/**
-		 * True if any validation errors are found.
-		 */
 		errors: this.errorsFound
 	}));
 }

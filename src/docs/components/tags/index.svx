@@ -1,0 +1,26 @@
+---
+title: 'Tags Input'
+description: 'Display submitted tags one by one.'
+---
+
+## Basic Example
+
+```svelte
+<script>
+	import { Tags, TagsDelete, TagsInput, TagsItem } from 'lithesome';
+
+	let tags = $state([]);
+</script>
+
+<Tags bind:value={tags}>
+	<div class="inline-flex flex-wrap gap-1">
+		{#each tags as tag}
+			<TagsItem value={tag}>
+				<span>{tag}</span>
+				<TagsDelete value={tag}>X</TagsDelete>
+			</TagsItem>
+		{/each}
+	</div>
+	<TagsInput />
+</Tags>
+```

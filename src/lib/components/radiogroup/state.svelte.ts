@@ -3,7 +3,7 @@ import { addEvents, attach, buildContext, calculateIndex, createAttributes, KEYS
 
 import type { CalcIndexAction } from '$lib/internals/index.js';
 import type { GetInternalProps } from '$lib/internals/types.js';
-import type { RadioGroupItemProps, RadioGroupProps } from '$lib/types/index.js';
+import type { RadioGroupItemProps, RadioGroupItemState, RadioGroupProps, RadioGroupState } from '$lib/types/index.js';
 
 const { attrs } = createAttributes('radiogroup', ['root', 'item']);
 
@@ -28,6 +28,8 @@ class RadioGroupRoot {
 		this.$$ = props;
 
 		if (this.$$.value.val) this.setInitialSelected();
+
+		$inspect(this.items);
 	}
 
 	navigate = (action: CalcIndexAction) => {
@@ -54,14 +56,8 @@ class RadioGroupRoot {
 		id: this.$$.id.val,
 		[attrs.root]: ''
 	}));
-	state = $derived.by(() => ({
-		/**
-		 * The current value of the group.
-		 */
+	state = $derived.by<RadioGroupState>(() => ({
 		value: this.$$.value.val,
-		/**
-		 * True if the group is disabled.
-		 */
 		disabled: this.$$.disabled.val
 	}));
 }
@@ -113,14 +109,8 @@ class RadioGroupItem {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the item is selected.
-		 */
+	state = $derived.by<RadioGroupItemState>(() => ({
 		selected: this.Selected,
-		/**
-		 * True if the item is disabled.
-		 */
 		disabled: this.$$.disabled.val
 	}));
 }

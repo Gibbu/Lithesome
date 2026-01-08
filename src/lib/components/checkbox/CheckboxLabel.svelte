@@ -13,7 +13,7 @@
 		children,
 		custom,
 		...props
-	}: CheckboxLabelProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: CheckboxLabelProps<typeof ctx.props> = $props();
 
 	let ctx = useCheckboxLabel({
 		id: stateValue(() => id),

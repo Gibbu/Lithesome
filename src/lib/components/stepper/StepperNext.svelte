@@ -14,7 +14,7 @@
 		children,
 		custom,
 		...props
-	}: StepperNextProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: StepperNextProps<typeof ctx.props> = $props();
 
 	let ctx = useStepperNext({
 		id: stateValue(() => id),

@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: TooltipContentProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: TooltipContentProps<typeof ctx.props> = $props();
 
 	let ctx = useTooltipContent({
 		id: stateValue(() => id),

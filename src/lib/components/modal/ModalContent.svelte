@@ -3,7 +3,7 @@
 	import { Element, parseId } from '$lib/internals/index.js';
 	import { useModalContent } from './state.svelte.js';
 
-	import type { ModalContentProps } from '$lib/types/index.js';
+	import type { ModalContentProps, ModalContentState } from '$lib/types/index.js';
 
 	const uid = $props.id();
 
@@ -13,7 +13,7 @@
 		children,
 		custom,
 		...props
-	}: ModalContentProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: ModalContentProps<typeof ctx.props, ModalContentState> = $props();
 
 	let ctx = useModalContent({
 		id: stateValue(() => id),

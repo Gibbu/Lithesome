@@ -57,3 +57,12 @@ html.dark .shiki span {
 .site-value {
 	@apply absolute right-1 bottom-1 opacity-40;
 }
+
+.api-ref-code {
+	@apply rounded-md bg-zinc-200 px-2 py-1.5 dark:bg-zinc-800 dark:text-white;
+
+	&::before,
+	&::after {
+		content: none;
+	}
+}

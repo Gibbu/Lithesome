@@ -1,0 +1,20 @@
+---
+title: 'Hovercard'
+description: 'Display a summary/preview of a link.'
+---
+
+## Basic Example
+
+```svelte
+<script>
+	import { Hovercard, HovercardArrow, HovercardContent, HovercardTrigger } from 'lithesome';
+</script>
+
+<Hovercard>
+	<HovercardTrigger>Hover me</HovercardTrigger>
+	<HovercardContent>
+		<HovercardArrow />
+		Content
+	</HovercardContent>
+</Hovercard>
+```

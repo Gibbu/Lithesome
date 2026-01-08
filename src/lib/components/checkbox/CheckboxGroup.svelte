@@ -16,7 +16,7 @@
 		children,
 		custom,
 		...props
-	}: CheckboxGroupProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: CheckboxGroupProps<typeof ctx.props> = $props();
 
 	let ctx = createCheckboxGroupContext({
 		id: stateValue(() => id),

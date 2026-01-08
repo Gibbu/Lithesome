@@ -17,7 +17,7 @@
 		value = $bindable(),
 		multiple = false,
 		onValueChanged
-	}: SelectProps<typeof ctx.state> = $props();
+	}: SelectProps = $props();
 
 	let ctx = createSelectRootContext({
 		id: stateValue(() => id),

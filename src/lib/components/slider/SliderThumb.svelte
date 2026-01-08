@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), ref = $bindable(), ...props }: SliderThumbProps<typeof ctx.state> = $props();
+	let { id = parseId(uid), ref = $bindable(), ...props }: SliderThumbProps<typeof ctx.props> = $props();
 
 	let ctx = useSliderThumb({
 		id: stateValue(() => id),

@@ -13,7 +13,7 @@
 		children,
 		custom,
 		...props
-	}: ModalTriggerProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: ModalTriggerProps<typeof ctx.props> = $props();
 
 	let ctx = useModalTrigger({
 		id: stateValue(() => id),

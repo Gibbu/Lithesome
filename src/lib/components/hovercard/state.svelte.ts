@@ -14,9 +14,13 @@ import {
 import type { GetInternalProps } from '$lib/internals/index.js';
 import type {
 	HovercardArrowProps,
+	HovercardArrowState,
 	HovercardContentProps,
+	HovercardContentState,
 	HovercardProps,
-	HovercardTriggerProps
+	HovercardState,
+	HovercardTriggerProps,
+	HovercardTriggerState
 } from '$lib/types/index.js';
 
 const { attrs } = createAttributes('hovercard', ['trigger', 'content', 'arrow']);
@@ -56,10 +60,7 @@ class HovercardRoot extends Floating {
 		this.$$.visible.val = false;
 	};
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<HovercardState>(() => ({
 		visible: this.$$.visible.val
 	}));
 }
@@ -106,10 +107,7 @@ class HovercardTrigger {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<HovercardTriggerState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -159,10 +157,7 @@ class HovercardContent {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<HovercardContentState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -189,10 +184,7 @@ class HovercardArrow {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<HovercardArrowState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }

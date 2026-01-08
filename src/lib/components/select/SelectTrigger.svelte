@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: SelectTriggerProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: SelectTriggerProps<typeof ctx.props> = $props();
 
 	let ctx = useSelectTrigger({
 		id: stateValue(() => id),

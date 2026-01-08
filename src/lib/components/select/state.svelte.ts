@@ -17,11 +17,17 @@ import {
 import type { CalcIndexAction, GetInternalProps, JsonValue } from '$lib/internals/index.js';
 import type {
 	SelectArrowProps,
+	SelectArrowState,
 	SelectContentProps,
+	SelectContentState,
 	SelectOptionProps,
+	SelectOptionState,
 	SelectProps,
+	SelectState,
 	SelectTriggerProps,
-	SelectValueProps
+	SelectTriggerState,
+	SelectValueProps,
+	SelectValueState
 } from '$lib/types/index.js';
 
 const { attrs, selectors } = createAttributes('select', ['root', 'trigger', 'content', 'arrow', 'option', 'value']);
@@ -182,10 +188,7 @@ class SelectRoot extends Floating {
 		this.doneMounting();
 	};
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<SelectState>(() => ({
 		visible: this.$$.visible.val
 	}));
 }
@@ -258,10 +261,7 @@ class SelectTrigger {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<SelectTriggerState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -300,10 +300,7 @@ class SelectContent {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<SelectContentState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 
@@ -334,10 +331,7 @@ class SelectArrow {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<SelectArrowState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -377,8 +371,13 @@ class SelectOption {
 		'aria-selected': this.Selected,
 		'data-value': this.$$.value.val,
 		'data-label': this.$$.label.val,
-		...attach((node) =>
-			addEvents(node, {
+		...attach((node) => {
+			// Set the hovered index to the active item, if that item is "selected".
+			if (this._root.$$.value.val === this.$$.value.val) {
+				this._root.hoveredIndex = this._root.options.findIndex((el) => el.value === this.$$.value.val);
+			}
+
+			return addEvents(node, {
 				click: () => {
 					if (this.$$.disabled.val) return;
 
@@ -389,18 +388,12 @@ class SelectOption {
 
 					this._root.setHovered(this.$$.value.val);
 				}
-			})
-		)
+			});
+		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the option is hovered.
-		 */
+	state = $derived.by<SelectOptionState>(() => ({
 		hovered: this.Hovered,
-		/**
-		 * True if the option is selected.
-		 */
 		selected: this.Selected
 	}));
 }
@@ -431,10 +424,8 @@ class SelectValue {
 		'data-placeholder': this.PlaceholderVisible || undefined
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The value of the placeholder
-		 */
+	state = $derived.by<SelectValueState>(() => ({
+		visible: this._root.$$.visible.val,
 		placeholderVisible: this.PlaceholderVisible
 	}));
 }

@@ -16,7 +16,7 @@
 		children,
 		custom,
 		...props
-	}: StepperLinkProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: StepperLinkProps<typeof ctx.props> = $props();
 
 	let ctx = useStepperLink({
 		id: stateValue(() => id),

@@ -1,0 +1,147 @@
+---
+title: 'Menu'
+description: 'A menu of items that is hidden until triggered.'
+---
+
+<script>
+	import {Info} from '$site/index.js'
+</script>
+
+## Basic Example
+
+```svelte
+<script>
+	import {
+		Menu,
+		MenuArrow,
+		MenuContent,
+		MenuItem,
+		MenuSub,
+		MenuSubContent,
+		MenuSubTrigger,
+		MenuTrigger
+	} from 'lithesome';
+</script>
+
+<Menu>
+	<MenuTrigger>Menu</MenuTrigger>
+	<MenuContent>
+		<MenuItem>Item 1</MenuItem>
+		<MenuItem>Item 2</MenuItem>
+		<MenuItem>Item 3</MenuItem>
+		<MenuSub name="submenu">
+			<MenuSubTrigger>Item 4</MenuSubTrigger>
+
+			<MenuSubContent>
+				<MenuItem>Item 4-1</MenuItem>
+				<MenuItem>Item 4-2</MenuItem>
+				<MenuItem>Item 4-4</MenuItem>
+			</MenuSubContent>
+		</MenuSub>
+	</MenuContent>
+</Menu>
+```
+
+## Disabling an item
+
+By passing the `disabled` prop on the `<MenuItem />` component. Lithesome will disallow clicking and skip over via keyboard navigation of that item.
+
+```svelte
+<Menu>
+	<MenuTrigger>Menu</MenuTrigger>
+	<MenuContent>
+		<MenuItem />
+		<MenuItem disabled />
+		<MenuItem />
+	</MenuContent>
+</Menu>
+```
+
+## Site navigation
+
+Each `<MenuItem />` exposes a `href` prop. This will automatically turn the button into an anchor tag and place said href onto that item.
+
+```svelte
+<Menu>
+	<MenuTrigger>Menu</MenuTrigger>
+	<MenuContent>
+		<MenuItem href="/settings" />
+		<MenuItem disabled />
+		<MenuItem />
+	</MenuContent>
+</Menu>
+```
+
+## Sub Menus
+
+To keep your menus organized, you can group related items together using the `<MenuSub />` component and its related elements.
+
+```svelte
+<Menu>
+	<MenuTrigger>Menu</MenuTrigger>
+	<MenuContent>
+		<MenuItem />
+		<MenuSub name="sub">
+			<MenuSubTrigger>Sub Trigger</MenuSubTrigger>
+			<MenuSubContent>
+				<MenuItem />
+				<MenuItem />
+			</MenuSubContent>
+		</MenuSub>
+		<MenuItem />
+	</MenuContent>
+</Menu>
+```
+
+Whenever we want a sub menu, place it in the position to where you would want the new sub menu trigger to be.
+
+<Info type="warning" message="The <MenuSub /> component must have a name prop with a unique ID." />
+
+### Disabling a sub menu
+
+Just like disabling an item, passing the `disabled` prop to the `<MenuSub />` component will disable the `<MenuSubTrigger />` and the following contents.
+
+```svelte
+<Menu>
+	<MenuTrigger>Menu</MenuTrigger>
+	<MenuContent>
+		<MenuItem />
+		<MenuSub name="sub" disabled>
+			<MenuSubTrigger>Sub Trigger</MenuSubTrigger>
+			<MenuSubContent>
+				<MenuItem />
+				<MenuItem />
+			</MenuSubContent>
+		</MenuSub>
+		<MenuItem />
+	</MenuContent>
+</Menu>
+```
+
+### Deeply nested sub menus
+
+The `<MenuSub />` components can be place inside of one another to achieve a deeply nested menu.
+
+```svelte
+<Menu>
+	<MenuTrigger>Menu</MenuTrigger>
+	<MenuContent>
+		<MenuItem />
+		<MenuSub name="sub">
+			<MenuSubTrigger>Sub Trigger</MenuSubTrigger>
+			<MenuSubContent>
+				<MenuItem />
+				<MenuSub name="anotherone">
+					<MenuSubTrigger>Sub Trigger</MenuSubTrigger>
+					<MenuSubContent>
+						<MenuItem />
+						<MenuItem />
+					</MenuSubContent>
+				</MenuSub>
+				<MenuItem />
+			</MenuSubContent>
+		</MenuSub>
+		<MenuItem />
+	</MenuContent>
+</Menu>
+```

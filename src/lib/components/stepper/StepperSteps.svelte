@@ -12,7 +12,7 @@
 		children,
 		custom,
 		...props
-	}: StepperStepsProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: StepperStepsProps<typeof ctx.props> = $props();
 
 	let ctx = useStepperSteps({
 		id: stateValue(() => id),

@@ -13,7 +13,7 @@
 		ref = $bindable(),
 		value = $bindable(''),
 		...props
-	}: TabsContentProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: TabsContentProps<typeof ctx.props> = $props();
 
 	let ctx = useTabsContent({
 		id: stateValue(() => id),

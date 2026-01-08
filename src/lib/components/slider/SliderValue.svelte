@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), ref = $bindable(), ...props }: SliderValueProps<typeof ctx.state> = $props();
+	let { id = parseId(uid), ref = $bindable(), ...props }: SliderValueProps = $props();
 
 	let ctx = useSliderValue({
 		id: stateValue(() => id),

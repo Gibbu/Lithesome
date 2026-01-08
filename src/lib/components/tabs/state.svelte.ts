@@ -11,7 +11,16 @@ import {
 } from '$lib/internals/index.js';
 
 import type { CalcIndexAction, GetInternalProps } from '$lib/internals/index.js';
-import type { TabsButtonProps, TabsContentProps, TabsListProps, TabsProps } from '$lib/types/index.js';
+import type {
+	TabsButtonProps,
+	TabsButtonState,
+	TabsContentProps,
+	TabsContentState,
+	TabsListProps,
+	TabsListState,
+	TabsProps,
+	TabsState
+} from '$lib/types/index.js';
 
 const { attrs } = createAttributes('tabs', ['root', 'list', 'button', 'content']);
 
@@ -55,10 +64,7 @@ class TabsRoot {
 		'data-orientation': this.$$.orientation.val
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The value of the active tab.
-		 */
+	state = $derived.by<TabsState>(() => ({
 		activeTab: this.ActiveTab
 	}));
 }
@@ -85,10 +91,7 @@ class TabsList {
 		'data-orientation': this._root.$$.orientation.val
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The value of the active tab.
-		 */
+	state = $derived.by<TabsListState>(() => ({
 		activeTab: this._root.ActiveTab
 	}));
 }
@@ -148,10 +151,7 @@ class TabsButton {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the item is active.
-		 */
+	state = $derived.by<TabsButtonState>(() => ({
 		active: this.IsActive
 	}));
 }
@@ -185,10 +185,7 @@ class TabsContent {
 		'data-orientation': this._root.$$.orientation.val
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the item is active.
-		 */
+	state = $derived.by<TabsContentState>(() => ({
 		active: this.IsActive
 	}));
 

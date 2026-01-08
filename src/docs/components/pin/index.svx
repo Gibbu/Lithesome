@@ -1,0 +1,21 @@
+---
+title: 'Pin Input'
+description: 'Allows a sequence of one-character inputs.'
+---
+
+## Basic Example
+
+```svelte
+<script lang="ts">
+	import { Pin, PinInput } from 'lithesome';
+
+	let value = $state([]);
+</script>
+
+<Pin bind:value>
+	<PinInput />
+	<PinInput />
+	<PinInput />
+	<PinInput />
+</Pin>
+```

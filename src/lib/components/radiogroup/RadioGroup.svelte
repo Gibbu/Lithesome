@@ -16,7 +16,7 @@
 		children,
 		custom,
 		...props
-	}: RadioGroupProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: RadioGroupProps<typeof ctx.props> = $props();
 
 	let ctx = createRadioGroupRootContext({
 		id: stateValue(() => id),

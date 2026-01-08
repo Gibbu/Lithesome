@@ -18,7 +18,7 @@
 		disabled = $bindable(false),
 		max = 0,
 		...props
-	}: TagsProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: TagsProps<typeof ctx.props> = $props();
 
 	let ctx = createTagsRootContext({
 		id: stateValue(() => id),

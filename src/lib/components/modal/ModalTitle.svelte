@@ -13,7 +13,7 @@
 		children,
 		custom,
 		...props
-	}: ModalTitleProps<typeof ctx.props, any> = $props();
+	}: ModalTitleProps<typeof ctx.props> = $props();
 
 	let ctx = useModalTitle({
 		id: stateValue(() => id),

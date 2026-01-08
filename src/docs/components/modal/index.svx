@@ -1,0 +1,22 @@
+---
+title: 'Modal'
+description: 'An overlaying window to take focus away from the current context.'
+---
+
+## Basic Example
+
+```svelte
+<script>
+	import { Modal, ModalBackdrop, ModalContent, ModalDescription, ModalTitle, ModalTrigger } from 'lithesome';
+</script>
+
+<Modal>
+	<ModalTrigger>Click me</ModalTrigger>
+
+	<ModalBackdrop />
+	<ModalContent>
+		<ModalTitle>Modal Title</ModalTitle>
+		<ModalDescription>Modal Description</ModalDescription>
+	</ModalContent>
+</Modal>
+```

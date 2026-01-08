@@ -6,11 +6,15 @@ import { addEvents, attach, buildContext, createAttributes, KEYS, Scrolling } fr
 import type { GetInternalProps } from '$lib/internals/types.js';
 import type {
 	ModalBackdropProps,
+	ModalBackdropState,
 	ModalContentProps,
+	ModalContentState,
 	ModalDescriptionProps,
 	ModalProps,
+	ModalState,
 	ModalTitleProps,
-	ModalTriggerProps
+	ModalTriggerProps,
+	ModalTriggerState
 } from '$lib/types/index.js';
 
 const { attrs } = createAttributes('modal', ['root', 'trigger', 'backdrop', 'content', 'title', 'description']);
@@ -59,10 +63,7 @@ class ModalRoot extends Scrolling {
 		if (e.key === KEYS.escape) this.$$.visible.val = false;
 	};
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<ModalState>(() => ({
 		visible: this.$$.visible.val
 	}));
 }
@@ -98,10 +99,7 @@ class ModalTrigger {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<ModalTriggerState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -141,10 +139,7 @@ class ModalBackdrop {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<ModalBackdropState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -187,10 +182,7 @@ class ModalContent {
 			}) as const
 	);
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<ModalContentState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }

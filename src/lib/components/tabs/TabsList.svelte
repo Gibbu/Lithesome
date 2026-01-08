@@ -6,13 +6,7 @@
 
 	const uid = $props.id();
 
-	let {
-		id = parseId(uid),
-		children,
-		custom,
-		ref = $bindable(),
-		...props
-	}: TabsListProps<typeof ctx.props, typeof ctx.state> = $props();
+	let { id = parseId(uid), children, custom, ref = $bindable(), ...props }: TabsListProps<typeof ctx.props> = $props();
 
 	let ctx = useTabsList({
 		id: stateValue(() => id),

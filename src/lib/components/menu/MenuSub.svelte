@@ -15,7 +15,7 @@
 		disabled = $bindable(false),
 		portalTarget = 'body',
 		floatingConfig = {}
-	}: MenuSubProps<typeof ctx.state> = $props();
+	}: MenuSubProps = $props();
 
 	let ctx = createMenuSubContext({
 		id: stateValue(() => id),

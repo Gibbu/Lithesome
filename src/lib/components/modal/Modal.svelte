@@ -13,9 +13,8 @@
 		disabled = $bindable(false),
 		closeOnBackdropClick = true,
 		portalTarget = 'body',
-		children,
-		...props
-	}: ModalProps<typeof ctx.state> = $props();
+		children
+	}: ModalProps = $props();
 
 	let ctx = createModalRootContext({
 		id: stateValue(() => id),

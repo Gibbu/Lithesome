@@ -1,0 +1,22 @@
+---
+title: 'Tabs'
+description: 'Organize content to sections.'
+---
+
+## Basic Example
+
+```svelte
+<script>
+	import { Tabs, TabsButton, TabsContent, TabsList } from 'lithesome';
+</script>
+
+<Tabs>
+	<TabsList>
+		<TabButton value="tab-1">Tab 1</TabButton>
+		<TabButton value="tab-2">Tab 2</TabButton>
+	</TabsList>
+
+	<TabsContent value="tab-1">Tab 1 content</TabsContent>
+	<TabsContent value="tab-2">Tab 2 content</TabsContent>
+</Tabs>
+```

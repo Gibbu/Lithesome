@@ -14,7 +14,7 @@
 		ref = $bindable(),
 		value,
 		...props
-	}: TagsItemProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: TagsItemProps<typeof ctx.props> = $props();
 
 	let ctx = useTagsItem({
 		id: stateValue(() => id),

@@ -18,7 +18,8 @@ const config = {
 		},
 		adapter: adapter(),
 		alias: {
-			$site: 'src/site'
+			$site: 'src/site',
+			$docs: 'src/docs'
 		}
 	},
 	extensions: ['.svelte', ...mdsvexConfig.extensions]

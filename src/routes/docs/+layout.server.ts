@@ -1,34 +1,33 @@
 import { error } from '@sveltejs/kit';
 import matter from 'gray-matter';
 
-import type { Group } from './_types.js';
+import type { DocsGroups, DocsPageMeta } from '$site/types.js';
 
 export const load = async () => {
-	let groups: Group[] = [];
-	const pages = Object.entries(import.meta.glob('/src/routes/docs/**/*.svx', { query: '?raw', import: 'default' }));
+	let groups: DocsGroups[] = [];
+	const pages = Object.entries(import.meta.glob('/src/docs/**/*.svx', { query: '?raw', import: 'default' }));
 	for (const [filepath, resolver] of pages) {
+		if (!filepath.endsWith('.svx')) continue;
+
 		const page = (await resolver()) as string;
 
-		try {
-			if (!filepath.endsWith('.svx')) return undefined;
-			const { data } = matter(page);
+		const { data } = matter(page);
+		const meta = data as DocsPageMeta;
 
-			const group = filepath.match(/\/docs\/([^/]+)\//)?.[1]!;
-			const href = filepath.replace('/+page.svx', '').replace('src/routes/', '');
+		if (!meta.title) error(500, `Provide title metadata. ${filepath}`);
 
-			const found = groups.find((el) => el.name === group);
+		const group = filepath.match(/\/docs\/([^/]+)\//)?.[1]!;
+		const path = '/' + filepath.replace(/\/src\/|\/index|.svx/g, '').replace('index', '/');
 
-			if (found) {
-				found.items.push({ href, data });
-			} else {
-				groups.push({
-					name: group,
-					items: [{ href, data }]
-				});
-			}
-		} catch (err) {
-			console.error('Error reading directory:', err);
-			error(500, 'Failed to read files');
+		const found = groups.find((el) => el.name === group);
+
+		if (found) {
+			found.items.push({ ...meta, path });
+		} else {
+			groups.push({
+				name: group,
+				items: [{ ...meta, path }]
+			});
 		}
 	}
 
@@ -36,14 +35,16 @@ export const load = async () => {
 
 	return {
 		groups: groups
+			.filter((el) => el.name)
 			.toSorted((a, b) => groupOrder.indexOf(a.name) - groupOrder.indexOf(b.name))
 			.map((section) => ({
 				...section,
 				items: section.items.toSorted((a, b) => {
-					const aTitle = typeof a === 'string' ? a : a.data.title;
-					const bTitle = typeof b === 'string' ? b : b.data.title;
-					const aOrder = a.data.order;
-					const bOrder = b.data.order;
+					const aTitle = typeof a === 'string' ? a : a.title;
+					const bTitle = typeof b === 'string' ? b : b.title;
+
+					const aOrder = a.order;
+					const bOrder = b.order;
 
 					if (aOrder && bOrder) return aOrder - bOrder;
 

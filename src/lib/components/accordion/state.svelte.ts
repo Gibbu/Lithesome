@@ -9,7 +9,9 @@ import type {
 	AccordionContentProps,
 	AccordionHeadingProps,
 	AccordionItemProps,
-	AccordionProps
+	AccordionItemState,
+	AccordionProps,
+	AccordionState
 } from '$lib/types/index.js';
 
 const { attrs } = createAttributes('accordion', ['root', 'item', 'heading', 'button', 'content']);
@@ -46,10 +48,7 @@ export class AccordionRoot {
 		[attrs.root]: ''
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The current value.
-		 */
+	state = $derived.by<AccordionState>(() => ({
 		value: this.$$.value.val
 	}));
 }
@@ -80,14 +79,8 @@ class AccordionItem {
 		'data-value': this.$$.value.val
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the item is active.
-		 */
+	state = $derived.by<AccordionItemState>(() => ({
 		active: this.Active,
-		/**
-		 * True the item is disabled.
-		 */
 		disabled: this.$$.disabled.val
 	}));
 }

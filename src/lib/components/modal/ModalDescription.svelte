@@ -13,7 +13,7 @@
 		children,
 		custom,
 		...props
-	}: ModalDescriptionProps<typeof ctx.props, any> = $props();
+	}: ModalDescriptionProps<typeof ctx.props> = $props();
 
 	let ctx = useModalDescription({
 		id: stateValue(() => id),

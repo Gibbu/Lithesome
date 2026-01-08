@@ -15,7 +15,7 @@
 		custom,
 		onChange,
 		...props
-	}: AccordionProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: AccordionProps<typeof ctx.props> = $props();
 
 	let ctx = createAccordionRootContext({
 		id: stateValue(() => id),

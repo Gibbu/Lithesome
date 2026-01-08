@@ -13,7 +13,7 @@
 		children,
 		custom,
 		...props
-	}: ModalBackdropProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: ModalBackdropProps<typeof ctx.props> = $props();
 
 	let ctx = useModalBackdrop({
 		id: stateValue(() => id),

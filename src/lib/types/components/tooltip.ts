@@ -3,7 +3,7 @@ import type { FloatingContent, Props, PropsNoRender } from '$lib/internals/types
 //
 // ~~ROOT
 //
-export interface TooltipProps<S = any> extends PropsNoRender<S>, FloatingContent {
+export interface TooltipProps extends PropsNoRender<TooltipState>, FloatingContent {
 	/**
 	 * The delay in `ms` in which it will take for the content show.
 	 *
@@ -12,18 +12,42 @@ export interface TooltipProps<S = any> extends PropsNoRender<S>, FloatingContent
 	 */
 	delay?: number | [number, number];
 }
+export interface TooltipState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}
 
 //
 // ~~TRIGGER
 //
-export interface TooltipTriggerProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
+export interface TooltipTriggerProps<P = any> extends Props<HTMLElement, P, TooltipTriggerState> {}
+export interface TooltipTriggerState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}
 
 //
 // ~~CONTENT
 //
-export interface TooltipContentProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
+export interface TooltipContentProps<P = any> extends Props<HTMLElement, P, TooltipContentState> {}
+export interface TooltipContentState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}
 
 //
 // ~~ARROW
 //
-export interface TooltipArrowProps<P = any, S = any> extends Props<HTMLElement, P, S> {}
+export interface TooltipArrowProps<P = any> extends Props<HTMLElement, P, TooltipArrowState> {}
+export interface TooltipArrowState {
+	/**
+	 * True if the contents are visible.
+	 */
+	visible: boolean;
+}

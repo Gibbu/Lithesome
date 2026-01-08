@@ -6,12 +6,19 @@ import type { GetInternalProps } from '$lib/internals/types.js';
 import type { CalcIndexAction } from '$lib/internals/utils.svelte.js';
 import type {
 	StepperItemProps,
+	StepperItemState,
 	StepperJumpProps,
+	StepperJumpState,
 	StepperLinkProps,
+	StepperLinkState,
 	StepperNextProps,
+	StepperNextState,
 	StepperPrevProps,
+	StepperPrevState,
 	StepperProps,
-	StepperStepsProps
+	StepperState,
+	StepperStepsProps,
+	StepperStepsState
 } from '$lib/types/index.js';
 
 const { attrs, selectors } = createAttributes('stepper', ['root', 'steps', 'link', 'item', 'prev', 'next', 'jump']);
@@ -61,7 +68,7 @@ class StepperRoot {
 			for (let i = 0; i < stepsBefore.length; i++) {
 				const step = stepsBefore[i];
 				if (step.canGoNext && !step.canGoNext()) {
-					targetIndex = this.items.findIndex((item) => item.name === step.name);
+					targetIndex = i;
 					break;
 				}
 			}
@@ -79,34 +86,13 @@ class StepperRoot {
 		[attrs.root]: ''
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The previously active step.
-		 */
+	state = $derived.by<StepperState>(() => ({
 		previousStep: this.PreviousItem?.name,
-		/**
-		 * The index of the previously active step.
-		 */
 		previousStepIndex: this.prevIndex,
-		/**
-		 * The active step.
-		 */
 		currentStep: this.CurrentItem?.name,
-		/**
-		 * The index of the active step.
-		 */
 		currentStepIndex: this.Index,
-		/**
-		 * True if the component is disabled.
-		 */
 		disabled: this.$$.disabled.val,
-		/**
-		 * True if the step index is 0.
-		 */
 		isFirstStep: this.IsFirst,
-		/**
-		 * True if the step index is the last.
-		 */
 		isLastStep: this.IsLast
 	}));
 }
@@ -131,11 +117,8 @@ class StepperSteps {
 		role: 'navigation'
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The index of the active step.
-		 */
-		currentIndex: this._root.Index
+	state = $derived.by<StepperStepsState>(() => ({
+		currentStepIndex: this._root.Index
 	}));
 }
 
@@ -208,18 +191,9 @@ class StepperLink {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The index of the related item.
-		 */
-		stepIndex: this.ThisIndex,
-		/**
-		 * True if the list is currently active.
-		 */
+	state = $derived.by<StepperLinkState>(() => ({
+		currentStepIndex: this.ThisIndex,
 		active: this.Active,
-		/**
-		 * The name of the related item.
-		 */
 		itemName: this.$$.item.val
 	}));
 }
@@ -247,14 +221,8 @@ class StepperItem {
 		[attrs.item]: ''
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The index of the item.
-		 */
+	state = $derived.by<StepperItemState>(() => ({
 		index: this.ThisIndex,
-		/**
-		 * The unique name of the item.
-		 */
 		name: this.$$.name.val
 	}));
 }
@@ -291,17 +259,8 @@ class StepperPrev {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if:
-		 * - Parent `<Stepper />` component is disabled.
-		 * - `disabled` prop is true.
-		 * - The current step index is 0.
-		 */
+	state = $derived.by<StepperPrevState>(() => ({
 		disabled: this.Disabled,
-		/**
-		 * True if the current step index is not 0.
-		 */
 		canGoPrev: !this._root.IsFirst
 	}));
 }
@@ -341,19 +300,8 @@ class StepperNext {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if:
-		 * - Parent `<Stepper />` component is disabled.
-		 * - `disabled` prop is true.
-		 * - The current step index is not the last step.
-		 */
+	state = $derived.by<StepperNextState>(() => ({
 		disabled: this.Disabled || !this.CanGoNext,
-		/**
-		 * True if:
-		 * - `canGoNext` function is true and passed.
-		 * - Will return value of the `disabled` prop if `canDoNext` is not passed.
-		 */
 		canGoNext: this.CanGoNext
 	}));
 }
@@ -387,12 +335,7 @@ class StepperJump {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if:
-		 * - Parent `<Stepper />` component is disabled.
-		 * - `disabled` prop is true.
-		 */
+	state = $derived.by<StepperJumpState>(() => ({
 		disabled: this.Disabled
 	}));
 }

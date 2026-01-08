@@ -122,15 +122,26 @@ export interface PropsNoChildren<E extends HTMLElement, S> {
 
 /** Default, used for when a component renders an element with children */
 export interface Props<E extends HTMLElement, P, S> extends PropsNoChildren<E, S> {
+	/**
+	 * The default snippet to render.
+	 */
 	children?: Snippet<[S extends Record<string, any> ? S : never]>;
+	/**
+	 * Snippet to be used when wanting a custom implementation.
+	 *
+	 * This will tell Lithesome not the render the default element and any state along with it.
+	 */
 	custom?: Snippet<[S extends Record<string, any> ? { props: P; state: S } : { props: P }]>;
 }
 
-/** Used if the element does render children, but does not allow for the custom snippet. */
+/** Used if the element does render wrapper element with children, but does not allow for the custom snippet. */
 export type PropsNoCustom<E extends HTMLElement, P, S> = Omit<Props<E, P, S>, 'custom'>;
 
 /** Used if the element does render children, but does not wrap said children in an element. */
 export interface PropsNoRender<S> {
+	/**
+	 * The default snippet to render.
+	 */
 	children?: Snippet<[S extends Record<string, any> ? S : never]>;
 	/**
 	 * The current ID of the element.
@@ -158,7 +169,7 @@ export interface FloatingContent {
 	 */
 	portalTarget?: HTMLElement | string;
 	/**
-	 * The underlying FloatinUI config.
+	 * The underlying FloatingUI config.
 	 */
 	floatingConfig?: FloatingConfig;
 }

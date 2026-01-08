@@ -12,7 +12,14 @@ import {
 } from '$lib/internals/index.js';
 
 import type { GetInternalProps } from '$lib/internals/index.js';
-import type { TooltipArrowProps, TooltipProps } from '$lib/types/index.js';
+import type {
+	TooltipArrowProps,
+	TooltipArrowState,
+	TooltipContentState,
+	TooltipProps,
+	TooltipState,
+	TooltipTriggerState
+} from '$lib/types/index.js';
 
 const { attrs } = createAttributes('tooltip', ['trigger', 'content', 'arrow']);
 
@@ -46,10 +53,7 @@ class TooltipRoot extends Floating {
 		}, this.ParsedDelay.out);
 	};
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<TooltipState>(() => ({
 		visible: this.$$.visible.val
 	}));
 }
@@ -97,10 +101,7 @@ class TooltipTrigger {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<TooltipTriggerState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -136,10 +137,7 @@ class TooltipContent {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<TooltipContentState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -166,10 +164,7 @@ class TooltipArrow {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<TooltipArrowState>(() => ({
 		visible: this._parent.$$.visible.val
 	}));
 }

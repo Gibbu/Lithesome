@@ -23,7 +23,7 @@ export type DropzoneErrorEvents = DropzoneEventMaxSize | DropzoneEventInvalidTyp
 //
 // ~ROOT
 //
-export interface DropzoneProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+export interface DropzoneProps<P = any> extends Props<HTMLElement, P, DropzoneState> {
 	/**
 	 * The current accepted files of the dropzone.
 	 *
@@ -53,7 +53,7 @@ export interface DropzoneProps<P = any, S = any> extends Props<HTMLElement, P, S
 	 */
 	disabled?: boolean;
 	/**
-	 * Custom validation per file picked.
+	 * Custom validation for each file picked.
 	 *
 	 * For the file to pass this validation, the return statement must be truthy.
 	 *
@@ -85,8 +85,18 @@ export interface DropzoneProps<P = any, S = any> extends Props<HTMLElement, P, S
 	 */
 	onChange?: (files: File[]) => void;
 }
+export interface DropzoneState {
+	/**
+	 * True if the dropzone is currently being hovered with a file.
+	 */
+	dragging: boolean;
+	/**
+	 * True if any validation errors are found.
+	 */
+	errors: boolean;
+}
 
 //
 // ~INPUT
 //
-export interface DropzoneInputProps<P = any, S = any> extends Props<HTMLInputElement, P, S> {}
+export interface DropzoneInputProps<P = any> extends Props<HTMLInputElement, P, any> {}

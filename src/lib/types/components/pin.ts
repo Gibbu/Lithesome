@@ -3,7 +3,7 @@ import type { Props, PropsNoChildren } from '$lib/internals/index.js';
 //
 // ~ROOT
 //
-export interface PinProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+export interface PinProps<P = any> extends Props<HTMLElement, P, PinState> {
 	/**
 	 * The current value of the pin inputs.
 	 *
@@ -35,8 +35,28 @@ export interface PinProps<P = any, S = any> extends Props<HTMLElement, P, S> {
 	 */
 	onFilled?: (value: string[]) => void;
 }
+export interface PinState {
+	/**
+	 * True if all inputs have a value.
+	 */
+	filled: boolean;
+}
 
 //
 // ~INPUT
 //
-export interface PinInputProps<S = any> extends PropsNoChildren<HTMLInputElement, S> {}
+export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState> {}
+export interface PinInputState {
+	/**
+	 * True if all inputs have a value.
+	 */
+	filled: boolean;
+	/**
+	 * True if the root component is true.
+	 */
+	disabled: boolean;
+	/**
+	 * True if this specific input is being focused.
+	 */
+	focused: boolean;
+}

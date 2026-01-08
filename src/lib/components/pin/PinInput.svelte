@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), ref = $bindable(), ...props }: PinInputProps<typeof ctx.state> = $props();
+	let { id = parseId(uid), ref = $bindable(), ...props }: PinInputProps = $props();
 
 	let ctx = usePinInput({
 		id: stateValue(() => id),

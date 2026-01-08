@@ -15,7 +15,7 @@
 		label = $bindable(''),
 		ref = $bindable(),
 		...props
-	}: SelectOptionProps<typeof ctx.props, typeof ctx.state> & Record<string, any> = $props();
+	}: SelectOptionProps<typeof ctx.props> & Record<string, any> = $props();
 
 	let ctx = useSelectOption({
 		id: stateValue(() => id),

@@ -15,7 +15,7 @@
 		value,
 		disabled = $bindable(false),
 		...props
-	}: RadioGroupItemProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: RadioGroupItemProps<typeof ctx.props> = $props();
 
 	let ctx = useRadioGroupItem({
 		id: stateValue(() => id),

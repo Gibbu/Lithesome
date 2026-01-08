@@ -22,7 +22,7 @@
 		validate,
 		custom,
 		...props
-	}: DropzoneProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: DropzoneProps<typeof ctx.props> = $props();
 
 	let ctx = createDropzoneRootContext({
 		id: stateValue(() => id),

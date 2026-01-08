@@ -17,13 +17,20 @@ import {
 import type { CalcIndexAction, GetInternalProps } from '$lib/internals/index.js';
 import type {
 	MenuArrowProps,
+	MenuArrowState,
 	MenuContentProps,
+	MenuContentState,
 	MenuItemProps,
+	MenuItemState,
 	MenuProps,
+	MenuState,
 	MenuSubContentProps,
+	MenuSubContentState,
 	MenuSubProps,
 	MenuSubTriggerProps,
-	MenuTriggerProps
+	MenuSubTriggerState,
+	MenuTriggerProps,
+	MenuTriggerState
 } from '$lib/types/index.js';
 
 const { attrs, selectors } = createAttributes('menu', [
@@ -44,27 +51,13 @@ interface GroupItem {
 	sub?: string;
 }
 
-class MenuBaseState extends Floating {
-	$$: RootProps;
-
-	constructor(props: RootProps) {
-		super();
-		this.$$ = props;
-	}
-
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
-		visible: this.$$.visible.val
-	}));
-}
-
 //
 // ~ROOT
 //
 type RootProps = GetInternalProps<MenuProps>;
-class MenuRoot extends MenuBaseState {
+class MenuRoot extends Floating {
+	$$: RootProps;
+
 	groups = $state<Record<string, Group>>({ root: { children: [], path: [] } });
 	hoveredIndex = $state<number>(-1);
 	focusedGroup = $state<string>('root');
@@ -78,7 +71,8 @@ class MenuRoot extends MenuBaseState {
 	CurrentGroup = $derived.by(() => this.groups[this.focusedGroup]);
 
 	constructor(props: RootProps) {
-		super(props);
+		super();
+		this.$$ = props;
 
 		$effect(() => {
 			if (!this.$$.visible.val) {
@@ -128,10 +122,7 @@ class MenuRoot extends MenuBaseState {
 		return document.querySelector(`${selectors.item}#${this.HoveredItem.id}`);
 	};
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<MenuState>(() => ({
 		visible: this.$$.visible.val
 	}));
 }
@@ -214,10 +205,7 @@ class MenuTrigger {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<MenuTriggerState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -244,10 +232,7 @@ class MenuArrow {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<MenuArrowState>(() => ({
 		visible: this._parent.$$.visible.val
 	}));
 }
@@ -288,10 +273,7 @@ class MenuContent {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<MenuContentState>(() => ({
 		visible: this._root.$$.visible.val
 	}));
 }
@@ -342,16 +324,10 @@ class MenuItem {
 		})
 	}));
 
-	state = $derived.by(
+	state = $derived.by<MenuItemState>(
 		() =>
 			({
-				/**
-				 * True if the item is disabled.
-				 */
 				disabled: this.$$.disabled.val,
-				/**
-				 * True if the item is being hovered.
-				 */
 				active: this.IsActive
 			}) as const
 	);
@@ -361,7 +337,7 @@ class MenuItem {
 // ~SUB
 //
 type SubProps = GetInternalProps<MenuSubProps>;
-class MenuSub extends MenuBaseState {
+class MenuSub extends Floating {
 	$$: SubProps;
 
 	_root: MenuRoot;
@@ -373,7 +349,7 @@ class MenuSub extends MenuBaseState {
 	IsActive = $derived.by(() => this._root.openedPath.includes(this.$$.name.val));
 
 	constructor(root: MenuRoot, props: SubProps, sub: MenuSub) {
-		super(props);
+		super();
 		this.$$ = props;
 
 		this._root = root;
@@ -391,6 +367,10 @@ class MenuSub extends MenuBaseState {
 			}
 		});
 	}
+
+	state = $derived.by<MenuSubContentState>(() => ({
+		visible: this.IsActive
+	}));
 }
 
 //
@@ -445,20 +425,11 @@ class MenuSubTrigger {
 		})
 	}));
 
-	state = $derived.by(
+	state = $derived.by<MenuSubTriggerState>(
 		() =>
 			({
-				/**
-				 * True if the sub menu is disabled.
-				 */
 				disabled: this._sub.$$.disabled.val,
-				/**
-				 * True if item is hovered.
-				 */
 				active: this.IsActive,
-				/**
-				 * True if the sub menu is opened.
-				 */
 				opened: this.IsOpened
 			}) as const
 	);
@@ -498,10 +469,7 @@ class MenuSubContent {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if the contents are visible.
-		 */
+	state = $derived.by<MenuSubContentState>(() => ({
 		visible: this._sub.$$.visible.val
 	}));
 }

@@ -15,7 +15,7 @@
 		disabled = $bindable(false),
 		portalTarget = 'body',
 		floatingConfig = {}
-	}: HovercardProps<typeof ctx.state> = $props();
+	}: HovercardProps = $props();
 
 	let ctx = createHovercardRootContext({
 		id: stateValue(() => id),

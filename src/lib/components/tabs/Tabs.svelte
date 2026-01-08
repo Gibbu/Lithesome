@@ -15,7 +15,7 @@
 		orientation = $bindable('horizontal'),
 		ref = $bindable(),
 		...props
-	}: TabsProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: TabsProps<typeof ctx.props> = $props();
 
 	let ctx = createTabsRootContext({
 		id: stateValue(() => id),

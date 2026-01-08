@@ -11,7 +11,7 @@
 		ref = $bindable(),
 		placeholder = $bindable(''),
 		...props
-	}: SelectValueProps<typeof ctx.state> & Record<string, any> = $props();
+	}: SelectValueProps & Record<string, any> = $props();
 
 	let ctx = useSelectValue({
 		id: stateValue(() => id),

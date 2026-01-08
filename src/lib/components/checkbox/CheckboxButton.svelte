@@ -19,7 +19,7 @@
 		children,
 		custom,
 		...props
-	}: CheckboxButtonProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: CheckboxButtonProps<typeof ctx.props> = $props();
 
 	let ctx = useCheckboxButton({
 		id: stateValue(() => id),

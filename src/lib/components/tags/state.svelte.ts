@@ -1,7 +1,15 @@
 import { addEvents, attach, buildContext, createAttributes, KEYS, PREVENT_KEYS } from '$lib/internals/index.js';
 
 import type { GetInternalProps } from '$lib/internals/index.js';
-import type { TagsDeleteProps, TagsInputProps, TagsItemProps, TagsProps } from '$lib/types/components/tags.js';
+import type {
+	TagsDeleteProps,
+	TagsInputProps,
+	TagsInputState,
+	TagsItemProps,
+	TagsItemState,
+	TagsProps,
+	TagsState
+} from '$lib/types/components/tags.js';
 
 const { attrs } = createAttributes('tags', ['root', 'input', 'item', 'delete']);
 
@@ -66,18 +74,8 @@ class TagsRoot {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The value if the selected tag via keyboard navigation.
-		 */
+	state = $derived.by<TagsState>(() => ({
 		activeTag: this.SelectedTag,
-		/**
-		 * True if:
-		 * - Input value is less than 1.
-		 * - Tag already exists.
-		 * - Tag isn't in the whitelist.
-		 * - Tag isn't allowed by the blacklist.
-		 */
 		invalid: this.invalid
 	}));
 }
@@ -156,14 +154,7 @@ class TagsInput {
 		})
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if:
-		 * - Input value is less than 1.
-		 * - Tag already exists.
-		 * - Tag isn't in the whitelist.
-		 * - Tag isn't allowed by the blacklist.
-		 */
+	state = $derived.by<TagsInputState>(() => ({
 		invalid: this._root.invalid
 	}));
 }
@@ -189,10 +180,7 @@ class TagsItem {
 		[attrs.item]: ''
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * The value if the selected tag via keyboard navigation.
-		 */
+	state = $derived.by<TagsItemState>(() => ({
 		active: this.Active
 	}));
 }

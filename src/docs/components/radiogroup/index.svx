@@ -1,0 +1,20 @@
+---
+title: 'Radio Group'
+description: 'Allow users to select a single choice from a list.'
+---
+
+## Basic Example
+
+```svelte
+<script>
+	import { RadioGroup, RadioGroupItem } from 'lithesome';
+
+	let value = $state();
+</script>
+
+<RadioGroup bind:value>
+	<RadioGroupItem value="item-1">Item 1</RadioGroupItem>
+	<RadioGroupItem value="item-2">Item 2</RadioGroupItem>
+	<RadioGroupItem value="item-3">Item 3</RadioGroupItem>
+</RadioGroup>
+```

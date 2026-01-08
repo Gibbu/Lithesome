@@ -3,7 +3,7 @@ import type { Props, PropsNoChildren } from '$lib/internals/index.js';
 //
 // ~ROOT
 //
-export interface SliderProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+export interface SliderProps<P = any> extends Props<HTMLElement, P, SliderState> {
 	/**
 	 * The current value.
 	 *
@@ -37,17 +37,48 @@ export interface SliderProps<P = any, S = any> extends Props<HTMLElement, P, S> 
 	 */
 	disabled?: boolean;
 }
+export interface SliderState {
+	/**
+	 * The current value.
+	 */
+	value: number;
+	/**
+	 * The current percentage from 0 to 100.
+	 */
+	percentage: number;
+}
 
 //
 // ~THUMB
 //
-export interface SliderThumbProps<S = any> extends PropsNoChildren<HTMLElement, S> {}
+export interface SliderThumbProps<P = any> extends Props<HTMLElement, P, SliderThumbState> {}
+export interface SliderThumbState {
+	/**
+	 * The current value.
+	 */
+	value: number;
+	/**
+	 * The current percentage from 0 to 100.
+	 */
+	percentage: number;
+}
 
 //
 // ~RANGE
 //
-export interface SliderRangeProps<S = any> extends PropsNoChildren<HTMLElement, S> {}
+export interface SliderRangeProps<P = any> extends Props<HTMLElement, P, SliderRangeState> {}
+export interface SliderRangeState {
+	/**
+	 * The current value.
+	 */
+	value: number;
+	/**
+	 * The current percentage from 0 to 100.
+	 */
+	percentage: number;
+}
+
 //
 // ~VALUE
 //
-export interface SliderValueProps<S = any> extends PropsNoChildren<HTMLElement, S> {}
+export interface SliderValueProps extends PropsNoChildren<HTMLElement, any> {}

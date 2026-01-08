@@ -3,7 +3,7 @@ import type { Props } from '$lib/internals/index.js';
 //
 // ~ROOT
 //
-export interface RadioGroupProps<P = any, S = any> extends Props<HTMLElement, P, S> {
+export interface RadioGroupProps<P = any> extends Props<HTMLElement, P, RadioGroupState> {
 	/**
 	 * The currently selected value.
 	 *
@@ -22,11 +22,21 @@ export interface RadioGroupProps<P = any, S = any> extends Props<HTMLElement, P,
 	 */
 	onValueChanged?: (value: string) => void;
 }
+export interface RadioGroupState {
+	/**
+	 * The current value of the group.
+	 */
+	value: string;
+	/**
+	 * True if the group is disabled.
+	 */
+	disabled: boolean;
+}
 
 //
 // ~ITEM
 //
-export interface RadioGroupItemProps<P = any, S = any> extends Props<HTMLInputElement, P, S> {
+export interface RadioGroupItemProps<P = any> extends Props<HTMLInputElement, P, RadioGroupItemState> {
 	/**
 	 * The unique value of the item.
 	 */
@@ -37,4 +47,14 @@ export interface RadioGroupItemProps<P = any, S = any> extends Props<HTMLInputEl
 	 * ### `$bindable`
 	 */
 	disabled?: boolean;
+}
+export interface RadioGroupItemState {
+	/**
+	 * The current value of the group.
+	 */
+	selected: boolean;
+	/**
+	 * True if the group is disabled.
+	 */
+	disabled: boolean;
 }

@@ -19,7 +19,7 @@
 		onFilled,
 		ref = $bindable(),
 		...props
-	}: PinProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: PinProps<typeof ctx.props> = $props();
 
 	let ctx = createPinRootContext({
 		id: stateValue(() => id),

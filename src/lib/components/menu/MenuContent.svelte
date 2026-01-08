@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: MenuContentProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: MenuContentProps<typeof ctx.props> = $props();
 
 	let ctx = useMenuContent({
 		id: stateValue(() => id),

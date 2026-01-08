@@ -6,7 +6,7 @@ import { addEvents, createAttributes } from '$lib/internals/utils.svelte.js';
 
 import type { GetInternalProps } from '$lib/internals/types.js';
 import type { CalcIndexAction } from '$lib/internals/utils.svelte.js';
-import type { PinInputProps, PinProps } from '$lib/types/index.js';
+import type { PinInputProps, PinInputState, PinProps, PinState } from '$lib/types/index.js';
 
 const { attrs, selectors } = createAttributes('pin', ['root', 'input', 'value']);
 
@@ -45,7 +45,7 @@ class PinRoot {
 		'aria-disabled': this.$$.disabled.val || undefined
 	}));
 
-	state = $derived.by(() => ({
+	state = $derived.by<PinState>(() => ({
 		filled: this.Filled
 	}));
 }
@@ -172,18 +172,9 @@ class PinInput {
 		)
 	}));
 
-	state = $derived.by(() => ({
-		/**
-		 * True if every input is filled.
-		 */
+	state = $derived.by<PinInputState>(() => ({
 		filled: this._root.Filled,
-		/**
-		 * True if the input is disabled.
-		 */
 		disabled: this._root.$$.disabled.val,
-		/**
-		 * True if the input is focused.
-		 */
 		focused: this.focused
 	}));
 }

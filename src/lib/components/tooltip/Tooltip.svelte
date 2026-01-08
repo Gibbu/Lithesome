@@ -15,7 +15,7 @@
 		disabled = $bindable(false),
 		portalTarget = 'body',
 		floatingConfig = {}
-	}: TooltipProps<typeof ctx.state> = $props();
+	}: TooltipProps = $props();
 
 	let ctx = createTooltipRootContext({
 		id: stateValue(() => id),

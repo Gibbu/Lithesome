@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), ref = $bindable(), ...props }: SliderRangeProps<typeof ctx.state> = $props();
+	let { id = parseId(uid), ref = $bindable(), ...props }: SliderRangeProps<typeof ctx.props> = $props();
 
 	let ctx = useSliderRange({
 		id: stateValue(() => id),

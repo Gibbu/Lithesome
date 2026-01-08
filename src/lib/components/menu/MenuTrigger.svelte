@@ -12,7 +12,7 @@
 		custom,
 		ref = $bindable(),
 		...props
-	}: MenuTriggerProps<typeof ctx.props, typeof ctx.state> = $props();
+	}: MenuTriggerProps<typeof ctx.props> = $props();
 
 	let ctx = useMenuTrigger({
 		id: stateValue(() => id),
