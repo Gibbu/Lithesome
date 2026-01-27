@@ -30,7 +30,7 @@ export interface ModalTriggerState {
 //
 // ~BACKDROP
 //
-export interface ModalBackdropProps<P = any> extends Props<HTMLInputElement, P, ModalBackdropState> {}
+export interface ModalBackdropProps<P = any> extends Props<HTMLElement, P, ModalBackdropState> {}
 export interface ModalBackdropState {
 	/**
 	 * True if the contents are visible.
@@ -41,7 +41,7 @@ export interface ModalBackdropState {
 //
 // ~CONTENT
 //
-export interface ModalContentProps<P = any> extends Props<HTMLInputElement, P, ModalContentState> {}
+export interface ModalContentProps<P = any> extends Props<HTMLElement, P, ModalContentState> {}
 export interface ModalContentState {
 	/**
 	 * True if the contents are visible.
@@ -52,9 +52,9 @@ export interface ModalContentState {
 //
 // ~TITLE
 //
-export interface ModalTitleProps<P = any> extends Props<HTMLInputElement, P, any> {}
+export interface ModalTitleProps<P = any> extends Props<HTMLHeadElement, P, any> {}
 
 //
 // ~DESCRIPTION
 //
-export interface ModalDescriptionProps<P = any> extends Props<HTMLInputElement, P, any> {}
+export interface ModalDescriptionProps<P = any> extends Props<HTMLParagraphElement, P, any> {}

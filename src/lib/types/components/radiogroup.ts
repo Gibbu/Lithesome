@@ -36,7 +36,7 @@ export interface RadioGroupState {
 //
 // ~ITEM
 //
-export interface RadioGroupItemProps<P = any> extends Props<HTMLInputElement, P, RadioGroupItemState> {
+export interface RadioGroupItemProps<P = any> extends Props<HTMLButtonElement, P, RadioGroupItemState> {
 	/**
 	 * The unique value of the item.
 	 */

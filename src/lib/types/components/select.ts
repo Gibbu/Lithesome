@@ -63,7 +63,7 @@ export interface SelectArrowState {
 //
 // ~OPTION
 //
-export interface SelectOptionProps<P = any> extends Props<HTMLElement, P, SelectOptionState> {
+export interface SelectOptionProps<P = any> extends Props<HTMLButtonElement, P, SelectOptionState> {
 	/**
 	 * The value of the option.
 	 */
@@ -95,7 +95,7 @@ export interface SelectOptionState {
 //
 // ~VALUE
 //
-export interface SelectValueProps extends PropsNoChildren<HTMLElement, SelectValueState> {
+export interface SelectValueProps extends PropsNoChildren<HTMLSpanElement, SelectValueState> {
 	/**
 	 * The value displayed when no option(s) is selected.
 	 */
