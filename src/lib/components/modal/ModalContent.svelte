@@ -13,7 +13,7 @@
 		children,
 		custom,
 		...props
-	}: ModalContentProps<typeof ctx.props, ModalContentState> = $props();
+	}: ModalContentProps<typeof ctx.props> = $props();
 
 	let ctx = useModalContent({
 		id: stateValue(() => id),
