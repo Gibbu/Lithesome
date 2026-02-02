@@ -85,7 +85,7 @@
 
 			<Button
 				variant="text"
-				href="https://github.com/Gibbu/Lithesome/blob/main/src/{currentPage?.path}/+page.svx"
+				href="https://github.com/Gibbu/Lithesome/blob/main/src{currentPage?.path}/index.svx"
 				external
 			>
 				<PenIcon class="size-4" />

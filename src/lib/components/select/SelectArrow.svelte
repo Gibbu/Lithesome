@@ -20,4 +20,4 @@
 	});
 </script>
 
-<Element bind:ref {children} {custom} {ctx} as="button" {...props} />
+<Element bind:ref {children} {custom} {ctx} {...props} />
