@@ -20,6 +20,7 @@
 		reverse = $bindable(false),
 		disabled = $bindable(false),
 		ref = $bindable(),
+		onValueChanged,
 		...props
 	}: SliderProps<typeof ctx.state> = $props();
 
@@ -28,7 +29,10 @@
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
-			(v) => (value = v)
+			(v) => {
+				value = v;
+				onValueChanged?.(v);
+			}
 		),
 		min: stateValue(() => min),
 		max: stateValue(() => max),

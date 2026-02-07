@@ -14,6 +14,7 @@
 		value = $bindable(''),
 		orientation = $bindable('horizontal'),
 		ref = $bindable(),
+		onValueChanged,
 		...props
 	}: TabsProps<typeof ctx.props> = $props();
 
@@ -22,7 +23,10 @@
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
-			(v) => (value = v)
+			(v) => {
+				value = v;
+				onValueChanged?.(v);
+			}
 		),
 		orientation: stateValue(() => orientation)
 	});

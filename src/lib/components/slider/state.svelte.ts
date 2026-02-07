@@ -74,7 +74,7 @@ class SliderRoot {
 					? top
 					: bottom;
 
-		this.$$.value.val = clamp(
+		const value = clamp(
 			this.$$.min.val,
 			Math.round(
 				((this.$$.max.val - this.$$.min.val) *
@@ -85,6 +85,8 @@ class SliderRoot {
 			) * this.$$.step.val,
 			this.$$.max.val
 		);
+
+		if (this.$$.value.val !== value) this.$$.value.val = value;
 	};
 
 	stepUp = () => {

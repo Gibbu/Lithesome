@@ -16,7 +16,13 @@
 	];
 </script>
 
-<Accordion class="w-full max-w-[700px]" value="what-is-lithesome">
+<Accordion
+	class="w-full max-w-[700px]"
+	value="what-is-lithesome"
+	onValueChanged={(value) => {
+		console.log('New value for accordion:', value);
+	}}
+>
 	{#each items as { title, content, value }}
 		<AccordionItem {value} class="border-b border-neutral-300 last:border-none dark:border-white/10">
 			<AccordionHeading>

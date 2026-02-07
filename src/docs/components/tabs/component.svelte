@@ -20,7 +20,12 @@
 	];
 </script>
 
-<Tabs class="w-[60%]">
+<Tabs
+	class="w-[60%]"
+	onValueChanged={(value) => {
+		console.log('Tabs value changed:', value);
+	}}
+>
 	<TabsList class="mb-3 flex gap-2">
 		{#each tabs as tab}
 			<TabsButton

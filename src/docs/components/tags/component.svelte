@@ -10,6 +10,9 @@
 	<p class="mb-2 text-sm">What's your stack?</p>
 	<Tags
 		bind:value={tags}
+		onValueChanged={(value) => {
+			console.log('Tags value changed:', value);
+		}}
 		class={({ invalid }) => [
 			'flex cursor-text items-center gap-2 border p-2',
 			invalid

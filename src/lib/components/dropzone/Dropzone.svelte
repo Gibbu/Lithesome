@@ -17,7 +17,7 @@
 		accept = '',
 		onError,
 		onSuccess,
-		onChange,
+		onFilesChanged,
 		children,
 		validate,
 		custom,
@@ -29,7 +29,10 @@
 		ref: stateValue(() => ref!),
 		files: stateValue(
 			() => files,
-			(v) => (files = v)
+			(v) => {
+				files = v;
+				onFilesChanged?.(v);
+			}
 		),
 		disabled: stateValue(
 			() => disabled,
@@ -40,8 +43,7 @@
 		accept: stateValue(() => accept),
 		onError,
 		onSuccess,
-		validate,
-		onChange
+		validate
 	});
 </script>
 

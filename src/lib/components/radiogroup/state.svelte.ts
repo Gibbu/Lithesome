@@ -28,8 +28,6 @@ class RadioGroupRoot {
 		this.$$ = props;
 
 		if (this.$$.value.val) this.setInitialSelected();
-
-		$inspect(this.items);
 	}
 
 	navigate = (action: CalcIndexAction) => {

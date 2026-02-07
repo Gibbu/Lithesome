@@ -15,7 +15,7 @@
 		disabled = $bindable(false),
 		placeholder = '○',
 		type = $bindable('text'),
-		onChanged,
+		onValueChanged,
 		onFilled,
 		ref = $bindable(),
 		...props
@@ -26,15 +26,13 @@
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
-			(v) => {
-				value = v;
-				onChanged?.(v);
-			}
+			(v) => (value = v)
 		),
 		disabled: stateValue(() => disabled),
 		placeholder: stateValue(() => placeholder),
 		type: stateValue(() => type),
-		onFilled
+		onFilled,
+		onValueChanged
 	});
 </script>
 

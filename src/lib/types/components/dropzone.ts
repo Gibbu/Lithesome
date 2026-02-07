@@ -83,7 +83,7 @@ export interface DropzoneProps<P = any> extends Props<HTMLElement, P, DropzoneSt
 	 * When files are successfully added or removed to the `files` prop, this event will be fired.
 	 * @param files The new value of `files`.
 	 */
-	onChange?: (files: File[]) => void;
+	onFilesChanged?: (files: File[]) => void;
 }
 export interface DropzoneState {
 	/**

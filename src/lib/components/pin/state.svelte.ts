@@ -32,7 +32,10 @@ class PinRoot {
 	}
 
 	setValue = (index: number, value: string) => {
+		const oldValue = this.$$.value.val[index];
 		this.$$.value.val[index] = value;
+
+		if (this.$$.value.val[index] !== oldValue) this.$$.onValueChanged?.($state.snapshot(this.$$.value.val));
 	};
 
 	registerInput = (id: string) => {

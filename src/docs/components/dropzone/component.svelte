@@ -16,7 +16,7 @@
 		if (data.type === 'invalidType') errorMessage = 'File is not text or image';
 		if (data.type === 'maxSize') errorMessage = 'File size is too large';
 	};
-	const onChange = () => {
+	const onFilesChanged = () => {
 		errorMessage = null;
 	};
 </script>
@@ -34,7 +34,7 @@
 		accept=".txt, image/*"
 		multiple
 		{onError}
-		{onChange}
+		{onFilesChanged}
 		onSuccess={console.log}
 		validate={(file, files) => {
 			const fileExists = files.some((fl) => fl.name === file.name && fl.size === file.size);

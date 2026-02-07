@@ -8,7 +8,14 @@
 	};
 </script>
 
-<Pin bind:value class="flex items-center gap-6" onFilled={filled}>
+<Pin
+	bind:value
+	class="flex items-center gap-6"
+	onValueChanged={(value) => {
+		console.log('New value of the pin:', value);
+	}}
+	onFilled={filled}
+>
 	{#each { length: 6 }}
 		<PinInput
 			class={({ filled }) => [

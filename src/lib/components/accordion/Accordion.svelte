@@ -13,7 +13,7 @@
 		value = $bindable(''),
 		children,
 		custom,
-		onChange,
+		onValueChanged,
 		...props
 	}: AccordionProps<typeof ctx.props> = $props();
 
@@ -24,7 +24,7 @@
 			() => value,
 			(v) => {
 				value = v;
-				onChange?.(v);
+				onValueChanged?.(v);
 			}
 		)
 	});

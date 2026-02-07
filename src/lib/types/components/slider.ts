@@ -36,6 +36,11 @@ export interface SliderProps<P = any> extends Props<HTMLElement, P, SliderState>
 	 * ### `$bindable`
 	 */
 	disabled?: boolean;
+	/**
+	 * Fires whenever the `value` prop changes.
+	 * @param value The new value of the slider.
+	 */
+	onValueChanged?: (value: number) => void;
 }
 export interface SliderState {
 	/**

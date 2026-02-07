@@ -17,6 +17,7 @@
 		whitelist = [],
 		disabled = $bindable(false),
 		max = 0,
+		onValueChanged,
 		...props
 	}: TagsProps<typeof ctx.props> = $props();
 
@@ -25,7 +26,10 @@
 		ref: stateValue(() => ref!),
 		value: stateValue(
 			() => value,
-			(v) => (value = v)
+			(v) => {
+				value = v;
+				onValueChanged?.(v);
+			}
 		),
 		blacklist: stateValue(() => blacklist),
 		whitelist: stateValue(() => whitelist),

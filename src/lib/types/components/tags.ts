@@ -28,6 +28,11 @@ export interface TagsProps<P = any> extends Props<HTMLElement, P, TagsState> {
 	 * Don't allow these string to be addeed to the `value` prop.
 	 */
 	blacklist?: string[];
+	/**
+	 * Fires whenever the `value` prop changes.
+	 * @param value The new value of the tags.
+	 */
+	onValueChanged?: (value: string[]) => void;
 }
 export interface TagsState {
 	/**

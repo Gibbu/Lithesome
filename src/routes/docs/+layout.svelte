@@ -12,8 +12,6 @@
 
 	const currentPage = $derived(groups.flatMap((group) => group.items).find((item) => item.path === page.url.pathname));
 	let wipAlert = $derived(browser ? !localStorage.getItem('wipAlert') : false);
-
-	$inspect(groups);
 </script>
 
 <Meta title={currentPage?.title} description={currentPage?.description} />

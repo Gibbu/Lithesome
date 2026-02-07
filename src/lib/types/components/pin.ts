@@ -28,7 +28,7 @@ export interface PinProps<P = any> extends Props<HTMLElement, P, PinState> {
 	 * Fires when the `value` prop is changed.
 	 * @param value The new value
 	 */
-	onChanged?: (value: string[]) => void;
+	onValueChanged?: (value: string[]) => void;
 	/**
 	 * Fires when all inputs have been filled in.
 	 * @param value The filled out value.

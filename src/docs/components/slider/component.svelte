@@ -8,6 +8,9 @@
 	bind:value
 	class="relative flex h-4 w-96 cursor-pointer items-center rounded-full bg-neutral-300 dark:bg-neutral-800"
 	step={5}
+	onValueChanged={(value) => {
+		console.log(value);
+	}}
 >
 	<SliderRange class={['h-full rounded-full bg-black dark:bg-white', 'w-(--slider-percentage)']} />
 	<SliderThumb

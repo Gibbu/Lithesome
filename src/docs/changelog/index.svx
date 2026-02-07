@@ -4,9 +4,40 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.23.4
+
+<small>8th February, 2026</small>
+
+- Renamed `onChanged` functions to their respective prop name.
+  > This means `onChanged` for the `<Pin />` component is now `onValueChanged`.
+- Added `onValueChanged` callback functions to:
+  - `<Accordion />`
+  - `<Pin />`
+  - `<Slider />`
+  - `<Tabs />`
+  - `<Tags />`
+
+### v0.23.3
+
+<small>2nd February, 2026</small>
+
+- Fixed `<Arrow />` components rendering as buttons.
+
+### v0.23.2
+
+<small>27th January, 2026</small>
+
+- Fixed the `<ModalContent />` component referencing an invalid type.
+
+### v0.23.1
+
+<small>27th January, 2026</small>
+
+- Fixed Modal, Select, and RadioGroup types via `lithesome/types`
+
 ### v0.23
 
-<small>0th January, 2026</small>
+<small>9th January, 2026</small>
 
 - Remove `<StepperJump />` as `<StepperLink />` achieved the same job.
 - Exported component state types.

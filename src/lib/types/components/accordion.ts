@@ -14,7 +14,7 @@ export interface AccordionProps<P = any> extends Props<HTMLElement, P, Accordion
 	 * Fires whenever the `value` prop is changed.
 	 * @param val The new value
 	 */
-	onChange?: (val: string | string[]) => void;
+	onValueChanged?: (val: string | string[]) => void;
 }
 export interface AccordionState {
 	/**

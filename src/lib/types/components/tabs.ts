@@ -14,6 +14,11 @@ export interface TabsProps<P = any> extends Props<HTMLElement, P, TabsState> {
 	 * The direction of the tabs.
 	 */
 	orientation?: Orientation;
+	/**
+	 * Fires whenever the `value` prop changes.
+	 * @param value The new value of tabs.
+	 */
+	onValueChanged?: (value: string) => void;
 }
 export interface TabsState {
 	/**

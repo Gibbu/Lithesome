@@ -44,8 +44,6 @@ class DropzoneRoot {
 		const files = Array.from(filelist);
 		const length = this.$$.multiple.val ? files.length : 1;
 
-		this.$$.onChange?.(this.$$.files.val);
-
 		for (let i = 0; i < length; i++) {
 			const file = files[i];
 
