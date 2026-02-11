@@ -16,7 +16,8 @@
 		if (data.type === 'invalidType') errorMessage = 'File is not text or image';
 		if (data.type === 'maxSize') errorMessage = 'File size is too large';
 	};
-	const onFilesChanged = () => {
+	const onFilesChanged = (files: File[]) => {
+		console.log('New value for dropzone', files);
 		errorMessage = null;
 	};
 </script>
@@ -35,7 +36,6 @@
 		multiple
 		{onError}
 		{onFilesChanged}
-		onSuccess={console.log}
 		validate={(file, files) => {
 			const fileExists = files.some((fl) => fl.name === file.name && fl.size === file.size);
 			if (fileExists) errorMessage = 'Duplicate files cannot be added';

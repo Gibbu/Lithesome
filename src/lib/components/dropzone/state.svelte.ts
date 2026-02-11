@@ -22,6 +22,11 @@ class DropzoneRoot {
 
 	constructor(props: RootProps) {
 		this.$$ = props;
+
+		$effect(() => {
+			this.$$.onFilesChanged?.($state.snapshot(this.$$.files.val));
+			this.errorsFound = false;
+		});
 	}
 
 	checkFileType = (file: File) => {

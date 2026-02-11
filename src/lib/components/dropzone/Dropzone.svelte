@@ -27,13 +27,7 @@
 	let ctx = createDropzoneRootContext({
 		id: stateValue(() => id),
 		ref: stateValue(() => ref!),
-		files: stateValue(
-			() => files,
-			(v) => {
-				files = v;
-				onFilesChanged?.(v);
-			}
-		),
+		files: stateValue(() => files),
 		disabled: stateValue(
 			() => disabled,
 			(v) => (disabled = v)
@@ -43,7 +37,8 @@
 		accept: stateValue(() => accept),
 		onError,
 		onSuccess,
-		validate
+		validate,
+		onFilesChanged
 	});
 </script>
 

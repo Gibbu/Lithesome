@@ -4,6 +4,13 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.23.5
+
+<small>11th February, 2026</small>
+
+- Fixed `<RadioGroupItems />` not rendering has buttons.
+- Fixed `<Dropzone />` `onFilesChanged` callback not firing.
+
 ### v0.23.4
 
 <small>8th February, 2026</small>
