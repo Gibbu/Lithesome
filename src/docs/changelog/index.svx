@@ -4,6 +4,13 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.23.6
+
+<small>15th March, 2026</small>
+
+- Updated dependencies.
+  > Svelte version is now minimum of 5.53.12
+
 ### v0.23.5
 
 <small>11th February, 2026</small>

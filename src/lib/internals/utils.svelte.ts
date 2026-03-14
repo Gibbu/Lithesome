@@ -1,8 +1,5 @@
 import { on } from 'svelte/events';
 import { isBrowser, isObject } from './is.js';
-import { log } from './log.js';
-
-import type { JsonValue } from '$lib/internals/index.js';
 
 export type CalcIndexAction = 'prev' | 'next' | 'first' | 'last';
 

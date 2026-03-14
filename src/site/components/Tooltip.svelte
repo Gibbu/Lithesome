@@ -10,14 +10,18 @@
 
 	let { children, type }: Props = $props();
 
-	const colours = {
-		bindable: 'border-teal-600 text-teal-600 dark:border-teal-500 dark:text-teal-300',
-		required: 'border-rose-600 text-rose-600 dark:border-rose-500 dark:text-rose-300'
-	}[type];
-	const label = {
-		bindable: '$bindable',
-		required: 'required'
-	}[type];
+	const colours = $derived(
+		{
+			bindable: 'border-teal-600 text-teal-600 dark:border-teal-500 dark:text-teal-300',
+			required: 'border-rose-600 text-rose-600 dark:border-rose-500 dark:text-rose-300'
+		}[type]
+	);
+	const label = $derived(
+		{
+			bindable: '$bindable',
+			required: 'required'
+		}[type]
+	);
 </script>
 
 <Tooltip floatingConfig={{ placement: 'top', offset: 10 }} delay={[250, 0]}>

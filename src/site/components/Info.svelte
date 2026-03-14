@@ -15,17 +15,21 @@
 
 	let { message, type, class: klass, dismissable = false, onDismiss }: Props = $props();
 
-	const Icon = {
-		info: InfoIcon,
-		warning: CircleAlertIcon,
-		error: CircleXIcon
-	}[type];
+	const Icon = $derived(
+		{
+			info: InfoIcon,
+			warning: CircleAlertIcon,
+			error: CircleXIcon
+		}[type]
+	);
 
-	const colour = {
-		info: ['border-sky-400/50', 'bg-sky-500/10'],
-		warning: ['border-amber-400/50', 'bg-amber-500/10'],
-		error: ['border-rose-400/50', 'bg-rose-500/10']
-	}[type];
+	const colour = $derived(
+		{
+			info: ['border-sky-400/50', 'bg-sky-500/10'],
+			warning: ['border-amber-400/50', 'bg-amber-500/10'],
+			error: ['border-rose-400/50', 'bg-rose-500/10']
+		}[type]
+	);
 </script>
 
 <div
