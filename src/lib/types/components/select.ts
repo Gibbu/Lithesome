@@ -1,9 +1,9 @@
-import type { FloatingContent, JsonValue, Props, PropsNoChildren, PropsNoRender } from '$lib/internals/index.js';
+import type { FloatingContent, Props, PropsNoChildren, PropsNoRender } from '$lib/internals/index.js';
 
 //
 // ~ROOT
 //
-export interface SelectProps<V extends JsonValue = any> extends PropsNoRender<SelectState>, FloatingContent {
+export interface SelectProps<V extends string | string[] = any> extends PropsNoRender<SelectState>, FloatingContent {
 	/**
 	 * The currently selected option(s).
 	 *
@@ -67,7 +67,7 @@ export interface SelectOptionProps<P = any> extends Props<HTMLButtonElement, P, 
 	/**
 	 * The value of the option.
 	 */
-	value: JsonValue;
+	value: string;
 	/**
 	 * Disables the option, skipping mouse/keyboard navigation and stopping events from firing.
 	 *

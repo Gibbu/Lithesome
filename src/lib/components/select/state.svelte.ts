@@ -1,4 +1,4 @@
-import { tick } from 'svelte';
+import { onMount, tick } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { outside } from '$lib/attachments/outside.js';
 import { portal } from '$lib/attachments/portal.js';
@@ -11,6 +11,7 @@ import {
 	floating,
 	Floating,
 	KEYS,
+	removeDisabledElements,
 	visuallyHidden
 } from '$lib/internals/index.js';
 
@@ -33,7 +34,7 @@ import type {
 const { attrs, selectors } = createAttributes('select', ['root', 'trigger', 'content', 'arrow', 'option', 'value']);
 
 interface InternalSelectOption {
-	value: JsonValue;
+	value: string;
 	label: string;
 }
 
@@ -45,12 +46,12 @@ class SelectRoot extends Floating {
 	$$: RootProps;
 
 	hoveredIndex = $state<number>(-1);
-	options = $state<InternalSelectOption[]>([]);
-	selectedOptions = $state<InternalSelectOption[]>([]);
+	options = $state<HTMLElement[]>([]);
+	selectedOptions = $state<HTMLElement[]>([]);
 	sharedIds = new SvelteMap<'content' | 'trigger', string>();
 	mounted = $state<boolean>(false);
 
-	HoveredOption = $derived.by<InternalSelectOption | undefined>(() => this.options[this.hoveredIndex] || undefined);
+	HoveredOption = $derived.by<HTMLElement | undefined>(() => this.options[this.hoveredIndex] || undefined);
 
 	constructor(props: RootProps) {
 		super();
@@ -91,17 +92,11 @@ class SelectRoot extends Floating {
 	};
 
 	/**
-	 * Get the element node of the current hovered option.
+	 * Get all non-disabled options from the content.
 	 */
-	getHoveredElement = () => {
-		const hovered = this.options[this.hoveredIndex];
-		if (hovered) {
-			const option = document.querySelector(
-				`#${this.$$.id.val} ${selectors.option}[data-value=${hovered.value}]`
-			) as HTMLElement;
-			if (option) return option;
-		}
-		return undefined;
+	getAvilableOptions = async () => {
+		const contentElement = document.querySelector(`#${this.sharedIds.get('content')}`);
+		if (contentElement) this.options = removeDisabledElements(contentElement.querySelectorAll(selectors.option));
 	};
 	/**
 	 * Get any element by its value inside the contents element.
@@ -118,21 +113,17 @@ class SelectRoot extends Floating {
 	getHoveredOrFirstSelectedId = async () => {
 		await tick();
 		const selectedOption = this.HoveredOption || this.selectedOptions[0];
-		if (selectedOption) {
-			const option = this.getElementByValue(selectedOption.value);
-			if (option) return option.id;
-		}
 
-		return undefined;
+		return selectedOption.id || null;
 	};
 	/**
 	 * Append the option to the parent array, used for keeping track of options.
 	 * @param value The value of the option. This must be unique.
 	 * @param label The label of the option. If no label is found, the text content of the node is used.
 	 */
-	registerOption = (value: JsonValue, label: string) => {
-		const find = this.options.find((option) => option.value === value);
-		if (!find) this.options.push({ value, label });
+	registerOption = (option: HTMLElement) => {
+		const find = this.options.find((option) => option.dataset.value === option.dataset.value);
+		if (!find) this.options.push(option);
 	};
 	/**
 	 * Move the focus to another element based on the action used.
@@ -141,15 +132,14 @@ class SelectRoot extends Floating {
 	navigate = (action: CalcIndexAction) => {
 		this.hoveredIndex = calculateIndex(action, this.options, this.hoveredIndex);
 
-		const element = this.getHoveredElement();
-		if (element) element.scrollIntoView({ block: 'nearest' });
+		if (this.HoveredOption) this.HoveredOption.scrollIntoView({ block: 'nearest' });
 	};
 	/**
 	 * Sets the hovered option.
 	 * @param value The unique value of the option.
 	 */
-	setHovered = (value: JsonValue) => {
-		this.hoveredIndex = this.options.findIndex((el) => el.value === value);
+	setHovered = (value: string) => {
+		this.hoveredIndex = this.options.findIndex((el) => el.dataset.value === value);
 	};
 	/**
 	 * Sets the selected option.
@@ -160,8 +150,10 @@ class SelectRoot extends Floating {
 		if (!this.HoveredOption) return;
 
 		if (this.$$.multiple.val) {
-			if (this.selectedOptions.find((el) => el.value === this.HoveredOption?.value)) {
-				this.selectedOptions = this.selectedOptions.filter((el) => el.value !== this.HoveredOption?.value);
+			if (this.selectedOptions.find((el) => el.dataset.value === this.HoveredOption?.dataset.value)) {
+				this.selectedOptions = this.selectedOptions.filter(
+					(el) => el.dataset.value !== this.HoveredOption?.dataset.value
+				);
 			} else {
 				this.selectedOptions.push(this.HoveredOption);
 			}
@@ -172,8 +164,8 @@ class SelectRoot extends Floating {
 		if (!this.$$.multiple.val) this.$$.visible.val = false;
 
 		this.$$.value.val = this.$$.multiple.val
-			? this.selectedOptions.map((el) => el.value)
-			: this.selectedOptions[0].value;
+			? this.selectedOptions.map((el) => el.dataset.value)
+			: this.selectedOptions[0].dataset.value;
 	};
 	/**
 	 * Sets the trigger label to the selected value, only if it's found in the options array.
@@ -182,8 +174,8 @@ class SelectRoot extends Floating {
 		await tick();
 		const value = this.$$.value.val;
 		this.selectedOptions = this.options.filter((el) => {
-			if (!Array.isArray(value) && el.value === value) return el;
-			else if (Array.isArray(value) && value.includes(el.value)) return el;
+			if (!Array.isArray(value) && el.dataset.value === value) return el;
+			else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
 		});
 		this.doneMounting();
 	};
@@ -249,7 +241,7 @@ class SelectTrigger {
 					if (key === KEYS.enter) {
 						e.preventDefault();
 						if (this._root.HoveredOption && this._root.$$.visible.val) {
-							this._root.getElementByValue(this._root.HoveredOption.value)?.click();
+							this._root.HoveredOption?.click();
 							if (!this._root.$$.multiple.val) this._root.close();
 						} else {
 							this._root.open();
@@ -280,6 +272,17 @@ class SelectContent {
 		this.$$ = props;
 
 		this._root.sharedIds.set('content', this.$$.id.val);
+
+		$effect(() => {
+			// Get element references
+			if (this._root.$$.visible.val) this._root.getAvilableOptions();
+		});
+		$effect(() => {
+			// Set first selected value as highlighted option
+			if (this._root.$$.visible.val && this._root.selectedOptions.length && !this._root.HoveredOption) {
+				this._root.hoveredIndex = this._root.options.findIndex((el) => el.dataset.selected === 'true');
+			}
+		});
 	}
 
 	props = $derived.by(() => ({
@@ -345,20 +348,14 @@ class SelectOption {
 
 	_root: SelectRoot;
 
-	Hovered = $derived.by(() => this._root.HoveredOption?.value === this.$$.value.val);
-	Selected = $derived.by(() => !!this._root.selectedOptions.find((el) => el.value === this.$$.value.val));
+	Hovered = $derived.by(() => this._root.HoveredOption?.dataset.value === this.$$.value.val);
+	Selected = $derived.by(() => !!this._root.selectedOptions.find((el) => el.dataset.value === this.$$.value.val));
+	Label = $derived.by(() => this.$$.label.val);
 
 	constructor(root: SelectRoot, props: OptionProps) {
 		this._root = root;
 
 		this.$$ = props;
-
-		$effect(() => {
-			if (this.$$.disabled.val) return;
-
-			const label = this.$$.label.val || this.$$.ref.val.textContent.trim();
-			this._root.registerOption(this.$$.value.val, label);
-		});
 	}
 
 	props = $derived.by(() => ({
@@ -370,11 +367,15 @@ class SelectOption {
 		tabindex: 0,
 		'aria-selected': this.Selected,
 		'data-value': this.$$.value.val,
-		'data-label': this.$$.label.val,
+		'data-label': this.Label,
 		...attach((node) => {
+			if (!this.$$.label.val && this.$$.ref.val) {
+				this.Label = this.$$.ref.val.textContent.trim();
+			}
+
 			// Set the hovered index to the active item, if that item is "selected".
 			if (this._root.$$.value.val === this.$$.value.val) {
-				this._root.hoveredIndex = this._root.options.findIndex((el) => el.value === this.$$.value.val);
+				this._root.hoveredIndex = this._root.options.findIndex((el) => el.dataset.value === this.$$.value.val);
 			}
 
 			return addEvents(node, {
@@ -416,7 +417,9 @@ class SelectValue {
 	}
 
 	label = $derived.by(() =>
-		this.PlaceholderVisible ? this.$$.placeholder.val : this._root.selectedOptions.map((el) => el.label).join(',')
+		this.PlaceholderVisible
+			? this.$$.placeholder.val
+			: this._root.selectedOptions.map((el) => el.dataset.label).join(',')
 	);
 	props = $derived.by(() => ({
 		id: this.$$.id.val,

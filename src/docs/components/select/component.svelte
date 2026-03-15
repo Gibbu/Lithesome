@@ -14,10 +14,10 @@
 		{ value: 'azula', label: 'Firebending Prodigy' }
 	];
 
-	let value = $state(['sokka', 'aang']);
+	let value = $state('aang');
 </script>
 
-<Select bind:value multiple>
+<Select bind:value>
 	<SelectTrigger>
 		{#snippet custom({ props })}
 			<Button variant="secondary" class="w-[250px] justify-between" {...props}>

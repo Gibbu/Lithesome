@@ -4,6 +4,15 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.23.7
+
+<small>15th March, 2026</small>
+
+- Slight rewrite to the `<Select />` components.
+- Fixed `<Select />` components not highlighting the first selected option while in `multiple` mode.
+- Select components can now only take `string` or `string[]` values.
+  > Using a complex type such as `JsonValue` which could almost be anything, was very annoying to deal with internally.
+
 ### v0.23.6
 
 <small>15th March, 2026</small>

@@ -10,7 +10,15 @@ An unstyled component library for Svelte 5.
 ## Install
 
 ```bash
+npm i -D lithesome
+```
+
+```bash
 pnpm i -D lithesome
+```
+
+```bash
+bun add -D lithesome
 ```
 
 ## Usage
@@ -21,9 +29,7 @@ pnpm i -D lithesome
 </script>
 
 <Menu>
-	<MenuTrigger>
-		<button>Auth</button>
-	</MenuTrigger>
+	<MenuTrigger>Auth</MenuTrigger>
 	<MenuContent>
 		<MenuItem>My Profile</MenuItem>
 		<MenuItem>Account Settings</MenuItem>
