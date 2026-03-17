@@ -17,7 +17,7 @@
 	let value = $state('aang');
 </script>
 
-<Select bind:value>
+<Select bind:value unselectable>
 	<SelectTrigger>
 		{#snippet custom({ props })}
 			<Button variant="secondary" class="w-[250px] justify-between" {...props}>

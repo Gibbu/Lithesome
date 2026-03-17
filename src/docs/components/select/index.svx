@@ -23,3 +23,32 @@ description: 'Allow users to choose from a list of options.'
 	</SelectContent>
 </Select>
 ```
+
+## Custom selected labels
+
+If you're using the `<SelectValue />` component and want to change how the labels are rendered, simply pass the `custom` snippet block and access the labels via the `state` prop.
+
+```svelte
+<script>
+	import { Select, SelectTrigger, SelectContent SelectOption, SelectValue } from 'lithesome';
+
+	let value = $state();
+</script>
+
+<Select bind:value>
+	<SelectTrigger>
+		<SelectValue>
+			{#snippet custom({ props, state })}
+				<span {...props}>
+					{state.placeholderVisible ? 'Select an option...' : state.selectedLabels.join(' - ')}
+				</span>
+			{/snippet}
+		</SelectValue>
+	</SelectTrigger>
+	<SelectContent>
+		<SelectOption value="item-1">Item 1</SelectOption>
+		<SelectOption value="item-2">Item 2</SelectOption>
+		<SelectOption value="item-3">Item 3</SelectOption>
+	</SelectContent>
+</Select>
+```

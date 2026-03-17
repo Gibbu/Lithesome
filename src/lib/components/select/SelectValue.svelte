@@ -9,9 +9,11 @@
 	let {
 		id = parseId(uid),
 		ref = $bindable(),
-		placeholder = $bindable(''),
+		placeholder = $bindable('Select an option...'),
+		children,
+		custom,
 		...props
-	}: SelectValueProps & Record<string, any> = $props();
+	}: SelectValueProps<typeof ctx.props> & Record<string, any> = $props();
 
 	let ctx = useSelectValue({
 		id: stateValue(() => id),
@@ -20,6 +22,6 @@
 	});
 </script>
 
-<Element bind:ref {ctx} {...props} as="span">
-	{ctx.label}
+<Element bind:ref {custom} {ctx} {...props} as="span">
+	{ctx.state.placeholderVisible ? placeholder : ctx.state.selectedLabels.join(', ')}
 </Element>

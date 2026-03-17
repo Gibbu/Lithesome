@@ -3,22 +3,24 @@ import type { FloatingContent, Props, PropsNoChildren, PropsNoRender } from '$li
 //
 // ~ROOT
 //
-export interface SelectProps<V extends string | string[] = any> extends PropsNoRender<SelectState>, FloatingContent {
+export interface SelectProps extends PropsNoRender<SelectState>, FloatingContent {
 	/**
 	 * The currently selected option(s).
 	 *
 	 * ### `$bindable`
 	 */
-	value?: V;
+	value?: string | string[];
 	/**
-	 * Allows multiple options to be selected at once.
+	 * Allows a non-array value to be unselected.
+	 *
+	 * @default false
 	 */
-	multiple?: boolean;
+	unselectable?: boolean;
 	/**
 	 * Fires whenever the `value` prop changes.
 	 * @param value The new value
 	 */
-	onValueChanged?: (value: V) => void;
+	onValueChanged?: (value: string | string[]) => void;
 }
 export interface SelectState {
 	/**
@@ -95,7 +97,7 @@ export interface SelectOptionState {
 //
 // ~VALUE
 //
-export interface SelectValueProps extends PropsNoChildren<HTMLSpanElement, SelectValueState> {
+export interface SelectValueProps<P = any> extends Props<HTMLSpanElement, P, SelectValueState> {
 	/**
 	 * The value displayed when no option(s) is selected.
 	 */
@@ -110,4 +112,8 @@ export interface SelectValueState {
 	 * True if no options are selected.
 	 */
 	placeholderVisible: boolean;
+	/**
+	 * The currently selected options.
+	 */
+	selectedLabels: string[];
 }

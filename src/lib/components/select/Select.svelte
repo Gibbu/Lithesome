@@ -14,8 +14,8 @@
 		disabled = $bindable(false),
 		portalTarget = 'body',
 		floatingConfig = {},
-		value = $bindable(),
-		multiple = false,
+		value = $bindable(null!),
+		unselectable = false,
 		onValueChanged
 	}: SelectProps = $props();
 
@@ -40,7 +40,7 @@
 		),
 		portalTarget: stateValue(() => portalTarget),
 		floatingConfig: stateValue(() => floatingConfig),
-		multiple: stateValue(() => multiple)
+		unselectable: stateValue(() => unselectable)
 	});
 </script>
 

@@ -31,12 +31,15 @@ import type {
 	SelectValueState
 } from '$lib/types/index.js';
 
-const { attrs, selectors } = createAttributes('select', ['root', 'trigger', 'content', 'arrow', 'option', 'value']);
-
-interface InternalSelectOption {
-	value: string;
-	label: string;
-}
+const { attrs, selectors } = createAttributes('select', [
+	'root',
+	'trigger',
+	'content',
+	'arrow',
+	'option',
+	'value',
+	'search'
+]);
 
 //
 // ~ROOT
@@ -47,26 +50,39 @@ class SelectRoot extends Floating {
 
 	hoveredIndex = $state<number>(-1);
 	options = $state<HTMLElement[]>([]);
-	selectedOptions = $state<HTMLElement[]>([]);
 	sharedIds = new SvelteMap<'content' | 'trigger', string>();
 	mounted = $state<boolean>(false);
+	searchable = $state<boolean>(false);
+	serachTerm = $state<string>('');
 
 	HoveredOption = $derived.by<HTMLElement | undefined>(() => this.options[this.hoveredIndex] || undefined);
+	SelectedOptions = $derived(
+		this.options.filter((opt) => {
+			if (!opt.dataset.value) return false;
+			return Array.isArray(this.$$.value.val)
+				? this.$$.value.val.includes(opt.dataset.value)
+				: this.$$.value.val === opt.dataset.value;
+		})
+	);
 
 	constructor(props: RootProps) {
 		super();
 
 		this.$$ = props;
 
-		if (this.$$.value.val) this.setInitialSelected();
-		else this.doneMounting();
+		onMount(async () => {
+			await tick();
+			this.mounted = true;
+			this.$$.visible.val = false;
+		});
 	}
 
 	/**
 	 * Toggle the visible state of the content
 	 */
 	toggle = () => {
-		this.$$.visible.val = !this.$$.visible.val;
+		if (this.$$.visible.val) this.close();
+		else this.open();
 	};
 	/**
 	 * Set the visible state of the content to true
@@ -80,15 +96,7 @@ class SelectRoot extends Floating {
 	 */
 	close = () => {
 		this.$$.visible.val = false;
-		this.options = [];
 		this.hoveredIndex = -1;
-	};
-	/**
-	 * Tells the components that checks have been completed, render as normal.
-	 */
-	doneMounting = () => {
-		this.mounted = true;
-		this.$$.visible.val = false;
 	};
 
 	/**
@@ -106,15 +114,6 @@ class SelectRoot extends Floating {
 		return document.querySelector(
 			`#${this.sharedIds.get('content')} ${selectors.option}[data-value="${value}"]`
 		) as HTMLElement | null;
-	};
-	/**
-	 * Get either the hovered or first selected option id.
-	 */
-	getHoveredOrFirstSelectedId = async () => {
-		await tick();
-		const selectedOption = this.HoveredOption || this.selectedOptions[0];
-
-		return selectedOption.id || null;
 	};
 	/**
 	 * Append the option to the parent array, used for keeping track of options.
@@ -147,37 +146,18 @@ class SelectRoot extends Floating {
 	 * Handles if singular or mulitple values.
 	 */
 	setSelected = () => {
-		if (!this.HoveredOption) return;
+		if (!this.HoveredOption || !this.HoveredOption.dataset.value) return;
+		const newVal = this.HoveredOption.dataset.value;
 
-		if (this.$$.multiple.val) {
-			if (this.selectedOptions.find((el) => el.dataset.value === this.HoveredOption?.dataset.value)) {
-				this.selectedOptions = this.selectedOptions.filter(
-					(el) => el.dataset.value !== this.HoveredOption?.dataset.value
-				);
-			} else {
-				this.selectedOptions.push(this.HoveredOption);
-			}
+		if (Array.isArray(this.$$.value.val)) {
+			if (this.$$.value.val.includes(newVal)) this.$$.value.val = this.$$.value.val.filter((el) => el !== newVal);
+			else this.$$.value.val.push(newVal);
 		} else {
-			this.selectedOptions[0] = this.HoveredOption;
+			if (this.$$.unselectable.val && this.$$.value.val === newVal) this.$$.value.val = '';
+			else this.$$.value.val = newVal;
+
+			this.close();
 		}
-
-		if (!this.$$.multiple.val) this.$$.visible.val = false;
-
-		this.$$.value.val = this.$$.multiple.val
-			? this.selectedOptions.map((el) => el.dataset.value)
-			: this.selectedOptions[0].dataset.value;
-	};
-	/**
-	 * Sets the trigger label to the selected value, only if it's found in the options array.
-	 */
-	setInitialSelected = async () => {
-		await tick();
-		const value = this.$$.value.val;
-		this.selectedOptions = this.options.filter((el) => {
-			if (!Array.isArray(value) && el.dataset.value === value) return el;
-			else if (Array.isArray(value) && value.includes(el.dataset.value)) return el;
-		});
-		this.doneMounting();
 	};
 
 	state = $derived.by<SelectState>(() => ({
@@ -211,16 +191,15 @@ class SelectTrigger {
 			this._root.trigger = node;
 
 			// Such a hacky way, but it works :\
-			if (this._root.HoveredOption || this._root.selectedOptions[0]) {
-				tick().then(async () => {
+			if (this._root.HoveredOption || this._root.SelectedOptions[0]) {
+				tick().then(() => {
 					if (this._root.$$.visible.val) {
-						const id = await this._root.getHoveredOrFirstSelectedId();
+						const { id } = this._root.HoveredOption || this._root.SelectedOptions[0];
 						if (id) node.setAttribute('aria-activedescendant', id);
-					} else {
-						node.removeAttribute('aria-activedescendant');
 					}
 				});
 			}
+			if (!this._root.$$.visible.val) node.removeAttribute('aria-activedescendant');
 
 			return addEvents(node, {
 				click: () => {
@@ -242,7 +221,7 @@ class SelectTrigger {
 						e.preventDefault();
 						if (this._root.HoveredOption && this._root.$$.visible.val) {
 							this._root.HoveredOption?.click();
-							if (!this._root.$$.multiple.val) this._root.close();
+							if (!Array.isArray(this._root.$$.value.val)) this._root.close();
 						} else {
 							this._root.open();
 						}
@@ -273,13 +252,18 @@ class SelectContent {
 
 		this._root.sharedIds.set('content', this.$$.id.val);
 
+		// Get element references but wait for label to be populated.
 		$effect(() => {
-			// Get element references
-			if (this._root.$$.visible.val) this._root.getAvilableOptions();
+			if (this._root.$$.visible.val) {
+				tick().then(() => {
+					this._root.getAvilableOptions();
+				});
+			}
 		});
+
+		// Set first selected value as highlighted option
 		$effect(() => {
-			// Set first selected value as highlighted option
-			if (this._root.$$.visible.val && this._root.selectedOptions.length && !this._root.HoveredOption) {
+			if (this._root.$$.visible.val && this._root.SelectedOptions.length && !this._root.HoveredOption) {
 				this._root.hoveredIndex = this._root.options.findIndex((el) => el.dataset.selected === 'true');
 			}
 		});
@@ -349,8 +333,7 @@ class SelectOption {
 	_root: SelectRoot;
 
 	Hovered = $derived.by(() => this._root.HoveredOption?.dataset.value === this.$$.value.val);
-	Selected = $derived.by(() => !!this._root.selectedOptions.find((el) => el.dataset.value === this.$$.value.val));
-	Label = $derived.by(() => this.$$.label.val);
+	Selected = $derived.by(() => !!this._root.SelectedOptions.find((el) => el.dataset.value === this.$$.value.val));
 
 	constructor(root: SelectRoot, props: OptionProps) {
 		this._root = root;
@@ -367,12 +350,8 @@ class SelectOption {
 		tabindex: 0,
 		'aria-selected': this.Selected,
 		'data-value': this.$$.value.val,
-		'data-label': this.Label,
+		'data-label': this.$$.ref.val && !this.$$.label.val ? this.$$.ref.val.textContent.trim() : this.$$.label.val,
 		...attach((node) => {
-			if (!this.$$.label.val && this.$$.ref.val) {
-				this.Label = this.$$.ref.val.textContent.trim();
-			}
-
 			// Set the hovered index to the active item, if that item is "selected".
 			if (this._root.$$.value.val === this.$$.value.val) {
 				this._root.hoveredIndex = this._root.options.findIndex((el) => el.dataset.value === this.$$.value.val);
@@ -408,7 +387,7 @@ class SelectValue {
 
 	_root: SelectRoot;
 
-	PlaceholderVisible = $derived.by(() => this._root.selectedOptions.length === 0);
+	PlaceholderVisible = $derived.by(() => !this._root.$$.value.val.length);
 
 	constructor(root: SelectRoot, props: ValueProps) {
 		this._root = root;
@@ -416,11 +395,6 @@ class SelectValue {
 		this.$$ = props;
 	}
 
-	label = $derived.by(() =>
-		this.PlaceholderVisible
-			? this.$$.placeholder.val
-			: this._root.selectedOptions.map((el) => el.dataset.label).join(',')
-	);
 	props = $derived.by(() => ({
 		id: this.$$.id.val,
 		[attrs.value]: '',
@@ -429,7 +403,8 @@ class SelectValue {
 
 	state = $derived.by<SelectValueState>(() => ({
 		visible: this._root.$$.visible.val,
-		placeholderVisible: this.PlaceholderVisible
+		placeholderVisible: this.PlaceholderVisible,
+		selectedLabels: this._root.SelectedOptions.map((el) => el.dataset.label!)
 	}));
 }
 

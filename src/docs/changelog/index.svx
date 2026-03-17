@@ -4,6 +4,14 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.24.0
+
+<small>17th March, 2026</small>
+
+- New `unselectable` prop for `<Select />` component that allows the unselection of selected value with in single selection mode.
+- Removed `multiple` prop from `<Select />` and now automatically detects if the `value` is an array or not.
+- `<SelectValue />` can now take a `custom` snippet and users can manually structure the selected labels as they wish.
+
 ### v0.23.7
 
 <small>15th March, 2026</small>
