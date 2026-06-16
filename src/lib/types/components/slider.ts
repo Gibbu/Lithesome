@@ -86,4 +86,4 @@ export interface SliderRangeState {
 //
 // ~VALUE
 //
-export interface SliderValueProps extends PropsNoChildren<HTMLElement, any> {}
+export interface SliderValueProps<P = any> extends PropsNoChildren<HTMLElement, P, any> {}

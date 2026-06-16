@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), ref = $bindable(), ...props }: SliderValueProps = $props();
+	let { id = parseId(uid), ref = $bindable(), custom, ...props }: SliderValueProps = $props();
 
 	let ctx = useSliderValue({
 		id: stateValue(() => id),
@@ -14,4 +14,4 @@
 	});
 </script>
 
-<Element bind:ref {ctx} as="input" {...props} />
+<Element bind:ref {custom} {ctx} as="input" {...props} />

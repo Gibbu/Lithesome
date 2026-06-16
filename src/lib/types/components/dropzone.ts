@@ -1,4 +1,4 @@
-import type { Props } from '$lib/internals/index.js';
+import type { Props, PropsNoChildren } from '$lib/internals/index.js';
 
 export type DropzoneErrorType = 'maxSize' | 'invalidType' | 'multiple' | 'custom' | 'success';
 
@@ -99,4 +99,4 @@ export interface DropzoneState {
 //
 // ~INPUT
 //
-export interface DropzoneInputProps<P = any> extends Props<HTMLInputElement, P, any> {}
+export interface DropzoneInputProps<P = any> extends PropsNoChildren<HTMLInputElement, P, any> {}

@@ -7,13 +7,7 @@
 
 	const uid = $props.id();
 
-	let {
-		id = parseId(uid),
-		ref = $bindable(),
-		children,
-		custom,
-		...props
-	}: DropzoneInputProps<typeof ctx.props> = $props();
+	let { id = parseId(uid), ref = $bindable(), custom, ...props }: DropzoneInputProps<typeof ctx.props> = $props();
 
 	let ctx = useDropzoneInput({
 		id: stateValue(() => id),
@@ -21,4 +15,4 @@
 	});
 </script>
 
-<Element bind:ref as="input" {ctx} {...props} />
+<Element bind:ref {custom} as="input" {ctx} {...props} />

@@ -1,4 +1,4 @@
-import type { FloatingContent, Props, PropsNoChildren, PropsNoRender } from '$lib/internals/index.js';
+import type { FloatingContent, Props, PropsNoRender } from '$lib/internals/index.js';
 
 //
 // ~ROOT

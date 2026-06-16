@@ -20,6 +20,14 @@ const config = {
 		alias: {
 			$site: 'src/site',
 			$docs: 'src/docs'
+		},
+		experimental: {
+			remoteFunctions: true
+		}
+	},
+	compilerOptions: {
+		experimental: {
+			async: true
 		}
 	},
 	extensions: ['.svelte', ...mdsvexConfig.extensions]

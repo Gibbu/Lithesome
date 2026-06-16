@@ -4,6 +4,13 @@ description: 'The timeline of changes for Lithesome'
 hidden: true
 ---
 
+### v0.24.1
+
+<small>17th June, 2026</small>
+
+- `<DropzoneInput />`, `<PinInput/ >`, `<SliderValue />`, `<TagsInput />` can now accept a `custom` snippet.
+  > I made this change because typescript is a bit funcky with the component when using remote forms.
+
 ### v0.24.0
 
 <small>17th March, 2026</small>

@@ -45,7 +45,7 @@ export interface PinState {
 //
 // ~INPUT
 //
-export interface PinInputProps extends PropsNoChildren<HTMLInputElement, PinInputState> {}
+export interface PinInputProps<P = any> extends PropsNoChildren<HTMLInputElement, P, PinInputState> {}
 export interface PinInputState {
 	/**
 	 * True if all inputs have a value.

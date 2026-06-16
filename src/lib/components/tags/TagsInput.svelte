@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), ref = $bindable(), ...props }: TagsInputProps = $props();
+	let { id = parseId(uid), custom, ref = $bindable(), ...props }: TagsInputProps = $props();
 
 	let ctx = useTagsInput({
 		id: stateValue(() => id),
@@ -14,4 +14,4 @@
 	});
 </script>
 
-<Element as="input" bind:ref {ctx} {...props} />
+<Element as="input" {custom} bind:ref {ctx} {...props} />

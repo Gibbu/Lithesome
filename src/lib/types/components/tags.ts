@@ -52,7 +52,7 @@ export interface TagsState {
 //
 // ~INPUT
 //
-export interface TagsInputProps extends PropsNoChildren<HTMLInputElement, TagsInputState> {}
+export interface TagsInputProps<P = any> extends PropsNoChildren<HTMLInputElement, P, TagsInputState> {}
 export interface TagsInputState {
 	/**
 	 * True if:

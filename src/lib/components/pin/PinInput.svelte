@@ -6,7 +6,7 @@
 
 	const uid = $props.id();
 
-	let { id = parseId(uid), ref = $bindable(), ...props }: PinInputProps = $props();
+	let { id = parseId(uid), ref = $bindable(), custom, ...props }: PinInputProps = $props();
 
 	let ctx = usePinInput({
 		id: stateValue(() => id),
@@ -14,4 +14,4 @@
 	});
 </script>
 
-<Element bind:ref {ctx} as="input" {...props} />
+<Element bind:ref {ctx} {custom} as="input" {...props} />
